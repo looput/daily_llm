@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Paper Pipeline - 论文汇总分析报告</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .header .meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .domain-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .domain-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .domain-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .domain-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+
+        .domain-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            margin: 0;
+        }
+
+        .domain-stats {
+            margin-left: auto;
+            text-align: right;
+            color: #666;
+        }
+
+        .stats-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            margin-right: 10px;
+        }
+
+        .summary-content {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .insights-list, .trends-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .insights-list li, .trends-list li {
+            background: #f8f9fa;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #28a745;
+            position: relative;
+        }
+
+        .insights-list li::before {
+            content: "💡";
+            margin-right: 10px;
+        }
+
+        .trends-list li::before {
+            content: "📈";
+            margin-right: 10px;
+        }
+
+        .top-papers {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .paper-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease;
+        }
+
+        .paper-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .paper-rank {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .paper-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .paper-authors {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .paper-scores {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .score-item {
+            background: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: #495057;
+        }
+
+        .score-value {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header .meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .domain-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .domain-stats {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+            .paper-scores {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .loading.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Daily Paper Pipeline</h1>
+            <div class="subtitle">AI论文智能分析报告</div>
+            <div class="meta">
+                <div>📅 生成时间: 2025年10月17日 17:48:21</div>
+                <div>📊 分析领域: 3 个</div>
+                <div>📄 论文总数: 3 篇</div>
+                <div>⭐ 高质量论文: 3 篇</div>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">
+            <h2>🔄 正在生成报告...</h2>
+            <p>请稍候，我们正在为您准备最优质的论文分析报告</p>
+        </div>
+
+        <div id="content">
+            
+        <div class="domain-card">
+            <div class="domain-header">
+                <div class="domain-icon">S</div>
+                <div>
+                    <h2 class="domain-title">safety</h2>
+                </div>
+                <div class="domain-stats">
+                    <div class="stats-number">1</div>
+                    <div>篇高质量论文</div>
+                </div>
+            </div>
+        
+
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">📊</div>
+                        研究现状概述
+                    </h3>
+                    <div class="summary-content">
+                        <p>safety领域共有1篇论文，其中高质量论文1篇。</p>
+                    </div>
+                </div>
+                
+
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">🔬</div>
+                        主要技术方向
+                    </h3>
+                    <ul class="insights-list">
+                
+<li>基于safety相关技术的研究</li>
+<li>基于safety相关技术的研究</li>
+<li>基于safety相关技术的研究</li>
+</ul></div>
+
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">💡</div>
+                        创新突破点
+                    </h3>
+                    <ul class="insights-list">
+                
+<li>safety领域的重要突破</li>
+<li>safety领域的重要突破</li>
+<li>safety领域的重要突破</li>
+</ul></div>
+
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">📈</div>
+                        发展趋势
+                    </h3>
+                    <ul class="trends-list">
+                
+<li>safety领域的发展趋势</li>
+<li>safety领域的发展趋势</li>
+<li>safety领域的发展趋势</li>
+</ul></div>
+
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">🔮</div>
+                        未来展望
+                    </h3>
+                    <ul class="trends-list">
+                
+<li>safety领域的未来发展方向</li>
+<li>safety领域的未来发展方向</li>
+<li>safety领域的未来发展方向</li>
+</ul></div>
+
+            <div class="section">
+                <h3 class="section-title">
+                    <div class="section-icon">⭐</div>
+                    最有价值论文
+                </h3>
+                <div class="top-papers">
+            
+
+                <div class="paper-item">
+                    <div class="paper-rank">#1 评分: 8.52</div>
+                    <div class="paper-title">Position: Require Frontier AI Labs To Release Small "Analog" Models</div>
+                    <div class="paper-authors">Shriyash Upadhyay, Chaithanya Bandi, Narmeen Oozeer, Philip Quirke</div>
+                    <div class="paper-scores">
+                            <div class="score-item">
+                                novelty: <span class="score-value">9.0</span>
+                            </div>
+                            
+                            <div class="score-item">
+                                evidence: <span class="score-value">8.5</span>
+                            </div>
+                            
+                            <div class="score-item">
+                                method: <span class="score-value">8.0</span>
+                            </div>
+                            
+                            <div class="score-item">
+                                clarity: <span class="score-value">8.5</span>
+                            </div>
+                            </div>
+                </div>
+                
+</div></div>
+</div>
+
+        <div class="domain-card">
+            <div class="domain-header">
+                <div class="domain-icon">H</div>
+                <div>
+                    <h2 class="domain-title">hallucination</h2>
+                </div>
+                <div class="domain-stats">
+                    <div class="stats-number">1</div>
+                    <div>篇高质量论文</div>
+                </div>
+            </div>
+        
+
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">📊</div>
+                        研究现状概述
+                    </h3>
+                    <div class="summary-content">
+                        <p>hallucination领域共有1篇论文，其中高质量论文1篇。</p>
+                    </div>
+                </div>
+                
+
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">🔬</div>
+                        主要技术方向
+                    </h3>
+                    <ul class="insights-list">
+                
+<li>基于hallucination相关技术的研究</li>
+<li>基于hallucination相关技术的研究</li>
+<li>基于hallucination相关技术的研究</li>
+</ul></div>
+
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">💡</div>
+                        创新突破点
+                    </h3>
+                    <ul class="insights-list">
+                
+<li>hallucination领域的重要突破</li>
+<li>hallucination领域的重要突破</li>
+<li>hallucination领域的重要突破</li>
+</ul></div>
+
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">📈</div>
+                        发展趋势
+                    </h3>
+                    <ul class="trends-list">
+                
+<li>hallucination领域的发展趋势</li>
+<li>hallucination领域的发展趋势</li>
+<li>hallucination领域的发展趋势</li>
+</ul></div>
+
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">🔮</div>
+                        未来展望
+                    </h3>
+                    <ul class="trends-list">
+                
+<li>hallucination领域的未来发展方向</li>
+<li>hallucination领域的未来发展方向</li>
+<li>hallucination领域的未来发展方向</li>
+</ul></div>
+
+            <div class="section">
+                <h3 class="section-title">
+                    <div class="section-icon">⭐</div>
+                    最有价值论文
+                </h3>
+                <div class="top-papers">
+            
+
+                <div class="paper-item">
+                    <div class="paper-rank">#1 评分: 8.22</div>
+                    <div class="paper-title">Do Large Language Models Show Biases in Causal Learning? Insights from Contingency Judgment</div>
+                    <div class="paper-authors">Mar\'ia Victoria Carro, Denise Alejandra Mester, Francisca Gauna Selasco, Giovanni Franco Gabriel Marraffini, Mario Alejandro Leiva, Gerardo I. Simari, Mar\'ia Vanina Martinez</div>
+                    <div class="paper-scores">
+                            <div class="score-item">
+                                novelty: <span class="score-value">9.0</span>
+                            </div>
+                            
+                            <div class="score-item">
+                                evidence: <span class="score-value">8.5</span>
+                            </div>
+                            
+                            <div class="score-item">
+                                method: <span class="score-value">8.0</span>
+                            </div>
+                            
+                            <div class="score-item">
+                                clarity: <span class="score-value">7.0</span>
+                            </div>
+                            </div>
+                </div>
+                
+</div></div>
+</div>
+
+        <div class="domain-card">
+            <div class="domain-header">
+                <div class="domain-icon">A</div>
+                <div>
+                    <h2 class="domain-title">agent</h2>
+                </div>
+                <div class="domain-stats">
+                    <div class="stats-number">1</div>
+                    <div>篇高质量论文</div>
+                </div>
+            </div>
+        
+
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">📊</div>
+                        研究现状概述
+                    </h3>
+                    <div class="summary-content">
+                        <p>agent领域共有1篇论文，其中高质量论文1篇。</p>
+                    </div>
+                </div>
+                
+
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">🔬</div>
+                        主要技术方向
+                    </h3>
+                    <ul class="insights-list">
+                
+<li>基于agent相关技术的研究</li>
+<li>基于agent相关技术的研究</li>
+<li>基于agent相关技术的研究</li>
+</ul></div>
+
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">💡</div>
+                        创新突破点
+                    </h3>
+                    <ul class="insights-list">
+                
+<li>agent领域的重要突破</li>
+<li>agent领域的重要突破</li>
+<li>agent领域的重要突破</li>
+</ul></div>
+
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">📈</div>
+                        发展趋势
+                    </h3>
+                    <ul class="trends-list">
+                
+<li>agent领域的发展趋势</li>
+<li>agent领域的发展趋势</li>
+<li>agent领域的发展趋势</li>
+</ul></div>
+
+                <div class="section">
+                    <h3 class="section-title">
+                        <div class="section-icon">🔮</div>
+                        未来展望
+                    </h3>
+                    <ul class="trends-list">
+                
+<li>agent领域的未来发展方向</li>
+<li>agent领域的未来发展方向</li>
+<li>agent领域的未来发展方向</li>
+</ul></div>
+
+            <div class="section">
+                <h3 class="section-title">
+                    <div class="section-icon">⭐</div>
+                    最有价值论文
+                </h3>
+                <div class="top-papers">
+            
+
+                <div class="paper-item">
+                    <div class="paper-rank">#1 评分: 8.10</div>
+                    <div class="paper-title">GammaZero: Learning To Guide POMDP Belief Space Search With Graph Representations</div>
+                    <div class="paper-authors">Rajesh Mangannavar, Prasad Tadepalli</div>
+                    <div class="paper-scores">
+                            <div class="score-item">
+                                novelty: <span class="score-value">9.0</span>
+                            </div>
+                            
+                            <div class="score-item">
+                                evidence: <span class="score-value">7.5</span>
+                            </div>
+                            
+                            <div class="score-item">
+                                method: <span class="score-value">8.5</span>
+                            </div>
+                            
+                            <div class="score-item">
+                                clarity: <span class="score-value">7.0</span>
+                            </div>
+                            </div>
+                </div>
+                
+</div></div>
+</div>
+        </div>
+
+        <div class="footer">
+            <p>Generated by <strong>Daily Paper Pipeline</strong> - 让AI论文处理更智能、更高效！</p>
+            <p>📧 如有问题或建议，请联系开发团队</p>
+        </div>
+    </div>
+
+    <script>
+        // 简单的加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const loading = document.getElementById('loading');
+            const content = document.getElementById('content');
+            
+            // 模拟加载过程
+            setTimeout(() => {
+                loading.classList.remove('show');
+                content.style.display = 'block';
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
