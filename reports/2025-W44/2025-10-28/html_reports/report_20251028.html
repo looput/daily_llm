@@ -315,9 +315,9 @@
             bottom: 0;
             background: rgba(0,0,0,0.6);
             z-index: 1000;
-            align-items: center;
+            align-items: flex-end;
             justify-content: center;
-            padding: 10%;
+            padding: 0;
             animation: fadeIn 0.2s ease;
         }
 
@@ -336,19 +336,19 @@
 
         .mobile-modal-content {
             background: white;
-            border-radius: 16px;
+            border-radius: 16px 16px 0 0;
             width: 100%;
-            height: 90%;
+            height: 95%;
             overflow-y: auto;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
             position: relative;
             animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         @keyframes slideUp {
             from {
-                transform: translateY(20px);
-                opacity: 0;
+                transform: translateY(100%);
+                opacity: 0.8;
             }
             to {
                 transform: translateY(0);
@@ -374,7 +374,7 @@
             top: 0;
             background: white;
             border-bottom: 1px solid #e8e8e8;
-            padding: 16px 20px;
+            padding: 24px 20px 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -382,6 +382,19 @@
             border-radius: 16px 16px 0 0;
             backdrop-filter: blur(10px);
             background: rgba(255, 255, 255, 0.95);
+        }
+        
+        /* 移动端弹窗拖动指示器 */
+        .mobile-modal-header::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background: #d0d0d0;
+            border-radius: 2px;
         }
 
         .mobile-modal-close {
@@ -402,7 +415,7 @@
         }
 
         .mobile-modal-body {
-            padding: 20px;
+            padding: 16px 20px 24px;
         }
 
         .topic-header {
@@ -1139,7 +1152,7 @@
         <div class="container">
             <div class="header">
                 <h1>大模型论文速读（47/1166）</h1>
-                <p>生成时间: 2025-11-03</p>
+                <p>生成时间: 2025-11-04</p>
             </div>
             
             <!-- Tab Contents -->
@@ -16014,7 +16027,7 @@ Windsock 仍用 Flan-T5-Small，占 1.83 % 延迟。可将大决策器蒸馏至 
         <!-- Footer with filter info -->
         
         <div class="footer">
-            主题筛选: Finance, Hallucination, Agent, Multimodal, RLHF, SFT | 状态: 已启用
+            主题筛选: RLHF, Hallucination, Finance, Multimodal, SFT, Agent | 状态: 已启用
         </div>
         
         </div>
