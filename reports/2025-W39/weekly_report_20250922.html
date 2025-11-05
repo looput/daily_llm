@@ -1096,8 +1096,88 @@
             .detail-panel {
                 display: none !important;
             }
+            
+            /* 移动端优化领域汇总显示，去掉双层嵌套效果 */
+            .domain-summary-display {
+                background: white;
+                border: 1px solid #e8e8e8;
+                padding: 12px 16px;
+                margin-bottom: 20px;
+            }
+            
+            .domain-summary-display .summary-section,
+            .domain-summary-display .insights-section,
+            .domain-summary-display .trends-section {
+                background: transparent;
+                border: none;
+                border-radius: 0;
+                padding: 0;
+                margin: 0;
+            }
+        }
+        
+        /* KaTeX数学公式样式 */
+        .katex {
+            font-size: 1.1em;
+        }
+        
+        .katex-display {
+            margin: 1em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        
+        .katex-display > .katex {
+            white-space: nowrap;
+        }
+        
+        /* 标记按钮样式 */
+        .mark-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            color: #999;
+            transition: all 0.2s;
+            border-radius: 4px;
+            padding: 0;
+            margin-left: 8px;
+            flex-shrink: 0;
+            vertical-align: middle;
+        }
+        
+        .mark-button:hover {
+            background: #f5f5f5;
+            color: #ffa500;
+            transform: scale(1.1);
+        }
+        
+        .mark-button.marked {
+            color: #ffa500;
+        }
+        
+        .mark-button.marked:hover {
+            color: #ff8c00;
+        }
+        
+        .paper-title .mark-button {
+            margin-left: 8px;
+        }
+        
+        .detail-panel-header .mark-button,
+        .mobile-modal-header .mark-button {
+            margin-right: 8px;
         }
     </style>
+    <!-- KaTeX数学公式渲染库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
 </head>
 <body>
     <!-- 移动端菜单按钮 -->
@@ -1194,7 +1274,7 @@
         <div class="container">
             <div class="header">
                 <h1>大模型论文速读（83/2824）</h1>
-                <p>生成时间: 2025-11-04</p>
+                <p>周报: 2025-09-22 至 2025-09-28 | 生成时间: 2025-11-05</p>
             </div>
             
             <!-- Tab Contents -->
@@ -1236,6 +1316,11 @@
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 KAHAN: Knowledge-Augmented Hierarchical Analysis and Narration for Financial Data Narration
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17037"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17037", "authors": ["Yang", "Deng", "Kan"], "id": "2509.17037", "pdf_url": "https://arxiv.org/pdf/2509.17037", "rank": 8.357142857142858, "title": "KAHAN: Knowledge-Augmented Hierarchical Analysis and Narration for Financial Data Narration"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17037" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -1446,6 +1531,11 @@
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 The Effect of Language Diversity When Fine-Tuning Large Language Models for Translation
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.13090"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.13090", "authors": ["Stap", "Monz"], "id": "2505.13090", "pdf_url": "https://arxiv.org/pdf/2505.13090", "rank": 8.5, "title": "The Effect of Language Diversity When Fine-Tuning Large Language Models for Translation"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2505.13090" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -1732,6 +1822,11 @@
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 WangchanThaiInstruct: An instruction-following Dataset for Culture-Aware, Multitask, and Multi-domain Evaluation in Thai
+                                                <button class="mark-button" 
+                                                        data-paper-id="2508.15239"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2508.15239", "authors": ["Limkonchotiwat", "Tuchinda", "Lowphansirikul", "Nonesung", "Tasawong", "Aji", "Udomcharoenchaikit", "Nutanong"], "id": "2508.15239", "pdf_url": "https://arxiv.org/pdf/2508.15239", "rank": 8.5, "title": "WangchanThaiInstruct: An instruction-following Dataset for Culture-Aware, Multitask, and Multi-domain Evaluation in Thai"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2508.15239" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -2012,6 +2107,11 @@
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 AIMMerging: Adaptive Iterative Model Merging Using Training Trajectories for Language Model Continual Learning
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17348"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17348", "authors": ["Feng", "Li", "Dong", "Xu", "Zhou", "Zhang", "LU", "Wang", "Zhao", "Chu", "Wu"], "id": "2509.17348", "pdf_url": "https://arxiv.org/pdf/2509.17348", "rank": 8.357142857142858, "title": "AIMMerging: Adaptive Iterative Model Merging Using Training Trajectories for Language Model Continual Learning"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17348" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -2345,6 +2445,11 @@ AIMMerging 相对 Recurrent-KIF 再提升 <strong>OP +1.9 %、FWT +2.9 %、BWT +
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Not All Parameters Are Created Equal: Smart Isolation Boosts Fine-Tuning Performance
+                                                <button class="mark-button" 
+                                                        data-paper-id="2508.21741"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2508.21741", "authors": ["Wang", "Liang", "Peng"], "id": "2508.21741", "pdf_url": "https://arxiv.org/pdf/2508.21741", "rank": 8.357142857142858, "title": "Not All Parameters Are Created Equal: Smart Isolation Boosts Fine-Tuning Performance"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2508.21741" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -2826,6 +2931,11 @@ F_k=\bigcup_{l=1}^{k-1}\bigcup_{T_i\in G_l} C_i,\qquad
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Post-hoc Reward Calibration: A Case Study on Length Bias
+                                                <button class="mark-button" 
+                                                        data-paper-id="2409.17407"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2409.17407", "authors": ["Huang", "Qiu", "Wang", "Ponti", "Titov"], "id": "2409.17407", "pdf_url": "https://arxiv.org/pdf/2409.17407", "rank": 8.5, "title": "Post-hoc Reward Calibration: A Case Study on Length Bias"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2409.17407" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3084,6 +3194,11 @@ F_k=\bigcup_{l=1}^{k-1}\bigcup_{T_i\in G_l} C_i,\qquad
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MT-RewardTree: A Comprehensive Framework for Advancing LLM-Based Machine Translation via Reward Modeling
+                                                <button class="mark-button" 
+                                                        data-paper-id="2503.12123"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2503.12123", "authors": ["Feng", "Ren", "Su", "Zheng", "Wang", "Liu"], "id": "2503.12123", "pdf_url": "https://arxiv.org/pdf/2503.12123", "rank": 8.357142857142858, "title": "MT-RewardTree: A Comprehensive Framework for Advancing LLM-Based Machine Translation via Reward Modeling"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2503.12123" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3401,6 +3516,11 @@ F_k=\bigcup_{l=1}^{k-1}\bigcup_{T_i\in G_l} C_i,\qquad
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Creative Preference Optimization
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.14442"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.14442", "authors": ["Ismayilzada", "Laverghetta", "Luchini", "Patel", "Bosselut", "van der Plas", "Beaty"], "id": "2505.14442", "pdf_url": "https://arxiv.org/pdf/2505.14442", "rank": 8.357142857142858, "title": "Creative Preference Optimization"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2505.14442" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3734,6 +3854,11 @@ L_{\text{CRPO}} = -\mathbb{E}<em>{(x,y_w,y_l) \in D} \left[ (\lambda_d \delta_w 
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 OptiScene: LLM-driven Indoor Scene Layout Generation via Scaled Human-aligned Data Synthesis and Multi-Stage Preference Optimization
+                                                <button class="mark-button" 
+                                                        data-paper-id="2506.07570"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2506.07570", "authors": ["Yang", "Luo", "Ding", "Lu", "Gao", "Yang", "Sanchez", "Zheng"], "id": "2506.07570", "pdf_url": "https://arxiv.org/pdf/2506.07570", "rank": 8.357142857142858, "title": "OptiScene: LLM-driven Indoor Scene Layout Generation via Scaled Human-aligned Data Synthesis and Multi-Stage Preference Optimization"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2506.07570" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -4318,6 +4443,11 @@ OptiScene 在所有房类型均呈现 <strong>功能分区清晰、无重叠、�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 LifeAlign: Lifelong Alignment for Large Language Models with Memory-Augmented Focalized Preference Optimization
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17183"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17183", "authors": ["Li", "Zhou", "Zhan", "Yang", "Pan", "Chen", "Huai", "Li", "Chen", "He"], "id": "2509.17183", "pdf_url": "https://arxiv.org/pdf/2509.17183", "rank": 8.357142857142858, "title": "LifeAlign: Lifelong Alignment for Large Language Models with Memory-Augmented Focalized Preference Optimization"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17183" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -4522,6 +4652,11 @@ LifeAlign 通过“样本选择性学习 + 参数冲突消解”双通路，首�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 DISCO Balances the Scales: Adaptive Domain- and Difficulty-Aware Reinforcement Learning on Imbalanced Data
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.15074"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.15074", "authors": ["Zhou", "Zhu", "Qian", "Zhao", "Wang", "Liu", "Li", "Xu", "Ai", "Huang"], "id": "2505.15074", "pdf_url": "https://arxiv.org/pdf/2505.15074", "rank": 8.357142857142858, "title": "DISCO Balances the Scales: Adaptive Domain- and Difficulty-Aware Reinforcement Learning on Imbalanced Data"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2505.15074" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -4904,6 +5039,11 @@ r_{\text{scaled}, i} = r_i \cdot w_{\text{dom}}(q) \cdot w_{\text{diff}}(q)
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Pluralistic Off-policy Evaluation and Alignment
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.19333"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.19333", "authors": ["Huang", "Wu", "Xie", "Xia", "Wang", "Yu", "Mitra", "McAuley", "Yao"], "id": "2509.19333", "pdf_url": "https://arxiv.org/pdf/2509.19333", "rank": 8.357142857142858, "title": "Pluralistic Off-policy Evaluation and Alignment"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.19333" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5426,6 +5566,11 @@ $\hat V_{\text{POPE}}=\frac1n\sum_t\frac{\pi(S_t)}{\pi_0(S_t)}\sum_i\eta_{t,i}<b
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Reinforcement Learning Fine-Tuning Enhances Activation Intensity and Diversity in the Internal Circuitry of LLMs
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.21044"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.21044", "authors": ["Zhang", "Hao", "Xu", "Li"], "id": "2509.21044", "pdf_url": "https://arxiv.org/pdf/2509.21044", "rank": 8.357142857142858, "title": "Reinforcement Learning Fine-Tuning Enhances Activation Intensity and Diversity in the Internal Circuitry of LLMs"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.21044" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5693,6 +5838,11 @@ $\displaystyle -\sum_b p_b\log(p_b+\varepsilon)$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 It's Not You, It's Clipping: A Soft Trust-Region via Probability Smoothing for LLM RL
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.21282"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.21282", "authors": ["Dwyer", "Sobey", "Chapman"], "id": "2509.21282", "pdf_url": "https://arxiv.org/pdf/2509.21282", "rank": 8.357142857142858, "title": "It\u0027s Not You, It\u0027s Clipping: A Soft Trust-Region via Probability Smoothing for LLM RL"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.21282" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5881,6 +6031,11 @@ $$
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Reward-Shifted Speculative Sampling Is An Efficient Test-Time Weak-to-Strong Aligner
+                                                <button class="mark-button" 
+                                                        data-paper-id="2508.15044"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2508.15044", "authors": ["Li", "Wu", "Luo", "Zhang"], "id": "2508.15044", "pdf_url": "https://arxiv.org/pdf/2508.15044", "rank": 8.357142857142858, "title": "Reward-Shifted Speculative Sampling Is An Efficient Test-Time Weak-to-Strong Aligner"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2508.15044" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -6522,6 +6677,11 @@ $$
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Tool Preferences in Agentic LLMs are Unreliable
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.18135"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.18135", "authors": ["Faghih", "Wang", "Cheng", "Bharti", "Sriramanan", "Balasubramanian", "Hosseini", "Feizi"], "id": "2505.18135", "pdf_url": "https://arxiv.org/pdf/2505.18135", "rank": 8.571428571428571, "title": "Tool Preferences in Agentic LLMs are Unreliable"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2505.18135" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -6831,6 +6991,11 @@ $$
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Agentic AI for Multi-Stage Physics Experiments at a Large-Scale User Facility Particle Accelerator
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17255"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17255", "authors": ["Hellert", "Bertwistle", "Leemann", "Sulc", "Venturini"], "id": "2509.17255", "pdf_url": "https://arxiv.org/pdf/2509.17255", "rank": 8.571428571428571, "title": "Agentic AI for Multi-Stage Physics Experiments at a Large-Scale User Facility Particle Accelerator"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17255" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -7012,6 +7177,11 @@ $$
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 INTA: Intent-Based Translation for Network Configuration with LLM Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2501.08760"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2501.08760", "authors": ["Wei", "Xie", "Hu", "Zuo", "Chen", "Chi", "Cui"], "id": "2501.08760", "pdf_url": "https://arxiv.org/pdf/2501.08760", "rank": 8.5, "title": "INTA: Intent-Based Translation for Network Configuration with LLM Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2501.08760" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -7284,6 +7454,11 @@ $$
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Agentic AI with Orchestrator-Agent Trust: A Modular Visual Classification Framework with Trust-Aware Orchestration and RAG-Based Reasoning
+                                                <button class="mark-button" 
+                                                        data-paper-id="2507.10571"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2507.10571", "authors": ["Roumeliotis", "Sapkota", "Karkee", "Tselikas"], "id": "2507.10571", "pdf_url": "https://arxiv.org/pdf/2507.10571", "rank": 8.5, "title": "Agentic AI with Orchestrator-Agent Trust: A Modular Visual Classification Framework with Trust-Aware Orchestration and RAG-Based Reasoning"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2507.10571" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -7526,6 +7701,11 @@ https://github.com/Applied-AI-Research-Lab/Orchestrator-Agent-Trust</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 ARE: Scaling Up Agent Environments and Evaluations
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17158"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17158", "authors": ["Andrews", "Benhalloum", "Bertran", "Bettini", "Budhiraja", "Cabral", "Do", "Froger", "Garreau", "Gaya", "Lauren\u00c3\u00a7on", "Lecanu", "Malkan", "Mekala", "M\u00c3\u00a9nard", "Mialon", "Piterbarg", "Plekhanov", "Rita", "Rusakov", "Scialom", "Vorotilov", "Wang", "Yu"], "id": "2509.17158", "pdf_url": "https://arxiv.org/pdf/2509.17158", "rank": 8.428571428571429, "title": "ARE: Scaling Up Agent Environments and Evaluations"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17158" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -8051,6 +8231,11 @@ ARE 仅提供 read/write 接口，可把记忆模块（向量库、RAG、参数�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Mind the Gap: Evaluating Model- and Agentic-Level Vulnerabilities in LLMs with Action Graphs
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.04802"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.04802", "authors": ["Wicaksono", "Wu", "Patel", "King", "Koshiyama", "Treleaven"], "id": "2509.04802", "pdf_url": "https://arxiv.org/pdf/2509.04802", "rank": 8.428571428571429, "title": "Mind the Gap: Evaluating Model- and Agentic-Level Vulnerabilities in LLMs with Action Graphs"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.04802" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -8337,6 +8522,11 @@ ARE 仅提供 read/write 接口，可把记忆模块（向量库、RAG、参数�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 SIRAG: Towards Stable and Interpretable RAG with A Process-Supervised Multi-Agent Framework
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.18167"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.18167", "authors": ["Wang", "Wu", "Lu", "Li", "Huang"], "id": "2509.18167", "pdf_url": "https://arxiv.org/pdf/2509.18167", "rank": 8.428571428571429, "title": "SIRAG: Towards Stable and Interpretable RAG with A Process-Supervised Multi-Agent Framework"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.18167" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -8599,6 +8789,11 @@ $$R_{\text{credit}}=\alpha R(\tau)+\beta R_{\text{process}}$$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Time to Talk: LLM Agents for Asynchronous Group Communication in Mafia Games
+                                                <button class="mark-button" 
+                                                        data-paper-id="2506.05309"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2506.05309", "authors": ["Eckhaus", "Berger", "Stanovsky"], "id": "2506.05309", "pdf_url": "https://arxiv.org/pdf/2506.05309", "rank": 8.357142857142858, "title": "Time to Talk: LLM Agents for Asynchronous Group Communication in Mafia Games"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2506.05309" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -8803,6 +8998,11 @@ $$R_{\text{credit}}=\alpha R(\tau)+\beta R_{\text{process}}$$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MALLM: Multi-Agent Large Language Models Framework
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.11656"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.11656", "authors": ["Becker", "Kaesberg", "Bauer", "Wahle", "Ruas", "Gipp"], "id": "2509.11656", "pdf_url": "https://arxiv.org/pdf/2509.11656", "rank": 8.357142857142858, "title": "MALLM: Multi-Agent Large Language Models Framework"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.11656" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9516,6 +9716,11 @@ runs:
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Building Coding Agents via Entropy-Enhanced Multi-Turn Preference Optimization
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.12434"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.12434", "authors": ["Yu", "Cheng", "Wu", "Xing"], "id": "2509.12434", "pdf_url": "https://arxiv.org/pdf/2509.12434", "rank": 8.357142857142858, "title": "Building Coding Agents via Entropy-Enhanced Multi-Turn Preference Optimization"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.12434" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9762,6 +9967,11 @@ SFT → 生成轨迹池 → 用 oracle 打标签 → 构建偏好对 → 用 ENT
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MCTS-EP: Empowering Embodied Planning with Online Preference Optimization
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17116"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17116", "authors": ["Xu", "Yu", "Tang", "Hu", "Tang", "Dong"], "id": "2509.17116", "pdf_url": "https://arxiv.org/pdf/2509.17116", "rank": 8.357142857142858, "title": "MCTS-EP: Empowering Embodied Planning with Online Preference Optimization"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17116" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9970,6 +10180,11 @@ SFT → 生成轨迹池 → 用 oracle 打标签 → 构建偏好对 → 用 ENT
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Generalizable End-to-End Tool-Use RL with Synthetic CodeGym
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17325"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17325", "authors": ["Du", "Gong", "Ling", "Liu", "Shen", "Yao", "Xu", "Shi", "Yang", "Chen"], "id": "2509.17325", "pdf_url": "https://arxiv.org/pdf/2509.17325", "rank": 8.357142857142858, "title": "Generalizable End-to-End Tool-Use RL with Synthetic CodeGym"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17325" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -10228,6 +10443,11 @@ SFT → 生成轨迹池 → 用 oracle 打标签 → 构建偏好对 → 用 ENT
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Privacy in Action: Towards Realistic Privacy Mitigation and Evaluation for LLM-Powered Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17488"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17488", "authors": ["Wang", "Yu", "Liu", "Qin", "Zhang", "Lin", "Zhang", "Rajmohan"], "id": "2509.17488", "pdf_url": "https://arxiv.org/pdf/2509.17488", "rank": 8.357142857142858, "title": "Privacy in Action: Towards Realistic Privacy Mitigation and Evaluation for LLM-Powered Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17488" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -10685,6 +10905,11 @@ SFT → 生成轨迹池 → 用 oracle 打标签 → 构建偏好对 → 用 ENT
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MapCoder-Lite: Squeezing Multi-Agent Coding into a Single Small LLM
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17489"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17489", "authors": ["Lee", "Cho", "Choi"], "id": "2509.17489", "pdf_url": "https://arxiv.org/pdf/2509.17489", "rank": 8.357142857142858, "title": "MapCoder-Lite: Squeezing Multi-Agent Coding into a Single Small LLM"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17489" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -11008,6 +11233,11 @@ SFT → 生成轨迹池 → 用 oracle 打标签 → 构建偏好对 → 用 ENT
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Code Driven Planning with Domain-Adaptive Critic
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.19077"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.19077", "authors": ["Tian", "Peng", "Huang", "Guo", "Chen", "Zhang", "Zhang", "Guo", "Du", "Guo", "Li", "Pu", "Hu", "Chen"], "id": "2509.19077", "pdf_url": "https://arxiv.org/pdf/2509.19077", "rank": 8.357142857142858, "title": "Code Driven Planning with Domain-Adaptive Critic"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.19077" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -11579,6 +11809,11 @@ CoPiC 在 <strong>不增加数据量</strong> 的前提下，<strong>同时提�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Tree Search for Language Model Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2407.01476"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2407.01476", "authors": ["Koh", "McAleer", "Fried", "Salakhutdinov"], "id": "2407.01476", "pdf_url": "https://arxiv.org/pdf/2407.01476", "rank": 8.357142857142858, "title": "Tree Search for Language Model Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2407.01476" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -11794,6 +12029,11 @@ CoPiC 在 <strong>不增加数据量</strong> 的前提下，<strong>同时提�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Plan Verification for LLM-Based Embodied Task Completion Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.02761"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.02761", "authors": ["Hariharan", "Dongre", "Hakkani-T\u00c3\u00bcr", "Tur"], "id": "2509.02761", "pdf_url": "https://arxiv.org/pdf/2509.02761", "rank": 8.357142857142858, "title": "Plan Verification for LLM-Based Embodied Task Completion Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.02761" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -12204,6 +12444,11 @@ Planner 角色：同上 4 个模型（共 4×4=16 种组合）</li>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 UI-S1: Advancing GUI Automation via Semi-online Reinforcement Learning
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.11543"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.11543", "authors": ["Lu", "Ye", "Tang", "Shen", "Xu", "Zheng", "Lu", "Yan", "Huang", "Xiao", "Zhuang"], "id": "2509.11543", "pdf_url": "https://arxiv.org/pdf/2509.11543", "rank": 8.357142857142858, "title": "UI-S1: Advancing GUI Automation via Semi-online Reinforcement Learning"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.11543" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -12875,6 +13120,11 @@ SOP-Score 呈指数增长 y = A + B·e^{C+kx}，系数 k 随 ϵ 增大从 −1.1
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Nano Bio-Agents (NBA): Small Language Model Agents for Genomics
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.19566"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.19566", "authors": ["Hong", "Banos"], "id": "2509.19566", "pdf_url": "https://arxiv.org/pdf/2509.19566", "rank": 8.357142857142858, "title": "Nano Bio-Agents (NBA): Small Language Model Agents for Genomics"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.19566" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -13084,6 +13334,11 @@ SOP-Score 呈指数增长 y = A + B·e^{C+kx}，系数 k 随 ϵ 增大从 −1.1
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 What Do LLM Agents Do When Left Alone? Evidence of Spontaneous Meta-Cognitive Patterns
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.21224"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.21224", "authors": ["Szeider"], "id": "2509.21224", "pdf_url": "https://arxiv.org/pdf/2509.21224", "rank": 8.357142857142858, "title": "What Do LLM Agents Do When Left Alone? Evidence of Spontaneous Meta-Cognitive Patterns"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.21224" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -13293,6 +13548,11 @@ SOP-Score 呈指数增长 y = A + B·e^{C+kx}，系数 k 随 ϵ 增大从 −1.1
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Training Language Model Agents to Find Vulnerabilities with CTF-Dojo
+                                                <button class="mark-button" 
+                                                        data-paper-id="2508.18370"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2508.18370", "authors": ["Zhuo", "Wang", "Ding", "Kumar", "Wang"], "id": "2508.18370", "pdf_url": "https://arxiv.org/pdf/2508.18370", "rank": 8.357142857142858, "title": "Training Language Model Agents to Find Vulnerabilities with CTF-Dojo"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2508.18370" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -13630,6 +13890,11 @@ SOP-Score 呈指数增长 y = A + B·e^{C+kx}，系数 k 随 ϵ 增大从 −1.1
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Reflect before Act: Proactive Error Correction in Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.18607"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.18607", "authors": ["Zeng", "Rajkumar", "Wang", "Gyanchandani", "Yan"], "id": "2509.18607", "pdf_url": "https://arxiv.org/pdf/2509.18607", "rank": 8.357142857142858, "title": "Reflect before Act: Proactive Error Correction in Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.18607" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -13829,6 +14094,11 @@ SOP-Score 呈指数增长 y = A + B·e^{C+kx}，系数 k 随 ϵ 增大从 −1.1
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Adaptive Self-improvement LLM Agentic System for ML Library Development
+                                                <button class="mark-button" 
+                                                        data-paper-id="2502.02534"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2502.02534", "authors": ["Zhang", "Liang", "Hsu", "Olukotun"], "id": "2502.02534", "pdf_url": "https://arxiv.org/pdf/2502.02534", "rank": 8.357142857142858, "title": "Adaptive Self-improvement LLM Agentic System for ML Library Development"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2502.02534" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -14133,6 +14403,11 @@ CCPS通过扰动模型最终隐藏状态，分析其表征稳定性来校准置�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Benchmarking and Improving LLM Robustness for Personalized Generation
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.19358"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.19358", "authors": ["Okite", "Deng", "Bodipati", "Hou", "Chai", "Mihalcea"], "id": "2509.19358", "pdf_url": "https://arxiv.org/pdf/2509.19358", "rank": 8.5, "title": "Benchmarking and Improving LLM Robustness for Personalized Generation"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.19358" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -14551,6 +14826,11 @@ $$</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Calibrating LLM Confidence by Probing Perturbed Representation Stability
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.21772"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.21772", "authors": ["Khanmohammadi", "Miahi", "Mardikoraem", "Kaur", "Brugere", "Smiley", "Thind", "Ghassemi"], "id": "2505.21772", "pdf_url": "https://arxiv.org/pdf/2505.21772", "rank": 8.5, "title": "Calibrating LLM Confidence by Probing Perturbed Representation Stability"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2505.21772" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -14800,6 +15080,11 @@ $$</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Re-FRAME the Meeting Summarization SCOPE: Fact-Based Summarization and Personalization via Questions
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.15901"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.15901", "authors": ["Kirstein", "Kumar", "Ruas", "Gipp"], "id": "2509.15901", "pdf_url": "https://arxiv.org/pdf/2509.15901", "rank": 8.357142857142858, "title": "Re-FRAME the Meeting Summarization SCOPE: Fact-Based Summarization and Personalization via Questions"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.15901" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -14948,6 +15233,11 @@ $$</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Quantifying Self-Awareness of Knowledge in Large Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.15339"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.15339", "authors": ["Seo", "Lee", "Yeo"], "id": "2509.15339", "pdf_url": "https://arxiv.org/pdf/2509.15339", "rank": 8.357142857142858, "title": "Quantifying Self-Awareness of Knowledge in Large Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.15339" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -15493,6 +15783,11 @@ $\Rightarrow$ 将阈值判别固化到 8-bit 整数运算，做硬件级“幻�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 HoT: Highlighted Chain of Thought for Referencing Supporting Facts from Inputs
+                                                <button class="mark-button" 
+                                                        data-paper-id="2503.02003"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2503.02003", "authors": ["Nguyen", "Bolton", "Taesiri", "Bui", "Nguyen"], "id": "2503.02003", "pdf_url": "https://arxiv.org/pdf/2503.02003", "rank": 8.357142857142858, "title": "HoT: Highlighted Chain of Thought for Referencing Supporting Facts from Inputs"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2503.02003" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -15963,6 +16258,11 @@ SBP通过建模文档间关系生成合成数据，解决预训练中数据多�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 AI Pangaea: Unifying Intelligence Islands for Adapting Myriad Tasks
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17460"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17460", "authors": ["Chang", "Wang", "Dang", "Huang", "Wang", "Cao", "Piao", "Li", "Gao", "Wang", "Li", "Sun", "Fang", "Lin"], "id": "2509.17460", "pdf_url": "https://arxiv.org/pdf/2509.17460", "rank": 8.642857142857144, "title": "AI Pangaea: Unifying Intelligence Islands for Adapting Myriad Tasks"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17460" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -16622,6 +16922,11 @@ $$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Emergent Abilities of Large Language Models under Continued Pretraining for Language Adaptation
+                                                <button class="mark-button" 
+                                                        data-paper-id="2506.00288"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2506.00288", "authors": ["Elhady", "Agirre", "Artetxe"], "id": "2506.00288", "pdf_url": "https://arxiv.org/pdf/2506.00288", "rank": 8.5, "title": "Emergent Abilities of Large Language Models under Continued Pretraining for Language Adaptation"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2506.00288" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -16771,6 +17076,11 @@ $$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Synthetic bootstrapped pretraining
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.15248"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.15248", "authors": ["Yang", "Zhang", "Liu", "Hashimoto", "Cand\u00c3\u00a8s", "Wang", "Pang"], "id": "2509.15248", "pdf_url": "https://arxiv.org/pdf/2509.15248", "rank": 8.357142857142858, "title": "Synthetic bootstrapped pretraining"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.15248" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -17084,6 +17394,11 @@ $$\theta_{\text{ST}}=\arg\max_\theta \sum_{(d_1,d_2)\in D_{\text{ST}}} \log p_\t
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 How to inject knowledge efficiently? Knowledge Infusion Scaling Law for Pre-training Large Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.19371"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.19371", "authors": ["Lv", "Chen", "Yuan", "Liu", "Liu", "Wang", "Su", "Zheng"], "id": "2509.19371", "pdf_url": "https://arxiv.org/pdf/2509.19371", "rank": 8.357142857142858, "title": "How to inject knowledge efficiently? Knowledge Infusion Scaling Law for Pre-training Large Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.19371" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -17321,6 +17636,11 @@ $$F_{\mathrm{opt}}(C)=A/C^\alpha + E$$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Distributed Specialization: Rare-Token Neurons in Large Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.21163"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.21163", "authors": ["Liu", "Wang", "Li"], "id": "2509.21163", "pdf_url": "https://arxiv.org/pdf/2509.21163", "rank": 8.357142857142858, "title": "Distributed Specialization: Rare-Token Neurons in Large Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.21163" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -17699,6 +18019,11 @@ $ \alpha_{\text{Hill}}=\Bigl[\frac 1 k \sum_{i=1}^k \log\frac{\lambda_i}{\lambda
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MobiGPT: A Foundation Model for Mobile Wireless Networks
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.18166"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.18166", "authors": ["Qi", "Chai", "Li"], "id": "2509.18166", "pdf_url": "https://arxiv.org/pdf/2509.18166", "rank": 8.357142857142858, "title": "MobiGPT: A Foundation Model for Mobile Wireless Networks"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.18166" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -17899,6 +18224,11 @@ $ \alpha_{\text{Hill}}=\Bigl[\frac 1 k \sum_{i=1}^k \log\frac{\lambda_i}{\lambda
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Advances in Multimodal Adaptation and Generalization: From Traditional Approaches to Foundation Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2501.18592"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2501.18592", "authors": ["Dong", "Liu", "Zhou", "Chatzi", "Kannala", "Stachniss", "Fink"], "id": "2501.18592", "pdf_url": "https://arxiv.org/pdf/2501.18592", "rank": 9.071428571428573, "title": "Advances in Multimodal Adaptation and Generalization: From Traditional Approaches to Foundation Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2501.18592" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -18204,6 +18534,11 @@ $ \alpha_{\text{Hill}}=\Bigl[\frac 1 k \sum_{i=1}^k \log\frac{\lambda_i}{\lambda
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Qwen3-Omni Technical Report
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17765"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17765", "authors": ["Xu", "Guo", "Hu", "Chu", "Wang", "He", "Wang", "Shi", "He", "Zhu", "Lv", "Wang", "Guo", "Wang", "Ma", "Zhang", "Zhang", "Hao", "Guo", "Yang", "Zhang", "Ma", "Wei", "Bai", "Chen", "Liu", "Wang", "Yang", "Liu", "Ren", "Zheng", "Men", "Zhou", "Yu", "Yang", "Yu", "Zhou", "Lin"], "id": "2509.17765", "pdf_url": "https://arxiv.org/pdf/2509.17765", "rank": 8.571428571428571, "title": "Qwen3-Omni Technical Report"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17765" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -18680,6 +19015,11 @@ Qwen3-Omni-30B-A3B / -Thinking / -Captioner 与 Demo 已上线 Hugging Face &amp
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 StreamBridge: Turning Your Offline Video Large Language Model into a Proactive Streaming Assistant
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.05467"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.05467", "authors": ["Wang", "Feng", "Lai", "Xu", "Li", "Ge", "Dehghan", "Cao", "Huang"], "id": "2505.05467", "pdf_url": "https://arxiv.org/pdf/2505.05467", "rank": 8.5, "title": "StreamBridge: Turning Your Offline Video Large Language Model into a Proactive Streaming Assistant"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2505.05467" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -19087,6 +19427,11 @@ Qwen3-Omni-30B-A3B / -Thinking / -Captioner 与 Demo 已上线 Hugging Face &amp
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 See&Trek: Training-Free Spatial Prompting for Multimodal Large Language Model
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.16087"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.16087", "authors": ["Li", "Song", "Li", "Guo", "Yao", "Xu", "Liu", "Xiong"], "id": "2509.16087", "pdf_url": "https://arxiv.org/pdf/2509.16087", "rank": 8.5, "title": "See\u0026Trek: Training-Free Spatial Prompting for Multimodal Large Language Model"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.16087" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -19380,6 +19725,11 @@ SEE&amp;TREK 首次在<strong>无训练、无 GPU、单前向</strong>约束下�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 SUA: Stealthy Multimodal Large Language Model Unlearning Attack
+                                                <button class="mark-button" 
+                                                        data-paper-id="2506.17265"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2506.17265", "authors": ["Zhang", "Liu", "Zhang", "Tang", "He", "Lee", "Wang"], "id": "2506.17265", "pdf_url": "https://arxiv.org/pdf/2506.17265", "rank": 8.5, "title": "SUA: Stealthy Multimodal Large Language Model Unlearning Attack"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2506.17265" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -19801,6 +20151,11 @@ SEE&amp;TREK 首次在<strong>无训练、无 GPU、单前向</strong>约束下�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 SD-VLM: Spatial Measuring and Understanding with Depth-Encoded Vision-Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17664"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17664", "authors": ["Chen", "Lou", "Cao", "Guo", "Fan", "Wu", "Yang", "Ma", "Ye"], "id": "2509.17664", "pdf_url": "https://arxiv.org/pdf/2509.17664", "rank": 8.5, "title": "SD-VLM: Spatial Measuring and Understanding with Depth-Encoded Vision-Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17664" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -20390,6 +20745,11 @@ $$</li>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 To Trust Or Not To Trust Your Vision-Language Model's Prediction
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.23745"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.23745", "authors": ["Dong", "Liu", "Liang", "Chatzi", "Fink"], "id": "2505.23745", "pdf_url": "https://arxiv.org/pdf/2505.23745", "rank": 8.5, "title": "To Trust Or Not To Trust Your Vision-Language Model\u0027s Prediction"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2505.23745" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -20667,6 +21027,11 @@ $$</li>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 UniSS: Unified Expressive Speech-to-Speech Translation with Your Voice
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.21144"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.21144", "authors": ["Cheng", "Bian", "Wang", "Yuan", "Chen", "Yin", "Guo", "Xue"], "id": "2509.21144", "pdf_url": "https://arxiv.org/pdf/2509.21144", "rank": 8.5, "title": "UniSS: Unified Expressive Speech-to-Speech Translation with Your Voice"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.21144" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -20853,6 +21218,11 @@ $$</li>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Dynamic Classifier-Free Diffusion Guidance via Online Feedback
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.16131"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.16131", "authors": ["Papalampidi", "Wiles", "Ktena", "Shtedritski", "Bugliarello", "Kajic", "Albuquerque", "Nematzadeh"], "id": "2509.16131", "pdf_url": "https://arxiv.org/pdf/2509.16131", "rank": 8.5, "title": "Dynamic Classifier-Free Diffusion Guidance via Online Feedback"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.16131" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -21125,6 +21495,11 @@ $$ \alpha_{e,t}=\frac{e_t-e_{t+1}}{e_{t+1}} $$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MiniCPM-V 4.5: Cooking Efficient MLLMs via Architecture, Data, and Training Recipe
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.18154"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.18154", "authors": ["Yu", "Wang", "Wang", "Huang", "Ma", "He", "Cai", "Chen", "Huang", "Zhao", "Xu", "Cui", "Xu", "Ruan", "Zhang", "Liu", "Tang", "Liu", "Guo", "Hu", "He", "Zhou", "Cai", "Qi", "Guo", "Chen", "Zeng", "Li", "Cui", "Ding", "Han", "Yao", "Liu", "Sun"], "id": "2509.18154", "pdf_url": "https://arxiv.org/pdf/2509.18154", "rank": 8.5, "title": "MiniCPM-V 4.5: Cooking Efficient MLLMs via Architecture, Data, and Training Recipe"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.18154" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -21510,6 +21885,11 @@ Video-MME 只测全局问答；新 benchmark 可要求模型输出 <strong>“�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Discrete Diffusion in Large Language and Multimodal Models: A Survey
+                                                <button class="mark-button" 
+                                                        data-paper-id="2506.13759"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2506.13759", "authors": ["Yu", "Li", "Wang"], "id": "2506.13759", "pdf_url": "https://arxiv.org/pdf/2506.13759", "rank": 8.428571428571429, "title": "Discrete Diffusion in Large Language and Multimodal Models: A Survey"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2506.13759" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -21850,6 +22230,11 @@ Video-MME 只测全局问答；新 benchmark 可要求模型输出 <strong>“�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Large Vision-Language Model Alignment and Misalignment: A Survey Through the Lens of Explainability
+                                                <button class="mark-button" 
+                                                        data-paper-id="2501.01346"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2501.01346", "authors": ["Shu", "Zhao", "Hu", "Liu", "Payani", "Cheng", "Du"], "id": "2501.01346", "pdf_url": "https://arxiv.org/pdf/2501.01346", "rank": 8.428571428571429, "title": "Large Vision-Language Model Alignment and Misalignment: A Survey Through the Lens of Explainability"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2501.01346" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -22135,6 +22520,11 @@ Video-MME 只测全局问答；新 benchmark 可要求模型输出 <strong>“�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 VLDBench Evaluating Multimodal Disinformation with Regulatory Alignment
+                                                <button class="mark-button" 
+                                                        data-paper-id="2502.11361"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2502.11361", "authors": ["Raza", "Vayani", "Jain", "Narayanan", "Khazaie", "Bashir", "Dolatabadi", "Uddin", "Emmanouilidis", "Qureshi", "Shah"], "id": "2502.11361", "pdf_url": "https://arxiv.org/pdf/2502.11361", "rank": 8.428571428571429, "title": "VLDBench Evaluating Multimodal Disinformation with Regulatory Alignment"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2502.11361" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -22764,6 +23154,11 @@ Video-MME 只测全局问答；新 benchmark 可要求模型输出 <strong>“�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 LED: LLM Enhanced Open-Vocabulary Object Detection without Human Curated Data Generation
+                                                <button class="mark-button" 
+                                                        data-paper-id="2503.13794"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2503.13794", "authors": ["Zhou", "Zhao", "Chen", "Wang", "Jin", "Metaxas"], "id": "2503.13794", "pdf_url": "https://arxiv.org/pdf/2503.13794", "rank": 8.357142857142858, "title": "LED: LLM Enhanced Open-Vocabulary Object Detection without Human Curated Data Generation"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2503.13794" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -23082,6 +23477,11 @@ Video-MME 只测全局问答；新 benchmark 可要求模型输出 <strong>“�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 DualEdit: Dual Editing for Knowledge Updating in Vision-Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2506.13638"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2506.13638", "authors": ["Shi", "Wang", "Si", "Wu", "Kim", "Pfister"], "id": "2506.13638", "pdf_url": "https://arxiv.org/pdf/2506.13638", "rank": 8.357142857142858, "title": "DualEdit: Dual Editing for Knowledge Updating in Vision-Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2506.13638" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -23342,6 +23742,11 @@ Video-MME 只测全局问答；新 benchmark 可要求模型输出 <strong>“�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MMAPG: A Training-Free Framework for Multimodal Multi-hop Question Answering via Adaptive Planning Graphs
+                                                <button class="mark-button" 
+                                                        data-paper-id="2508.16051"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2508.16051", "authors": ["Hu", "Wang", "Liu", "Xu", "Fu", "Zhang", "Zhu"], "id": "2508.16051", "pdf_url": "https://arxiv.org/pdf/2508.16051", "rank": 8.357142857142858, "title": "MMAPG: A Training-Free Framework for Multimodal Multi-hop Question Answering via Adaptive Planning Graphs"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2508.16051" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -23635,6 +24040,11 @@ Video-MME 只测全局问答；新 benchmark 可要求模型输出 <strong>“�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 A Vision-Language-Action-Critic Model for Robotic Real-World Reinforcement Learning
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.15937"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.15937", "authors": ["Zhai", "Zhang", "Zhang", "Huang", "Zhang", "Zhou", "Zhang", "Liu", "Lin", "Pang"], "id": "2509.15937", "pdf_url": "https://arxiv.org/pdf/2509.15937", "rank": 8.357142857142858, "title": "A Vision-Language-Action-Critic Model for Robotic Real-World Reinforcement Learning"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.15937" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -24368,6 +24778,11 @@ D. Desktop Sweep（推扫垃圾）</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Both Text and Images Leaked! A Systematic Analysis of Data Contamination in Multimodal LLM
+                                                <button class="mark-button" 
+                                                        data-paper-id="2411.03823"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2411.03823", "authors": ["Song", "Lai", "Wang", "Chen", "Sun", "Wang"], "id": "2411.03823", "pdf_url": "https://arxiv.org/pdf/2411.03823", "rank": 8.357142857142858, "title": "Both Text and Images Leaked! A Systematic Analysis of Data Contamination in Multimodal LLM"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2411.03823" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -24623,6 +25038,11 @@ D. Desktop Sweep（推扫垃圾）</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 DeepInsert: Early Layer Bypass for Efficient and Performant Multimodal Understanding
+                                                <button class="mark-button" 
+                                                        data-paper-id="2504.19327"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2504.19327", "authors": ["Choraria", "Wu", "Bhimaraju", "Sekhar", "Wu", "Zhang", "Singhal", "Varshney"], "id": "2504.19327", "pdf_url": "https://arxiv.org/pdf/2504.19327", "rank": 8.357142857142858, "title": "DeepInsert: Early Layer Bypass for Efficient and Performant Multimodal Understanding"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2504.19327" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -25028,6 +25448,11 @@ DeepInsert 揭示并利用了多模态处理的功能冗余，为“不增参数
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 SpecVLM: Fast Speculative Decoding in Vision-Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.11815"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.11815", "authors": ["Huang", "Yang", "Liu", "Yin", "Li", "Ren", "Barsoum"], "id": "2509.11815", "pdf_url": "https://arxiv.org/pdf/2509.11815", "rank": 8.357142857142858, "title": "SpecVLM: Fast Speculative Decoding in Vision-Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.11815" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -25571,6 +25996,11 @@ DeepInsert 揭示并利用了多模态处理的功能冗余，为“不增参数
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Table2LaTeX-RL: High-Fidelity LaTeX Code Generation from Table Images via Reinforced Multimodal Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17589"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17589", "authors": ["Ling", "Qi", "Huang", "Zhou", "Huang", "Yang", "Song", "Zhou", "Yang", "Shen", "Wang"], "id": "2509.17589", "pdf_url": "https://arxiv.org/pdf/2509.17589", "rank": 8.357142857142858, "title": "Table2LaTeX-RL: High-Fidelity LaTeX Code Generation from Table Images via Reinforced Multimodal Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17589" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -25919,6 +26349,11 @@ $$J_{\text{RFT}}(\theta)=\mathbb{E}<em>{q,{o_i}}!\left[\frac{1}{N}\sum</em>{i=1}
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 VIR-Bench: Evaluating Geospatial and Temporal Understanding of MLLMs via Travel Video Itinerary Reconstruction
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.19002"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.19002", "authors": ["Wang", "Murata", "Zhang", "Sato", "Fukuda", "Yin", "Hu", "Nakao", "Nakamura", "Zwirner", "Chen", "Otomo", "Ouchi", "Kawahara"], "id": "2509.19002", "pdf_url": "https://arxiv.org/pdf/2509.19002", "rank": 8.357142857142858, "title": "VIR-Bench: Evaluating Geospatial and Temporal Understanding of MLLMs via Travel Video Itinerary Reconstruction"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.19002" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -26261,6 +26696,11 @@ VIR-Bench 反其道而行：以<strong>视频+重建的 POI 序列</strong>为�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Towards Visual Text Grounding of Multimodal Large Language Model
+                                                <button class="mark-button" 
+                                                        data-paper-id="2504.04974"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2504.04974", "authors": ["Li", "Zhang", "Chen", "Wang", "Gu", "Zhou", "Dernoncourt", "Zhu", "Zhou", "Sun"], "id": "2504.04974", "pdf_url": "https://arxiv.org/pdf/2504.04974", "rank": 8.357142857142858, "title": "Towards Visual Text Grounding of Multimodal Large Language Model"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2504.04974" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -26501,6 +26941,11 @@ VIR-Bench 反其道而行：以<strong>视频+重建的 POI 序列</strong>为�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 VisualTrap: A Stealthy Backdoor Attack on GUI Agents via Visual Grounding Manipulation
+                                                <button class="mark-button" 
+                                                        data-paper-id="2507.06899"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2507.06899", "authors": ["Ye", "Zhang", "Shi", "You", "Feng", "Chua"], "id": "2507.06899", "pdf_url": "https://arxiv.org/pdf/2507.06899", "rank": 8.357142857142858, "title": "VisualTrap: A Stealthy Backdoor Attack on GUI Agents via Visual Grounding Manipulation"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2507.06899" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -26957,6 +27402,11 @@ VIR-Bench 反其道而行：以<strong>视频+重建的 POI 序列</strong>为�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Can LLMs Reason Over Non-Text Modalities in a Training-Free Manner? A Case Study with In-Context Representation Learning
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17552"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17552", "authors": ["Zhang", "Fang", "Woo", "Latawa", "Subramanian", "Chan"], "id": "2509.17552", "pdf_url": "https://arxiv.org/pdf/2509.17552", "rank": 8.357142857142858, "title": "Can LLMs Reason Over Non-Text Modalities in a Training-Free Manner? A Case Study with In-Context Representation Learning"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17552" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -27744,6 +28194,11 @@ ICRL 用“压缩-映射-对齐-注入”四步，把任意模态向量变成 1-
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Citrus-V: Advancing Medical Foundation Models with Unified Medical Image Grounding for Clinical Reasoning
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.19090"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.19090", "authors": ["Wang", "Zhao", "Liu", "Liu", "Cao", "Li", "Liu", "Sun", "Zhou", "Xing", "Yang"], "id": "2509.19090", "pdf_url": "https://arxiv.org/pdf/2509.19090", "rank": 8.357142857142858, "title": "Citrus-V: Advancing Medical Foundation Models with Unified Medical Image Grounding for Clinical Reasoning"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.19090" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -28108,6 +28563,11 @@ Citrus-V 首次实现“像素→文字→推理”统一 pipeline，支持精�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 DeFacto: Counterfactual Thinking with Images for Enforcing Evidence-Grounded and Faithful Reasoning
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.20912"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.20912", "authors": ["Xu", "Jing", "Li", "Wei", "Feng", "Chen", "Gao", "Zhang", "Chen"], "id": "2509.20912", "pdf_url": "https://arxiv.org/pdf/2509.20912", "rank": 8.357142857142858, "title": "DeFacto: Counterfactual Thinking with Images for Enforcing Evidence-Grounded and Faithful Reasoning"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.20912" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -28316,6 +28776,11 @@ $$R=R_{\text{ans}}+\lambda_1 R_{\text{fmt}}+\lambda_2 R_{\text{sel}}$$</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Decipher-MR: A Vision-Language Foundation Model for 3D MRI Representations
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.21249"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.21249", "authors": ["Yang", "DSouza", "Megyeri", "Xu", "Shandiz", "Haddadpour", "Koos", "Rusko", "Valeriano", "Swaninathan", "Wu", "Bhatia", "Kass-Hout", "Bas"], "id": "2509.21249", "pdf_url": "https://arxiv.org/pdf/2509.21249", "rank": 8.357142857142858, "title": "Decipher-MR: A Vision-Language Foundation Model for 3D MRI Representations"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.21249" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -28834,6 +29299,11 @@ $$R=R_{\text{ans}}+\lambda_1 R_{\text{fmt}}+\lambda_2 R_{\text{sel}}$$</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 M-PACE: Mother Child Framework for Multimodal Compliance
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.15241"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.15241", "authors": ["Verma", "Kesari", "Trivedi", "Purwar", "Jamidar"], "id": "2509.15241", "pdf_url": "https://arxiv.org/pdf/2509.15241", "rank": 8.357142857142858, "title": "M-PACE: Mother Child Framework for Multimodal Compliance"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.15241" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -29011,6 +29481,11 @@ $$R=R_{\text{ans}}+\lambda_1 R_{\text{fmt}}+\lambda_2 R_{\text{sel}}$$</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 OpenOmni: Advancing Open-Source Omnimodal Large Language Models with Progressive Multimodal Alignment and Real-Time Self-Aware Emotional Speech Synthesis
+                                                <button class="mark-button" 
+                                                        data-paper-id="2501.04561"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2501.04561", "authors": ["Luo", "Lin", "Zhang", "Wu", "Liu", "Yang", "Li", "Chen", "Li", "Zhang", "Xia", "Alinejad-Rokny", "Huang"], "id": "2501.04561", "pdf_url": "https://arxiv.org/pdf/2501.04561", "rank": 8.357142857142858, "title": "OpenOmni: Advancing Open-Source Omnimodal Large Language Models with Progressive Multimodal Alignment and Real-Time Self-Aware Emotional Speech Synthesis"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2501.04561" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -29262,6 +29737,11 @@ $$R=R_{\text{ans}}+\lambda_1 R_{\text{fmt}}+\lambda_2 R_{\text{sel}}$$</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Pay More Attention To Audio: Mitigating Imbalance of Cross-Modal Attention in Large Audio Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.18816"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.18816", "authors": ["Wang", "Ma", "Luo", "Wang", "Ge", "Wang", "Wang"], "id": "2509.18816", "pdf_url": "https://arxiv.org/pdf/2509.18816", "rank": 8.357142857142858, "title": "Pay More Attention To Audio: Mitigating Imbalance of Cross-Modal Attention in Large Audio Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.18816" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -29527,6 +30007,11 @@ MATA 以可忽略成本显著矫正音频-文本注意力失衡，为提升 LALM
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 DRISHTIKON: A Multimodal Multilingual Benchmark for Testing Language Models' Understanding on Indian Culture
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.19274"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.19274", "authors": ["Maji", "Kumar", "Ghosh", "Anushka", "Shah", "Borah", "Shah", "Mishra", "Saha"], "id": "2509.19274", "pdf_url": "https://arxiv.org/pdf/2509.19274", "rank": 8.357142857142858, "title": "DRISHTIKON: A Multimodal Multilingual Benchmark for Testing Language Models\u0027 Understanding on Indian Culture"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.19274" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -29982,6 +30467,11 @@ MATA 以可忽略成本显著矫正音频-文本注意力失衡，为提升 LALM
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 From Text to Talk: Audio-Language Model Needs Non-Autoregressive Joint Training
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.20072"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.20072", "authors": ["Liu", "Li", "Wang", "Li", "Chen", "Luo", "Liu"], "id": "2509.20072", "pdf_url": "https://arxiv.org/pdf/2509.20072", "rank": 8.357142857142858, "title": "From Text to Talk: Audio-Language Model Needs Non-Autoregressive Joint Training"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.20072" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -30290,6 +30780,11 @@ BANOM、PPM、SST 分别解决上下文分布、跨 span 一致性与可变长�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 RadAgents: Multimodal Agentic Reasoning for Chest X-ray Interpretation with Radiologist-like Workflows
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.20490"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.20490", "authors": ["Zhang", "Barrett", "Kim", "Sun", "Taghavi", "Kenthapadi"], "id": "2509.20490", "pdf_url": "https://arxiv.org/pdf/2509.20490", "rank": 8.357142857142858, "title": "RadAgents: Multimodal Agentic Reasoning for Chest X-ray Interpretation with Radiologist-like Workflows"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.20490" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -30698,7 +31193,7 @@ BANOM、PPM、SST 分别解决上下文分布、跨 span 一致性与可变长�
         <!-- Footer with filter info -->
         
         <div class="footer">
-            主题筛选: SFT, Hallucination, RLHF, Pretraining, Agent, Multimodal, Finance | 状态: 已启用
+            主题筛选: Finance, Agent, Pretraining, RLHF, Hallucination, Multimodal, SFT | 状态: 已启用
         </div>
         
         </div>
@@ -30708,7 +31203,10 @@ BANOM、PPM、SST 分别解决上下文分布、跨 span 一致性与可变长�
     <div class="detail-panel" id="detailPanel">
         <div class="detail-panel-header">
             <span class="detail-panel-title">论文详情</span>
-            <button class="detail-panel-close" onclick="closeDetailPanel()">✕</button>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="mark-button" id="detailPanelMarkButton" onclick="handleDetailPanelMark(event);" title="标记这篇论文">☆</button>
+                <button class="detail-panel-close" onclick="closeDetailPanel()">✕</button>
+            </div>
         </div>
         <div class="detail-panel-content" id="detailPanelContent">
             <!-- 动态加载论文详情 -->
@@ -30720,7 +31218,10 @@ BANOM、PPM、SST 分别解决上下文分布、跨 span 一致性与可变长�
         <div class="mobile-modal-content" onclick="event.stopPropagation()">
             <div class="mobile-modal-header">
                 <span class="detail-panel-title">论文详情</span>
-                <button class="mobile-modal-close" onclick="closeMobileModal()">✕</button>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="mark-button" id="mobileModalMarkButton" onclick="handleMobileModalMark(event);" title="标记这篇论文">☆</button>
+                    <button class="mobile-modal-close" onclick="closeMobileModal()">✕</button>
+                </div>
             </div>
             <div class="mobile-modal-body" id="mobileModalContent">
                 <!-- 动态加载论文详情 -->
@@ -30730,6 +31231,243 @@ BANOM、PPM、SST 分别解决上下文分布、跨 span 一致性与可变长�
 
     <script>
         let currentPaperId = null;
+        let currentPaperData = null;
+
+        // ========== 标记功能 ==========
+        
+        // 获取所有标记的论文
+        function getMarkedPapers() {
+            try {
+                const stored = localStorage.getItem('markedPapers');
+                return stored ? JSON.parse(stored) : [];
+            } catch (e) {
+                console.error('读取标记论文失败:', e);
+                return [];
+            }
+        }
+        
+        // 保存标记的论文
+        function saveMarkedPapers(papers) {
+            try {
+                localStorage.setItem('markedPapers', JSON.stringify(papers));
+            } catch (e) {
+                console.error('保存标记论文失败:', e);
+            }
+        }
+        
+        // 检查论文是否已标记
+        function isMarked(paperId) {
+            const markedPapers = getMarkedPapers();
+            return markedPapers.some(p => p.id === paperId);
+        }
+        
+        // 获取论文的完整信息（从页面中提取）
+        function getPaperData(paperId, basicData) {
+            // 从subtitle中提取日期
+            const subtitle = document.querySelector('.header p');
+            let date = '未知';
+            if (subtitle) {
+                const dateMatch = subtitle.textContent.match(/(\d{4}-\d{2}-\d{2})/);
+                if (dateMatch) {
+                    date = dateMatch[1];
+                }
+            }
+            
+            // 获取报告路径（相对路径）
+            // 如果路径包含web/reports，提取web/reports之后的部分
+            // 否则使用完整路径
+            let reportPath = window.location.pathname.replace(/^\/+/, '');
+            const webReportsMatch = reportPath.match(/web\/reports\/(.+)$/);
+            if (webReportsMatch) {
+                reportPath = webReportsMatch[1];
+            } else {
+                // 尝试提取reports之后的部分
+                const reportsMatch = reportPath.match(/reports\/(.+)$/);
+                if (reportsMatch) {
+                    reportPath = reportsMatch[1];
+                }
+            }
+            
+            return {
+                id: paperId,
+                title: basicData.title || '',
+                authors: basicData.authors || [],
+                arxiv_url: basicData.arxiv_url || '',
+                pdf_url: basicData.pdf_url || '',
+                rank: basicData.rank || null,
+                date: date,
+                reportPath: reportPath,
+                markedAt: new Date().toISOString()
+            };
+        }
+        
+        // 切换标记状态
+        function toggleMark(paperId, paperData) {
+            const markedPapers = getMarkedPapers();
+            const isCurrentlyMarked = isMarked(paperId);
+            
+            if (isCurrentlyMarked) {
+                // 取消标记
+                const filtered = markedPapers.filter(p => p.id !== paperId);
+                saveMarkedPapers(filtered);
+                updateMarkButtonState(paperId, false);
+            } else {
+                // 添加标记
+                const fullPaperData = getPaperData(paperId, paperData);
+                markedPapers.push(fullPaperData);
+                saveMarkedPapers(markedPapers);
+                updateMarkButtonState(paperId, true);
+            }
+        }
+        
+        // 更新标记按钮状态
+        function updateMarkButtonState(paperId, isMarked) {
+            // 更新列表中的按钮
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            if (listButton) {
+                listButton.textContent = isMarked ? '⭐' : '☆';
+                listButton.classList.toggle('marked', isMarked);
+            }
+            
+            // 更新详情面板中的按钮
+            if (currentPaperId === paperId) {
+                const detailButton = document.getElementById('detailPanelMarkButton');
+                const mobileButton = document.getElementById('mobileModalMarkButton');
+                
+                if (detailButton) {
+                    detailButton.textContent = isMarked ? '⭐' : '☆';
+                    detailButton.classList.toggle('marked', isMarked);
+                }
+                if (mobileButton) {
+                    mobileButton.textContent = isMarked ? '⭐' : '☆';
+                    mobileButton.classList.toggle('marked', isMarked);
+                }
+            }
+        }
+        
+        // 处理列表中的标记点击（从按钮元素获取数据）
+        function handleMarkClickFromButton(button) {
+            const paperId = button.getAttribute('data-paper-id');
+            const paperDataStr = button.getAttribute('data-paper-data');
+            try {
+                const paperData = JSON.parse(paperDataStr);
+                toggleMark(paperId, paperData);
+            } catch (e) {
+                console.error('解析论文数据失败:', e);
+            }
+        }
+        
+        // 处理详情面板中的标记点击
+        function handleDetailPanelMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 处理移动端弹窗中的标记点击
+        function handleMobileModalMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 初始化标记状态（页面加载时）
+        function initMarkStates() {
+            const markedPapers = getMarkedPapers();
+            const markedIds = new Set(markedPapers.map(p => p.id));
+            
+            // 更新所有标记按钮的状态
+            document.querySelectorAll('.mark-button[data-paper-id]').forEach(button => {
+                const paperId = button.getAttribute('data-paper-id');
+                if (markedIds.has(paperId)) {
+                    button.textContent = '⭐';
+                    button.classList.add('marked');
+                } else {
+                    button.textContent = '☆';
+                    button.classList.remove('marked');
+                }
+            });
+        }
 
         // 切换标签页
         function showTab(tabId, event) {
@@ -30756,6 +31494,49 @@ BANOM、PPM、SST 分别解决上下文分布、跨 span 一致性与可变长�
             }
         }
 
+        // 从DOM元素中提取论文数据
+        function extractPaperDataFromDOM(paperItem, paperId) {
+            if (!paperItem) return null;
+            
+            const paperTitleEl = paperItem.querySelector('.paper-title');
+            const paperAuthorsEl = paperItem.querySelector('.paper-authors');
+            const paperScoreEl = paperItem.querySelector('.paper-score');
+            const arxivLinkEl = paperItem.querySelector('.arxiv-link');
+            
+            // 提取标题，去除标记按钮和链接
+            let title = '';
+            if (paperTitleEl) {
+                title = paperTitleEl.cloneNode(true);
+                // 移除按钮和链接
+                title.querySelectorAll('.mark-button, .arxiv-link, .ai-links').forEach(el => el.remove());
+                title = title.textContent.trim();
+            }
+            
+            return {
+                id: paperId,
+                title: title || '',
+                authors: paperAuthorsEl ? paperAuthorsEl.textContent.split(',').map(a => a.trim()) : [],
+                arxiv_url: arxivLinkEl ? arxivLinkEl.href : '',
+                pdf_url: arxivLinkEl ? arxivLinkEl.href.replace('/abs/', '/pdf/') : '',
+                rank: paperScoreEl && paperScoreEl.textContent !== 'N/A' ? parseFloat(paperScoreEl.textContent) : null
+            };
+        }
+
+        // 渲染元素中的数学公式
+        function renderMathInElementLocal(element) {
+            if (typeof renderMathInElement !== 'undefined' && element) {
+                renderMathInElement(element, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
         // 显示论文详情
         function showPaperDetail(paperId, topicId) {
             const detailsContent = document.getElementById('details-' + paperId);
@@ -30772,6 +31553,43 @@ BANOM、PPM、SST 分别解决上下文分布、跨 span 一致性与可变长�
             
             currentPaperId = paperId;
             
+            // 从列表项中提取论文数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            
+            // 优先从列表按钮的data属性获取数据
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        currentPaperData = JSON.parse(paperDataStr);
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                        // 如果解析失败，从页面元素提取
+                        currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                    }
+                } else {
+                    // 如果没有data属性，从页面元素提取
+                    currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                }
+            } else {
+                // 如果找不到列表按钮，从页面元素提取
+                currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+            }
+            
+            // 更新详情面板中的标记按钮状态
+            const isCurrentlyMarked = isMarked(paperId);
+            const detailButton = document.getElementById('detailPanelMarkButton');
+            const mobileButton = document.getElementById('mobileModalMarkButton');
+            
+            if (detailButton) {
+                detailButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                detailButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            if (mobileButton) {
+                mobileButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                mobileButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            
             // 检测设备类型
             const isMobile = window.innerWidth <= 1024;
             
@@ -30779,12 +31597,16 @@ BANOM、PPM、SST 分别解决上下文分布、跨 span 一致性与可变长�
                 // 移动端：显示弹窗
                 const modalContent = document.getElementById('mobileModalContent');
                 modalContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(modalContent);
                 document.getElementById('mobileModal').classList.add('active');
                 document.body.style.overflow = 'hidden'; // 禁止背景滚动
             } else {
                 // 宽屏：显示右侧面板
                 const panelContent = document.getElementById('detailPanelContent');
                 panelContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(panelContent);
                 document.getElementById('detailPanel').classList.add('active');
                 
                 // 调整论文列表宽度
@@ -30846,6 +31668,7 @@ BANOM、PPM、SST 分别解决上下文分布、跨 span 一致性与可变长�
                     if (detailsContent) {
                         const modalContent = document.getElementById('mobileModalContent');
                         modalContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(modalContent);
                         mobileModal.classList.add('active');
                         document.body.style.overflow = 'hidden';
                     }
@@ -30857,6 +31680,7 @@ BANOM、PPM、SST 分别解决上下文分布、跨 span 一致性与可变长�
                     if (detailsContent) {
                         const panelContent = document.getElementById('detailPanelContent');
                         panelContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(panelContent);
                         detailPanel.classList.add('active');
                     }
                 }
@@ -30868,6 +31692,45 @@ BANOM、PPM、SST 分别解决上下文分布、跨 span 一致性与可变长�
             const firstNavItem = document.querySelector('.nav-item');
             if (firstNavItem) {
                 firstNavItem.classList.add('active');
+            }
+            
+            // 初始化标记状态
+            initMarkStates();
+            
+            // 检查URL hash，如果包含paper-item-xxx，自动打开该论文详情
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#paper-item-')) {
+                const paperId = hash.replace('#paper-item-', '');
+                // 查找该论文所在的topic
+                const paperItem = document.getElementById('paper-item-' + paperId);
+                if (paperItem) {
+                    // 找到论文所在的tab
+                    const tabContent = paperItem.closest('.tab-content');
+                    if (tabContent) {
+                        const tabId = tabContent.id.replace('tab-', '');
+                        // 切换到对应的tab
+                        showTab(tabId, null);
+                        // 延迟一下，确保tab切换完成后再显示详情
+                        setTimeout(() => {
+                            showPaperDetail(paperId, tabId);
+                            // 滚动到论文位置
+                            paperItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
+                    }
+                }
+            }
+            
+            // 初始化KaTeX自动渲染数学公式
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
             }
         });
 
