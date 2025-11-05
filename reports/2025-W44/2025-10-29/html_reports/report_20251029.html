@@ -1096,8 +1096,88 @@
             .detail-panel {
                 display: none !important;
             }
+            
+            /* 移动端优化领域汇总显示，去掉双层嵌套效果 */
+            .domain-summary-display {
+                background: white;
+                border: 1px solid #e8e8e8;
+                padding: 12px 16px;
+                margin-bottom: 20px;
+            }
+            
+            .domain-summary-display .summary-section,
+            .domain-summary-display .insights-section,
+            .domain-summary-display .trends-section {
+                background: transparent;
+                border: none;
+                border-radius: 0;
+                padding: 0;
+                margin: 0;
+            }
+        }
+        
+        /* KaTeX数学公式样式 */
+        .katex {
+            font-size: 1.1em;
+        }
+        
+        .katex-display {
+            margin: 1em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        
+        .katex-display > .katex {
+            white-space: nowrap;
+        }
+        
+        /* 标记按钮样式 */
+        .mark-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            color: #999;
+            transition: all 0.2s;
+            border-radius: 4px;
+            padding: 0;
+            margin-left: 8px;
+            flex-shrink: 0;
+            vertical-align: middle;
+        }
+        
+        .mark-button:hover {
+            background: #f5f5f5;
+            color: #ffa500;
+            transform: scale(1.1);
+        }
+        
+        .mark-button.marked {
+            color: #ffa500;
+        }
+        
+        .mark-button.marked:hover {
+            color: #ff8c00;
+        }
+        
+        .paper-title .mark-button {
+            margin-left: 8px;
+        }
+        
+        .detail-panel-header .mark-button,
+        .mobile-modal-header .mark-button {
+            margin-right: 8px;
         }
     </style>
+    <!-- KaTeX数学公式渲染库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
 </head>
 <body>
     <!-- 移动端菜单按钮 -->
@@ -1116,12 +1196,6 @@
             <nav class="sidebar-nav">
                 
                 <a class="nav-item active" 
-                   onclick="showTab('Agent', event)">
-                    智能体（Agent）
-                    <span class="nav-item-count">18</span>
-                </a>
-                
-                <a class="nav-item " 
                    onclick="showTab('SFT', event)">
                     指令微调（SFT）
                     <span class="nav-item-count">2</span>
@@ -1131,6 +1205,12 @@
                    onclick="showTab('RLHF', event)">
                     强化学习对齐（RLHF）
                     <span class="nav-item-count">1</span>
+                </a>
+                
+                <a class="nav-item " 
+                   onclick="showTab('Agent', event)">
+                    智能体（Agent）
+                    <span class="nav-item-count">18</span>
                 </a>
                 
                 <a class="nav-item " 
@@ -1152,12 +1232,1286 @@
         <div class="container">
             <div class="header">
                 <h1>大模型论文速读（29/571）</h1>
-                <p>生成时间: 2025-11-04</p>
+                <p>日报: 2025-10-29 | 生成时间: 2025-11-05</p>
             </div>
             
             <!-- Tab Contents -->
             
-            <div id="tab-Agent" class="tab-content active">
+            <div id="tab-SFT" class="tab-content active">
+                <div class="content-wrapper">
+                    <div class="papers-list" id="papers-list-SFT">
+                        <!-- 领域汇总分析 -->
+                        
+                        <div class="domain-summary-display">
+                <!-- <h3>📊 领域汇总分析</h3> -->
+                
+                        <!-- 完整汇总内容（单一文本） -->
+                        
+                <div class="summary-section">
+                    <div class="analysis-content"><h3>研究全貌</h3>
+<p>本批次SFT领域共收录2篇论文，研究方向主要集中在<strong>数据高效微调</strong>与<strong>训练数据质量优化</strong>两大方向。前者聚焦在数据稀缺场景下如何通过参数高效、跨领域迁移等手段提升微调效果，后者则深入探讨训练样本的内在属性，试图从数据构成角度解释并提升微调的可扩展性。当前热点问题是如何在有限数据或有限计算资源下实现更高效、更稳定的性能提升，避免“数据越多但收益递减”的瓶颈。整体研究趋势正从“粗放式增加数据量”转向“精细化设计数据与微调策略”，强调对数据语义结构和模型学习机制的深层理解。</p>
+<h3>重点方法深度解析</h3>
+<p>本批次中最具启发性的工作是《Accelerate Scaling of LLM Finetuning via Quantifying the Coverage and Depth of Instruction Set》<a href="https://arxiv.org/abs/2509.06463" target="_blank" rel="noopener noreferrer">URL</a>。该论文首次系统性提出：<strong>监督微调（SFT）的性能扩展瓶颈不在于数据量本身，而在于数据的“语义覆盖度”与“信息深度”</strong>。语义覆盖度指数据涵盖的任务领域广度，信息深度则衡量单个样本的指令复杂性与知识密度。作者发现，这两个维度可解释高达80%以上的验证损失方差，是决定SFT效率的核心因素。</p>
+<p>基于此，论文提出<strong>信息景观近似（Information Landscape Approximation, ILA）</strong>框架，一种模型无关的数据选择方法。ILA通过轻量级编码器对指令进行嵌入，使用聚类算法保障语义覆盖的多样性，同时基于信息熵和推理路径复杂度评分筛选高深度样本，最终构建出“小而精”的训练子集。实验表明，在仅使用30%数据的情况下，ILA选出的数据集在多个任务（如Alpaca、FLAN、CrossFit）上实现了比全量数据更优的性能提升，且训练收敛速度显著加快，实现了“加速扩展”（accelerated scaling）。</p>
+<p>相比之下，《Fine-tuning Large Language Models with Limited Data: A Survey and Practical Guide》<a href="https://arxiv.org/abs/2411.09539" target="_blank" rel="noopener noreferrer">URL</a>虽无单一突破性算法，但其系统性梳理极具实践价值。论文将参数高效微调（如LoRA、Adapter）、跨语言对齐（XLM-style）、偏好对齐（DPO with synthetic feedback）等方法置于统一框架下，提出“数据-模型-任务”三元匹配原则：小数据配高参数效率方法，跨语言任务优先使用共享表示微调，偏好对齐则需结合合成数据增强。其最大贡献在于提炼出一套可操作的决策流程图，帮助开发者在资源受限时快速选择合适策略。</p>
+<h3>实践启示</h3>
+<p>这两项研究对大模型应用开发具有重要指导意义。对于<strong>资源受限或数据获取成本高的场景</strong>（如垂直领域、小语种应用），应优先考虑ILA类数据优化方法，通过提升数据质量而非数量来加速训练；而对于<strong>快速迭代的微调任务</strong>，可借鉴综述中的方法论框架，结合LoRA+合成反馈实现低成本部署。建议在实际落地时：1）在SFT前对指令集进行覆盖度与深度分析，剔除冗余低质样本；2）采用ILA思想做数据蒸馏，构建高信息密度训练集；3）结合参数高效微调技术降低显存开销。关键注意事项包括：避免过度压缩数据导致覆盖缺失，以及在使用合成反馈时需引入多样性控制以防模型退化。</p>
+</div>
+                </div>
+                
+                
+            </div>
+            
+                        
+                        <div class="topic-content">
+                            
+                                
+                                <div class="paper-item-compact" id="paper-item-2411.09539">
+                                    <div class="paper-header" onclick="showPaperDetail('2411.09539', 'SFT')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Fine-tuning Large Language Models with Limited Data: A Survey and Practical Guide
+                                                <button class="mark-button" 
+                                                        data-paper-id="2411.09539"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2411.09539", "authors": ["Szep", "Rueckert", "von Eisenhart-Rothe", "Hinterwimmer"], "id": "2411.09539", "pdf_url": "https://arxiv.org/pdf/2411.09539", "rank": 8.428571428571429, "title": "Fine-tuning Large Language Models with Limited Data: A Survey and Practical Guide"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2411.09539" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AFine-tuning%20Large%20Language%20Models%20with%20Limited%20Data%3A%20A%20Survey%20and%20Practical%20Guide%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2411.09539&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AFine-tuning%20Large%20Language%20Models%20with%20Limited%20Data%3A%20A%20Survey%20and%20Practical%20Guide%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2411.09539%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Szep, Rueckert, von Eisenhart-Rothe, Hinterwimmer</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文是一篇关于在数据有限情况下微调大语言模型的综述性论文，系统梳理了预训练、微调、少样本学习等阶段的前沿方法，并提供了面向实践者的实用指南。论文结构清晰，覆盖全面，尤其在参数高效微调、跨语言对齐、领域自适应等方面进行了深入分析，对研究者和从业者均有较高参考价值。尽管创新性相对有限，但其方法论总结和实践指导具有较强的通用性和可迁移性。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">8.4</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2411.09539" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Fine-tuning Large Language Models with Limited Data: A Survey and Practical Guide</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 24 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>这篇论文试图解决在自然语言处理（NLP）中，特别是在数据稀缺场景下，如何有效地微调预训练的大型语言模型（LLMs）。具体来说，论文关注以下几个问题：</p>
+<ol>
+<li><p><strong>预训练策略的选择</strong>：如何选择适当的预训练方法，以便在低资源场景下有效利用先前的知识。</p>
+</li>
+<li><p><strong>数据稀缺时的微调</strong>：如何在有限数据的情况下最大化微调的效用，并避免过拟合和性能下降。</p>
+</li>
+<li><p><strong>少样本学习</strong>：如何在只有少量标注样本的情况下进行有效的学习。</p>
+</li>
+<li><p><strong>任务特定的方法</strong>：针对不同数据稀缺程度的任务，提供具体的模型和方法指导。</p>
+</li>
+</ol>
+<p>论文的目标是为研究者和实践者提供在数据受限情况下优化模型性能的实用指南，并指出未来研究的有前景的方向。</p>
+<h2>相关工作</h2>
+<p>论文中提到了多个与使用有限数据微调大型语言模型（LLMs）相关的研究工作。以下是一些关键的相关研究：</p>
+<ol>
+<li><p><strong>数据增强</strong>：</p>
+<ul>
+<li>Feng et al., 2021 提出了数据增强是处理数据稀缺问题的基本技术之一。</li>
+<li>Chen et al., 2023a; Stylianou et al., 2023 讨论了数据增强在特定领域的局限性。</li>
+</ul>
+</li>
+<li><p><strong>跨语言对齐</strong>：</p>
+<ul>
+<li>Conneau et al., 2019; Pires et al., 2019; Muennighoff et al., 2023b 探索了在不同语言间训练模型以增强跨语言能力的方法。</li>
+<li>Alabi et al., 2022 研究了多语言模型的适应性。</li>
+</ul>
+</li>
+<li><p><strong>领域适应</strong>：</p>
+<ul>
+<li>Gururangan et al., 2020 提出了领域适应以确保模型能有效处理特定领域的任务。</li>
+<li>Noguti et al., 2023; Zhao et al., 2021; Beltagy et al., 2019 为不同领域开发了领域适应的语言模型。</li>
+</ul>
+</li>
+<li><p><strong>参数高效训练</strong>：</p>
+<ul>
+<li>Hu et al., 2021; Lester et al., 2021; Liu et al., 2022; Juki´c and Snajder, 2023 研究了只更新模型中一小部分权重的方法，以避免全参数微调中的风险。</li>
+</ul>
+</li>
+<li><p><strong>嵌入学习</strong>：</p>
+<ul>
+<li>Artetxe et al., 2020; Hung et al., 2023 探讨了通过冻结Transformer主体来训练嵌入向量的方法。</li>
+</ul>
+</li>
+<li><p><strong>对比学习和对抗学习</strong>：</p>
+<ul>
+<li>Chen et al., 2020b; Chi et al., 2021a; Chen et al., 2023b 研究了通过对比学习提取有效表示的方法。</li>
+<li>Du et al., 2020; Grießhaber et al., 2020 探讨了对抗训练在跨域和跨语言迁移中的应用。</li>
+</ul>
+</li>
+<li><p><strong>有限监督学习</strong>：</p>
+<ul>
+<li>Chapelle et al., 2009; Schick and Schütze, 2021a; Wang et al., 2023b 研究了半监督学习在利用未标记数据提升模型泛化能力方面的应用。</li>
+</ul>
+</li>
+<li><p><strong>主动学习</strong>：</p>
+<ul>
+<li>Lewis and Gale, 1994; Gal and Ghahramani, 2016; Houlsby et al., 2011 研究了主动学习技术，这些技术专注于选择最有信息量的数据点以最大化有限训练数据的有效性。</li>
+</ul>
+</li>
+<li><p><strong>少样本学习</strong>：</p>
+<ul>
+<li>Radford et al., 2019; Brown et al., 2020 探讨了大型解码器模型在只有少量示例的情况下处理新任务的能力。</li>
+</ul>
+</li>
+</ol>
+<p>这些研究涵盖了从预训练策略、微调技术到特定领域的应用等多个方面，为在数据稀缺环境下优化LLMs的性能提供了理论和实践基础。</p>
+<h2>解决方案</h2>
+<p>论文通过以下几个步骤解决在数据稀缺情况下微调大型语言模型（LLMs）的问题：</p>
+<ol>
+<li><p><strong>系统综述</strong>：</p>
+<ul>
+<li>从多个数据库中收集超过2500篇相关论文，并进行系统性回顾，以了解当前的最佳实践方法。</li>
+</ul>
+</li>
+<li><p><strong>继续预训练策略</strong>：</p>
+<ul>
+<li>探讨了如何通过继续预训练（Continued Pre-training）来缩小预训练数据和目标领域之间的差距，包括跨语言对齐和领域适应。</li>
+</ul>
+</li>
+<li><p><strong>参数高效微调</strong>：</p>
+<ul>
+<li>介绍了参数高效微调（Parameter-efficient training, PEFT）方法，这些方法只更新模型中的一部分权重，以减少计算成本并避免灾难性遗忘。</li>
+</ul>
+</li>
+<li><p><strong>嵌入学习</strong>：</p>
+<ul>
+<li>讨论了如何通过学习输入标记的嵌入向量来捕捉特定语言、领域和任务的语义信息。</li>
+</ul>
+</li>
+<li><p><strong>对比学习和对抗学习</strong>：</p>
+<ul>
+<li>探索了从跨语言和跨领域的差异和相似性中提取信息的方法，以增强模型的对齐和适应性。</li>
+</ul>
+</li>
+<li><p><strong>有限监督学习</strong>：</p>
+<ul>
+<li>介绍了半监督学习、无监督学习和主动学习等方法，以充分利用未标记数据提升模型的泛化能力。</li>
+</ul>
+</li>
+<li><p><strong>少样本学习</strong>：</p>
+<ul>
+<li>讨论了在只有少量标注样本的情况下如何进行有效的学习，包括上下文学习（In-context learning）和模式利用训练（Pattern-exploiting training）。</li>
+</ul>
+</li>
+<li><p><strong>任务特定视角</strong>：</p>
+<ul>
+<li>根据数据稀缺的不同程度，为实践者提供了针对不同NLP任务的指导。</li>
+</ul>
+</li>
+<li><p><strong>实用指南</strong>：</p>
+<ul>
+<li>提供了针对研究者和实践者的实用指南，以优化数据稀缺场景下的模型性能，并强调了未来研究的有前景的方向。</li>
+</ul>
+</li>
+</ol>
+<p>通过这些步骤，论文旨在为在资源受限的语言和领域中应用预训练语言模型提供指导，并强调了未来研究中需要进一步探索的领域。</p>
+<h2>实验验证</h2>
+<p>根据提供的论文内容，文中并没有提到具体的实验部分。这篇论文是一个关于微调大型语言模型（LLMs）在数据有限情况下的实用指南，它主要关注的是对现有文献和方法的综述和分析，而不是提出新的实验或实验结果。论文的目的是为研究者和实践者提供在数据稀缺场景下优化模型性能的实用指导，并指出未来研究的方向。</p>
+<p>文中提到的“系统综述”涉及从多个数据库中收集超过2500篇论文，并进行分析，这可以被视作一种研究方法，但它不涉及传统意义上的实验操作，如数据收集、模型训练和评估等。相反，它更多地侧重于对现有研究成果的综合和解释。</p>
+<h2>未来工作</h2>
+<p>根据论文内容，以下是一些可以进一步探索的点：</p>
+<ol>
+<li><p><strong>防止灾难性遗忘的理论基础和实验验证</strong>：</p>
+<ul>
+<li>探索更多关于如何在模型适应过程中防止灾难性遗忘的理论基础，以及在不同数据稀缺程度下进行实验验证。</li>
+</ul>
+</li>
+<li><p><strong>跨领域和资源贫乏语言的基准测试</strong>：</p>
+<ul>
+<li>建立和评估更多针对专业领域和资源贫乏语言的方法，包括构建公共数据集和标准化评估框架。</li>
+</ul>
+</li>
+<li><p><strong>不同方法的组合</strong>：</p>
+<ul>
+<li>研究如何将不同的参数高效微调（PEFT）方法、正则化技术和补充训练选项结合起来，以利用它们的互补优势。</li>
+</ul>
+</li>
+<li><p><strong>少样本学习的新方法</strong>：</p>
+<ul>
+<li>开发和评估新的少样本学习方法，特别是在非常低资源的设置中。</li>
+</ul>
+</li>
+<li><p><strong>跨语言和跨领域迁移学习</strong>：</p>
+<ul>
+<li>探索更有效的跨语言和跨领域迁移学习技术，特别是针对那些在预训练语料库中代表性不足的语言。</li>
+</ul>
+</li>
+<li><p><strong>模型压缩和加速</strong>：</p>
+<ul>
+<li>研究如何压缩和加速大型语言模型，使其在资源受限的环境中更易于部署和使用。</li>
+</ul>
+</li>
+<li><p><strong>主动学习和数据增强的结合</strong>：</p>
+<ul>
+<li>研究如何将主动学习与数据增强技术结合起来，以更高效地利用有限的标注数据。</li>
+</ul>
+</li>
+<li><p><strong>模型的可解释性和鲁棒性</strong>：</p>
+<ul>
+<li>提高模型在面对数据稀缺时的可解释性和鲁棒性，特别是在关键的应用领域，如医疗和法律。</li>
+</ul>
+</li>
+<li><p><strong>多任务和元学习</strong>：</p>
+<ul>
+<li>探索多任务学习和元学习在数据稀缺情况下的应用，以及如何通过这些方法提高模型的泛化能力。</li>
+</ul>
+</li>
+<li><p><strong>实际应用案例研究</strong>：</p>
+<ul>
+<li>在具体的实际应用中测试和评估所提出的方法，如医疗诊断、法律分析等，以验证它们的有效性和实用性。</li>
+</ul>
+</li>
+</ol>
+<p>这些探索点可以帮助研究社区更好地理解和解决在数据稀缺情况下微调大型语言模型的挑战。</p>
+<h2>总结</h2>
+<p>这篇论文提供了一个关于在数据有限的情况下微调大型语言模型（LLMs）的实用指南。以下是其主要内容的总结：</p>
+<ol>
+<li><p><strong>背景介绍</strong>：</p>
+<ul>
+<li>预训练语言模型（PLMs）在自然语言处理（NLP）领域取得了显著成就，但它们的训练需要大量数据和计算资源，这在实际应用中尤其是对于非英语语言和专业领域（如医学、化学、法律等）可能是不切实际的。</li>
+</ul>
+</li>
+<li><p><strong>转移学习策略</strong>：</p>
+<ul>
+<li>论文探讨了如何利用转移学习来优化下游任务中的模型性能，尤其是在数据稀缺的情况下。这包括初始预训练策略和继续预训练策略，以更好地利用在未见领域和语言中的先验知识。</li>
+</ul>
+</li>
+<li><p><strong>数据稀缺下的微调</strong>：</p>
+<ul>
+<li>论文详细讨论了在有限数据下如何最大化微调的效用，包括参数高效训练、嵌入学习和对比学习等方法，以避免过拟合并提高模型的泛化能力。</li>
+</ul>
+</li>
+<li><p><strong>少样本学习</strong>：</p>
+<ul>
+<li>论文还审视了少样本学习的方法，包括上下文学习和模式利用训练，以及它们在低资源NLP任务中的应用。</li>
+</ul>
+</li>
+<li><p><strong>任务特定的方法</strong>：</p>
+<ul>
+<li>从任务特定的视角出发，论文回顾了适合不同数据稀缺程度的模型和方法，提供了针对特定NLP任务的实用指导。</li>
+</ul>
+</li>
+<li><p><strong>未来研究方向</strong>：</p>
+<ul>
+<li>论文强调了未来研究的有前景的方向，包括防止灾难性遗忘、跨领域和资源贫乏语言的基准测试，以及不同方法的组合。</li>
+</ul>
+</li>
+<li><p><strong>实用指南</strong>：</p>
+<ul>
+<li>论文旨在为NLP领域的研究者和实践者提供在数据受限情况下优化模型性能的实用指南，并强调了需要进一步探索的领域。</li>
+</ul>
+</li>
+</ol>
+<p>总的来说，这篇论文提供了一个全面的概述，旨在帮助研究者和实践者克服数据稀缺带来的挑战，并有效地微调大型语言模型以适应特定的下游任务。</p>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.4</span></span>
+                                            <span>置信度: 0.92</span>
+                                            <span>分类: SFT</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">SFT</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2411.09539" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2411.09539" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2509.06463">
+                                    <div class="paper-header" onclick="showPaperDetail('2509.06463', 'SFT')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Accelerate Scaling of LLM Finetuning via Quantifying the Coverage and Depth of Instruction Set
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.06463"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.06463", "authors": ["Wu", "Du", "Zhao", "Ju", "Wang", "Chen", "Zhou"], "id": "2509.06463", "pdf_url": "https://arxiv.org/pdf/2509.06463", "rank": 8.357142857142858, "title": "Accelerate Scaling of LLM Finetuning via Quantifying the Coverage and Depth of Instruction Set"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2509.06463" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AAccelerate%20Scaling%20of%20LLM%20Finetuning%20via%20Quantifying%20the%20Coverage%20and%20Depth%20of%20Instruction%20Set%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2509.06463&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AAccelerate%20Scaling%20of%20LLM%20Finetuning%20via%20Quantifying%20the%20Coverage%20and%20Depth%20of%20Instruction%20Set%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2509.06463%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Wu, Du, Zhao, Ju, Wang, Chen, Zhou</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文提出了一种通过量化指令集的覆盖度与信息深度来加速大模型微调性能扩展的新方法ILA，创新性地识别出影响对齐模型性能的两个关键因素，并设计了基于信息景观近似的数据选择算法。实验表明该方法在多个基准上显著优于现有方法，实现了更高效的性能扩展。方法设计合理，证据充分，具备较强的理论支撑和实践价值。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">8.4</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2509.06463" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Accelerate Scaling of LLM Finetuning via Quantifying the Coverage and Depth of Instruction Set</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 4 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>该论文旨在解决<strong>大规模指令集微调（SFT）阶段性能提升效率低下</strong>的问题。具体而言，核心问题包括：</p>
+<ol>
+<li><p><strong>指令集规模扩张的边际收益递减</strong><br />
+现有研究表明，简单地扩大指令集规模对模型对齐性能的提升效果有限，甚至可能导致性能饱和或下降。</p>
+</li>
+<li><p><strong>指令集分布对模型性能的影响机制不明确</strong><br />
+由于指令集在语义空间中的分布复杂，且与预训练模型的先验知识耦合，难以量化哪些因素真正驱动了微调后的模型性能。</p>
+</li>
+<li><p><strong>现有指令筛选方法无法持续扩展</strong><br />
+基于启发式规则（如复杂度、多样性）的指令筛选方法在指令池规模增大时，其效果逐渐退化，甚至不如随机采样。</p>
+</li>
+</ol>
+<p>为解决上述问题，论文提出以下关键思路：</p>
+<ul>
+<li><strong>理论分析</strong>：将指令集对模型性能的影响解构为两个核心因素——<strong>语义空间覆盖率（Coverage）</strong>与<strong>信息深度（Information Depth）</strong>，并证明二者可解释超过70%的验证集损失变化。</li>
+<li><strong>量化指标</strong>：设计代理指标（Proxy Indicators）分别量化单条指令的信息深度（基于相对损失与技能标签）与整个指令集的覆盖率（基于语义空间网格化统计）。</li>
+<li><strong>优化算法</strong>：提出<strong>信息景观近似（ILA）算法</strong>，通过最大化子集与原始指令池在覆盖率与信息深度上的相似性，实现<strong>“加速扩展”（Accelerated Scaling）</strong>，即在不增加指令数量的前提下更快提升模型性能。</li>
+</ul>
+<h2>相关工作</h2>
+<p>以下工作被论文直接或间接地引用，用于支撑“指令集分布→对齐性能”这一研究脉络。按主题归类并给出关键结论或差异点。</p>
+<h3>1. 指令微调 Scaling Law 与数据因素</h3>
+<ul>
+<li><strong>Zhang et al. 2024</strong>《When scaling meets LLM finetuning》<br />
+提出 Dataset Factor 常数项刻画数据影响，但未能分解分布细节；本文将其扩展为可量化的 Coverage+Depth。</li>
+<li><strong>Qin et al. 2023</strong>《Data Tsunami Survey》<br />
+综述了指令数量、任务多样性、回复复杂度与性能正相关，但未给出统一度量；本文用信息深度统一刻画“复杂度”。</li>
+<li><strong>Zhang, Dai &amp; Peng 2025</strong>《The Best Instruction-Tuning Data are Those That Fit》<br />
+强调“数据-模型匹配度”；本文进一步指出匹配度可拆解为语义空间覆盖与局部信息增益。</li>
+</ul>
+<h3>2. 指令集精炼 / 数据选择方法</h3>
+<table>
+<thead>
+<tr>
+  <th>方法</th>
+  <th>核心启发式</th>
+  <th>与 ILA 的关键差异</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Deita</strong> (Liu et al., ICLR 2024)</td>
+  <td>复杂度+多样性+一致性评分</td>
+  <td>无显式语义空间建模，随数据规模增大优势消失</td>
+</tr>
+<tr>
+  <td><strong>InsCL</strong> (Wang et al., NAACL 2024)</td>
+  <td>持续学习框架+梯度敏感采样</td>
+  <td>目标为灾难性遗忘，而非加速 scaling</td>
+</tr>
+<tr>
+  <td><strong>Self-Guided Selection</strong> (Li et al., NAACL 2024)</td>
+  <td>模型自评“易错+高不确定”样本</td>
+  <td>依赖特定模型信号，难以跨模型迁移</td>
+</tr>
+<tr>
+  <td><strong>Random Selection Baseline</strong> (Xia et al. 2024)</td>
+  <td>随机采样</td>
+  <td>被本文用作下限，证明 ILA 在 500 k 级仍显著优于随机</td>
+</tr>
+</tbody>
+</table>
+<h3>3. 信息论与样本影响力</h3>
+<ul>
+<li><strong>Zhao et al. 2024</strong>《SFT as Attention Pattern Optimization》<br />
+经验观察“少量高增益指令主导性能”，本文给出理论形式化：max δj 定义局部信息深度。</li>
+<li><strong>Zhou et al. 2023</strong>《LIMA: Less is more for alignment》<br />
+说明低质指令引入噪声；本文用相对信息深度 RID 量化“低质”，并直接剔除。</li>
+</ul>
+<h3>4. 语义空间建模与可视化</h3>
+<ul>
+<li><strong>Lu et al. 2023</strong>《#Instag》<br />
+提供技能标签体系，被本文借用来计算 #label 项。</li>
+<li><strong>Xiao et al. 2024</strong>《C-Pack + BGE》<br />
+文本嵌入模型，用于将指令投影到 Rd 语义空间。</li>
+<li><strong>Van der Maaten &amp; Hinton 2008</strong> t-SNE<br />
+降维后做网格化覆盖统计，本文沿用并验证 2D 近似已足够。</li>
+</ul>
+<h3>5. 垂直领域数据选择</h3>
+<ul>
+<li><strong>MetaMath</strong> (Yu et al.) 与 <strong>QwQ-LongCoT</strong> 系列<br />
+提供数学推理指令池，本文将其合并为 650 k 数学池，验证 ILA 在 reasoning-intensive 场景仍有效。</li>
+</ul>
+<h3>6. RLHF 与 SFT 目标一致性</h3>
+<ul>
+<li><strong>Hua et al. 2024</strong>《Intuitive Fine-Tuning》<br />
+指出 SFT 与 RLHF 均可视为“最大化奖励-加权似然”；因此 Coverage+Depth 指标亦可指导 RL 数据选择，本文在 Discussion 部分明确呼应。</li>
+</ul>
+<p>综上，已有研究分别触及“数据规模-性能”关系或“启发式筛选”，但尚未同时做到：</p>
+<ol>
+<li>理论分解指令分布因素；</li>
+<li>给出可解释 &gt;70 % 方差的量化指标；</li>
+<li>在百万级指令池上持续优于随机采样。</li>
+</ol>
+<p>本文的 ILA 在这三点上补全了空白。</p>
+<h2>解决方案</h2>
+<p>论文将“指令集规模扩张收益递减”问题形式化为<strong>语义空间信息景观逼近</strong>任务，通过<strong>理论解构→量化指标→优化算法→验证实验</strong>四步闭环解决。</p>
+<hr />
+<h3>1. 理论解构：把“好指令”拆成 Coverage + Depth</h3>
+<ul>
+<li><p><strong>语义空间视角</strong><br />
+每条指令 Ii 是 d 维语义空间 S 中的一个点 zi。<br />
+模型在 zi 附近存在泛化邻域 ΔSi，其性能增益由该邻域内<strong>最大单点信息增益</strong>决定：</p>
+<p>IDΔSi=maxj∈ΔSiδj,where δj=CEbase(yj|xj)−CESFT(yj|xj).</p>
+</li>
+<li><p><strong>整体损失可积化</strong><br />
+总附加信息≈∫SIDSdS，即“覆盖率”与“信息深度”的联合泛函。<br />
+⇒ 只要同时提高 Coverage（空间占满）与 Depth（每格挖到最“硬”样本），就能降低验证损失。</p>
+</li>
+</ul>
+<hr />
+<h3>2. 量化指标：把 Coverage &amp; Depth 变成可算数字</h3>
+<table>
+<thead>
+<tr>
+  <th>指标</th>
+  <th>公式</th>
+  <th>关键设计</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>信息深度</strong></td>
+  <td>RIDj=1−q(Ij)</td>
+  <td>先按响应长度归一化 δj，再在同域内做分位，消除领域间 CE 绝对值差异</td>
+</tr>
+<tr>
+  <td><strong>覆盖率</strong></td>
+  <td>SR=‖{grid g∣∃Ii∈g}‖</td>
+  <td>用 BGE 编码 + t-SNE 2D 网格化，统计非空格子数</td>
+</tr>
+</tbody>
+</table>
+<p>线性回归验证：<br />
+logLdev=β0+β1logRID+β2logSR<br />
+R2&gt;0.70，p&lt;0.001，证明两指标即可解释七成以上性能方差。</p>
+<hr />
+<h3>3. 优化算法：Information Landscape Approximation (ILA)</h3>
+<p>输入：原始池 Iori（Nori 条），目标子集大小 Nsub<br />
+步骤：</p>
+<ol>
+<li>语义嵌入 → 2D 网格，得 Nori/Nsub·S 个“宏格”</li>
+<li>每个宏格内保留 RID 最大的一条</li>
+<li>输出 Isub，保证：<ul>
+<li>宏格并集 ≈ 原池覆盖（Coverage 优先）</li>
+<li>每格取局部最难样本（Depth 最大）</li>
+<li>天然去冗余，信息密度最高</li>
+</ul>
+</li>
+</ol>
+<p>时间复杂度 O(Nori log Nori)，可在线性扫描 + 堆栈实现。</p>
+<hr />
+<h3>4. 验证实验：持续“加速扩展”</h3>
+<ul>
+<li><p><strong>通用域</strong>（2 M 池 → 500 k 子集）<br />
+AlpacaEval 2.0 &amp; ArenaHard 上，ILA 在同等指令/同等 token 下均优于 Random 与 Deita；随子集增大，性能差距单调扩大，呈现“SuperScaling”。</p>
+</li>
+<li><p><strong>数学推理域</strong>（650 k 池 → 100 k 子集）<br />
+MATH 基准准确率提升 3.2–4.7 %，且随机采样在 100 k 出现性能平台，ILA 仍继续上升。</p>
+</li>
+<li><p><strong>跨模型尺度</strong>（1.5 B / 3 B / 7 B）<br />
+同一套 ILA 子集在三种参数规模上均保持单调增益，验证指标与算法对模型容量无偏。</p>
+</li>
+</ul>
+<hr />
+<h3>结果总结</h3>
+<ol>
+<li>理论层面：Coverage 与 Depth 被证明是驱动 SFT 性能的主导因子。</li>
+<li>方法层面：ILA 用“网格-保覆盖+局部-保深度”策略，在 10 k–500 k 任意预算下均比随机/启发式方法更快逼近全池性能。</li>
+<li>实践层面：无需人工规则、无需多轮训练，一次性筛选即可实现“加速扩展”，可直接迁移至 RLHF 数据选择。</li>
+</ol>
+<h2>实验验证</h2>
+<ul>
+<li><strong>主实验</strong>：在 200 万通用指令池（InfinityAtlas）上，用 ILA 抽取 10 k / 20 k / 100 k / 200 k / 500 k 子集，与 Random、Deita 对比，在 AlpacaEval-2.0 与 Arena-Hard 上评估 Qwen2-7B 与 LLaMA-3-8B 的对齐性能。</li>
+<li><strong>数学垂直实验</strong>：聚合 65 万数学指令，抽取 20 k / 50 k / 100 k 子集，微调 Qwen-Math-7B，在 MATH 测试集上比较 ILA 与 Random。</li>
+<li><strong>跨模型尺度实验</strong>：用 ILA 分别给 Qwen2-1.5B / 2.5-3B / 7B 抽取 10 k / 20 k / 50 k 数据，AlpacaEval-2.0 得分随规模单调提升，验证方法对模型容量无关。</li>
+<li><strong>消融与回归实验</strong>：<br />
+– 构造 36 组不同 Coverage-Depth 子集，线性回归显示 logRID+logSR 可解释 &gt;70 % 验证损失方差。<br />
+– 对比直接用绝对 CE 损失作深度指标，R² 显著下降，证明 RID 归一化必要性。</li>
+</ul>
+<h2>未来工作</h2>
+<p>以下方向可在此基础上继续深入，分为<strong>理论深化</strong>、<strong>指标与算法扩展</strong>、<strong>场景迁移</strong>、<strong>工具与系统</strong>四大类。</p>
+<hr />
+<h3>1. 理论深化</h3>
+<ul>
+<li><p><strong>高维语义空间严格性</strong><br />
+当前用 2D t-SNE 网格化估算 Coverage；可探索</p>
+<ul>
+<li>保留原始嵌入维度的 Voronoi 体积 / 高斯混合测度；</li>
+<li>给出 Coverage 的 PAC-Bound，与泛化误差挂钩。</li>
+</ul>
+</li>
+<li><p><strong>信息深度与能力涌现的临界阈值</strong><br />
+对特定任务（代码、数学）建立 ID-Performance 的相变曲线，验证是否存在“深度阈值”触发能力跃迁。</p>
+</li>
+<li><p><strong>指令间依赖建模</strong><br />
+现有假设指令独立贡献；可引入图结构或集合核函数，刻画组合冗余与技能依赖，修正 ∫IDSdS 形式。</p>
+</li>
+</ul>
+<hr />
+<h3>2. 指标与算法扩展</h3>
+<ul>
+<li><p><strong>自适应网格分辨率</strong><br />
+根据局部分布密度动态调整网格大小，避免高密度区过度采样或低密度区欠采样。</p>
+</li>
+<li><p><strong>多目标优化形式化</strong><br />
+将“Coverage 最大化 + Depth 最大化”写成双目标背包或子模函数，求 Pareto 前沿，提供不同预算下的最优权衡。</p>
+</li>
+<li><p><strong>在线 / 增量 ILA</strong><br />
+数据流持续到达时，维护一个“核心集”(core-set) 使信息景观随时间稳定更新，支持终身学习场景。</p>
+</li>
+<li><p><strong>与主动学习结合</strong><br />
+用 RID 作为不确定性信号，主动生成或标注高信息深度区域的新指令，实现“数据扩展”与“选择”闭环。</p>
+</li>
+</ul>
+<hr />
+<h3>3. 场景迁移</h3>
+<ul>
+<li><p><strong>RLHF 数据选择</strong><br />
+验证 Coverage-Depth 指标是否直接适用于偏好对（pairwise）筛选，降低标注成本。</p>
+</li>
+<li><p><strong>多模态指令微调</strong><br />
+将文本指令扩展为图文交错或音频文本对，定义跨模态语义空间与信息深度，测试 ILA 在多模态对齐中的有效性。</p>
+</li>
+<li><p><strong>小语种 / 低资源语言</strong><br />
+探索在语义空间稀疏、标签缺失情况下如何可靠估计 RID 与 Coverage，避免维度灾难导致的指标失效。</p>
+</li>
+<li><p><strong>领域增量微调（Domain Continual SFT）</strong><br />
+用 ILA 为先验池，随后每来一个新领域，只补充“Coverage 缺口 + Depth 峰值”数据，抑制灾难性遗忘。</p>
+</li>
+</ul>
+<hr />
+<h3>4. 工具与系统</h3>
+<ul>
+<li><p><strong>自动技能标签生成</strong><br />
+当前依赖外部标签体系计算 #label；可训练轻量级分类器或利用 LLM 自监督生成技能标签，实现完全自动的 RID 估算。</p>
+</li>
+<li><p><strong>高效嵌入与网格引擎</strong><br />
+开发 GPU-加速的在线嵌入 + 动态网格划分库，支持千万级指令实时 ILA 筛选。</p>
+</li>
+<li><p><strong>公开基准与排行榜</strong><br />
+建立固定 2 M 级指令池 + 统一评测协议，推动不同数据选择算法在相同条件下的可比性研究。</p>
+</li>
+</ul>
+<hr />
+<h3>总结</h3>
+<ol>
+<li>理论侧：高维测度、相变阈值、指令依赖。</li>
+<li>方法侧：自适应网格、多目标优化、在线增量。</li>
+<li>应用侧：RLHF、多模态、小语种、持续领域扩展。</li>
+<li>系统侧：自动标签、高效引擎、标准化基准。</li>
+</ol>
+<h2>总结</h2>
+<h3>论文核心贡献（一句话）</h3>
+<p>提出“覆盖率(Coverage)+信息深度(Information Depth)”双因子理论，设计 Information Landscape Approximation (ILA) 算法，用更少指令实现持续上升的微调性能，实现“加速扩展”。</p>
+<hr />
+<h3>1. 问题</h3>
+<ul>
+<li>指令集规模简单堆量收益迅速饱和，现有启发式筛选随数据池增大而失效。</li>
+<li>缺乏对“指令分布如何决定对齐性能”的可量化解释。</li>
+</ul>
+<hr />
+<h3>2. 理论</h3>
+<ul>
+<li>将 SFT 视为在语义空间 S 内向预训练模型提供“额外信息”：<ul>
+<li>Coverage：指令占据的语义区域大小。</li>
+<li>Information Depth：每个区域内最大单点损失下降 δmax。</li>
+</ul>
+</li>
+<li>总收益 ⇔ ∫S IDS dS；线性回归表明 logRID+logSR 可解释 &gt;70% 验证损失方差。</li>
+</ul>
+<hr />
+<h3>3. 方法</h3>
+<ul>
+<li><strong>代理指标</strong><ul>
+<li>深度：RIDj = 1 − q(δj/Tj × #skills) 按域内分位去偏。</li>
+<li>覆盖：SR = 非空网格数（BGE 嵌入 + t-SNE 2D 网格化）。</li>
+</ul>
+</li>
+<li><strong>ILA 算法</strong><ol>
+<li>把原始池 Nori 条映射为 2D 网格。</li>
+<li>按 Nsub 个宏格等分，每格取 RID 最高 1 条。</li>
+<li>保证子集与全池覆盖一致且局部深度最大，天然去冗余。</li>
+</ol>
+</li>
+</ul>
+<hr />
+<h3>4. 实验</h3>
+<table>
+<thead>
+<tr>
+  <th>场景</th>
+  <th>数据规模</th>
+  <th>模型</th>
+  <th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>通用指令</td>
+  <td>2 M → 10 k-500 k</td>
+  <td>Qwen2-7B / LLaMA-3-8B</td>
+  <td>AlpacaEval-2 &amp; ArenaHard 上同等指令/token 均优于 Random 与 Deita，规模越大差距越大。</td>
+</tr>
+<tr>
+  <td>数学推理</td>
+  <td>650 k → 20 k-100 k</td>
+  <td>Qwen-Math-7B</td>
+  <td>MATH 基准准确率持续提升，Random 在 100 k 出现平台。</td>
+</tr>
+<tr>
+  <td>跨尺度</td>
+  <td>10 k-50 k</td>
+  <td>Qwen2-1.5 B / 3 B / 7 B</td>
+  <td>同一 ILA 子集随模型增大仍单调增益，验证方法模型无关。</td>
+</tr>
+<tr>
+  <td>回归分析</td>
+  <td>36 组子集</td>
+  <td>—</td>
+  <td>logRID+logSR 与 dev-loss R²&gt;0.70；绝对 CE 损失显著劣于 RID。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>5. 结论</h3>
+<p>Coverage 与 Information Depth 是指令集影响对齐性能的主导因子；ILA 利用该理论在 10 k-500 k 任意预算下持续优于随机与 SOTA 启发式方法，实现“加速扩展”并可直接迁移至 RLHF 或多模态场景。</p>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.4</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: SFT</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">SFT</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2509.06463" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2509.06463" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tab-RLHF" class="tab-content ">
+                <div class="content-wrapper">
+                    <div class="papers-list" id="papers-list-RLHF">
+                        <!-- 领域汇总分析 -->
+                        
+                        <div class="domain-summary-display">
+                <!-- <h3>📊 领域汇总分析</h3> -->
+                
+                        <!-- 完整汇总内容（单一文本） -->
+                        
+                <div class="summary-section">
+                    <div class="analysis-content"><h3>研究全貌</h3>
+<p>本批次RLHF领域共收录1篇论文，研究方向聚焦于<strong>偏好学习范式的扩展与深化</strong>，核心目标是突破传统成对偏好优化的局限，探索更丰富、更高效的人类反馈利用方式。当前热点问题是如何从简单的“二选一”偏好数据中解放出来，充分利用多选项比较、排序结构等高信息密度反馈形式，以提升模型对齐效率与质量。该研究代表了RLHF领域的一个重要趋势：从<strong>简化的人类偏好建模</strong>向<strong>更贴近真实决策过程的复杂选择行为建模</strong>演进，强调理论框架的统一性与反馈形式的可扩展性，推动对齐技术向更精细、更高效的方向发展。</p>
+<h3>重点方法深度解析</h3>
+<p>本批次最具启发性的工作是：</p>
+<p><strong>《Beyond Pairwise: Empowering LLM Alignment With Ranked Choice Modeling》</strong> <a href="https://arxiv.org/abs/2510.23631" target="_blank" rel="noopener noreferrer">URL</a></p>
+<p>该论文提出了<strong>Ranked Choice Preference Optimization（RCPO）</strong>，旨在解决传统RLHF中仅依赖成对比较导致信息利用率低的问题。现有方法如DPO虽高效，但无法有效利用多于两个候选响应的排序数据（如Top-k排名或多选排序），而人类标注者实际可提供更丰富的偏好结构。RCPO的核心创新在于构建了一个<strong>统一的基于选择建模的最大似然框架</strong>，将LLM对齐与经典经济学中的“选择模型”（Choice Modeling）相结合，支持从成对到多选、从二元选择到完整排序的多种反馈形式。</p>
+<p>技术上，RCPO通过最大似然估计直接优化排序数据的生成概率，支持两类主流选择模型：<strong>效用基础模型</strong>（如Multinomial Logit, MNL）和<strong>距离基础模型</strong>（如Mallows-RMJ）。MNL假设每个响应有潜在效用，选择概率由效用指数加权决定；Mallows模型则衡量排序与“理想排序”之间的距离。RCPO将这些模型嵌入训练目标，使模型能从单次标注中学习到多个响应间的相对顺序关系，显著提升数据效率。例如，在三选一排序中，模型可同时学习到A&gt;B、A&gt;C、B&gt;C等多重比较信号。</p>
+<p>实验在Llama-3-8B-Instruct和Gemma-2-9B-it上进行，使用AlpacaEval 2.0和Arena-Hard等权威基准。结果表明，RCPO在相同数据量下显著优于DPO、SimPO等成对方法，尤其在复杂任务和高竞争性场景中表现更优，验证了利用排序反馈的有效性。该方法特别适用于<strong>高质量人工标注场景</strong>，如专家评审、用户调研、A/B测试扩展为多选项排序等，能够最大化利用高成本获取的反馈数据。</p>
+<h3>实践启示</h3>
+<p>RCPO为大模型对齐提供了更具扩展性的新范式，建议在<strong>标注成本高、反馈质量可控</strong>的应用场景中优先尝试，如金融、医疗、法律等专业领域模型微调。实际落地时，可先从Top-3排序标注入手，逐步替代传统成对标注，提升数据效率。建议结合轻量级标注界面，引导标注者提供排序而非简单二选一。实现时需注意：一是选择模型的选择需与标注行为匹配（如MNL适合独立性较强的选项），二是训练稳定性可能受排序长度影响，建议使用梯度裁剪和学习率预热。总体而言，该研究提示我们：未来对齐不应局限于“更好 vs 更差”，而应系统性挖掘人类决策中的<strong>结构化偏好信息</strong>，RCPO为此提供了坚实的理论与实践起点。</p>
+</div>
+                </div>
+                
+                
+            </div>
+            
+                        
+                        <div class="topic-content">
+                            
+                                
+                                <div class="paper-item-compact" id="paper-item-2510.23631">
+                                    <div class="paper-header" onclick="showPaperDetail('2510.23631', 'RLHF')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Beyond Pairwise: Empowering LLM Alignment With Ranked Choice Modeling
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.23631"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.23631", "authors": ["Tang", "Feng"], "id": "2510.23631", "pdf_url": "https://arxiv.org/pdf/2510.23631", "rank": 8.357142857142858, "title": "Beyond Pairwise: Empowering LLM Alignment With Ranked Choice Modeling"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2510.23631" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ABeyond%20Pairwise%3A%20Empowering%20LLM%20Alignment%20With%20Ranked%20Choice%20Modeling%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2510.23631&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ABeyond%20Pairwise%3A%20Empowering%20LLM%20Alignment%20With%20Ranked%20Choice%20Modeling%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2510.23631%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Tang, Feng</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文提出了一种名为Ranked Choice Preference Optimization（RCPO）的统一框架，将排序选择建模引入大语言模型对齐，突破了传统成对偏好优化的局限。通过最大似然估计整合多选和Top-k排序反馈，方法兼具理论严谨性与实践有效性，在Llama和Gemma等主流模型上显著优于现有基线。论文创新性强，实验充分，具备良好的可扩展性和跨任务迁移潜力，叙述整体清晰，是LLM对齐领域的重要进展。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">8.4</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2510.23631" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Beyond Pairwise: Empowering LLM Alignment With Ranked Choice Modeling</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 1 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>该论文针对大语言模型（LLM）对齐阶段普遍依赖“成对偏好”这一局限，提出并系统研究了如何利用更丰富的人类反馈形式——即多候选排序（ranked choice）——来改进对齐效果。具体而言，论文试图解决以下核心问题：</p>
+<ol>
+<li><p>信息损失<br />
+现有方法（RLHF、DPO 及其变种）通常将人工标注的 top-k 或部分排序退化为“仅保留最优-最劣”成对偏好，导致中间排序信息被丢弃。</p>
+</li>
+<li><p>反馈粒度受限<br />
+成对比较只能表达两项之间的相对优劣，无法直接利用标注者给出的“单最佳”或“前 k 名”这种更自然、更细粒度的偏好结构。</p>
+</li>
+<li><p>缺乏统一框架<br />
+不同反馈格式（pairwise、single-best、top-k）在训练目标上彼此割裂，缺少一个能把它们纳入同一训练流程的通用理论框架。</p>
+</li>
+</ol>
+<p>为此，作者提出 <strong>Ranked Choice Preference Optimization（RCPO）</strong>，将 LLM 对齐形式化为“排序选择模型”的最大似然估计问题，使得：</p>
+<ul>
+<li>任意满足正则条件的离散选择或排序选择模型（如 Multinomial Logit、Mallows-RMJ）均可即插即用；</li>
+<li>同一训练目标可直接处理 pairwise、single-best、top-k 等多种反馈，无需额外降采样；</li>
+<li>在 AlpacaEval 2 与 Arena-Hard 基准上，RCPO 相对强基线（DPO、SimPO、IPO 等）取得一致且显著的性能提升，验证了利用 richer ranked feedback 的有效性。</li>
+</ul>
+<h2>相关工作</h2>
+<p>以下研究被论文直接或间接关联，可划分为四大类：<br />
+（按首字母顺序，括号内给出原文引用编号）</p>
+<h3>1. 成对偏好优化与 RLHF</h3>
+<ul>
+<li><strong>RLHF 三阶段范式</strong>：Ziegler et al. (2019) → Stiennon et al. (2020) → Ouyang et al. (2022)</li>
+<li><strong>Direct Preference Optimization</strong>：Rafailov et al. (2023)（DPO）</li>
+<li><strong>DPO 扩展/改进</strong><ul>
+<li>Azar et al. (2024)（IPO）</li>
+<li>Park et al. (2024)（R-DPO，长度解耦）</li>
+<li>Meng et al. (2024)（SimPO，无参考模型 &amp; 长度归一化）</li>
+<li>Gupta et al. (2025)（AlphaPO，f-散度奖励塑形）</li>
+<li>Hong et al. (2024)（ORPO，单模型同时做 SFT+偏好）</li>
+<li>Xu et al. (2024)（CPO，对比式偏好）</li>
+<li>Ethayarajh et al. (2024)（KTO，仅二值反馈）</li>
+<li>Zhao et al. (2023)（SLiC-HF，带 margin 的排序损失）</li>
+<li>Yuan et al. (2023)（RRHF，列表排序蒸馏）</li>
+<li>Song et al. (2024)；Liu et al. (2024)（列表式/排序学习视角）</li>
+</ul>
+</li>
+</ul>
+<h3>2. 离散选择与排序选择建模（经济学/运筹学）</h3>
+<ul>
+<li><strong>Multinomial Logit</strong>：McFadden (1972)</li>
+<li><strong>Nested/Probit/Exponomial</strong>：McFadden (1980)；Daganzo (2014)；Alptekinoğlu &amp; Semple (2016)</li>
+<li><strong>一般吸引模型与马尔可夫链选择</strong>：Gallego et al. (2015)；Blanchet et al. (2016)</li>
+<li><strong>非参数/基于排序的模型</strong>：Farias et al. (2013)；Jagabathula &amp; Venkataraman (2022)</li>
+<li><strong>Mallows 族分布</strong>：Mallows (1957)；Fligner &amp; Verducci (1986)；Feng &amp; Tang (2022, 2023)（RMJ 距离闭式解）</li>
+<li><strong>综述与实证比较</strong>：Train (2009)；Gallego et al. (2019)；Berbeglia et al. (2022)</li>
+</ul>
+<h3>3. 社会选择理论 &amp; AI 对齐</h3>
+<ul>
+<li><strong>概念/公理化研究</strong>：Prasad (2018)；Mishra (2023)；Dai &amp; Fleisig (2024)；Conitzer et al. (2024)；Ge et al. (2024)</li>
+<li><strong>集体宪法 AI</strong>：Huang et al. (2024)（公众投票聚合）</li>
+</ul>
+<h3>4. 数据集与评估基准</h3>
+<ul>
+<li><strong>UltraFeedback</strong>：Cui et al. (2023)（训练用 64k 多响应排序数据）</li>
+<li><strong>AlpacaEval 2</strong>：Dubois et al. (2024)（805 题，GPT-4-Turbo 基准）</li>
+<li><strong>Arena-Hard-v0.1</strong>：Li et al. (2024)（500 题，高区分度技术提示）</li>
+</ul>
+<p>以上工作为 RCPO 提供了：</p>
+<ol>
+<li>成对偏好优化的基线方法与理论出发点；</li>
+<li>离散/排序选择模型的现成概率族与可处理性保证；</li>
+<li>社会选择视角的聚合合理性讨论；</li>
+<li>训练数据与自动评估基准。</li>
+</ol>
+<h2>解决方案</h2>
+<p>论文将“如何利用 richer-than-pairwise 的人类反馈”形式化为一个<strong>可扩展的最大似然估计问题</strong>，并给出从理论到算法的完整路线。核心步骤如下：</p>
+<hr />
+<h3>1. 把 LLM 对齐“翻译”成排序选择建模</h3>
+<ul>
+<li>把 prompt x 看作上下文，把候选响应 y 看作可选商品，把候选集合 S 看作商品陈列架。</li>
+<li>任何满足下列两条件的排序选择模型都能即插即用：<ul>
+<li><strong>A1 奖励充分性</strong>：选择概率仅依赖于各候选的实值奖励 r(x,y)。</li>
+<li><strong>A2 MLE 可估计</strong>：对数似然关于 r(x,y) 有闭式或易求梯度。</li>
+</ul>
+</li>
+<li>由此统一了 pairwise、single-best、top-k 等多种反馈格式，无需再降采样成对。</li>
+</ul>
+<hr />
+<h3>2. 导出“奖励⇄策略”的闭式关系</h3>
+<p>沿用 DPO 的推导：<br />
+$$
+r_{\pi_\theta}(x,y)=\beta\log\frac{\pi_\theta(y|x)}{\pi_{\text{ref}}(y|x)} + \beta\log Z(x)
+$$<br />
+该式把策略 πθ 直接变成奖励，省去单独训练奖励模型与 RL 阶段。</p>
+<hr />
+<h3>3. 给出两类实例模型及对应训练目标</h3>
+<h4>(1) 效用类：Multinomial Logit</h4>
+<ul>
+<li><strong>Single-best</strong><br />
+$$
+\mathcal{L}<em>{\text{MNL-D}}=-\mathbb{E}</em>{(x,S,y_w)}\log\sigma!\left(-\log\sum_{y_i\in S\backslash{y_w}}\exp!\Bigl(\beta\log\frac{\pi_\theta(y_i|x)}{\pi_{\text{ref}}(y_i|x)}-\beta\log\frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)}\Bigr)\right)
+$$</li>
+<li><strong>Top-k</strong><br />
+把上式按序分解为 k 个嵌套 softmax，逐项求和。</li>
+</ul>
+<h4>(2) 排序类：Mallows-RMJ（Reverse-Major-Index 距离）</h4>
+<ul>
+<li>仅依赖相对排名，不依赖奖励绝对差值，对噪声更鲁棒。</li>
+<li><strong>Single-best / Top-k</strong> 目标分别对应式 (10) 与式 (12)，用指示函数统计“排名优于”次数，再以 sigmoid 平滑。</li>
+</ul>
+<hr />
+<h3>4. 实用化技巧</h3>
+<ul>
+<li><strong>分散度 ϕ(x) 估计</strong><br />
+用模型在 x 上的输出熵作为 −logϕ(x) 的代理，无需额外标注。</li>
+<li><strong>梯度友好化</strong><br />
+将不可导的指示函数 I{⋅&lt;0} 换成 σ(−βx)，既保留排序结构又给出连续梯度。</li>
+<li><strong>统一实现</strong><br />
+所有目标均可在现有 transformer 框架内写为“加权 log-sigmoid”形式，支持任意 |S| 与 k。</li>
+</ul>
+<hr />
+<h3>5. 实验验证</h3>
+<ul>
+<li>在 Llama-3-8B-Instruct 与 Gemma-2-9B-it 上，用 UltraFeedback 构造的 top-1/2 数据训练。</li>
+<li>在 AlpacaEval 2 与 Arena-Hard 上，RCPO 所有变体一致优于 DPO、SimPO、IPO 等强基线；最佳模型 Mallows-RMJ-PO-Top-2 在 AlpacaEval WR 上领先最强基线 19.5 个百分点。</li>
+</ul>
+<hr />
+<p>通过以上五步法，论文把“如何直接利用 richer ranked feedback”转化为“选好排序模型→写出 MLE→平滑梯度→训练”，从而系统性地解决了成对方法的信息损失与反馈粒度受限问题。</p>
+<h2>实验验证</h2>
+<p>实验部分围绕“ richer-than-pairwise 反馈是否真能提高对齐效果”展开，采用标准基线模型 + 公开偏好数据 + 主流自动评测框架，共包含以下关键内容：</p>
+<hr />
+<h3>1 实验设计概览</h3>
+<table>
+<thead>
+<tr>
+  <th>维度</th>
+  <th>设置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>基座模型</strong></td>
+  <td>Llama-3-8B-Instruct、Gemma-2-9B-it（旗舰指令模型，验证跨模型泛化）</td>
+</tr>
+<tr>
+  <td><strong>训练数据</strong></td>
+  <td>UltraFeedback 64 k prompt，每 prompt 采样 5 个回答，用 Skywork-Reward-V2-Llama-3.1-8B 打分并生成完整排序；按需截断为 top-1（single-best）或 top-2 格式</td>
+</tr>
+<tr>
+  <td><strong>评测基准</strong></td>
+  <td>AlpacaEval 2（805 题，vs GPT-4-Turbo）与 Arena-Hard-v0.1（500 技术题，vs GPT-4-0314）；主裁判 GPT-4.1-mini，补充 GPT-5-mini 做交叉裁判鲁棒性检验</td>
+</tr>
+<tr>
+  <td><strong>指标</strong></td>
+  <td>AlpacaEval：长度控制胜率 LC、原始胜率 WR；Arena-Hard：WR（95% CI）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>2 训练方法（8 种对齐算法）</h3>
+<table>
+<thead>
+<tr>
+  <th>类别</th>
+  <th>具体方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>已有 pairwise 基线</strong></td>
+  <td>DPO、R-DPO、SimPO</td>
+</tr>
+<tr>
+  <td><strong>RCPO 新变体（本文）</strong></td>
+  <td>MNL-PO-Discrete / Top-2、Mallows-RMJ-PO-Pairwise / Discrete / Top-2</td>
+</tr>
+</tbody>
+</table>
+<p>所有方法统一用 β = 2.0，学习率 5 × 10⁻⁷，batch 512，训练 1 epoch，其余超参与开源仓库保持一致。</p>
+<hr />
+<h3>3 主要结果</h3>
+<h4>3.1 Llama-3-8B-Instruct</h4>
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th>AlpacaEval LC ↑</th>
+  <th>AlpacaEval WR ↑</th>
+  <th>Arena-Hard WR ↑</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>最佳非 RCPO 基线（IPO）</td>
+  <td>37.95</td>
+  <td>33.51</td>
+  <td>31.0</td>
+</tr>
+<tr>
+  <td><strong>Mallows-RMJ-PO-Top-2</strong></td>
+  <td><strong>41.95</strong></td>
+  <td><strong>53.01</strong></td>
+  <td><strong>37.2</strong></td>
+</tr>
+<tr>
+  <td>相对增益</td>
+  <td>+4.00</td>
+  <td>+19.5</td>
+  <td>+6.2</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>所有 8 种“选择模型式”目标均优于传统 pairwise 方法。</li>
+<li>同一奖励函数下，top-2 训练普遍高于 top-1，验证了 richer feedback 的价值。</li>
+<li>Mallows-RMJ 类在 pairwise 设置就已领先多数基线，加入 top-2 后优势进一步扩大。</li>
+</ul>
+<h4>3.2 Gemma-2-9B-it（鲁棒性检验）</h4>
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th>AlpacaEval LC</th>
+  <th>AlpacaEval WR</th>
+  <th>Arena-Hard WR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>SimPO</td>
+  <td>54.11</td>
+  <td>47.23</td>
+  <td>57.4</td>
+</tr>
+<tr>
+  <td>DPO</td>
+  <td>58.01</td>
+  <td>56.13</td>
+  <td>59.9</td>
+</tr>
+<tr>
+  <td><strong>Mallows-RMJ-PO-Top-2</strong></td>
+  <td>55.64</td>
+  <td><strong>59.82</strong></td>
+  <td><strong>60.9</strong></td>
+</tr>
+</tbody>
+</table>
+<p>趋势与 Llama-3 一致，说明 RCPO 对基座模型不敏感。</p>
+<h4>3.3 交叉裁判稳健性</h4>
+<p>换用 GPT-5-mini 做 Arena-Hard 裁判，RCPO 各变体仍保持显著领先，排除了“裁判偏差”导致胜率虚高的可能。</p>
+<hr />
+<h3>4 消融与深入分析</h3>
+<ul>
+<li><strong>反馈长度影响</strong>：top-1 → top-2 带来一致提升；作者未继续 top-3/全排序，因实验显示噪声-信息权衡趋于饱和。</li>
+<li><strong>选择模型影响</strong>：固定奖励函数形式 (2) 时，Mallows-RMJ 在 pairwise 阶段就优于 MNL，且对 top-k 更友好，符合其“仅依赖序关系、对噪声鲁棒”的理论特性。</li>
+<li><strong>梯度行为</strong>：论文附录 E 给出解析梯度，显示 Mallows-RMJ-Top-k 会<br />
+① 对排序靠前位置放大权重，<br />
+② 对“奖励差距小”的比较给予更大更新，<br />
+③ 对低分散度（高置信）prompt 放大整体步长，从而精细地拉开候选间距。</li>
+</ul>
+<hr />
+<h3>5 定性样例</h3>
+<p>附录 G 提供 4 组并排案例（SAT 词义、Excel 函数、开放问答、方程求解），显示 RCPO 模型在正确性、细节丰富度与错误选项排除上均优于 DPO，与自动指标结果互为印证。</p>
+<hr />
+<p>综上，实验从<strong>跨模型一致性、跨裁判鲁棒性、反馈粒度消融、梯度行为解析到人工样例</strong>五个层面，系统验证了“采用排序选择模型直接利用 top-k 偏好”这一思路在真实场景下的有效性与通用性。</p>
+<h2>未来工作</h2>
+<p>以下方向可视为 RCPO 框架的自然延伸，亦是目前实验与理论尚未充分覆盖的开放问题：</p>
+<hr />
+<h3>1 反馈粒度与噪声权衡</h3>
+<ul>
+<li><strong>top-k 最优 k 值</strong>：实验停在 k=2，继续增大 k 或采用完整排序是否会因标注噪声而收益递减？可建立“信息-噪声比”随 k 变化的定量模型。</li>
+<li><strong>自适应 k(x)</strong>：对易混淆 prompt 自动降低 k，对高一致 prompt 提高 k，实现动态粒度。</li>
+</ul>
+<hr />
+<h3>2 更复杂的排序/选择模型</h3>
+<ul>
+<li><strong>嵌套 Logit、Mixed MNL</strong>：捕捉候选间的层次或混合偏好结构，适用于多轮对话、多模态候选。</li>
+<li><strong>Plackett-Luce 扩展</strong>：支持“列表级”梯度，理论上与 top-k 损失更匹配。</li>
+<li><strong>神经排序模型</strong>：如 DLCM、SetTransformer-based ranker，将中央排序 µ₀ 或效用 ν 直接参数化为神经网，放弃闭式概率，改用可微分排序算子。</li>
+</ul>
+<hr />
+<h3>3 奖励函数与散度泛化</h3>
+<ul>
+<li><strong>f-散度族</strong>：RCPO 目前使用 KL 散度对应的 β-log-ratio 奖励，可系统尝试 χ²、Reverse-KL、α-divergence 等，观察与不同选择模型的耦合效果。</li>
+<li><strong>长度、风格惩罚解耦</strong>：在奖励端引入可学习的长度惩罚或重复惩罚，与选择模型“正交”地控制生成质量。</li>
+</ul>
+<hr />
+<h3>4 在线与主动学习</h3>
+<ul>
+<li><strong>主动选择集合 S</strong>：借鉴最优实验设计，动态挑选最具信息增益的 |S| 个候选供标注，减少总标注量。</li>
+<li><strong>在线 bandit 反馈</strong>：将 RCPO 与 RL 的 policy-gradient 结合，直接利用用户真实交互（点击、停留）进行持续对齐，而非一次性离线标注。</li>
+</ul>
+<hr />
+<h3>5 多目标与多群体偏好聚合</h3>
+<ul>
+<li><strong>多属性排序</strong>：事实性、无害性、风格等多维度同时标注，扩展 P(µₖ|S;x) 到向量奖励。</li>
+<li><strong>社会选择规则</strong>：不同群体给出不同 top-k，如何用 Copeland、Kemeny-Young 等规则聚合，再反传到模型？可连接社会选择理论与梯度下降。</li>
+</ul>
+<hr />
+<h3>6 模型容量与训练策略</h3>
+<ul>
+<li><strong>大模型 scaling law</strong>：RCPO 收益是否随模型规模增大而放大？需要在 70 B+ 模型上验证。</li>
+<li><strong>两阶段 vs 端到端</strong>：先 SFT 再 RCPO 与一次性混合训练的样本效率对比。</li>
+<li><strong>低秩微调</strong>：LoRA/QLoRA 环境下，选择模型梯度是否与生成参数存在冲突，需设计分离或共享策略。</li>
+</ul>
+<hr />
+<h3>7 评测与可信性</h3>
+<ul>
+<li><strong>人类-模型一致性</strong>：自动裁判（GPT-4.1/5-mini）与真人偏好是否对 RCPO 更有利？需补充真人 A/B 实验。</li>
+<li><strong>鲁棒性与安全性</strong>：RCPO  sharper 的排序区分是否会导致模型更容易被越狱或产生过度自信？需结合红队测试。</li>
+</ul>
+<hr />
+<h3>8 计算与系统优化</h3>
+<ul>
+<li><strong>梯度压缩</strong>：top-k 损失涉及 |S|² 量级的对比，需设计近似采样或负采样策略，降低大 |S| 时的 GPU 内存。</li>
+<li><strong>并行标注系统</strong>：构建支持“一次给标注者展示 5–10 个候选并拖放排序”的数据采集平台，低成本获取大规模真实 top-k 标签。</li>
+</ul>
+<hr />
+<h3>9 跨模态与跨任务</h3>
+<ul>
+<li><strong>多模态候选</strong>：图文混合、视频脚本、代码+注释等异构候选如何定义“排序”？需要设计跨模态选择模型。</li>
+<li><strong>任务特定结构</strong>：代码生成（通过单元测试数量）、数学推理（通过证明步数）等可自然产生 top-k 结果，RCPO 可直接利用这些自动排序信号进行自对齐。</li>
+</ul>
+<hr />
+<h3>10 理论深化</h3>
+<ul>
+<li><strong>一致性/收敛率</strong>：在何种条件下，RCPO 的 MLE 估计对真实奖励函数收敛？可借鉴 Manski-McFadden 的离散选择渐近理论。</li>
+<li><strong>与逆强化学习关系</strong>：当标注噪声服从 Mallows 或 MNL 时，RCPO 是否等价于某种 IRL 算法？探索二者形式上的对偶性。</li>
+</ul>
+<hr />
+<p>综上，RCPO 把“排序选择模型 × LLM 对齐”的框架搭好，但离“全自动、多目标、在线持续”的终极对齐系统仍有广阔探索空间。</p>
+<h2>总结</h2>
+<h1>论文核心速览</h1>
+<hr />
+<h2>1 背景与痛点</h2>
+<ul>
+<li>现有 LLM 对齐（RLHF/DPO）只利用“成对偏好” y_w≻y_l，人工标注常给出 top-k 或部分排序，降采样成对→信息丢失。</li>
+<li>缺乏统一框架直接消费 richer feedback。</li>
+</ul>
+<hr />
+<h2>2 Ranked Choice Preference Optimization（RCPO）</h2>
+<p><strong>思想</strong>：把 prompt x 视为上下文，候选响应集合 S 视为商品，人类选择视为离散/排序选择模型；对齐即最大化选择模型的似然。</p>
+<p><strong>两步公式化</strong>：</p>
+<ol>
+<li>奖励-策略闭式：r(x,y)=β log π_θ(y|x)/π_ref(y|x)</li>
+<li>任意选择模型 g 的 MLE：
+max_πθ Σ log g(μ_k, S, {r(x,y)}_y∈S)</li>
+</ol>
+<p><strong>即插即用</strong>：满足“奖励充分性+MLE 可估计”的任何选择模型都能嵌入。</p>
+<hr />
+<h2>3 实例化</h2>
+<table>
+<thead>
+<tr>
+  <th>类别</th>
+  <th>模型</th>
+  <th>反馈格式</th>
+  <th>训练目标（摘要）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>效用类</strong></td>
+  <td>Multinomial Logit</td>
+  <td>single-best / top-k</td>
+  <td>嵌套 softmax + sigmoid 似然（式7/9）</td>
+</tr>
+<tr>
+  <td><strong>排序类</strong></td>
+  <td>Mallows-RMJ</td>
+  <td>pairwise / single / top-k</td>
+  <td>仅依赖相对排名，指数衰减概率（式10/12）</td>
+</tr>
+</tbody>
+</table>
+<p>实用技巧：</p>
+<ul>
+<li>用输出熵估计分散度 ϕ(x)</li>
+<li>指示函数→sigmoid 平滑，保证梯度</li>
+</ul>
+<hr />
+<h2>4 实验</h2>
+<p><strong>基座</strong>：Llama-3-8B-Instruct &amp; Gemma-2-9B-it<br />
+<strong>数据</strong>：UltraFeedback 64 k prompt→5 回答→AI 裁判排序→截断 top-1/2<br />
+<strong>评测</strong>：AlpacaEval 2 &amp; Arena-Hard（GPT-4.1/5-mini 裁判）</p>
+<p><strong>结果</strong>：</p>
+<ul>
+<li>8 种 RCPO 变体全部优于 DPO/SimPO/IPO 等强基线</li>
+<li>最佳模型 Mallows-RMJ-PO-Top-2 较最强非 RCPO 基线<ul>
+<li>AlpacaEval WR +19.5%</li>
+<li>Arena-Hard WR +6.2%</li>
+</ul>
+</li>
+<li>top-2 普遍优于 top-1；Mallows-RMJ 对噪声更鲁棒，跨模型一致领先</li>
+</ul>
+<hr />
+<h2>5 贡献清单</h2>
+<ol>
+<li>统一视角：首次将 LLM 对齐表述为（排序）选择模型 MLE，涵盖 pairwise/single/top-k。</li>
+<li>实用框架：RCPO 支持任意选择模型，给出 MNL 与 Mallows-RMJ 的完整训练目标与梯度分析。</li>
+<li>显著效果：在主流模型与基准上验证 richer feedback 带来的持续性能提升。</li>
+</ol>
+<hr />
+<h2>一句话总结</h2>
+<p>RCPO 用“排序选择模型+MLE”把各类人类排序信号直接喂给 LLM，对齐效果更好、理论更通用、实现即插即用。</p>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.4</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: RLHF</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">RLHF</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2510.23631" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2510.23631" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tab-Agent" class="tab-content ">
                 <div class="content-wrapper">
                     <div class="papers-list" id="papers-list-Agent">
                         <!-- 领域汇总分析 -->
@@ -1195,6 +2549,11 @@
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 A Comprehensive Survey on Reinforcement Learning-based Agentic Search: Foundations, Roles, Optimizations, Evaluations, and Applications
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.16724"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.16724", "authors": ["Lin", "Wu", "Xu", "Liu", "Tang", "He", "Aggarwal", "Liu", "Zhang", "Wang"], "id": "2510.16724", "pdf_url": "https://arxiv.org/pdf/2510.16724", "rank": 8.714285714285715, "title": "A Comprehensive Survey on Reinforcement Learning-based Agentic Search: Foundations, Roles, Optimizations, Evaluations, and Applications"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.16724" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -1819,6 +3178,11 @@ A Comprehensive Survey on Reinforcement Learning-based Agentic Search: Foundatio
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 From Language to Action: A Review of Large Language Models as Autonomous Agents and Tool Users
+                                                <button class="mark-button" 
+                                                        data-paper-id="2508.17281"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2508.17281", "authors": ["Chowa", "Alvi", "Rahman", "Rahman", "Raiaan", "Islam", "Hussain", "Azam"], "id": "2508.17281", "pdf_url": "https://arxiv.org/pdf/2508.17281", "rank": 8.642857142857142, "title": "From Language to Action: A Review of Large Language Models as Autonomous Agents and Tool Users"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2508.17281" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -2202,6 +3566,11 @@ A Comprehensive Survey on Reinforcement Learning-based Agentic Search: Foundatio
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 APTBench: Benchmarking Agentic Potential of Base LLMs During Pre-Training
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.24397"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.24397", "authors": ["Qin", "Xi", "Huang", "Rui", "Yin", "Liu", "Yu", "Zhang", "Sun"], "id": "2510.24397", "pdf_url": "https://arxiv.org/pdf/2510.24397", "rank": 8.571428571428571, "title": "APTBench: Benchmarking Agentic Potential of Base LLMs During Pre-Training"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.24397" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -2485,6 +3854,11 @@ A Comprehensive Survey on Reinforcement Learning-based Agentic Search: Foundatio
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Agent Data Protocol: Unifying Datasets for Diverse, Effective Fine-tuning of LLM Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.24702"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.24702", "authors": ["Song", "Ramaneti", "Sheikh", "Chen", "Gou", "Xie", "Xu", "Zhang", "Gandhi", "Yang", "Liu", "Ou", "Yuan", "Xu", "Zhou", "Wang", "Yue", "Yu", "Sun", "Su", "Neubig"], "id": "2510.24702", "pdf_url": "https://arxiv.org/pdf/2510.24702", "rank": 8.571428571428571, "title": "Agent Data Protocol: Unifying Datasets for Diverse, Effective Fine-tuning of LLM Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.24702" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3101,6 +4475,11 @@ A Comprehensive Survey on Reinforcement Learning-based Agentic Search: Foundatio
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Tongyi DeepResearch Technical Report
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.24701"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.24701", "authors": ["Tongyi DeepResearch Team", "Li", "Zhang", "Zhang", "Huang", "Li", "Chen", "Yin", "Wu", "Zhou", "Li", "Su", "Ou", "Zhang", "Xie", "Ye", "Yin", "Yu", "Wang", "Wu", "Chen", "Zhao", "Zhang", "Tao", "Zhang", "Qiao", "Wang", "Yu", "Fu", "Shen", "Yang", "Lin", "Zhang", "Zeng", "Yang", "Yin", "Song", "Yan", "Xia", "Xiao", "Min", "Ding", "Fang", "Chen", "Huang", "Wang", "Cai", "Shen", "Wang", "Guan", "Geng", "Shi", "Wu", "Chen", "Li", "Jiang"], "id": "2510.24701", "pdf_url": "https://arxiv.org/pdf/2510.24701", "rank": 8.5, "title": "Tongyi DeepResearch Technical Report"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.24701" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3752,6 +5131,11 @@ Humanity’s Last Exam 38.3 %（+5.4 pp），BrowseComp 58.3 %（+14.9 pp）</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 VisCoder2: Building Multi-Language Visualization Coding Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.23642"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.23642", "authors": ["Ni", "Cai", "Chen", "Liang", "Lyu", "Deng", "Zou", "Nie", "Yuan", "Yue", "Chen"], "id": "2510.23642", "pdf_url": "https://arxiv.org/pdf/2510.23642", "rank": 8.5, "title": "VisCoder2: Building Multi-Language Visualization Coding Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.23642" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -4289,6 +5673,11 @@ Humanity’s Last Exam 38.3 %（+5.4 pp），BrowseComp 58.3 %（+14.9 pp）</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 A Survey on Large Language Model-Based Game Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2404.02039"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2404.02039", "authors": ["Hu", "Huang", "Liu", "Kompella", "Ilhan", "Tekin", "Xu", "Yahn", "Liu"], "id": "2404.02039", "pdf_url": "https://arxiv.org/pdf/2404.02039", "rank": 8.428571428571429, "title": "A Survey on Large Language Model-Based Game Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2404.02039" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -4470,6 +5859,11 @@ Humanity’s Last Exam 38.3 %（+5.4 pp），BrowseComp 58.3 %（+14.9 pp）</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 ReCode: Unify Plan and Action for Universal Granularity Control
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.23564"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.23564", "authors": ["Yu", "Zhang", "Su", "Zhao", "Wu", "Deng", "Xiang", "Lin", "Tang", "Li", "Luo", "Liu", "Wu"], "id": "2510.23564", "pdf_url": "https://arxiv.org/pdf/2510.23564", "rank": 8.428571428571429, "title": "ReCode: Unify Plan and Action for Universal Granularity Control"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.23564" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -4798,6 +6192,11 @@ backbone 模型：GPT-4o mini、Gemini-2.5-Flash、DeepSeek-V3.1<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 From Benchmarks to Business Impact: Deploying IBM Generalist Agent in Enterprise Production
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.23856"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.23856", "authors": ["Shlomov", "Oved", "Marreed", "Levy", "Akrabi", "Yaeli", "Str\u00c4\u0085k", "Koumpan", "Goldshtein", "Shapira", "Mashkif", "Adi"], "id": "2510.23856", "pdf_url": "https://arxiv.org/pdf/2510.23856", "rank": 8.428571428571429, "title": "From Benchmarks to Business Impact: Deploying IBM Generalist Agent in Enterprise Production"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.23856" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5004,6 +6403,11 @@ backbone 模型：GPT-4o mini、Gemini-2.5-Flash、DeepSeek-V3.1<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Beyond Prompt Engineering: Neuro-Symbolic-Causal Architecture for Robust Multi-Objective AI Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.23682"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.23682", "authors": ["Akarlar"], "id": "2510.23682", "pdf_url": "https://arxiv.org/pdf/2510.23682", "rank": 8.357142857142858, "title": "Beyond Prompt Engineering: Neuro-Symbolic-Causal Architecture for Robust Multi-Objective AI Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.23682" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5192,6 +6596,11 @@ LLM生成策略 → 符号引擎验证可行性 → 因果模块评估多目标�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Evolving Diagnostic Agents in a Virtual Clinical Environment
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.24654"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.24654", "authors": ["Qiu", "Wu", "Liu", "Zheng", "Liao", "Wang", "Yue", "Fan", "Zhen", "Wang", "Gu", "Wang", "Zhang", "Xie"], "id": "2510.24654", "pdf_url": "https://arxiv.org/pdf/2510.24654", "rank": 8.357142857142858, "title": "Evolving Diagnostic Agents in a Virtual Clinical Environment"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.24654" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5550,6 +6959,11 @@ $R=\lambda_1 r_{\text{diag}}+\lambda_2 r_{\text{exam}}+\lambda_3 r_{\text{turn}}
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Group-in-Group Policy Optimization for LLM Agent Training
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.10978"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.10978", "authors": ["Feng", "Xue", "Liu", "An"], "id": "2505.10978", "pdf_url": "https://arxiv.org/pdf/2505.10978", "rank": 8.357142857142858, "title": "Group-in-Group Policy Optimization for LLM Agent Training"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2505.10978" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5830,6 +7244,11 @@ $R=\lambda_1 r_{\text{diag}}+\lambda_2 r_{\text{exam}}+\lambda_3 r_{\text{turn}}
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 From Observability Data to Diagnosis: An Evolving Multi-agent System for Incident Management in Cloud Systems
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.24145"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.24145", "authors": ["Luo", "Jiang", "Feng", "Tao", "Zhang", "Wen", "Sun", "Zhang", "Huang", "Qi", "Pei"], "id": "2510.24145", "pdf_url": "https://arxiv.org/pdf/2510.24145", "rank": 8.357142857142858, "title": "From Observability Data to Diagnosis: An Evolving Multi-agent System for Incident Management in Cloud Systems"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.24145" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5986,6 +7405,11 @@ $R=\lambda_1 r_{\text{diag}}+\lambda_2 r_{\text{exam}}+\lambda_3 r_{\text{turn}}
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MGA: Memory-Driven GUI Agent for Observation-Centric Interaction
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.24168"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.24168", "authors": ["Cheng", "Ni", "Wang", "Sun", "Liu", "Shen", "Chen", "Shi", "Wang"], "id": "2510.24168", "pdf_url": "https://arxiv.org/pdf/2510.24168", "rank": 8.357142857142858, "title": "MGA: Memory-Driven GUI Agent for Observation-Centric Interaction"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.24168" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -6249,6 +7673,11 @@ Planner 依据 $(I_t,Z_t,S_{t-1})$ 输出自然语言动作 → Grounding Agent 
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Repurposing Synthetic Data for Fine-grained Search Agent Supervision
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.24694"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.24694", "authors": ["Zhao", "Li", "Wu", "Zhang", "Zhang", "Li", "Song", "Chen", "Wang", "Wang", "Tu", "Xie", "Zhou", "Jiang"], "id": "2510.24694", "pdf_url": "https://arxiv.org/pdf/2510.24694", "rank": 8.357142857142858, "title": "Repurposing Synthetic Data for Fine-grained Search Agent Supervision"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.24694" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -6503,6 +7932,11 @@ $$R_i=\alpha\cdot\hat\gamma_i,\quad \alpha=0.3$$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Mano Technical Report
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17336"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17336", "authors": ["Fu", "Su", "Zhao", "Wang", "Wu", "Yu", "Hu", "Shi", "Dong", "Wang", "Chen", "Yu", "Peng", "Li", "Huang", "Wei", "Yu", "Xin", "Zhao", "Gu", "Jiang", "Zhou", "Wang"], "id": "2509.17336", "pdf_url": "https://arxiv.org/pdf/2509.17336", "rank": 8.357142857142858, "title": "Mano Technical Report"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17336" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -6985,6 +8419,11 @@ $$R_i=\alpha\cdot\hat\gamma_i,\quad \alpha=0.3$$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Pie: A Programmable Serving System for Emerging LLM Applications
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.24051"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.24051", "authors": ["Gim", "Ma", "Lee", "Zhong"], "id": "2510.24051", "pdf_url": "https://arxiv.org/pdf/2510.24051", "rank": 8.357142857142858, "title": "Pie: A Programmable Serving System for Emerging LLM Applications"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.24051" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -7182,6 +8621,11 @@ $$R_i=\alpha\cdot\hat\gamma_i,\quad \alpha=0.3$$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 WebLeaper: Empowering Efficiency and Efficacy in WebAgent via Enabling Info-Rich Seeking
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.24697"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.24697", "authors": ["Tao", "Shen", "Li", "Yin", "Wu", "Li", "Zhang", "Yin", "Ye", "Zhang", "Wang", "Xie", "Zhou", "Jiang"], "id": "2510.24697", "pdf_url": "https://arxiv.org/pdf/2510.24697", "rank": 8.357142857142858, "title": "WebLeaper: Empowering Efficiency and Efficacy in WebAgent via Enabling Info-Rich Seeking"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.24697" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -7511,1265 +8955,6 @@ $$E[T] \geq \frac{H(R)}{\log (\text{branching})}$$<br />
                 </div>
             </div>
             
-            <div id="tab-SFT" class="tab-content ">
-                <div class="content-wrapper">
-                    <div class="papers-list" id="papers-list-SFT">
-                        <!-- 领域汇总分析 -->
-                        
-                        <div class="domain-summary-display">
-                <!-- <h3>📊 领域汇总分析</h3> -->
-                
-                        <!-- 完整汇总内容（单一文本） -->
-                        
-                <div class="summary-section">
-                    <div class="analysis-content"><h3>研究全貌</h3>
-<p>本批次SFT领域共收录2篇论文，研究方向主要集中在<strong>数据高效微调</strong>与<strong>训练数据质量优化</strong>两大方向。前者聚焦在数据稀缺场景下如何通过参数高效、跨领域迁移等手段提升微调效果，后者则深入探讨训练样本的内在属性，试图从数据构成角度解释并提升微调的可扩展性。当前热点问题是如何在有限数据或有限计算资源下实现更高效、更稳定的性能提升，避免“数据越多但收益递减”的瓶颈。整体研究趋势正从“粗放式增加数据量”转向“精细化设计数据与微调策略”，强调对数据语义结构和模型学习机制的深层理解。</p>
-<h3>重点方法深度解析</h3>
-<p>本批次中最具启发性的工作是《Accelerate Scaling of LLM Finetuning via Quantifying the Coverage and Depth of Instruction Set》<a href="https://arxiv.org/abs/2509.06463" target="_blank" rel="noopener noreferrer">URL</a>。该论文首次系统性提出：<strong>监督微调（SFT）的性能扩展瓶颈不在于数据量本身，而在于数据的“语义覆盖度”与“信息深度”</strong>。语义覆盖度指数据涵盖的任务领域广度，信息深度则衡量单个样本的指令复杂性与知识密度。作者发现，这两个维度可解释高达80%以上的验证损失方差，是决定SFT效率的核心因素。</p>
-<p>基于此，论文提出<strong>信息景观近似（Information Landscape Approximation, ILA）</strong>框架，一种模型无关的数据选择方法。ILA通过轻量级编码器对指令进行嵌入，使用聚类算法保障语义覆盖的多样性，同时基于信息熵和推理路径复杂度评分筛选高深度样本，最终构建出“小而精”的训练子集。实验表明，在仅使用30%数据的情况下，ILA选出的数据集在多个任务（如Alpaca、FLAN、CrossFit）上实现了比全量数据更优的性能提升，且训练收敛速度显著加快，实现了“加速扩展”（accelerated scaling）。</p>
-<p>相比之下，《Fine-tuning Large Language Models with Limited Data: A Survey and Practical Guide》<a href="https://arxiv.org/abs/2411.09539" target="_blank" rel="noopener noreferrer">URL</a>虽无单一突破性算法，但其系统性梳理极具实践价值。论文将参数高效微调（如LoRA、Adapter）、跨语言对齐（XLM-style）、偏好对齐（DPO with synthetic feedback）等方法置于统一框架下，提出“数据-模型-任务”三元匹配原则：小数据配高参数效率方法，跨语言任务优先使用共享表示微调，偏好对齐则需结合合成数据增强。其最大贡献在于提炼出一套可操作的决策流程图，帮助开发者在资源受限时快速选择合适策略。</p>
-<h3>实践启示</h3>
-<p>这两项研究对大模型应用开发具有重要指导意义。对于<strong>资源受限或数据获取成本高的场景</strong>（如垂直领域、小语种应用），应优先考虑ILA类数据优化方法，通过提升数据质量而非数量来加速训练；而对于<strong>快速迭代的微调任务</strong>，可借鉴综述中的方法论框架，结合LoRA+合成反馈实现低成本部署。建议在实际落地时：1）在SFT前对指令集进行覆盖度与深度分析，剔除冗余低质样本；2）采用ILA思想做数据蒸馏，构建高信息密度训练集；3）结合参数高效微调技术降低显存开销。关键注意事项包括：避免过度压缩数据导致覆盖缺失，以及在使用合成反馈时需引入多样性控制以防模型退化。</p>
-</div>
-                </div>
-                
-                
-            </div>
-            
-                        
-                        <div class="topic-content">
-                            
-                                
-                                <div class="paper-item-compact" id="paper-item-2411.09539">
-                                    <div class="paper-header" onclick="showPaperDetail('2411.09539', 'SFT')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Fine-tuning Large Language Models with Limited Data: A Survey and Practical Guide
-                                                <a href="https://arxiv.org/abs/2411.09539" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AFine-tuning%20Large%20Language%20Models%20with%20Limited%20Data%3A%20A%20Survey%20and%20Practical%20Guide%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2411.09539&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AFine-tuning%20Large%20Language%20Models%20with%20Limited%20Data%3A%20A%20Survey%20and%20Practical%20Guide%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2411.09539%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Szep, Rueckert, von Eisenhart-Rothe, Hinterwimmer</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文是一篇关于在数据有限情况下微调大语言模型的综述性论文，系统梳理了预训练、微调、少样本学习等阶段的前沿方法，并提供了面向实践者的实用指南。论文结构清晰，覆盖全面，尤其在参数高效微调、跨语言对齐、领域自适应等方面进行了深入分析，对研究者和从业者均有较高参考价值。尽管创新性相对有限，但其方法论总结和实践指导具有较强的通用性和可迁移性。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.4</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2411.09539" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Fine-tuning Large Language Models with Limited Data: A Survey and Practical Guide</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 24 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>这篇论文试图解决在自然语言处理（NLP）中，特别是在数据稀缺场景下，如何有效地微调预训练的大型语言模型（LLMs）。具体来说，论文关注以下几个问题：</p>
-<ol>
-<li><p><strong>预训练策略的选择</strong>：如何选择适当的预训练方法，以便在低资源场景下有效利用先前的知识。</p>
-</li>
-<li><p><strong>数据稀缺时的微调</strong>：如何在有限数据的情况下最大化微调的效用，并避免过拟合和性能下降。</p>
-</li>
-<li><p><strong>少样本学习</strong>：如何在只有少量标注样本的情况下进行有效的学习。</p>
-</li>
-<li><p><strong>任务特定的方法</strong>：针对不同数据稀缺程度的任务，提供具体的模型和方法指导。</p>
-</li>
-</ol>
-<p>论文的目标是为研究者和实践者提供在数据受限情况下优化模型性能的实用指南，并指出未来研究的有前景的方向。</p>
-<h2>相关工作</h2>
-<p>论文中提到了多个与使用有限数据微调大型语言模型（LLMs）相关的研究工作。以下是一些关键的相关研究：</p>
-<ol>
-<li><p><strong>数据增强</strong>：</p>
-<ul>
-<li>Feng et al., 2021 提出了数据增强是处理数据稀缺问题的基本技术之一。</li>
-<li>Chen et al., 2023a; Stylianou et al., 2023 讨论了数据增强在特定领域的局限性。</li>
-</ul>
-</li>
-<li><p><strong>跨语言对齐</strong>：</p>
-<ul>
-<li>Conneau et al., 2019; Pires et al., 2019; Muennighoff et al., 2023b 探索了在不同语言间训练模型以增强跨语言能力的方法。</li>
-<li>Alabi et al., 2022 研究了多语言模型的适应性。</li>
-</ul>
-</li>
-<li><p><strong>领域适应</strong>：</p>
-<ul>
-<li>Gururangan et al., 2020 提出了领域适应以确保模型能有效处理特定领域的任务。</li>
-<li>Noguti et al., 2023; Zhao et al., 2021; Beltagy et al., 2019 为不同领域开发了领域适应的语言模型。</li>
-</ul>
-</li>
-<li><p><strong>参数高效训练</strong>：</p>
-<ul>
-<li>Hu et al., 2021; Lester et al., 2021; Liu et al., 2022; Juki´c and Snajder, 2023 研究了只更新模型中一小部分权重的方法，以避免全参数微调中的风险。</li>
-</ul>
-</li>
-<li><p><strong>嵌入学习</strong>：</p>
-<ul>
-<li>Artetxe et al., 2020; Hung et al., 2023 探讨了通过冻结Transformer主体来训练嵌入向量的方法。</li>
-</ul>
-</li>
-<li><p><strong>对比学习和对抗学习</strong>：</p>
-<ul>
-<li>Chen et al., 2020b; Chi et al., 2021a; Chen et al., 2023b 研究了通过对比学习提取有效表示的方法。</li>
-<li>Du et al., 2020; Grießhaber et al., 2020 探讨了对抗训练在跨域和跨语言迁移中的应用。</li>
-</ul>
-</li>
-<li><p><strong>有限监督学习</strong>：</p>
-<ul>
-<li>Chapelle et al., 2009; Schick and Schütze, 2021a; Wang et al., 2023b 研究了半监督学习在利用未标记数据提升模型泛化能力方面的应用。</li>
-</ul>
-</li>
-<li><p><strong>主动学习</strong>：</p>
-<ul>
-<li>Lewis and Gale, 1994; Gal and Ghahramani, 2016; Houlsby et al., 2011 研究了主动学习技术，这些技术专注于选择最有信息量的数据点以最大化有限训练数据的有效性。</li>
-</ul>
-</li>
-<li><p><strong>少样本学习</strong>：</p>
-<ul>
-<li>Radford et al., 2019; Brown et al., 2020 探讨了大型解码器模型在只有少量示例的情况下处理新任务的能力。</li>
-</ul>
-</li>
-</ol>
-<p>这些研究涵盖了从预训练策略、微调技术到特定领域的应用等多个方面，为在数据稀缺环境下优化LLMs的性能提供了理论和实践基础。</p>
-<h2>解决方案</h2>
-<p>论文通过以下几个步骤解决在数据稀缺情况下微调大型语言模型（LLMs）的问题：</p>
-<ol>
-<li><p><strong>系统综述</strong>：</p>
-<ul>
-<li>从多个数据库中收集超过2500篇相关论文，并进行系统性回顾，以了解当前的最佳实践方法。</li>
-</ul>
-</li>
-<li><p><strong>继续预训练策略</strong>：</p>
-<ul>
-<li>探讨了如何通过继续预训练（Continued Pre-training）来缩小预训练数据和目标领域之间的差距，包括跨语言对齐和领域适应。</li>
-</ul>
-</li>
-<li><p><strong>参数高效微调</strong>：</p>
-<ul>
-<li>介绍了参数高效微调（Parameter-efficient training, PEFT）方法，这些方法只更新模型中的一部分权重，以减少计算成本并避免灾难性遗忘。</li>
-</ul>
-</li>
-<li><p><strong>嵌入学习</strong>：</p>
-<ul>
-<li>讨论了如何通过学习输入标记的嵌入向量来捕捉特定语言、领域和任务的语义信息。</li>
-</ul>
-</li>
-<li><p><strong>对比学习和对抗学习</strong>：</p>
-<ul>
-<li>探索了从跨语言和跨领域的差异和相似性中提取信息的方法，以增强模型的对齐和适应性。</li>
-</ul>
-</li>
-<li><p><strong>有限监督学习</strong>：</p>
-<ul>
-<li>介绍了半监督学习、无监督学习和主动学习等方法，以充分利用未标记数据提升模型的泛化能力。</li>
-</ul>
-</li>
-<li><p><strong>少样本学习</strong>：</p>
-<ul>
-<li>讨论了在只有少量标注样本的情况下如何进行有效的学习，包括上下文学习（In-context learning）和模式利用训练（Pattern-exploiting training）。</li>
-</ul>
-</li>
-<li><p><strong>任务特定视角</strong>：</p>
-<ul>
-<li>根据数据稀缺的不同程度，为实践者提供了针对不同NLP任务的指导。</li>
-</ul>
-</li>
-<li><p><strong>实用指南</strong>：</p>
-<ul>
-<li>提供了针对研究者和实践者的实用指南，以优化数据稀缺场景下的模型性能，并强调了未来研究的有前景的方向。</li>
-</ul>
-</li>
-</ol>
-<p>通过这些步骤，论文旨在为在资源受限的语言和领域中应用预训练语言模型提供指导，并强调了未来研究中需要进一步探索的领域。</p>
-<h2>实验验证</h2>
-<p>根据提供的论文内容，文中并没有提到具体的实验部分。这篇论文是一个关于微调大型语言模型（LLMs）在数据有限情况下的实用指南，它主要关注的是对现有文献和方法的综述和分析，而不是提出新的实验或实验结果。论文的目的是为研究者和实践者提供在数据稀缺场景下优化模型性能的实用指导，并指出未来研究的方向。</p>
-<p>文中提到的“系统综述”涉及从多个数据库中收集超过2500篇论文，并进行分析，这可以被视作一种研究方法，但它不涉及传统意义上的实验操作，如数据收集、模型训练和评估等。相反，它更多地侧重于对现有研究成果的综合和解释。</p>
-<h2>未来工作</h2>
-<p>根据论文内容，以下是一些可以进一步探索的点：</p>
-<ol>
-<li><p><strong>防止灾难性遗忘的理论基础和实验验证</strong>：</p>
-<ul>
-<li>探索更多关于如何在模型适应过程中防止灾难性遗忘的理论基础，以及在不同数据稀缺程度下进行实验验证。</li>
-</ul>
-</li>
-<li><p><strong>跨领域和资源贫乏语言的基准测试</strong>：</p>
-<ul>
-<li>建立和评估更多针对专业领域和资源贫乏语言的方法，包括构建公共数据集和标准化评估框架。</li>
-</ul>
-</li>
-<li><p><strong>不同方法的组合</strong>：</p>
-<ul>
-<li>研究如何将不同的参数高效微调（PEFT）方法、正则化技术和补充训练选项结合起来，以利用它们的互补优势。</li>
-</ul>
-</li>
-<li><p><strong>少样本学习的新方法</strong>：</p>
-<ul>
-<li>开发和评估新的少样本学习方法，特别是在非常低资源的设置中。</li>
-</ul>
-</li>
-<li><p><strong>跨语言和跨领域迁移学习</strong>：</p>
-<ul>
-<li>探索更有效的跨语言和跨领域迁移学习技术，特别是针对那些在预训练语料库中代表性不足的语言。</li>
-</ul>
-</li>
-<li><p><strong>模型压缩和加速</strong>：</p>
-<ul>
-<li>研究如何压缩和加速大型语言模型，使其在资源受限的环境中更易于部署和使用。</li>
-</ul>
-</li>
-<li><p><strong>主动学习和数据增强的结合</strong>：</p>
-<ul>
-<li>研究如何将主动学习与数据增强技术结合起来，以更高效地利用有限的标注数据。</li>
-</ul>
-</li>
-<li><p><strong>模型的可解释性和鲁棒性</strong>：</p>
-<ul>
-<li>提高模型在面对数据稀缺时的可解释性和鲁棒性，特别是在关键的应用领域，如医疗和法律。</li>
-</ul>
-</li>
-<li><p><strong>多任务和元学习</strong>：</p>
-<ul>
-<li>探索多任务学习和元学习在数据稀缺情况下的应用，以及如何通过这些方法提高模型的泛化能力。</li>
-</ul>
-</li>
-<li><p><strong>实际应用案例研究</strong>：</p>
-<ul>
-<li>在具体的实际应用中测试和评估所提出的方法，如医疗诊断、法律分析等，以验证它们的有效性和实用性。</li>
-</ul>
-</li>
-</ol>
-<p>这些探索点可以帮助研究社区更好地理解和解决在数据稀缺情况下微调大型语言模型的挑战。</p>
-<h2>总结</h2>
-<p>这篇论文提供了一个关于在数据有限的情况下微调大型语言模型（LLMs）的实用指南。以下是其主要内容的总结：</p>
-<ol>
-<li><p><strong>背景介绍</strong>：</p>
-<ul>
-<li>预训练语言模型（PLMs）在自然语言处理（NLP）领域取得了显著成就，但它们的训练需要大量数据和计算资源，这在实际应用中尤其是对于非英语语言和专业领域（如医学、化学、法律等）可能是不切实际的。</li>
-</ul>
-</li>
-<li><p><strong>转移学习策略</strong>：</p>
-<ul>
-<li>论文探讨了如何利用转移学习来优化下游任务中的模型性能，尤其是在数据稀缺的情况下。这包括初始预训练策略和继续预训练策略，以更好地利用在未见领域和语言中的先验知识。</li>
-</ul>
-</li>
-<li><p><strong>数据稀缺下的微调</strong>：</p>
-<ul>
-<li>论文详细讨论了在有限数据下如何最大化微调的效用，包括参数高效训练、嵌入学习和对比学习等方法，以避免过拟合并提高模型的泛化能力。</li>
-</ul>
-</li>
-<li><p><strong>少样本学习</strong>：</p>
-<ul>
-<li>论文还审视了少样本学习的方法，包括上下文学习和模式利用训练，以及它们在低资源NLP任务中的应用。</li>
-</ul>
-</li>
-<li><p><strong>任务特定的方法</strong>：</p>
-<ul>
-<li>从任务特定的视角出发，论文回顾了适合不同数据稀缺程度的模型和方法，提供了针对特定NLP任务的实用指导。</li>
-</ul>
-</li>
-<li><p><strong>未来研究方向</strong>：</p>
-<ul>
-<li>论文强调了未来研究的有前景的方向，包括防止灾难性遗忘、跨领域和资源贫乏语言的基准测试，以及不同方法的组合。</li>
-</ul>
-</li>
-<li><p><strong>实用指南</strong>：</p>
-<ul>
-<li>论文旨在为NLP领域的研究者和实践者提供在数据受限情况下优化模型性能的实用指南，并强调了需要进一步探索的领域。</li>
-</ul>
-</li>
-</ol>
-<p>总的来说，这篇论文提供了一个全面的概述，旨在帮助研究者和实践者克服数据稀缺带来的挑战，并有效地微调大型语言模型以适应特定的下游任务。</p>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.4</span></span>
-                                            <span>置信度: 0.92</span>
-                                            <span>分类: SFT</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">SFT</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2411.09539" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2411.09539" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="paper-item-compact" id="paper-item-2509.06463">
-                                    <div class="paper-header" onclick="showPaperDetail('2509.06463', 'SFT')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Accelerate Scaling of LLM Finetuning via Quantifying the Coverage and Depth of Instruction Set
-                                                <a href="https://arxiv.org/abs/2509.06463" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AAccelerate%20Scaling%20of%20LLM%20Finetuning%20via%20Quantifying%20the%20Coverage%20and%20Depth%20of%20Instruction%20Set%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2509.06463&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AAccelerate%20Scaling%20of%20LLM%20Finetuning%20via%20Quantifying%20the%20Coverage%20and%20Depth%20of%20Instruction%20Set%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2509.06463%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Wu, Du, Zhao, Ju, Wang, Chen, Zhou</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文提出了一种通过量化指令集的覆盖度与信息深度来加速大模型微调性能扩展的新方法ILA，创新性地识别出影响对齐模型性能的两个关键因素，并设计了基于信息景观近似的数据选择算法。实验表明该方法在多个基准上显著优于现有方法，实现了更高效的性能扩展。方法设计合理，证据充分，具备较强的理论支撑和实践价值。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.4</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2509.06463" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Accelerate Scaling of LLM Finetuning via Quantifying the Coverage and Depth of Instruction Set</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 4 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>该论文旨在解决<strong>大规模指令集微调（SFT）阶段性能提升效率低下</strong>的问题。具体而言，核心问题包括：</p>
-<ol>
-<li><p><strong>指令集规模扩张的边际收益递减</strong><br />
-现有研究表明，简单地扩大指令集规模对模型对齐性能的提升效果有限，甚至可能导致性能饱和或下降。</p>
-</li>
-<li><p><strong>指令集分布对模型性能的影响机制不明确</strong><br />
-由于指令集在语义空间中的分布复杂，且与预训练模型的先验知识耦合，难以量化哪些因素真正驱动了微调后的模型性能。</p>
-</li>
-<li><p><strong>现有指令筛选方法无法持续扩展</strong><br />
-基于启发式规则（如复杂度、多样性）的指令筛选方法在指令池规模增大时，其效果逐渐退化，甚至不如随机采样。</p>
-</li>
-</ol>
-<p>为解决上述问题，论文提出以下关键思路：</p>
-<ul>
-<li><strong>理论分析</strong>：将指令集对模型性能的影响解构为两个核心因素——<strong>语义空间覆盖率（Coverage）</strong>与<strong>信息深度（Information Depth）</strong>，并证明二者可解释超过70%的验证集损失变化。</li>
-<li><strong>量化指标</strong>：设计代理指标（Proxy Indicators）分别量化单条指令的信息深度（基于相对损失与技能标签）与整个指令集的覆盖率（基于语义空间网格化统计）。</li>
-<li><strong>优化算法</strong>：提出<strong>信息景观近似（ILA）算法</strong>，通过最大化子集与原始指令池在覆盖率与信息深度上的相似性，实现<strong>“加速扩展”（Accelerated Scaling）</strong>，即在不增加指令数量的前提下更快提升模型性能。</li>
-</ul>
-<h2>相关工作</h2>
-<p>以下工作被论文直接或间接地引用，用于支撑“指令集分布→对齐性能”这一研究脉络。按主题归类并给出关键结论或差异点。</p>
-<h3>1. 指令微调 Scaling Law 与数据因素</h3>
-<ul>
-<li><strong>Zhang et al. 2024</strong>《When scaling meets LLM finetuning》<br />
-提出 Dataset Factor 常数项刻画数据影响，但未能分解分布细节；本文将其扩展为可量化的 Coverage+Depth。</li>
-<li><strong>Qin et al. 2023</strong>《Data Tsunami Survey》<br />
-综述了指令数量、任务多样性、回复复杂度与性能正相关，但未给出统一度量；本文用信息深度统一刻画“复杂度”。</li>
-<li><strong>Zhang, Dai &amp; Peng 2025</strong>《The Best Instruction-Tuning Data are Those That Fit》<br />
-强调“数据-模型匹配度”；本文进一步指出匹配度可拆解为语义空间覆盖与局部信息增益。</li>
-</ul>
-<h3>2. 指令集精炼 / 数据选择方法</h3>
-<table>
-<thead>
-<tr>
-  <th>方法</th>
-  <th>核心启发式</th>
-  <th>与 ILA 的关键差异</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td><strong>Deita</strong> (Liu et al., ICLR 2024)</td>
-  <td>复杂度+多样性+一致性评分</td>
-  <td>无显式语义空间建模，随数据规模增大优势消失</td>
-</tr>
-<tr>
-  <td><strong>InsCL</strong> (Wang et al., NAACL 2024)</td>
-  <td>持续学习框架+梯度敏感采样</td>
-  <td>目标为灾难性遗忘，而非加速 scaling</td>
-</tr>
-<tr>
-  <td><strong>Self-Guided Selection</strong> (Li et al., NAACL 2024)</td>
-  <td>模型自评“易错+高不确定”样本</td>
-  <td>依赖特定模型信号，难以跨模型迁移</td>
-</tr>
-<tr>
-  <td><strong>Random Selection Baseline</strong> (Xia et al. 2024)</td>
-  <td>随机采样</td>
-  <td>被本文用作下限，证明 ILA 在 500 k 级仍显著优于随机</td>
-</tr>
-</tbody>
-</table>
-<h3>3. 信息论与样本影响力</h3>
-<ul>
-<li><strong>Zhao et al. 2024</strong>《SFT as Attention Pattern Optimization》<br />
-经验观察“少量高增益指令主导性能”，本文给出理论形式化：max δj 定义局部信息深度。</li>
-<li><strong>Zhou et al. 2023</strong>《LIMA: Less is more for alignment》<br />
-说明低质指令引入噪声；本文用相对信息深度 RID 量化“低质”，并直接剔除。</li>
-</ul>
-<h3>4. 语义空间建模与可视化</h3>
-<ul>
-<li><strong>Lu et al. 2023</strong>《#Instag》<br />
-提供技能标签体系，被本文借用来计算 #label 项。</li>
-<li><strong>Xiao et al. 2024</strong>《C-Pack + BGE》<br />
-文本嵌入模型，用于将指令投影到 Rd 语义空间。</li>
-<li><strong>Van der Maaten &amp; Hinton 2008</strong> t-SNE<br />
-降维后做网格化覆盖统计，本文沿用并验证 2D 近似已足够。</li>
-</ul>
-<h3>5. 垂直领域数据选择</h3>
-<ul>
-<li><strong>MetaMath</strong> (Yu et al.) 与 <strong>QwQ-LongCoT</strong> 系列<br />
-提供数学推理指令池，本文将其合并为 650 k 数学池，验证 ILA 在 reasoning-intensive 场景仍有效。</li>
-</ul>
-<h3>6. RLHF 与 SFT 目标一致性</h3>
-<ul>
-<li><strong>Hua et al. 2024</strong>《Intuitive Fine-Tuning》<br />
-指出 SFT 与 RLHF 均可视为“最大化奖励-加权似然”；因此 Coverage+Depth 指标亦可指导 RL 数据选择，本文在 Discussion 部分明确呼应。</li>
-</ul>
-<p>综上，已有研究分别触及“数据规模-性能”关系或“启发式筛选”，但尚未同时做到：</p>
-<ol>
-<li>理论分解指令分布因素；</li>
-<li>给出可解释 &gt;70 % 方差的量化指标；</li>
-<li>在百万级指令池上持续优于随机采样。</li>
-</ol>
-<p>本文的 ILA 在这三点上补全了空白。</p>
-<h2>解决方案</h2>
-<p>论文将“指令集规模扩张收益递减”问题形式化为<strong>语义空间信息景观逼近</strong>任务，通过<strong>理论解构→量化指标→优化算法→验证实验</strong>四步闭环解决。</p>
-<hr />
-<h3>1. 理论解构：把“好指令”拆成 Coverage + Depth</h3>
-<ul>
-<li><p><strong>语义空间视角</strong><br />
-每条指令 Ii 是 d 维语义空间 S 中的一个点 zi。<br />
-模型在 zi 附近存在泛化邻域 ΔSi，其性能增益由该邻域内<strong>最大单点信息增益</strong>决定：</p>
-<p>IDΔSi=maxj∈ΔSiδj,where δj=CEbase(yj|xj)−CESFT(yj|xj).</p>
-</li>
-<li><p><strong>整体损失可积化</strong><br />
-总附加信息≈∫SIDSdS，即“覆盖率”与“信息深度”的联合泛函。<br />
-⇒ 只要同时提高 Coverage（空间占满）与 Depth（每格挖到最“硬”样本），就能降低验证损失。</p>
-</li>
-</ul>
-<hr />
-<h3>2. 量化指标：把 Coverage &amp; Depth 变成可算数字</h3>
-<table>
-<thead>
-<tr>
-  <th>指标</th>
-  <th>公式</th>
-  <th>关键设计</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td><strong>信息深度</strong></td>
-  <td>RIDj=1−q(Ij)</td>
-  <td>先按响应长度归一化 δj，再在同域内做分位，消除领域间 CE 绝对值差异</td>
-</tr>
-<tr>
-  <td><strong>覆盖率</strong></td>
-  <td>SR=‖{grid g∣∃Ii∈g}‖</td>
-  <td>用 BGE 编码 + t-SNE 2D 网格化，统计非空格子数</td>
-</tr>
-</tbody>
-</table>
-<p>线性回归验证：<br />
-logLdev=β0+β1logRID+β2logSR<br />
-R2&gt;0.70，p&lt;0.001，证明两指标即可解释七成以上性能方差。</p>
-<hr />
-<h3>3. 优化算法：Information Landscape Approximation (ILA)</h3>
-<p>输入：原始池 Iori（Nori 条），目标子集大小 Nsub<br />
-步骤：</p>
-<ol>
-<li>语义嵌入 → 2D 网格，得 Nori/Nsub·S 个“宏格”</li>
-<li>每个宏格内保留 RID 最大的一条</li>
-<li>输出 Isub，保证：<ul>
-<li>宏格并集 ≈ 原池覆盖（Coverage 优先）</li>
-<li>每格取局部最难样本（Depth 最大）</li>
-<li>天然去冗余，信息密度最高</li>
-</ul>
-</li>
-</ol>
-<p>时间复杂度 O(Nori log Nori)，可在线性扫描 + 堆栈实现。</p>
-<hr />
-<h3>4. 验证实验：持续“加速扩展”</h3>
-<ul>
-<li><p><strong>通用域</strong>（2 M 池 → 500 k 子集）<br />
-AlpacaEval 2.0 &amp; ArenaHard 上，ILA 在同等指令/同等 token 下均优于 Random 与 Deita；随子集增大，性能差距单调扩大，呈现“SuperScaling”。</p>
-</li>
-<li><p><strong>数学推理域</strong>（650 k 池 → 100 k 子集）<br />
-MATH 基准准确率提升 3.2–4.7 %，且随机采样在 100 k 出现性能平台，ILA 仍继续上升。</p>
-</li>
-<li><p><strong>跨模型尺度</strong>（1.5 B / 3 B / 7 B）<br />
-同一套 ILA 子集在三种参数规模上均保持单调增益，验证指标与算法对模型容量无偏。</p>
-</li>
-</ul>
-<hr />
-<h3>结果总结</h3>
-<ol>
-<li>理论层面：Coverage 与 Depth 被证明是驱动 SFT 性能的主导因子。</li>
-<li>方法层面：ILA 用“网格-保覆盖+局部-保深度”策略，在 10 k–500 k 任意预算下均比随机/启发式方法更快逼近全池性能。</li>
-<li>实践层面：无需人工规则、无需多轮训练，一次性筛选即可实现“加速扩展”，可直接迁移至 RLHF 数据选择。</li>
-</ol>
-<h2>实验验证</h2>
-<ul>
-<li><strong>主实验</strong>：在 200 万通用指令池（InfinityAtlas）上，用 ILA 抽取 10 k / 20 k / 100 k / 200 k / 500 k 子集，与 Random、Deita 对比，在 AlpacaEval-2.0 与 Arena-Hard 上评估 Qwen2-7B 与 LLaMA-3-8B 的对齐性能。</li>
-<li><strong>数学垂直实验</strong>：聚合 65 万数学指令，抽取 20 k / 50 k / 100 k 子集，微调 Qwen-Math-7B，在 MATH 测试集上比较 ILA 与 Random。</li>
-<li><strong>跨模型尺度实验</strong>：用 ILA 分别给 Qwen2-1.5B / 2.5-3B / 7B 抽取 10 k / 20 k / 50 k 数据，AlpacaEval-2.0 得分随规模单调提升，验证方法对模型容量无关。</li>
-<li><strong>消融与回归实验</strong>：<br />
-– 构造 36 组不同 Coverage-Depth 子集，线性回归显示 logRID+logSR 可解释 &gt;70 % 验证损失方差。<br />
-– 对比直接用绝对 CE 损失作深度指标，R² 显著下降，证明 RID 归一化必要性。</li>
-</ul>
-<h2>未来工作</h2>
-<p>以下方向可在此基础上继续深入，分为<strong>理论深化</strong>、<strong>指标与算法扩展</strong>、<strong>场景迁移</strong>、<strong>工具与系统</strong>四大类。</p>
-<hr />
-<h3>1. 理论深化</h3>
-<ul>
-<li><p><strong>高维语义空间严格性</strong><br />
-当前用 2D t-SNE 网格化估算 Coverage；可探索</p>
-<ul>
-<li>保留原始嵌入维度的 Voronoi 体积 / 高斯混合测度；</li>
-<li>给出 Coverage 的 PAC-Bound，与泛化误差挂钩。</li>
-</ul>
-</li>
-<li><p><strong>信息深度与能力涌现的临界阈值</strong><br />
-对特定任务（代码、数学）建立 ID-Performance 的相变曲线，验证是否存在“深度阈值”触发能力跃迁。</p>
-</li>
-<li><p><strong>指令间依赖建模</strong><br />
-现有假设指令独立贡献；可引入图结构或集合核函数，刻画组合冗余与技能依赖，修正 ∫IDSdS 形式。</p>
-</li>
-</ul>
-<hr />
-<h3>2. 指标与算法扩展</h3>
-<ul>
-<li><p><strong>自适应网格分辨率</strong><br />
-根据局部分布密度动态调整网格大小，避免高密度区过度采样或低密度区欠采样。</p>
-</li>
-<li><p><strong>多目标优化形式化</strong><br />
-将“Coverage 最大化 + Depth 最大化”写成双目标背包或子模函数，求 Pareto 前沿，提供不同预算下的最优权衡。</p>
-</li>
-<li><p><strong>在线 / 增量 ILA</strong><br />
-数据流持续到达时，维护一个“核心集”(core-set) 使信息景观随时间稳定更新，支持终身学习场景。</p>
-</li>
-<li><p><strong>与主动学习结合</strong><br />
-用 RID 作为不确定性信号，主动生成或标注高信息深度区域的新指令，实现“数据扩展”与“选择”闭环。</p>
-</li>
-</ul>
-<hr />
-<h3>3. 场景迁移</h3>
-<ul>
-<li><p><strong>RLHF 数据选择</strong><br />
-验证 Coverage-Depth 指标是否直接适用于偏好对（pairwise）筛选，降低标注成本。</p>
-</li>
-<li><p><strong>多模态指令微调</strong><br />
-将文本指令扩展为图文交错或音频文本对，定义跨模态语义空间与信息深度，测试 ILA 在多模态对齐中的有效性。</p>
-</li>
-<li><p><strong>小语种 / 低资源语言</strong><br />
-探索在语义空间稀疏、标签缺失情况下如何可靠估计 RID 与 Coverage，避免维度灾难导致的指标失效。</p>
-</li>
-<li><p><strong>领域增量微调（Domain Continual SFT）</strong><br />
-用 ILA 为先验池，随后每来一个新领域，只补充“Coverage 缺口 + Depth 峰值”数据，抑制灾难性遗忘。</p>
-</li>
-</ul>
-<hr />
-<h3>4. 工具与系统</h3>
-<ul>
-<li><p><strong>自动技能标签生成</strong><br />
-当前依赖外部标签体系计算 #label；可训练轻量级分类器或利用 LLM 自监督生成技能标签，实现完全自动的 RID 估算。</p>
-</li>
-<li><p><strong>高效嵌入与网格引擎</strong><br />
-开发 GPU-加速的在线嵌入 + 动态网格划分库，支持千万级指令实时 ILA 筛选。</p>
-</li>
-<li><p><strong>公开基准与排行榜</strong><br />
-建立固定 2 M 级指令池 + 统一评测协议，推动不同数据选择算法在相同条件下的可比性研究。</p>
-</li>
-</ul>
-<hr />
-<h3>总结</h3>
-<ol>
-<li>理论侧：高维测度、相变阈值、指令依赖。</li>
-<li>方法侧：自适应网格、多目标优化、在线增量。</li>
-<li>应用侧：RLHF、多模态、小语种、持续领域扩展。</li>
-<li>系统侧：自动标签、高效引擎、标准化基准。</li>
-</ol>
-<h2>总结</h2>
-<h3>论文核心贡献（一句话）</h3>
-<p>提出“覆盖率(Coverage)+信息深度(Information Depth)”双因子理论，设计 Information Landscape Approximation (ILA) 算法，用更少指令实现持续上升的微调性能，实现“加速扩展”。</p>
-<hr />
-<h3>1. 问题</h3>
-<ul>
-<li>指令集规模简单堆量收益迅速饱和，现有启发式筛选随数据池增大而失效。</li>
-<li>缺乏对“指令分布如何决定对齐性能”的可量化解释。</li>
-</ul>
-<hr />
-<h3>2. 理论</h3>
-<ul>
-<li>将 SFT 视为在语义空间 S 内向预训练模型提供“额外信息”：<ul>
-<li>Coverage：指令占据的语义区域大小。</li>
-<li>Information Depth：每个区域内最大单点损失下降 δmax。</li>
-</ul>
-</li>
-<li>总收益 ⇔ ∫S IDS dS；线性回归表明 logRID+logSR 可解释 &gt;70% 验证损失方差。</li>
-</ul>
-<hr />
-<h3>3. 方法</h3>
-<ul>
-<li><strong>代理指标</strong><ul>
-<li>深度：RIDj = 1 − q(δj/Tj × #skills) 按域内分位去偏。</li>
-<li>覆盖：SR = 非空网格数（BGE 嵌入 + t-SNE 2D 网格化）。</li>
-</ul>
-</li>
-<li><strong>ILA 算法</strong><ol>
-<li>把原始池 Nori 条映射为 2D 网格。</li>
-<li>按 Nsub 个宏格等分，每格取 RID 最高 1 条。</li>
-<li>保证子集与全池覆盖一致且局部深度最大，天然去冗余。</li>
-</ol>
-</li>
-</ul>
-<hr />
-<h3>4. 实验</h3>
-<table>
-<thead>
-<tr>
-  <th>场景</th>
-  <th>数据规模</th>
-  <th>模型</th>
-  <th>结果</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>通用指令</td>
-  <td>2 M → 10 k-500 k</td>
-  <td>Qwen2-7B / LLaMA-3-8B</td>
-  <td>AlpacaEval-2 &amp; ArenaHard 上同等指令/token 均优于 Random 与 Deita，规模越大差距越大。</td>
-</tr>
-<tr>
-  <td>数学推理</td>
-  <td>650 k → 20 k-100 k</td>
-  <td>Qwen-Math-7B</td>
-  <td>MATH 基准准确率持续提升，Random 在 100 k 出现平台。</td>
-</tr>
-<tr>
-  <td>跨尺度</td>
-  <td>10 k-50 k</td>
-  <td>Qwen2-1.5 B / 3 B / 7 B</td>
-  <td>同一 ILA 子集随模型增大仍单调增益，验证方法模型无关。</td>
-</tr>
-<tr>
-  <td>回归分析</td>
-  <td>36 组子集</td>
-  <td>—</td>
-  <td>logRID+logSR 与 dev-loss R²&gt;0.70；绝对 CE 损失显著劣于 RID。</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3>5. 结论</h3>
-<p>Coverage 与 Information Depth 是指令集影响对齐性能的主导因子；ILA 利用该理论在 10 k-500 k 任意预算下持续优于随机与 SOTA 启发式方法，实现“加速扩展”并可直接迁移至 RLHF 或多模态场景。</p>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.4</span></span>
-                                            <span>置信度: 0.95</span>
-                                            <span>分类: SFT</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">SFT</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2509.06463" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2509.06463" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="tab-RLHF" class="tab-content ">
-                <div class="content-wrapper">
-                    <div class="papers-list" id="papers-list-RLHF">
-                        <!-- 领域汇总分析 -->
-                        
-                        <div class="domain-summary-display">
-                <!-- <h3>📊 领域汇总分析</h3> -->
-                
-                        <!-- 完整汇总内容（单一文本） -->
-                        
-                <div class="summary-section">
-                    <div class="analysis-content"><h3>研究全貌</h3>
-<p>本批次RLHF领域共收录1篇论文，研究方向聚焦于<strong>偏好学习范式的扩展与深化</strong>，核心目标是突破传统成对偏好优化的局限，探索更丰富、更高效的人类反馈利用方式。当前热点问题是如何从简单的“二选一”偏好数据中解放出来，充分利用多选项比较、排序结构等高信息密度反馈形式，以提升模型对齐效率与质量。该研究代表了RLHF领域的一个重要趋势：从<strong>简化的人类偏好建模</strong>向<strong>更贴近真实决策过程的复杂选择行为建模</strong>演进，强调理论框架的统一性与反馈形式的可扩展性，推动对齐技术向更精细、更高效的方向发展。</p>
-<h3>重点方法深度解析</h3>
-<p>本批次最具启发性的工作是：</p>
-<p><strong>《Beyond Pairwise: Empowering LLM Alignment With Ranked Choice Modeling》</strong> <a href="https://arxiv.org/abs/2510.23631" target="_blank" rel="noopener noreferrer">URL</a></p>
-<p>该论文提出了<strong>Ranked Choice Preference Optimization（RCPO）</strong>，旨在解决传统RLHF中仅依赖成对比较导致信息利用率低的问题。现有方法如DPO虽高效，但无法有效利用多于两个候选响应的排序数据（如Top-k排名或多选排序），而人类标注者实际可提供更丰富的偏好结构。RCPO的核心创新在于构建了一个<strong>统一的基于选择建模的最大似然框架</strong>，将LLM对齐与经典经济学中的“选择模型”（Choice Modeling）相结合，支持从成对到多选、从二元选择到完整排序的多种反馈形式。</p>
-<p>技术上，RCPO通过最大似然估计直接优化排序数据的生成概率，支持两类主流选择模型：<strong>效用基础模型</strong>（如Multinomial Logit, MNL）和<strong>距离基础模型</strong>（如Mallows-RMJ）。MNL假设每个响应有潜在效用，选择概率由效用指数加权决定；Mallows模型则衡量排序与“理想排序”之间的距离。RCPO将这些模型嵌入训练目标，使模型能从单次标注中学习到多个响应间的相对顺序关系，显著提升数据效率。例如，在三选一排序中，模型可同时学习到A&gt;B、A&gt;C、B&gt;C等多重比较信号。</p>
-<p>实验在Llama-3-8B-Instruct和Gemma-2-9B-it上进行，使用AlpacaEval 2.0和Arena-Hard等权威基准。结果表明，RCPO在相同数据量下显著优于DPO、SimPO等成对方法，尤其在复杂任务和高竞争性场景中表现更优，验证了利用排序反馈的有效性。该方法特别适用于<strong>高质量人工标注场景</strong>，如专家评审、用户调研、A/B测试扩展为多选项排序等，能够最大化利用高成本获取的反馈数据。</p>
-<h3>实践启示</h3>
-<p>RCPO为大模型对齐提供了更具扩展性的新范式，建议在<strong>标注成本高、反馈质量可控</strong>的应用场景中优先尝试，如金融、医疗、法律等专业领域模型微调。实际落地时，可先从Top-3排序标注入手，逐步替代传统成对标注，提升数据效率。建议结合轻量级标注界面，引导标注者提供排序而非简单二选一。实现时需注意：一是选择模型的选择需与标注行为匹配（如MNL适合独立性较强的选项），二是训练稳定性可能受排序长度影响，建议使用梯度裁剪和学习率预热。总体而言，该研究提示我们：未来对齐不应局限于“更好 vs 更差”，而应系统性挖掘人类决策中的<strong>结构化偏好信息</strong>，RCPO为此提供了坚实的理论与实践起点。</p>
-</div>
-                </div>
-                
-                
-            </div>
-            
-                        
-                        <div class="topic-content">
-                            
-                                
-                                <div class="paper-item-compact" id="paper-item-2510.23631">
-                                    <div class="paper-header" onclick="showPaperDetail('2510.23631', 'RLHF')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Beyond Pairwise: Empowering LLM Alignment With Ranked Choice Modeling
-                                                <a href="https://arxiv.org/abs/2510.23631" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ABeyond%20Pairwise%3A%20Empowering%20LLM%20Alignment%20With%20Ranked%20Choice%20Modeling%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2510.23631&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ABeyond%20Pairwise%3A%20Empowering%20LLM%20Alignment%20With%20Ranked%20Choice%20Modeling%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2510.23631%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Tang, Feng</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文提出了一种名为Ranked Choice Preference Optimization（RCPO）的统一框架，将排序选择建模引入大语言模型对齐，突破了传统成对偏好优化的局限。通过最大似然估计整合多选和Top-k排序反馈，方法兼具理论严谨性与实践有效性，在Llama和Gemma等主流模型上显著优于现有基线。论文创新性强，实验充分，具备良好的可扩展性和跨任务迁移潜力，叙述整体清晰，是LLM对齐领域的重要进展。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.4</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2510.23631" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Beyond Pairwise: Empowering LLM Alignment With Ranked Choice Modeling</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 1 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>该论文针对大语言模型（LLM）对齐阶段普遍依赖“成对偏好”这一局限，提出并系统研究了如何利用更丰富的人类反馈形式——即多候选排序（ranked choice）——来改进对齐效果。具体而言，论文试图解决以下核心问题：</p>
-<ol>
-<li><p>信息损失<br />
-现有方法（RLHF、DPO 及其变种）通常将人工标注的 top-k 或部分排序退化为“仅保留最优-最劣”成对偏好，导致中间排序信息被丢弃。</p>
-</li>
-<li><p>反馈粒度受限<br />
-成对比较只能表达两项之间的相对优劣，无法直接利用标注者给出的“单最佳”或“前 k 名”这种更自然、更细粒度的偏好结构。</p>
-</li>
-<li><p>缺乏统一框架<br />
-不同反馈格式（pairwise、single-best、top-k）在训练目标上彼此割裂，缺少一个能把它们纳入同一训练流程的通用理论框架。</p>
-</li>
-</ol>
-<p>为此，作者提出 <strong>Ranked Choice Preference Optimization（RCPO）</strong>，将 LLM 对齐形式化为“排序选择模型”的最大似然估计问题，使得：</p>
-<ul>
-<li>任意满足正则条件的离散选择或排序选择模型（如 Multinomial Logit、Mallows-RMJ）均可即插即用；</li>
-<li>同一训练目标可直接处理 pairwise、single-best、top-k 等多种反馈，无需额外降采样；</li>
-<li>在 AlpacaEval 2 与 Arena-Hard 基准上，RCPO 相对强基线（DPO、SimPO、IPO 等）取得一致且显著的性能提升，验证了利用 richer ranked feedback 的有效性。</li>
-</ul>
-<h2>相关工作</h2>
-<p>以下研究被论文直接或间接关联，可划分为四大类：<br />
-（按首字母顺序，括号内给出原文引用编号）</p>
-<h3>1. 成对偏好优化与 RLHF</h3>
-<ul>
-<li><strong>RLHF 三阶段范式</strong>：Ziegler et al. (2019) → Stiennon et al. (2020) → Ouyang et al. (2022)</li>
-<li><strong>Direct Preference Optimization</strong>：Rafailov et al. (2023)（DPO）</li>
-<li><strong>DPO 扩展/改进</strong><ul>
-<li>Azar et al. (2024)（IPO）</li>
-<li>Park et al. (2024)（R-DPO，长度解耦）</li>
-<li>Meng et al. (2024)（SimPO，无参考模型 &amp; 长度归一化）</li>
-<li>Gupta et al. (2025)（AlphaPO，f-散度奖励塑形）</li>
-<li>Hong et al. (2024)（ORPO，单模型同时做 SFT+偏好）</li>
-<li>Xu et al. (2024)（CPO，对比式偏好）</li>
-<li>Ethayarajh et al. (2024)（KTO，仅二值反馈）</li>
-<li>Zhao et al. (2023)（SLiC-HF，带 margin 的排序损失）</li>
-<li>Yuan et al. (2023)（RRHF，列表排序蒸馏）</li>
-<li>Song et al. (2024)；Liu et al. (2024)（列表式/排序学习视角）</li>
-</ul>
-</li>
-</ul>
-<h3>2. 离散选择与排序选择建模（经济学/运筹学）</h3>
-<ul>
-<li><strong>Multinomial Logit</strong>：McFadden (1972)</li>
-<li><strong>Nested/Probit/Exponomial</strong>：McFadden (1980)；Daganzo (2014)；Alptekinoğlu &amp; Semple (2016)</li>
-<li><strong>一般吸引模型与马尔可夫链选择</strong>：Gallego et al. (2015)；Blanchet et al. (2016)</li>
-<li><strong>非参数/基于排序的模型</strong>：Farias et al. (2013)；Jagabathula &amp; Venkataraman (2022)</li>
-<li><strong>Mallows 族分布</strong>：Mallows (1957)；Fligner &amp; Verducci (1986)；Feng &amp; Tang (2022, 2023)（RMJ 距离闭式解）</li>
-<li><strong>综述与实证比较</strong>：Train (2009)；Gallego et al. (2019)；Berbeglia et al. (2022)</li>
-</ul>
-<h3>3. 社会选择理论 &amp; AI 对齐</h3>
-<ul>
-<li><strong>概念/公理化研究</strong>：Prasad (2018)；Mishra (2023)；Dai &amp; Fleisig (2024)；Conitzer et al. (2024)；Ge et al. (2024)</li>
-<li><strong>集体宪法 AI</strong>：Huang et al. (2024)（公众投票聚合）</li>
-</ul>
-<h3>4. 数据集与评估基准</h3>
-<ul>
-<li><strong>UltraFeedback</strong>：Cui et al. (2023)（训练用 64k 多响应排序数据）</li>
-<li><strong>AlpacaEval 2</strong>：Dubois et al. (2024)（805 题，GPT-4-Turbo 基准）</li>
-<li><strong>Arena-Hard-v0.1</strong>：Li et al. (2024)（500 题，高区分度技术提示）</li>
-</ul>
-<p>以上工作为 RCPO 提供了：</p>
-<ol>
-<li>成对偏好优化的基线方法与理论出发点；</li>
-<li>离散/排序选择模型的现成概率族与可处理性保证；</li>
-<li>社会选择视角的聚合合理性讨论；</li>
-<li>训练数据与自动评估基准。</li>
-</ol>
-<h2>解决方案</h2>
-<p>论文将“如何利用 richer-than-pairwise 的人类反馈”形式化为一个<strong>可扩展的最大似然估计问题</strong>，并给出从理论到算法的完整路线。核心步骤如下：</p>
-<hr />
-<h3>1. 把 LLM 对齐“翻译”成排序选择建模</h3>
-<ul>
-<li>把 prompt x 看作上下文，把候选响应 y 看作可选商品，把候选集合 S 看作商品陈列架。</li>
-<li>任何满足下列两条件的排序选择模型都能即插即用：<ul>
-<li><strong>A1 奖励充分性</strong>：选择概率仅依赖于各候选的实值奖励 r(x,y)。</li>
-<li><strong>A2 MLE 可估计</strong>：对数似然关于 r(x,y) 有闭式或易求梯度。</li>
-</ul>
-</li>
-<li>由此统一了 pairwise、single-best、top-k 等多种反馈格式，无需再降采样成对。</li>
-</ul>
-<hr />
-<h3>2. 导出“奖励⇄策略”的闭式关系</h3>
-<p>沿用 DPO 的推导：<br />
-$$
-r_{\pi_\theta}(x,y)=\beta\log\frac{\pi_\theta(y|x)}{\pi_{\text{ref}}(y|x)} + \beta\log Z(x)
-$$<br />
-该式把策略 πθ 直接变成奖励，省去单独训练奖励模型与 RL 阶段。</p>
-<hr />
-<h3>3. 给出两类实例模型及对应训练目标</h3>
-<h4>(1) 效用类：Multinomial Logit</h4>
-<ul>
-<li><strong>Single-best</strong><br />
-$$
-\mathcal{L}<em>{\text{MNL-D}}=-\mathbb{E}</em>{(x,S,y_w)}\log\sigma!\left(-\log\sum_{y_i\in S\backslash{y_w}}\exp!\Bigl(\beta\log\frac{\pi_\theta(y_i|x)}{\pi_{\text{ref}}(y_i|x)}-\beta\log\frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)}\Bigr)\right)
-$$</li>
-<li><strong>Top-k</strong><br />
-把上式按序分解为 k 个嵌套 softmax，逐项求和。</li>
-</ul>
-<h4>(2) 排序类：Mallows-RMJ（Reverse-Major-Index 距离）</h4>
-<ul>
-<li>仅依赖相对排名，不依赖奖励绝对差值，对噪声更鲁棒。</li>
-<li><strong>Single-best / Top-k</strong> 目标分别对应式 (10) 与式 (12)，用指示函数统计“排名优于”次数，再以 sigmoid 平滑。</li>
-</ul>
-<hr />
-<h3>4. 实用化技巧</h3>
-<ul>
-<li><strong>分散度 ϕ(x) 估计</strong><br />
-用模型在 x 上的输出熵作为 −logϕ(x) 的代理，无需额外标注。</li>
-<li><strong>梯度友好化</strong><br />
-将不可导的指示函数 I{⋅&lt;0} 换成 σ(−βx)，既保留排序结构又给出连续梯度。</li>
-<li><strong>统一实现</strong><br />
-所有目标均可在现有 transformer 框架内写为“加权 log-sigmoid”形式，支持任意 |S| 与 k。</li>
-</ul>
-<hr />
-<h3>5. 实验验证</h3>
-<ul>
-<li>在 Llama-3-8B-Instruct 与 Gemma-2-9B-it 上，用 UltraFeedback 构造的 top-1/2 数据训练。</li>
-<li>在 AlpacaEval 2 与 Arena-Hard 上，RCPO 所有变体一致优于 DPO、SimPO、IPO 等强基线；最佳模型 Mallows-RMJ-PO-Top-2 在 AlpacaEval WR 上领先最强基线 19.5 个百分点。</li>
-</ul>
-<hr />
-<p>通过以上五步法，论文把“如何直接利用 richer ranked feedback”转化为“选好排序模型→写出 MLE→平滑梯度→训练”，从而系统性地解决了成对方法的信息损失与反馈粒度受限问题。</p>
-<h2>实验验证</h2>
-<p>实验部分围绕“ richer-than-pairwise 反馈是否真能提高对齐效果”展开，采用标准基线模型 + 公开偏好数据 + 主流自动评测框架，共包含以下关键内容：</p>
-<hr />
-<h3>1 实验设计概览</h3>
-<table>
-<thead>
-<tr>
-  <th>维度</th>
-  <th>设置</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td><strong>基座模型</strong></td>
-  <td>Llama-3-8B-Instruct、Gemma-2-9B-it（旗舰指令模型，验证跨模型泛化）</td>
-</tr>
-<tr>
-  <td><strong>训练数据</strong></td>
-  <td>UltraFeedback 64 k prompt，每 prompt 采样 5 个回答，用 Skywork-Reward-V2-Llama-3.1-8B 打分并生成完整排序；按需截断为 top-1（single-best）或 top-2 格式</td>
-</tr>
-<tr>
-  <td><strong>评测基准</strong></td>
-  <td>AlpacaEval 2（805 题，vs GPT-4-Turbo）与 Arena-Hard-v0.1（500 技术题，vs GPT-4-0314）；主裁判 GPT-4.1-mini，补充 GPT-5-mini 做交叉裁判鲁棒性检验</td>
-</tr>
-<tr>
-  <td><strong>指标</strong></td>
-  <td>AlpacaEval：长度控制胜率 LC、原始胜率 WR；Arena-Hard：WR（95% CI）</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3>2 训练方法（8 种对齐算法）</h3>
-<table>
-<thead>
-<tr>
-  <th>类别</th>
-  <th>具体方法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td><strong>已有 pairwise 基线</strong></td>
-  <td>DPO、R-DPO、SimPO</td>
-</tr>
-<tr>
-  <td><strong>RCPO 新变体（本文）</strong></td>
-  <td>MNL-PO-Discrete / Top-2、Mallows-RMJ-PO-Pairwise / Discrete / Top-2</td>
-</tr>
-</tbody>
-</table>
-<p>所有方法统一用 β = 2.0，学习率 5 × 10⁻⁷，batch 512，训练 1 epoch，其余超参与开源仓库保持一致。</p>
-<hr />
-<h3>3 主要结果</h3>
-<h4>3.1 Llama-3-8B-Instruct</h4>
-<table>
-<thead>
-<tr>
-  <th>Method</th>
-  <th>AlpacaEval LC ↑</th>
-  <th>AlpacaEval WR ↑</th>
-  <th>Arena-Hard WR ↑</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>最佳非 RCPO 基线（IPO）</td>
-  <td>37.95</td>
-  <td>33.51</td>
-  <td>31.0</td>
-</tr>
-<tr>
-  <td><strong>Mallows-RMJ-PO-Top-2</strong></td>
-  <td><strong>41.95</strong></td>
-  <td><strong>53.01</strong></td>
-  <td><strong>37.2</strong></td>
-</tr>
-<tr>
-  <td>相对增益</td>
-  <td>+4.00</td>
-  <td>+19.5</td>
-  <td>+6.2</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>所有 8 种“选择模型式”目标均优于传统 pairwise 方法。</li>
-<li>同一奖励函数下，top-2 训练普遍高于 top-1，验证了 richer feedback 的价值。</li>
-<li>Mallows-RMJ 类在 pairwise 设置就已领先多数基线，加入 top-2 后优势进一步扩大。</li>
-</ul>
-<h4>3.2 Gemma-2-9B-it（鲁棒性检验）</h4>
-<table>
-<thead>
-<tr>
-  <th>Method</th>
-  <th>AlpacaEval LC</th>
-  <th>AlpacaEval WR</th>
-  <th>Arena-Hard WR</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>SimPO</td>
-  <td>54.11</td>
-  <td>47.23</td>
-  <td>57.4</td>
-</tr>
-<tr>
-  <td>DPO</td>
-  <td>58.01</td>
-  <td>56.13</td>
-  <td>59.9</td>
-</tr>
-<tr>
-  <td><strong>Mallows-RMJ-PO-Top-2</strong></td>
-  <td>55.64</td>
-  <td><strong>59.82</strong></td>
-  <td><strong>60.9</strong></td>
-</tr>
-</tbody>
-</table>
-<p>趋势与 Llama-3 一致，说明 RCPO 对基座模型不敏感。</p>
-<h4>3.3 交叉裁判稳健性</h4>
-<p>换用 GPT-5-mini 做 Arena-Hard 裁判，RCPO 各变体仍保持显著领先，排除了“裁判偏差”导致胜率虚高的可能。</p>
-<hr />
-<h3>4 消融与深入分析</h3>
-<ul>
-<li><strong>反馈长度影响</strong>：top-1 → top-2 带来一致提升；作者未继续 top-3/全排序，因实验显示噪声-信息权衡趋于饱和。</li>
-<li><strong>选择模型影响</strong>：固定奖励函数形式 (2) 时，Mallows-RMJ 在 pairwise 阶段就优于 MNL，且对 top-k 更友好，符合其“仅依赖序关系、对噪声鲁棒”的理论特性。</li>
-<li><strong>梯度行为</strong>：论文附录 E 给出解析梯度，显示 Mallows-RMJ-Top-k 会<br />
-① 对排序靠前位置放大权重，<br />
-② 对“奖励差距小”的比较给予更大更新，<br />
-③ 对低分散度（高置信）prompt 放大整体步长，从而精细地拉开候选间距。</li>
-</ul>
-<hr />
-<h3>5 定性样例</h3>
-<p>附录 G 提供 4 组并排案例（SAT 词义、Excel 函数、开放问答、方程求解），显示 RCPO 模型在正确性、细节丰富度与错误选项排除上均优于 DPO，与自动指标结果互为印证。</p>
-<hr />
-<p>综上，实验从<strong>跨模型一致性、跨裁判鲁棒性、反馈粒度消融、梯度行为解析到人工样例</strong>五个层面，系统验证了“采用排序选择模型直接利用 top-k 偏好”这一思路在真实场景下的有效性与通用性。</p>
-<h2>未来工作</h2>
-<p>以下方向可视为 RCPO 框架的自然延伸，亦是目前实验与理论尚未充分覆盖的开放问题：</p>
-<hr />
-<h3>1 反馈粒度与噪声权衡</h3>
-<ul>
-<li><strong>top-k 最优 k 值</strong>：实验停在 k=2，继续增大 k 或采用完整排序是否会因标注噪声而收益递减？可建立“信息-噪声比”随 k 变化的定量模型。</li>
-<li><strong>自适应 k(x)</strong>：对易混淆 prompt 自动降低 k，对高一致 prompt 提高 k，实现动态粒度。</li>
-</ul>
-<hr />
-<h3>2 更复杂的排序/选择模型</h3>
-<ul>
-<li><strong>嵌套 Logit、Mixed MNL</strong>：捕捉候选间的层次或混合偏好结构，适用于多轮对话、多模态候选。</li>
-<li><strong>Plackett-Luce 扩展</strong>：支持“列表级”梯度，理论上与 top-k 损失更匹配。</li>
-<li><strong>神经排序模型</strong>：如 DLCM、SetTransformer-based ranker，将中央排序 µ₀ 或效用 ν 直接参数化为神经网，放弃闭式概率，改用可微分排序算子。</li>
-</ul>
-<hr />
-<h3>3 奖励函数与散度泛化</h3>
-<ul>
-<li><strong>f-散度族</strong>：RCPO 目前使用 KL 散度对应的 β-log-ratio 奖励，可系统尝试 χ²、Reverse-KL、α-divergence 等，观察与不同选择模型的耦合效果。</li>
-<li><strong>长度、风格惩罚解耦</strong>：在奖励端引入可学习的长度惩罚或重复惩罚，与选择模型“正交”地控制生成质量。</li>
-</ul>
-<hr />
-<h3>4 在线与主动学习</h3>
-<ul>
-<li><strong>主动选择集合 S</strong>：借鉴最优实验设计，动态挑选最具信息增益的 |S| 个候选供标注，减少总标注量。</li>
-<li><strong>在线 bandit 反馈</strong>：将 RCPO 与 RL 的 policy-gradient 结合，直接利用用户真实交互（点击、停留）进行持续对齐，而非一次性离线标注。</li>
-</ul>
-<hr />
-<h3>5 多目标与多群体偏好聚合</h3>
-<ul>
-<li><strong>多属性排序</strong>：事实性、无害性、风格等多维度同时标注，扩展 P(µₖ|S;x) 到向量奖励。</li>
-<li><strong>社会选择规则</strong>：不同群体给出不同 top-k，如何用 Copeland、Kemeny-Young 等规则聚合，再反传到模型？可连接社会选择理论与梯度下降。</li>
-</ul>
-<hr />
-<h3>6 模型容量与训练策略</h3>
-<ul>
-<li><strong>大模型 scaling law</strong>：RCPO 收益是否随模型规模增大而放大？需要在 70 B+ 模型上验证。</li>
-<li><strong>两阶段 vs 端到端</strong>：先 SFT 再 RCPO 与一次性混合训练的样本效率对比。</li>
-<li><strong>低秩微调</strong>：LoRA/QLoRA 环境下，选择模型梯度是否与生成参数存在冲突，需设计分离或共享策略。</li>
-</ul>
-<hr />
-<h3>7 评测与可信性</h3>
-<ul>
-<li><strong>人类-模型一致性</strong>：自动裁判（GPT-4.1/5-mini）与真人偏好是否对 RCPO 更有利？需补充真人 A/B 实验。</li>
-<li><strong>鲁棒性与安全性</strong>：RCPO  sharper 的排序区分是否会导致模型更容易被越狱或产生过度自信？需结合红队测试。</li>
-</ul>
-<hr />
-<h3>8 计算与系统优化</h3>
-<ul>
-<li><strong>梯度压缩</strong>：top-k 损失涉及 |S|² 量级的对比，需设计近似采样或负采样策略，降低大 |S| 时的 GPU 内存。</li>
-<li><strong>并行标注系统</strong>：构建支持“一次给标注者展示 5–10 个候选并拖放排序”的数据采集平台，低成本获取大规模真实 top-k 标签。</li>
-</ul>
-<hr />
-<h3>9 跨模态与跨任务</h3>
-<ul>
-<li><strong>多模态候选</strong>：图文混合、视频脚本、代码+注释等异构候选如何定义“排序”？需要设计跨模态选择模型。</li>
-<li><strong>任务特定结构</strong>：代码生成（通过单元测试数量）、数学推理（通过证明步数）等可自然产生 top-k 结果，RCPO 可直接利用这些自动排序信号进行自对齐。</li>
-</ul>
-<hr />
-<h3>10 理论深化</h3>
-<ul>
-<li><strong>一致性/收敛率</strong>：在何种条件下，RCPO 的 MLE 估计对真实奖励函数收敛？可借鉴 Manski-McFadden 的离散选择渐近理论。</li>
-<li><strong>与逆强化学习关系</strong>：当标注噪声服从 Mallows 或 MNL 时，RCPO 是否等价于某种 IRL 算法？探索二者形式上的对偶性。</li>
-</ul>
-<hr />
-<p>综上，RCPO 把“排序选择模型 × LLM 对齐”的框架搭好，但离“全自动、多目标、在线持续”的终极对齐系统仍有广阔探索空间。</p>
-<h2>总结</h2>
-<h1>论文核心速览</h1>
-<hr />
-<h2>1 背景与痛点</h2>
-<ul>
-<li>现有 LLM 对齐（RLHF/DPO）只利用“成对偏好” y_w≻y_l，人工标注常给出 top-k 或部分排序，降采样成对→信息丢失。</li>
-<li>缺乏统一框架直接消费 richer feedback。</li>
-</ul>
-<hr />
-<h2>2 Ranked Choice Preference Optimization（RCPO）</h2>
-<p><strong>思想</strong>：把 prompt x 视为上下文，候选响应集合 S 视为商品，人类选择视为离散/排序选择模型；对齐即最大化选择模型的似然。</p>
-<p><strong>两步公式化</strong>：</p>
-<ol>
-<li>奖励-策略闭式：r(x,y)=β log π_θ(y|x)/π_ref(y|x)</li>
-<li>任意选择模型 g 的 MLE：
-max_πθ Σ log g(μ_k, S, {r(x,y)}_y∈S)</li>
-</ol>
-<p><strong>即插即用</strong>：满足“奖励充分性+MLE 可估计”的任何选择模型都能嵌入。</p>
-<hr />
-<h2>3 实例化</h2>
-<table>
-<thead>
-<tr>
-  <th>类别</th>
-  <th>模型</th>
-  <th>反馈格式</th>
-  <th>训练目标（摘要）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td><strong>效用类</strong></td>
-  <td>Multinomial Logit</td>
-  <td>single-best / top-k</td>
-  <td>嵌套 softmax + sigmoid 似然（式7/9）</td>
-</tr>
-<tr>
-  <td><strong>排序类</strong></td>
-  <td>Mallows-RMJ</td>
-  <td>pairwise / single / top-k</td>
-  <td>仅依赖相对排名，指数衰减概率（式10/12）</td>
-</tr>
-</tbody>
-</table>
-<p>实用技巧：</p>
-<ul>
-<li>用输出熵估计分散度 ϕ(x)</li>
-<li>指示函数→sigmoid 平滑，保证梯度</li>
-</ul>
-<hr />
-<h2>4 实验</h2>
-<p><strong>基座</strong>：Llama-3-8B-Instruct &amp; Gemma-2-9B-it<br />
-<strong>数据</strong>：UltraFeedback 64 k prompt→5 回答→AI 裁判排序→截断 top-1/2<br />
-<strong>评测</strong>：AlpacaEval 2 &amp; Arena-Hard（GPT-4.1/5-mini 裁判）</p>
-<p><strong>结果</strong>：</p>
-<ul>
-<li>8 种 RCPO 变体全部优于 DPO/SimPO/IPO 等强基线</li>
-<li>最佳模型 Mallows-RMJ-PO-Top-2 较最强非 RCPO 基线<ul>
-<li>AlpacaEval WR +19.5%</li>
-<li>Arena-Hard WR +6.2%</li>
-</ul>
-</li>
-<li>top-2 普遍优于 top-1；Mallows-RMJ 对噪声更鲁棒，跨模型一致领先</li>
-</ul>
-<hr />
-<h2>5 贡献清单</h2>
-<ol>
-<li>统一视角：首次将 LLM 对齐表述为（排序）选择模型 MLE，涵盖 pairwise/single/top-k。</li>
-<li>实用框架：RCPO 支持任意选择模型，给出 MNL 与 Mallows-RMJ 的完整训练目标与梯度分析。</li>
-<li>显著效果：在主流模型与基准上验证 richer feedback 带来的持续性能提升。</li>
-</ol>
-<hr />
-<h2>一句话总结</h2>
-<p>RCPO 用“排序选择模型+MLE”把各类人类排序信号直接喂给 LLM，对齐效果更好、理论更通用、实现即插即用。</p>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.4</span></span>
-                                            <span>置信度: 0.95</span>
-                                            <span>分类: RLHF</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">RLHF</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2510.23631" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2510.23631" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
             <div id="tab-Hallucination" class="tab-content ">
                 <div class="content-wrapper">
                     <div class="papers-list" id="papers-list-Hallucination">
@@ -8807,6 +8992,11 @@ max_πθ Σ log g(μ_k, S, {r(x,y)}_y∈S)</li>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 HACK: Hallucinations Along Certainty and Knowledge Axes
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.24222"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.24222", "authors": ["Simhi", "Herzig", "Itzhak", "Arad", "Gekhman", "Reichart", "Barez", "Stanovsky", "Szpektor", "Belinkov"], "id": "2510.24222", "pdf_url": "https://arxiv.org/pdf/2510.24222", "rank": 8.5, "title": "HACK: Hallucinations Along Certainty and Knowledge Axes"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.24222" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9016,6 +9206,11 @@ max_πθ Σ log g(μ_k, S, {r(x,y)}_y∈S)</li>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 STAR-Bench: Probing Deep Spatio-Temporal Reasoning as Audio 4D Intelligence
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.24693"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.24693", "authors": ["Liu", "Niu", "Xiao", "Zheng", "Yuan", "Zang", "Cao", "Dong", "Liang", "Chen", "Sun", "Lin", "Wang"], "id": "2510.24693", "pdf_url": "https://arxiv.org/pdf/2510.24693", "rank": 8.5, "title": "STAR-Bench: Probing Deep Spatio-Temporal Reasoning as Audio 4D Intelligence"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.24693" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9877,6 +10072,11 @@ max_πθ Σ log g(μ_k, S, {r(x,y)}_y∈S)</li>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 A Unified Geometric Space Bridging AI Models and the Human Brain
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.24342"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.24342", "authors": ["Chen", "Chen", "Wang", "Wang", "Jia", "Kendrick", "Zhang", "Zhao", "Yao", "Liu", "Jiang"], "id": "2510.24342", "pdf_url": "https://arxiv.org/pdf/2510.24342", "rank": 8.428571428571429, "title": "A Unified Geometric Space Bridging AI Models and the Human Brain"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.24342" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -10072,6 +10272,11 @@ max_πθ Σ log g(μ_k, S, {r(x,y)}_y∈S)</li>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 OmniVinci: Enhancing Architecture and Data for Omni-Modal Understanding LLM
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.15870"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.15870", "authors": ["Ye", "Yang", "Goel", "Huang", "Zhu", "Su", "Lin", "Cheng", "Wan", "Tian", "Lou", "Yang", "Liu", "Chen", "Dantrey", "Jahangiri", "Ghosh", "Xu", "Hosseini-Asl", "Taheri", "Murali", "Liu", "Lu", "Olabiyi", "Wang", "Valle", "Catanzaro", "Tao", "Han", "Kautz", "Yin", "Molchanov"], "id": "2510.15870", "pdf_url": "https://arxiv.org/pdf/2510.15870", "rank": 8.357142857142858, "title": "OmniVinci: Enhancing Architecture and Data for Omni-Modal Understanding LLM"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.15870" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -11023,6 +11228,11 @@ OmniVinci 用“对齐网络+时间编码+自循环数据引擎”把全模态�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 OmniResponse: Online Multimodal Conversational Response Generation in Dyadic Interactions
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.21724"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.21724", "authors": ["Luo", "Wang", "Li", "Song", "Ghanem"], "id": "2505.21724", "pdf_url": "https://arxiv.org/pdf/2505.21724", "rank": 8.357142857142858, "title": "OmniResponse: Online Multimodal Conversational Response Generation in Dyadic Interactions"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2505.21724" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -11190,6 +11400,11 @@ OmniVinci 用“对齐网络+时间编码+自循环数据引擎”把全模态�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 SafeVision: Efficient Image Guardrail with Robust Policy Adherence and Explainability
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.23960"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.23960", "authors": ["Xu", "Pan", "Chen", "Yang", "Xiao", "Li"], "id": "2510.23960", "pdf_url": "https://arxiv.org/pdf/2510.23960", "rank": 8.357142857142858, "title": "SafeVision: Efficient Image Guardrail with Robust Policy Adherence and Explainability"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.23960" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -11855,6 +12070,11 @@ LAION-400 M → SigLIP 初筛 → 4-VLM 一致性精筛 → 6 组 QA 防过拟�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MDP3: A Training-free Approach for List-wise Frame Selection in Video-LLMs
+                                                <button class="mark-button" 
+                                                        data-paper-id="2501.02885"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2501.02885", "authors": ["Sun", "Lu", "Wang", "Chen", "Xu", "Luo", "Zhang", "Li"], "id": "2501.02885", "pdf_url": "https://arxiv.org/pdf/2501.02885", "rank": 8.357142857142858, "title": "MDP3: A Training-free Approach for List-wise Frame Selection in Video-LLMs"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2501.02885" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -12187,6 +12407,11 @@ LAION-400 M → SigLIP 初筛 → 4-VLM 一致性精筛 → 6 组 QA 防过拟�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 DrVoice: Parallel Speech-Text Voice Conversation Model via Dual-Resolution Speech Representations
+                                                <button class="mark-button" 
+                                                        data-paper-id="2506.09349"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2506.09349", "authors": ["Tan", "Chen", "Wang", "Deng", "Zhang", "Cheng", "Yu", "Zhang", "Lv", "Zhao", "Zhang", "Ma", "Chen", "Wang", "Liu", "Li", "Ye"], "id": "2506.09349", "pdf_url": "https://arxiv.org/pdf/2506.09349", "rank": 8.357142857142858, "title": "DrVoice: Parallel Speech-Text Voice Conversation Model via Dual-Resolution Speech Representations"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2506.09349" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -12375,7 +12600,7 @@ $$
         <!-- Footer with filter info -->
         
         <div class="footer">
-            主题筛选: Finance, RLHF, Hallucination, SFT, Agent, Multimodal | 状态: 已启用
+            主题筛选: Finance, Agent, SFT, Multimodal, Pretraining, Hallucination, RLHF | 状态: 已启用
         </div>
         
         </div>
@@ -12385,7 +12610,10 @@ $$
     <div class="detail-panel" id="detailPanel">
         <div class="detail-panel-header">
             <span class="detail-panel-title">论文详情</span>
-            <button class="detail-panel-close" onclick="closeDetailPanel()">✕</button>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="mark-button" id="detailPanelMarkButton" onclick="handleDetailPanelMark(event);" title="标记这篇论文">☆</button>
+                <button class="detail-panel-close" onclick="closeDetailPanel()">✕</button>
+            </div>
         </div>
         <div class="detail-panel-content" id="detailPanelContent">
             <!-- 动态加载论文详情 -->
@@ -12397,7 +12625,10 @@ $$
         <div class="mobile-modal-content" onclick="event.stopPropagation()">
             <div class="mobile-modal-header">
                 <span class="detail-panel-title">论文详情</span>
-                <button class="mobile-modal-close" onclick="closeMobileModal()">✕</button>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="mark-button" id="mobileModalMarkButton" onclick="handleMobileModalMark(event);" title="标记这篇论文">☆</button>
+                    <button class="mobile-modal-close" onclick="closeMobileModal()">✕</button>
+                </div>
             </div>
             <div class="mobile-modal-body" id="mobileModalContent">
                 <!-- 动态加载论文详情 -->
@@ -12407,6 +12638,243 @@ $$
 
     <script>
         let currentPaperId = null;
+        let currentPaperData = null;
+
+        // ========== 标记功能 ==========
+        
+        // 获取所有标记的论文
+        function getMarkedPapers() {
+            try {
+                const stored = localStorage.getItem('markedPapers');
+                return stored ? JSON.parse(stored) : [];
+            } catch (e) {
+                console.error('读取标记论文失败:', e);
+                return [];
+            }
+        }
+        
+        // 保存标记的论文
+        function saveMarkedPapers(papers) {
+            try {
+                localStorage.setItem('markedPapers', JSON.stringify(papers));
+            } catch (e) {
+                console.error('保存标记论文失败:', e);
+            }
+        }
+        
+        // 检查论文是否已标记
+        function isMarked(paperId) {
+            const markedPapers = getMarkedPapers();
+            return markedPapers.some(p => p.id === paperId);
+        }
+        
+        // 获取论文的完整信息（从页面中提取）
+        function getPaperData(paperId, basicData) {
+            // 从subtitle中提取日期
+            const subtitle = document.querySelector('.header p');
+            let date = '未知';
+            if (subtitle) {
+                const dateMatch = subtitle.textContent.match(/(\d{4}-\d{2}-\d{2})/);
+                if (dateMatch) {
+                    date = dateMatch[1];
+                }
+            }
+            
+            // 获取报告路径（相对路径）
+            // 如果路径包含web/reports，提取web/reports之后的部分
+            // 否则使用完整路径
+            let reportPath = window.location.pathname.replace(/^\/+/, '');
+            const webReportsMatch = reportPath.match(/web\/reports\/(.+)$/);
+            if (webReportsMatch) {
+                reportPath = webReportsMatch[1];
+            } else {
+                // 尝试提取reports之后的部分
+                const reportsMatch = reportPath.match(/reports\/(.+)$/);
+                if (reportsMatch) {
+                    reportPath = reportsMatch[1];
+                }
+            }
+            
+            return {
+                id: paperId,
+                title: basicData.title || '',
+                authors: basicData.authors || [],
+                arxiv_url: basicData.arxiv_url || '',
+                pdf_url: basicData.pdf_url || '',
+                rank: basicData.rank || null,
+                date: date,
+                reportPath: reportPath,
+                markedAt: new Date().toISOString()
+            };
+        }
+        
+        // 切换标记状态
+        function toggleMark(paperId, paperData) {
+            const markedPapers = getMarkedPapers();
+            const isCurrentlyMarked = isMarked(paperId);
+            
+            if (isCurrentlyMarked) {
+                // 取消标记
+                const filtered = markedPapers.filter(p => p.id !== paperId);
+                saveMarkedPapers(filtered);
+                updateMarkButtonState(paperId, false);
+            } else {
+                // 添加标记
+                const fullPaperData = getPaperData(paperId, paperData);
+                markedPapers.push(fullPaperData);
+                saveMarkedPapers(markedPapers);
+                updateMarkButtonState(paperId, true);
+            }
+        }
+        
+        // 更新标记按钮状态
+        function updateMarkButtonState(paperId, isMarked) {
+            // 更新列表中的按钮
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            if (listButton) {
+                listButton.textContent = isMarked ? '⭐' : '☆';
+                listButton.classList.toggle('marked', isMarked);
+            }
+            
+            // 更新详情面板中的按钮
+            if (currentPaperId === paperId) {
+                const detailButton = document.getElementById('detailPanelMarkButton');
+                const mobileButton = document.getElementById('mobileModalMarkButton');
+                
+                if (detailButton) {
+                    detailButton.textContent = isMarked ? '⭐' : '☆';
+                    detailButton.classList.toggle('marked', isMarked);
+                }
+                if (mobileButton) {
+                    mobileButton.textContent = isMarked ? '⭐' : '☆';
+                    mobileButton.classList.toggle('marked', isMarked);
+                }
+            }
+        }
+        
+        // 处理列表中的标记点击（从按钮元素获取数据）
+        function handleMarkClickFromButton(button) {
+            const paperId = button.getAttribute('data-paper-id');
+            const paperDataStr = button.getAttribute('data-paper-data');
+            try {
+                const paperData = JSON.parse(paperDataStr);
+                toggleMark(paperId, paperData);
+            } catch (e) {
+                console.error('解析论文数据失败:', e);
+            }
+        }
+        
+        // 处理详情面板中的标记点击
+        function handleDetailPanelMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 处理移动端弹窗中的标记点击
+        function handleMobileModalMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 初始化标记状态（页面加载时）
+        function initMarkStates() {
+            const markedPapers = getMarkedPapers();
+            const markedIds = new Set(markedPapers.map(p => p.id));
+            
+            // 更新所有标记按钮的状态
+            document.querySelectorAll('.mark-button[data-paper-id]').forEach(button => {
+                const paperId = button.getAttribute('data-paper-id');
+                if (markedIds.has(paperId)) {
+                    button.textContent = '⭐';
+                    button.classList.add('marked');
+                } else {
+                    button.textContent = '☆';
+                    button.classList.remove('marked');
+                }
+            });
+        }
 
         // 切换标签页
         function showTab(tabId, event) {
@@ -12433,6 +12901,49 @@ $$
             }
         }
 
+        // 从DOM元素中提取论文数据
+        function extractPaperDataFromDOM(paperItem, paperId) {
+            if (!paperItem) return null;
+            
+            const paperTitleEl = paperItem.querySelector('.paper-title');
+            const paperAuthorsEl = paperItem.querySelector('.paper-authors');
+            const paperScoreEl = paperItem.querySelector('.paper-score');
+            const arxivLinkEl = paperItem.querySelector('.arxiv-link');
+            
+            // 提取标题，去除标记按钮和链接
+            let title = '';
+            if (paperTitleEl) {
+                title = paperTitleEl.cloneNode(true);
+                // 移除按钮和链接
+                title.querySelectorAll('.mark-button, .arxiv-link, .ai-links').forEach(el => el.remove());
+                title = title.textContent.trim();
+            }
+            
+            return {
+                id: paperId,
+                title: title || '',
+                authors: paperAuthorsEl ? paperAuthorsEl.textContent.split(',').map(a => a.trim()) : [],
+                arxiv_url: arxivLinkEl ? arxivLinkEl.href : '',
+                pdf_url: arxivLinkEl ? arxivLinkEl.href.replace('/abs/', '/pdf/') : '',
+                rank: paperScoreEl && paperScoreEl.textContent !== 'N/A' ? parseFloat(paperScoreEl.textContent) : null
+            };
+        }
+
+        // 渲染元素中的数学公式
+        function renderMathInElementLocal(element) {
+            if (typeof renderMathInElement !== 'undefined' && element) {
+                renderMathInElement(element, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
         // 显示论文详情
         function showPaperDetail(paperId, topicId) {
             const detailsContent = document.getElementById('details-' + paperId);
@@ -12449,6 +12960,43 @@ $$
             
             currentPaperId = paperId;
             
+            // 从列表项中提取论文数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            
+            // 优先从列表按钮的data属性获取数据
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        currentPaperData = JSON.parse(paperDataStr);
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                        // 如果解析失败，从页面元素提取
+                        currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                    }
+                } else {
+                    // 如果没有data属性，从页面元素提取
+                    currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                }
+            } else {
+                // 如果找不到列表按钮，从页面元素提取
+                currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+            }
+            
+            // 更新详情面板中的标记按钮状态
+            const isCurrentlyMarked = isMarked(paperId);
+            const detailButton = document.getElementById('detailPanelMarkButton');
+            const mobileButton = document.getElementById('mobileModalMarkButton');
+            
+            if (detailButton) {
+                detailButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                detailButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            if (mobileButton) {
+                mobileButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                mobileButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            
             // 检测设备类型
             const isMobile = window.innerWidth <= 1024;
             
@@ -12456,12 +13004,16 @@ $$
                 // 移动端：显示弹窗
                 const modalContent = document.getElementById('mobileModalContent');
                 modalContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(modalContent);
                 document.getElementById('mobileModal').classList.add('active');
                 document.body.style.overflow = 'hidden'; // 禁止背景滚动
             } else {
                 // 宽屏：显示右侧面板
                 const panelContent = document.getElementById('detailPanelContent');
                 panelContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(panelContent);
                 document.getElementById('detailPanel').classList.add('active');
                 
                 // 调整论文列表宽度
@@ -12523,6 +13075,7 @@ $$
                     if (detailsContent) {
                         const modalContent = document.getElementById('mobileModalContent');
                         modalContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(modalContent);
                         mobileModal.classList.add('active');
                         document.body.style.overflow = 'hidden';
                     }
@@ -12534,6 +13087,7 @@ $$
                     if (detailsContent) {
                         const panelContent = document.getElementById('detailPanelContent');
                         panelContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(panelContent);
                         detailPanel.classList.add('active');
                     }
                 }
@@ -12545,6 +13099,45 @@ $$
             const firstNavItem = document.querySelector('.nav-item');
             if (firstNavItem) {
                 firstNavItem.classList.add('active');
+            }
+            
+            // 初始化标记状态
+            initMarkStates();
+            
+            // 检查URL hash，如果包含paper-item-xxx，自动打开该论文详情
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#paper-item-')) {
+                const paperId = hash.replace('#paper-item-', '');
+                // 查找该论文所在的topic
+                const paperItem = document.getElementById('paper-item-' + paperId);
+                if (paperItem) {
+                    // 找到论文所在的tab
+                    const tabContent = paperItem.closest('.tab-content');
+                    if (tabContent) {
+                        const tabId = tabContent.id.replace('tab-', '');
+                        // 切换到对应的tab
+                        showTab(tabId, null);
+                        // 延迟一下，确保tab切换完成后再显示详情
+                        setTimeout(() => {
+                            showPaperDetail(paperId, tabId);
+                            // 滚动到论文位置
+                            paperItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
+                    }
+                }
+            }
+            
+            // 初始化KaTeX自动渲染数学公式
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
             }
         });
 

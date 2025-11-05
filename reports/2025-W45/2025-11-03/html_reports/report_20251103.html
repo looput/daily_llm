@@ -1096,8 +1096,88 @@
             .detail-panel {
                 display: none !important;
             }
+            
+            /* 移动端优化领域汇总显示，去掉双层嵌套效果 */
+            .domain-summary-display {
+                background: white;
+                border: 1px solid #e8e8e8;
+                padding: 12px 16px;
+                margin-bottom: 20px;
+            }
+            
+            .domain-summary-display .summary-section,
+            .domain-summary-display .insights-section,
+            .domain-summary-display .trends-section {
+                background: transparent;
+                border: none;
+                border-radius: 0;
+                padding: 0;
+                margin: 0;
+            }
+        }
+        
+        /* KaTeX数学公式样式 */
+        .katex {
+            font-size: 1.1em;
+        }
+        
+        .katex-display {
+            margin: 1em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        
+        .katex-display > .katex {
+            white-space: nowrap;
+        }
+        
+        /* 标记按钮样式 */
+        .mark-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            color: #999;
+            transition: all 0.2s;
+            border-radius: 4px;
+            padding: 0;
+            margin-left: 8px;
+            flex-shrink: 0;
+            vertical-align: middle;
+        }
+        
+        .mark-button:hover {
+            background: #f5f5f5;
+            color: #ffa500;
+            transform: scale(1.1);
+        }
+        
+        .mark-button.marked {
+            color: #ffa500;
+        }
+        
+        .mark-button.marked:hover {
+            color: #ff8c00;
+        }
+        
+        .paper-title .mark-button {
+            margin-left: 8px;
+        }
+        
+        .detail-panel-header .mark-button,
+        .mobile-modal-header .mark-button {
+            margin-right: 8px;
         }
     </style>
+    <!-- KaTeX数学公式渲染库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
 </head>
 <body>
     <!-- 移动端菜单按钮 -->
@@ -1116,15 +1196,15 @@
             <nav class="sidebar-nav">
                 
                 <a class="nav-item active" 
-                   onclick="showTab('Agent', event)">
-                    智能体（Agent）
-                    <span class="nav-item-count">18</span>
-                </a>
-                
-                <a class="nav-item " 
                    onclick="showTab('RLHF', event)">
                     强化学习对齐（RLHF）
                     <span class="nav-item-count">2</span>
+                </a>
+                
+                <a class="nav-item " 
+                   onclick="showTab('Agent', event)">
+                    智能体（Agent）
+                    <span class="nav-item-count">18</span>
                 </a>
                 
                 <a class="nav-item " 
@@ -1146,12 +1226,650 @@
         <div class="container">
             <div class="header">
                 <h1>大模型论文速读（30/452）</h1>
-                <p>生成时间: 2025-11-04</p>
+                <p>日报: 2025-11-03 | 生成时间: 2025-11-05</p>
             </div>
             
             <!-- Tab Contents -->
             
-            <div id="tab-Agent" class="tab-content active">
+            <div id="tab-RLHF" class="tab-content active">
+                <div class="content-wrapper">
+                    <div class="papers-list" id="papers-list-RLHF">
+                        <!-- 领域汇总分析 -->
+                        
+                        <div class="domain-summary-display">
+                <!-- <h3>📊 领域汇总分析</h3> -->
+                
+                        <!-- 完整汇总内容（单一文本） -->
+                        
+                <div class="summary-section">
+                    <div class="analysis-content"><h3>研究全貌</h3>
+<p>本批次RLHF领域共收录2篇论文，研究方向主要集中在<strong>奖励模型的公平性</strong>与<strong>偏好对齐的精细化控制</strong>两个维度。前者关注奖励模型在人类偏好学习过程中可能引入的系统性偏见，尤其是由输入文本中非语义性前缀（如身份标识）引发的歧视性偏好；后者则聚焦于优化偏好对齐过程中的训练机制，提升模型对关键语义单元的敏感度。当前热点问题是如何在提升模型对齐效果的同时，保障其决策的公平性与可控性。整体趋势显示，RLHF研究正从“粗粒度整体对齐”向“细粒度、可解释、低偏见”的精细化对齐演进。</p>
+<h3>重点方法深度解析</h3>
+<p>本批次中，以下两篇论文提出了极具启发性的新方法：</p>
+<p><strong>《Detecting Prefix Bias in LLM-based Reward Models》</strong> <a href="https://arxiv.org/abs/2505.13487" target="_blank" rel="noopener noreferrer">URL</a><br />
+该论文首次系统性地提出并量化“前缀偏见”问题，即奖励模型因输入中微小的身份相关前缀（如“一位黑人医生说”vs“一位白人医生说”）而产生偏好偏移。作者提出“自影响”（self-influence）与“交叉影响”（cross-influence）两个新指标，用于衡量特定前缀对奖励打分的扰动程度。技术上，通过在多个开源偏好数据集（如Anthropic HH、OpenAssistant）上构建对照样本，系统评估不同奖励模型（如RewardBench基准中的T5、DeBERTa等）的偏见程度。实验发现，所有模型均存在显著的种族与性别偏见，且与架构无关。作者进一步提出一种基于反事实数据增强的缓解策略，在训练中引入平衡的前缀变体，有效降低偏见达40%以上。该方法适用于需要高公平性保障的场景，如医疗、招聘等敏感领域。</p>
+<p><strong>《SparsePO: Controlling Preference Alignment of LLMs via Sparse Token Masks》</strong> <a href="https://arxiv.org/abs/2410.05102" target="_blank" rel="noopener noreferrer">URL</a><br />
+该论文挑战了传统偏好优化（如DPO）中“所有token同等贡献”的假设，提出SparsePO——一种在token级别动态加权KL散度与奖励信号的新目标函数。其核心是引入可学习或基于参考模型生成的稀疏权重掩码，使模型自动识别对偏好判断起关键作用的token（如“有毒”、“无害”等关键词）。训练中通过正则化诱导掩码稀疏性，实现对齐信号的聚焦。在多个任务（如摘要、对话）中，SparsePO在RewardBench和自建测试集上实现+10%摘要胜率和+3%对话胜率提升，且不损害推理连贯性。该方法特别适合需精细控制生成内容的场景，如内容审核、情感调控等。</p>
+<p>两篇工作形成互补：前者揭示了RLHF中潜在的系统性偏见，后者则提供了更精细的对齐机制。前者偏重诊断与公平性，后者聚焦优化与性能，共同推动RLHF向更可靠、可控的方向发展。</p>
+<h3>实践启示</h3>
+<p>这两项研究对大模型应用开发具有重要指导意义。对于高风险场景（如公共服务、招聘），应优先采用前缀偏见检测机制，并在训练中引入反事实数据增强，以降低歧视风险。而对于内容生成类应用（如客服、摘要），SparsePO提供了一种更高效的对齐策略，建议在DPO基础上集成稀疏掩码机制，提升关键语义控制能力。可落地的建议包括：在奖励模型部署前进行系统性偏见扫描；在偏好训练中引入token级注意力机制。实现时需注意：前缀偏见检测需构建高质量对照样本集，SparsePO的掩码稀疏度需通过验证集调优，避免过度稀疏导致训练不稳定。</p>
+</div>
+                </div>
+                
+                
+            </div>
+            
+                        
+                        <div class="topic-content">
+                            
+                                
+                                <div class="paper-item-compact" id="paper-item-2505.13487">
+                                    <div class="paper-header" onclick="showPaperDetail('2505.13487', 'RLHF')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Detecting Prefix Bias in LLM-based Reward Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.13487"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.13487", "authors": ["Kumar", "He", "Markosyan", "Chern", "Arrieta-Ibarra"], "id": "2505.13487", "pdf_url": "https://arxiv.org/pdf/2505.13487", "rank": 8.357142857142858, "title": "Detecting Prefix Bias in LLM-based Reward Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2505.13487" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ADetecting%20Prefix%20Bias%20in%20LLM-based%20Reward%20Models%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2505.13487&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ADetecting%20Prefix%20Bias%20in%20LLM-based%20Reward%20Models%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2505.13487%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Kumar, He, Markosyan, Chern, Arrieta-Ibarra</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文提出了一种检测基于大语言模型的奖励模型中前缀偏见的新方法，通过引入‘自影响’和‘交叉影响’指标，系统性地揭示了在种族和性别维度上的显著偏见。研究覆盖多个开源数据集与模型架构，验证了偏见的普遍性，并提出一种数据增强策略有效缓解该问题。方法创新性强，实验设计严谨，证据充分，对公平性研究具有重要价值，叙述整体清晰但部分技术细节可进一步优化。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">8.4</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2505.13487" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Detecting Prefix Bias in LLM-based Reward Models</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 2 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>该论文聚焦于“奖励模型中的前缀偏差（prefix bias）”这一尚未被充分研究的问题，具体目标可概括为：</p>
+<ul>
+<li><p><strong>问题定义</strong><br />
+在 RLHF（Reinforcement Learning from Human Feedback）流程中，奖励模型（RM）被用来为语言模型输出打分，以指导后续强化学习微调。然而，当 RM 在推理阶段看到<strong>仅在查询前缀出现微小差异</strong>（如加入“我是一名女性。”或“我是一名黑人。”）的同一回答时，其偏好分数会发生系统性偏移。这种“前缀偏差”可能导致下游微调模型学到不公平或有害的偏好。</p>
+</li>
+<li><p><strong>核心研究问题</strong></p>
+<ol>
+<li>如何<strong>检测并量化</strong> RM 对这类身份前缀的敏感度？</li>
+<li>该偏差在<strong>不同开源偏好数据集与模型架构</strong>上是否普遍存在？</li>
+<li>偏差主要源自<strong>预训练 LLM 本身</strong>还是<strong>偏好数据集</strong>？</li>
+<li>如何通过<strong>数据增强</strong>等干预手段减缓前缀偏差，同时不显著降低 RM 的原始准确率？</li>
+</ol>
+</li>
+<li><p><strong>贡献总结</strong></p>
+<ul>
+<li>提出 <strong>auto-influence</strong>（偏好偏移度量）与 <strong>cross-influence</strong>（准确率偏移度量）两种指标，系统评估 RM 的前缀偏差。</li>
+<li>在多个公开偏好数据集（SHP、Anthropic-HH 等）和多种模型（Llama-2、Falcon、GPT-J 等）上验证：<ul>
+<li>所有 RM 均出现显著的性别/种族前缀偏差；</li>
+<li>偏差模式在训练后趋于一致，说明<strong>数据集是主要来源</strong>。</li>
+</ul>
+</li>
+<li>设计<strong>前缀增强训练</strong>策略：在训练阶段随机给回答拼接不同前缀，再乘以 3 倍数据量进行训练，可将 auto/cross-influence 降低至接近 0，同时保持原始准确率。</li>
+</ul>
+</li>
+</ul>
+<h2>相关工作</h2>
+<p>论文在第 2 节“Related Work”中系统梳理了与本研究直接相关的三条主线，并指出自身与它们的区别。可归纳为以下三类：</p>
+<ol>
+<li><p><strong>LLM 中的社会偏见</strong></p>
+<ul>
+<li>训练语料嵌入的系统性偏见（Bender et al., 2021；Dodge et al., 2021）。</li>
+<li>下游危害：临床建议中的种族差异（Omiye et al., 2023）、姓名补全中的性别模式（Kotek et al., 2023；Haim et al., 2024）。</li>
+<li>综述性梳理（Gallegos et al., 2023）。</li>
+<li><strong>前缀扰动</strong>仅用于认证或鲁棒性测试（Chaudhary et al., 2024），<strong>未触及奖励模型阶段</strong>。</li>
+</ul>
+</li>
+<li><p><strong>身份-上下文诱发偏见</strong></p>
+<ul>
+<li>基于用户推断身份的聊天机器人偏见（Kantharuban et al., 2024）。</li>
+<li>“第一人称公平”框架，用姓名探针揭示人口统计偏见（Eloundou et al., 2024）。</li>
+<li>这些工作聚焦<strong>生成/对话模型本身</strong>，而本文聚焦<strong>RLHF 流程中的奖励模型</strong>。</li>
+</ul>
+</li>
+<li><p><strong>奖励模型（RM）研究</strong></p>
+<ul>
+<li>过度优化与奖励黑客（Gao et al., 2023；Coste et al., 2023），但未考虑<strong>偏见</strong>。</li>
+<li>Mire et al. (2025) 首次发现 RM 对非洲裔美国英语（AAL）存在代表性惩罚，<strong>仍未探讨前缀攻击场景</strong>。</li>
+<li>本文是<strong>首个</strong>针对“前缀式身份扰动”在 RM 中引入偏见并进行系统量化与缓解的研究。</li>
+</ul>
+</li>
+</ol>
+<p>简言之，既有文献要么研究生成模型的社会偏见，要么研究 RM 的优化失败，而<strong>将前缀扰动用于诊断并缓解 RM 中的人口统计偏见</strong>这一视角，尚属空白。</p>
+<h2>解决方案</h2>
+<p>论文采用“检测→归因→缓解”三段式流程解决前缀偏差问题，具体方法如下：</p>
+<ol>
+<li><p>检测：设计两项可解释指标</p>
+<ul>
+<li><p><strong>Auto-Influence</strong><br />
+度量同一回答仅因前缀不同（如“我是一名女性。”vs“我是一名男性。”）而被奖励模型偏好的程度。<br />
+公式：<br />
+$$ \omega = w(p_1,p_2) - 0.5,\quad w(\cdot)=\frac{1}{|D_u|}\sum_{q,a}\mathbb{1}[S(q,p_1+a)&gt;S(q,p_2+a)]$$<br />
+理想无偏时 $\omega=0$。</p>
+</li>
+<li><p><strong>Cross-Influence</strong><br />
+度量前缀被分别加到“正确”与“错误”回答后，RM 准确率相对无前缀基线的下降幅度。<br />
+公式：<br />
+$$\alpha = \text{acc}(p_1,p_2) - \text{acc}(p_e,p_e)$$<br />
+其中 $p_e$ 为空前缀。$\alpha$ 越大说明前缀越能扭曲排序。</p>
+</li>
+</ul>
+</li>
+<li><p>归因：分离“模型”与“数据”源头</p>
+<ul>
+<li>在 7 种不同预训练 LLM（OPT-350M 到 Llama-2-13B）上重复训练 RM，发现<strong>训练后偏好模式趋同</strong>，而零-shot 基模型各自偏好不同。</li>
+<li>结论：前缀偏差<strong>主要源自偏好数据集</strong>，而非基模型固有权重。</li>
+</ul>
+</li>
+<li><p>缓解：数据增强训练</p>
+<ul>
+<li>对每条原始样本 $&lt;q,a_1,a_2&gt;$，随机采样 3 组前缀对 $(p_i,p_j)$，生成 3 份“带前缀”副本，构成增强数据集。</li>
+<li>用相同 Bradley-Terry 损失<br />
+$$L=-\log\sigma!\bigl(S(c)-S(r)\bigr)$$<br />
+重新训练 RM。</li>
+<li>效果：<br />
+– $\omega$ 与 $\alpha$ 的均值均降至接近 0；<br />
+– 原始准确率（相对于 SOTA）几乎不变；<br />
+– 跨任务泛化：用“种族前缀”增强的模型在“性别前缀”测试上同样显著降低偏差。</li>
+</ul>
+</li>
+</ol>
+<p>通过“指标→诊断→干预”闭环，论文既给出了可复现的评测协议，也提供了即插即用的数据层修正方案。</p>
+<h2>实验验证</h2>
+<p>论文共设计 5 组实验，覆盖“检测−归因−缓解”完整链条，全部在公开偏好数据集与多种开源 LLM 上完成。核心实验一览如下（按出现顺序归纳）：</p>
+<ol>
+<li><p>偏差检测实验<br />
+1.1 单模型单数据集案例（Llama-2-7B + SHP/legaladvice）</p>
+<ul>
+<li>性别前缀：$P_e$/ $P_m$/ $P_{wo}$ 三三对比，计算 $\omega$ 与 $\alpha$ 矩阵。</li>
+<li>种族前缀：$P_e$/ $P_b$/ $P_h$/ $P_w$ 四四对比，同上。<br />
+结果：$P_{wo}$ 对空/男前缀 winrate 偏差高达 +0.488；在错误回答上加 $P_{wo}$ 使准确率跌 18%。</li>
+</ul>
+<p>1.2 跨架构对比（7 种预训练 LLM）<br />
+模型：OPT-350M、Flan-T5-Large、GPT-J-6B、Falcon-7B、Llama-7B、Llama-2-7B、Llama-2-13B。<br />
+数据集：SHP/legaladvice。<br />
+观测指标：平均 $|\omega|$（$\bar\omega$）与平均 $|\alpha|$（$\bar\alpha$）。<br />
+结论：除最小模型外，$\bar\omega$ 均 &gt;0.35；更大模型 $\bar\alpha$ 略低，但偏差普遍存在。</p>
+<p>1.3 跨数据集对比<br />
+数据集：SHP 的 4 个子论坛（legaladvice、explainlikeimfive、askhr、askacademia）+ Anthropic-HH 全集 &amp; 无害子集。<br />
+模型：同上 7 款。<br />
+结果：所有 SHP 子集均出现显著 $\omega$、$\alpha$；Anthropic-HH 幅度稍小但仍达 10% 级。</p>
+</li>
+<li><p>偏差方向可视化</p>
+<ul>
+<li>对 SHP：$P_{wo}$ 普遍最被偏好，种族前缀呈 $P_b&gt;P_h&gt;P_w&gt;P_e$。</li>
+<li>对 Anthropic-HH：$P_e$ 最被偏好，人类式身份前缀反而降分。</li>
+</ul>
+</li>
+<li><p>源头归因实验<br />
+方法：用零-shot  prompting 让“基模型”直接做 pairwise 比较，提取 logits 计算 $\omega$。<br />
+结果：各基模型零-shot 偏好差异大；一旦经过偏好训练，winrate 分布趋于一致→<strong>偏差主要来自数据集</strong>。</p>
+</li>
+<li><p>缓解实验：数据增强训练<br />
+设置：Llama-2-7B 在 SHP 原始数据 vs 3×前缀增强数据（随机采样性别或种族前缀对）。<br />
+评估：</p>
+<ul>
+<li>同前缀测试：$\bar\omega$、$\bar\alpha$ 均降至≈0。</li>
+<li>跨前缀泛化：用性别增强→测种族前缀，$\bar\alpha$ 仍显著下降。</li>
+<li>性能代价：增强模型 vs SOTA 的准确率比值 ≥96%，显著优于零-shot 基线。</li>
+</ul>
+</li>
+<li><p>补充消融</p>
+<ul>
+<li>图 8 给出所有模型在所有数据集上的种族前缀 $\bar\omega$、$\bar\alpha$ 热图，验证偏差普遍性。</li>
+<li>附录表 7 汇总各模型在原始数据集上的绝对准确率，用于计算“准确率比值”基准。</li>
+</ul>
+</li>
+</ol>
+<p>以上实验共同证明：前缀偏差可被稳定检测、主要源自偏好数据、且可通过低成本数据增强显著抑制。</p>
+<h2>未来工作</h2>
+<p>以下方向可视为对该工作的直接延伸或深层拓展，均围绕“奖励模型偏差”这一核心，但分别从<strong>攻击面、机制、评价、防护、理论</strong>五个维度展开：</p>
+<hr />
+<h3>1. 攻击面扩展</h3>
+<ul>
+<li><strong>Suffix/In-fix Bias</strong><br />
+将身份提示从“前缀”移至句中或句尾，检验 RM 是否仍表现出同等强度偏差；可揭示模型对位置敏感的注意力机制漏洞。</li>
+<li><strong>Implicit Identity Cues</strong><br />
+用方言、俚语、风格或话题替代显式身份字符串（如 AAL、LGBTQ+ 词汇），探测“无显性声明”时的隐性歧视。</li>
+<li><strong>多轮上下文累积偏差</strong><br />
+在对话历史里分散植入身份信号，观察偏好是否随轮次指数级放大，模拟真实聊天场景下的“慢变量”偏差。</li>
+</ul>
+<hr />
+<h3>2. 机制深挖</h3>
+<ul>
+<li><strong>注意力与梯度归因</strong><br />
+对 $S(c)-S(r)$ 执行 integrated gradients 或注意力 rollout，定位哪些 token 对分数差异贡献最大，验证模型是否“只看前缀、忽略内容”。</li>
+<li><strong>表示空间探测</strong><br />
+用线性探针或 CCS 提取 RM 隐藏状态，检验是否存在一条“人口统计主轴”，沿该轴移动即可连续改变偏好得分。</li>
+<li><strong>Scaling Law for Bias</strong><br />
+固定数据集，系统变化模型规模（1B→70B）与数据量，拟合 $\bar\omega(N,D)$、$\bar\alpha(N,D)$ 的幂律关系，回答“更大模型是否必然更公平”。</li>
+</ul>
+<hr />
+<h3>3. 评价维度补全</h3>
+<ul>
+<li><strong>Intersectional Bias 指标</strong><br />
+同时叠加性别+种族+年龄前缀（如“我是一名年长的黑人女性”），设计高阶张量度量 $\omega(p_1\cap q_1, p_2\cap q_2)$，检测交叉歧视。</li>
+<li><strong>多语言与文化迁移</strong><br />
+将前缀攻击扩展到中文、西班牙语等非英语数据，观察偏差模式是否呈现“文化特异性”或“普遍一致性”。</li>
+<li><strong>动态分布漂移下的鲁棒性</strong><br />
+模拟部署后用户分布随时间漂移，用在线学习或continual RLHF更新RM，量化偏差是否出现“反噬”式放大。</li>
+</ul>
+<hr />
+<h3>4. 防护与治理</h3>
+<ul>
+<li><strong>对抗训练</strong><br />
+将前缀扰动视为对抗样本，在训练阶段用 min-max 博弈目标<br />
+$$\min_\theta \mathbb{E}<em>{p\sim\Delta}\max</em>{p'} L(\theta; p')$$<br />
+寻求最坏情况偏差最小化，而非仅平均情况。</li>
+<li><strong>公平约束强化学习</strong><br />
+在 PPO 阶段把 $\bar\omega\le\epsilon$ 作为即时惩罚项加入奖励信号，实现“微调即公平”，而非先训练后修补。</li>
+<li><strong>可验证鲁棒性</strong><br />
+借鉴 certified robustness 思路，对前缀 token 的任意替换给出偏好分数差异的上界证明，提供形式化公平保证。</li>
+</ul>
+<hr />
+<h3>5. 理论与伦理</h3>
+<ul>
+<li><strong>偏好数据的因果模型</strong><br />
+用因果图显式建模“标注者身份→语言风格→人类偏好→RM 输出”，通过 do-intervention 量化若阻断风格路径，偏差可消除多少。</li>
+<li><strong>社会福利视角的公平折衷</strong><br />
+将 $\bar\omega$、$\bar\alpha$ 与下游任务效用放入同一 Pareto 前沿，研究“公平–性能”边界是否因模型规模扩大而改善，为政策制定提供量化依据。</li>
+<li><strong>开源基准与红队平台</strong><br />
+建立持续更新的“奖励模型红队排行榜”，允许社区提交新的前缀、后缀或隐式攻击，推动偏差检测工具标准化。</li>
+</ul>
+<hr />
+<p>以上任何一条均可直接接入现有代码库，通过替换数据或损失函数即可快速验证；同时，它们也指向更基础的科学问题——“对齐信号本身是否可能自带结构性不公”，值得长期投入。</p>
+<h2>总结</h2>
+<p><strong>论文核心概要</strong><br />
+题目：Detecting Prefix Bias in LLM-based Reward Models<br />
+任务：揭示并缓解 RLHF 奖励模型对“身份前缀”的系统性偏好偏移。</p>
+<ol>
+<li><p>问题<br />
+在 RLHF 流程中，奖励模型（RM）负责给 prompt-response 打分。若仅在 response 前插入一句身份提示（如“我是一名女性。”），RM 对同一回答的评分会显著变化，导致下游微调模型学到不公平偏好。该现象被称为 <strong>prefix bias</strong>，此前未被系统研究。</p>
+</li>
+<li><p>方法</p>
+<ul>
+<li>提出两项指标：<br />
+– <strong>Auto-Influence</strong>（winrate 偏差 $\omega$）：测量同一回答因前缀不同而被偏好的程度。<br />
+– <strong>Cross-Influence</strong>（accuracy 偏差 $\alpha$）：测量前缀加到正/误回答后 RM 准确率的变化。</li>
+<li>在 7 种开源 LLM（350M–13B）与 6 个公开偏好数据集（SHP、Anthropic-HH 等）上大规模评测。</li>
+<li>通过零-shot 实验对比“基模型”与“训练后 RM”，定位偏差主要源自<strong>偏好数据</strong>而非预训练权重。</li>
+<li>设计<strong>数据增强</strong>干预：训练阶段为每条样本随机拼接 3 组前缀，再乘以 3 倍数据量重训 RM，显著降低 $\omega$ 与 $\alpha$ 且几乎不损失准确率。</li>
+</ul>
+</li>
+<li><p>主要发现</p>
+<ul>
+<li>所有模型、所有数据集均出现显著前缀偏差：性别前缀最大 $\omega$≈0.49，种族前缀使准确率最多跌 18%。</li>
+<li>偏差方向“反常识”：SHP 数据更偏好“女性”“黑人”前缀；Anthropic-HH 则偏好“无前缀”“白人”。</li>
+<li>增强训练后 $\omega,\alpha$ 均值逼近 0，且可泛化到未见前缀；原始准确率保持 ≥96% SOTA 水平。</li>
+</ul>
+</li>
+<li><p>结论<br />
+前缀偏差在 RLHF 奖励模型中普遍存在，主要由偏好数据引入，可通过低成本数据增强有效抑制。论文提供了可复现的评测协议与即插即用的缓解方案，强调在奖励建模阶段就必须进行偏见审计与干预。</p>
+</li>
+</ol>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.4</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: RLHF</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">RLHF</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2505.13487" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2505.13487" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2410.05102">
+                                    <div class="paper-header" onclick="showPaperDetail('2410.05102', 'RLHF')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                SparsePO: Controlling Preference Alignment of LLMs via Sparse Token Masks
+                                                <button class="mark-button" 
+                                                        data-paper-id="2410.05102"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2410.05102", "authors": ["Christopoulou", "Cardenas", "Lampouras", "Bou-Ammar", "Wang"], "id": "2410.05102", "pdf_url": "https://arxiv.org/pdf/2410.05102", "rank": 8.357142857142858, "title": "SparsePO: Controlling Preference Alignment of LLMs via Sparse Token Masks"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2410.05102" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ASparsePO%3A%20Controlling%20Preference%20Alignment%20of%20LLMs%20via%20Sparse%20Token%20Masks%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2410.05102&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ASparsePO%3A%20Controlling%20Preference%20Alignment%20of%20LLMs%20via%20Sparse%20Token%20Masks%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2410.05102%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Christopoulou, Cardenas, Lampouras, Bou-Ammar, Wang</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文提出了SparsePO，一种通过稀疏化令牌掩码来控制大语言模型偏好对齐的新方法。该方法在令牌级别动态加权奖励和KL散度贡献，自动学习重要令牌，提升了生成结果的偏好对齐效果。在情感控制、对话、摘要和代码生成等多个任务上均表现出优于现有方法的性能，尤其在推理任务上提升达2个百分点。方法创新性强，实验充分，具备良好的通用性和可扩展性，但论文表达清晰度尚有提升空间。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">8.4</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2410.05102" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">SparsePO: Controlling Preference Alignment of LLMs via Sparse Token Masks</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 30 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>这篇论文提出了一种名为SparsePO（SPARSEPO: CONTROLLING PREFERENCE ALIGNMENT OF LLMS VIA SPARSE TOKEN MASKS）的新方法，旨在解决如何更有效地对齐大型语言模型（LLMs）以符合人类期望行为的问题。具体来说，论文试图解决的问题包括：</p>
+<ol>
+<li><p><strong>直接偏好优化（Direct Preference Optimization, DPO）的局限性</strong>：DPO方法在优化时将所有token平等对待，但人类对文本的偏好往往只与某些特定词语或短语有关。</p>
+</li>
+<li><p><strong>粒度更细的偏好建模</strong>：在某些领域，偏好可能由特定方面（如情感、毒性）决定，或者决策依赖于某些子序列。这就需要更细粒度的更新。</p>
+</li>
+<li><p><strong>提升模型的多样性和灵活性</strong>：通过仅允许某些token与参考模型保持接近，其余的token可以超越它，从而产生更多样化的响应。</p>
+</li>
+<li><p><strong>自动学习token级别的权重</strong>：提出的方法自动学习在训练过程中对每个token的KL散度和奖励进行加权，从而实现更有效的偏好对齐。</p>
+</li>
+</ol>
+<p>论文的核心贡献是提出了一种灵活的框架，通过引入稀疏的token级偏好优化（SparsePO），自动学习在偏好优化训练期间对每个token的KL散度和奖励进行加权。这种方法通过引入一个mask函数，该函数为序列中的每个token产生一个标量，以控制该token在损失函数中的KL参与度。通过实验，论文证明了该方法可以有效地平衡预期的ground-truth奖励和响应级别的KL散度，并在多个领域中取得了良好的性能。</p>
+<h2>相关工作</h2>
+<p>这篇论文提到了多个与研究主题相关的工作，主要集中在如何优化和调整大型语言模型（LLMs）以符合人类偏好。以下是一些关键的相关研究：</p>
+<ol>
+<li><p><strong>Direct Preference Optimization (DPO)</strong>:</p>
+<ul>
+<li>Rafailov et al., 2023 提出了直接偏好优化（DPO），这是一种简化的、离线的方法，用于训练模型以符合人类的偏好数据，无需复杂的强化学习过程。</li>
+</ul>
+</li>
+<li><p><strong>Reinforcement Learning from Human Feedback (RLHF)</strong>:</p>
+<ul>
+<li>Christiano et al., 2017 提出了一种通过人类反馈进行强化学习的方法，这是早期用于训练模型符合人类偏好的主要方法。</li>
+</ul>
+</li>
+<li><p><strong>Token-level Direct Preference Optimization (TDPO)</strong>:</p>
+<ul>
+<li>Zeng et al., 2024 提出了TDPO，将序列级别的DPO目标转化为token级别，使得KL散度作为正则化项与原始目标一起优化。</li>
+</ul>
+</li>
+<li><p><strong>Model Activation-based Mask (MAPO)</strong>:</p>
+<ul>
+<li>Huben et al., 2023 提出了基于模型激活的mask方法，利用参考模型中每个token的激活信息来生成token级别的权重mask。</li>
+</ul>
+</li>
+<li><p><strong>Learnable Sparse Mask (SPARSEPO)</strong>:</p>
+<ul>
+<li>论文中提出的第二种mask计算策略，通过学习参数来计算mask，可以是针对奖励和KL散度共享或独立的。</li>
+</ul>
+</li>
+<li><p><strong>Preference Optimization with an Offset (POO)</strong>:</p>
+<ul>
+<li>Amini et al., 2024 提出了一种偏好优化方法，它基于外部奖励模型为每个响应分配的分数，要求优先响应的似然度比非优先响应大一个偏移值。</li>
+</ul>
+</li>
+<li><p><strong>SimPO</strong>:</p>
+<ul>
+<li>Meng et al., 2024 提出了一种简单的偏好优化方法，使用序列的平均对数概率而不是总和，并要求响应间的差异至少等于一个边际值。</li>
+</ul>
+</li>
+<li><p><strong>DPO-Positive</strong>:</p>
+<ul>
+<li>Pal et al., 2024 提出了一种方法，其中对于策略模型，优先响应的对数概率需要高于参考模型。</li>
+</ul>
+</li>
+<li><p><strong>β-DPO</strong>:</p>
+<ul>
+<li>Wu et al., 2024 提出了一种动态优化β值的方法，针对每个批次进行调整。</li>
+</ul>
+</li>
+</ol>
+<p>这些研究展示了不同的方法和策略，用于改进和优化大型语言模型以更好地符合人类的偏好和期望行为。论文提出的SparsePO方法在这些现有工作的基础上，通过引入token级别的稀疏性来控制偏好对齐，旨在提高模型的灵活性和响应的多样性。</p>
+<h2>解决方案</h2>
+<p>论文通过提出一种名为Sparse Token-level Preference Optimization（SparsePO）的新方法来解决偏好对齐问题。这个方法的核心思想是在偏好优化（PO）训练过程中，自动学习每个token在奖励（reward）和KL散度（KL divergence）中的权重。下面是解决这个问题的关键步骤：</p>
+<ol>
+<li><p><strong>引入token级别的优化目标</strong>：论文首先将优化目标从序列级别转换为token级别，这样可以更细致地控制每个token对于整体优化目标的贡献。</p>
+</li>
+<li><p><strong>稀疏性权重（Sparse Weight Masks）</strong>：论文提出了两种不同的mask函数，用于自动学习每个token的KL散度和奖励的权重。这些mask函数可以是：</p>
+<ul>
+<li><strong>基于模型激活的mask（MAPO）</strong>：利用参考模型的内部激活信息来生成token级别的权重mask。</li>
+<li><strong>可学习的稀疏mask（SPARSEPO）</strong>：通过训练过程中学习的参数来生成mask。</li>
+</ul>
+</li>
+<li><p><strong>控制mask的稀疏性</strong>：通过引入ReLU激活函数，模型可以自动学习每个token的重要性，从而实现mask的稀疏性。论文发现，这种稀疏性可以通过调整β参数来控制。</p>
+</li>
+<li><p><strong>优化目标</strong>：论文提出了一个包含mask的新优化目标，使得模型在训练时可以学习到如何最佳地权衡每个token的奖励和KL散度贡献。</p>
+</li>
+<li><p><strong>实验验证</strong>：论文通过在多个领域的任务（如情感控制、对话、文本摘要和文本到代码生成）上进行广泛的实验，证明了SparsePO方法可以有效地提高模型对齐到目标偏好的能力，并在一些任务上取得了比其他PO方法更好的性能。</p>
+</li>
+</ol>
+<p>通过上述步骤，SparsePO方法能够更灵活地对齐模型的行为与人类偏好，同时保持生成响应的多样性。论文的实验结果表明，SparsePO能够根据目标任务为token分配有意义的权重，并生成更符合期望偏好的响应。</p>
+<h2>实验验证</h2>
+<p>论文中进行了多个实验来验证SparsePO方法的有效性，实验覆盖了不同的领域和任务，具体包括：</p>
+<ol>
+<li><p><strong>情感控制（Sentiment Control）</strong>：</p>
+<ul>
+<li>使用IMDB数据集进行电影评论的情感控制实验，将模型通过PO训练以生成正面的电影评论。</li>
+<li>分析了预期奖励和响应级别的KL散度之间的权衡（Pareto frontier）。</li>
+<li>研究了掩码稀疏性和token级别的KL散度之间的关系。</li>
+</ul>
+</li>
+<li><p><strong>对话中的有用性和无害性控制（Helpfulness &amp; Harmlessness Control）</strong>：</p>
+<ul>
+<li>使用Anthropic HH数据集进行单轮对话任务，训练Pythia 1.4B模型生成有用和无害的对话回复。</li>
+<li>在OpenLLM Leaderboard上评估了模型在多个推理和指令执行任务上的性能。</li>
+</ul>
+</li>
+<li><p><strong>摘要质量控制（Summary Quality Control）</strong>：</p>
+<ul>
+<li>使用Reddit TL;DR数据集及其偏好注释进行摘要质量控制实验。</li>
+<li>评估了摘要的相关性、多样性和忠实度。</li>
+</ul>
+</li>
+<li><p><strong>文本到代码生成（Text-to-Code Generation）</strong>：</p>
+<ul>
+<li>使用MBPP数据集进行文本到代码生成任务的PO实验。</li>
+<li>优化目标是生成正确的、可执行的Python程序。</li>
+</ul>
+</li>
+<li><p><strong>掩码计算（Mask Computation）</strong>：</p>
+<ul>
+<li>提出了两种策略来获取掩码：基于模型激活的掩码（MAPO）和可学习的稀疏掩码（SPARSEPO）。</li>
+<li>分析了不同β值下掩码的稀疏性水平和token级别的KL散度。</li>
+</ul>
+</li>
+<li><p><strong>定性分析（Qualitative Analysis）</strong>：</p>
+<ul>
+<li>对比了TDPO和SparsePO学习到的掩码在具体示例句子上的token级别值。</li>
+</ul>
+</li>
+<li><p><strong>消融研究（Ablation Studies）</strong>：</p>
+<ul>
+<li>探讨了掩码架构设计选择对模型性能的影响。</li>
+<li>研究了掩码权重衰减正则化对模型性能的影响。</li>
+<li>实验了使用二进制和随机掩码的SparsePO变体。</li>
+</ul>
+</li>
+</ol>
+<p>这些实验验证了SparsePO方法在不同任务中的有效性，并展示了其在平衡预期奖励和响应级别的KL散度、提高模型对齐目标偏好的能力以及生成更多样化响应方面的潜力。</p>
+<h2>未来工作</h2>
+<p>尽管SparsePO在多个任务和领域中显示出了良好的性能，但仍有一些可以进一步探索的方向：</p>
+<ol>
+<li><p><strong>更细粒度的掩码学习</strong>：当前的掩码学习是基于每个token的，探索基于子词（subword）或者词组的掩码可能进一步提高模型的灵活性和性能。</p>
+</li>
+<li><p><strong>不同领域的应用</strong>：在更多不同的领域和任务上测试SparsePO，例如机器翻译、自动文摘、问答系统等，以验证其泛化能力。</p>
+</li>
+<li><p><strong>计算效率</strong>：研究如何优化SparsePO的训练过程，以减少计算资源消耗，提高训练效率。</p>
+</li>
+<li><p><strong>长期依赖关系</strong>：探索模型如何在长文本中维持对重要token的长期依赖关系的理解。</p>
+</li>
+<li><p><strong>解释性和可视化</strong>：研究如何提高模型决策过程的可解释性，例如通过可视化技术展示哪些token对模型输出有重要影响。</p>
+</li>
+<li><p><strong>多模态数据集</strong>：在包含图像、视频等多模态数据的任务中测试SparsePO，探索其在处理非文本信息时的表现。</p>
+</li>
+<li><p><strong>更复杂的偏好表示</strong>：研究如何整合更复杂的人类反馈，而不仅仅是简单的偏好对，可能包括强度、理由等。</p>
+</li>
+<li><p><strong>鲁棒性和安全性</strong>：进一步探索模型在面对对抗性攻击和不公平数据时的鲁棒性和安全性。</p>
+</li>
+<li><p><strong>实时应用</strong>：研究如何将SparsePO集成到实时应用中，例如在线对话系统，并处理实时反馈。</p>
+</li>
+<li><p><strong>跨语言评估</strong>：在不同语言的数据集上评估SparsePO，探索其在跨语言任务中的有效性。</p>
+</li>
+<li><p><strong>模型压缩和加速</strong>：研究如何将SparsePO与模型压缩技术结合，以便于在资源受限的设备上部署。</p>
+</li>
+<li><p><strong>掩码的可转移性</strong>：探索在源任务上学到的掩码是否可以迁移到目标任务上，从而减少在新任务上的标注工作。</p>
+</li>
+</ol>
+<p>这些方向不仅可以推动SparsePO的发展，也有助于提升大型语言模型在实际应用中的性能和可靠性。</p>
+<h2>总结</h2>
+<p>这篇论文的主要内容可以总结如下：</p>
+<ol>
+<li><p><strong>问题陈述</strong>：</p>
+<ul>
+<li>大型语言模型（LLMs）需要与人类偏好对齐以表现出期望的行为。</li>
+<li>现有的偏好优化（PO）方法，如直接偏好优化（DPO），在序列级别上操作，并不区分每个token的重要性。</li>
+</ul>
+</li>
+<li><p><strong>研究动机</strong>：</p>
+<ul>
+<li>人类对语言的偏好并不对序列中的每个词都敏感，而是依赖于特定的词或短语。</li>
+<li>需要一种更细粒度的方法来更新模型的行为，以便更好地对齐人类偏好。</li>
+</ul>
+</li>
+<li><p><strong>方法（SparsePO）</strong>：</p>
+<ul>
+<li>提出了一种新的偏好优化方法，称为Sparse Token-level Preference Optimization（SparsePO）。</li>
+<li>引入了稀疏的token级权重掩码（mask），这些掩码在训练期间自动学习，以控制每个token的KL散度和奖励贡献。</li>
+<li>提出了两种掩码计算策略：基于模型激活的掩码（MAPO）和可学习的稀疏掩码（SPARSEPO）。</li>
+</ul>
+</li>
+<li><p><strong>实验</strong>：</p>
+<ul>
+<li>在多个领域（如情感控制、对话、文本摘要和文本到代码生成）进行了广泛的实验。</li>
+<li>实验结果表明，SparsePO能够根据目标任务为token分配有意义的权重，并生成更符合期望偏好的响应。</li>
+</ul>
+</li>
+<li><p><strong>主要贡献</strong>：</p>
+<ul>
+<li>提出了SparsePO框架，用于在PO中加权token级的奖励和KL贡献。</li>
+<li>对掩码的稀疏性和奖励前沿进行了分析，并展示了如何与控制的KL散度相关联。</li>
+<li>在不同领域中使用所提出方法的定量和定性收益。</li>
+</ul>
+</li>
+<li><p><strong>结论</strong>：</p>
+<ul>
+<li>SparsePO通过学习每个token的奖励和KL散度的权重，有效地对齐了模型的偏好。</li>
+<li>该方法在多个任务和领域中一致地优于现有的PO方法，并能够根据目标偏好为token分配更高的奖励和更低的KL值。</li>
+</ul>
+</li>
+</ol>
+<p>整体而言，这篇论文提出了一种新的偏好优化策略，通过在token级别上引入稀疏性来更好地控制模型的行为，并在多个任务上验证了其有效性。</p>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.4</span></span>
+                                            <span>置信度: 0.92</span>
+                                            <span>分类: RLHF</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">RLHF</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2410.05102" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2410.05102" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tab-Agent" class="tab-content ">
                 <div class="content-wrapper">
                     <div class="papers-list" id="papers-list-Agent">
                         <!-- 领域汇总分析 -->
@@ -1186,6 +1904,11 @@
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 A Survey of AI Scientists
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.23045"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.23045", "authors": ["Tie", "Zhou", "Sun"], "id": "2510.23045", "pdf_url": "https://arxiv.org/pdf/2510.23045", "rank": 8.785714285714286, "title": "A Survey of AI Scientists"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.23045" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -1443,6 +2166,11 @@ $$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 The Denario project: Deep knowledge AI agents for scientific discovery
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.26887"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.26887", "authors": ["Villaescusa-Navarro", "Bolliet", "Villanueva-Domingo", "Bayer", "Acquah", "Amancharla", "Barzilay-Siegal", "Bermejo", "Bilodeau", "Ram\u00c3\u00adrez", "Cranmer", "Fran\u00c3\u00a7a", "Hahn", "Jiang", "Jimenez", "Lee", "Lerario", "Mamun", "Meier", "Ojha", "Protopapas", "Roy", "Spergel", "Taranc\u00c3\u00b3n-\u00c3\u0081lvarez", "Tiwari", "Viel", "Wadekar", "Wang", "Wang", "Xu", "Yovel", "Yue", "Zhou", "Zhu", "Zou", "Zubeldia"], "id": "2510.26887", "pdf_url": "https://arxiv.org/pdf/2510.26887", "rank": 8.714285714285715, "title": "The Denario project: Deep knowledge AI agents for scientific discovery"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.26887" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -1997,6 +2725,11 @@ $$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Beyond a Million Tokens: Benchmarking and Enhancing Long-Term Memory in LLMs
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.27246"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.27246", "authors": ["Tavakoli", "Salemi", "Ye", "Abdalla", "Zamani", "Mitchell"], "id": "2510.27246", "pdf_url": "https://arxiv.org/pdf/2510.27246", "rank": 8.5, "title": "Beyond a Million Tokens: Benchmarking and Enhancing Long-Term Memory in LLMs"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.27246" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -2238,6 +2971,11 @@ c. 提出 nugget-based 评估协议：将参考答案拆成原子语义单元（
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Mano Technical Report
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.17336"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.17336", "authors": ["Fu", "Su", "Zhao", "Wang", "Wu", "Yu", "Hu", "Shi", "Dong", "Wang", "Chen", "Yu", "Peng", "Li", "Huang", "Wei", "Yu", "Xin", "Zhao", "Gu", "Jiang", "Zhou", "Wang"], "id": "2509.17336", "pdf_url": "https://arxiv.org/pdf/2509.17336", "rank": 8.5, "title": "Mano Technical Report"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.17336" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -2720,6 +3458,11 @@ c. 提出 nugget-based 评估协议：将参考答案拆成原子语义单元（
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MARAG-R1: Beyond Single Retriever via Reinforcement-Learned Multi-Tool Agentic Retrieval
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.27569"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.27569", "authors": ["Luo", "Li", "Wang", "Fan", "Li", "Chen", "Qiu"], "id": "2510.27569", "pdf_url": "https://arxiv.org/pdf/2510.27569", "rank": 8.5, "title": "MARAG-R1: Beyond Single Retriever via Reinforcement-Learned Multi-Tool Agentic Retrieval"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.27569" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3022,6 +3765,11 @@ MARAG-R1 首次用强化学习让 LLM 自主协调多种检索工具，突破单
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 DRAMA: Unifying Data Retrieval and Analysis for Open-Domain Analytic Queries
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.27238"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.27238", "authors": ["Hu", "Yang", "Weiland", "Lim", "Palawala", "Kang"], "id": "2510.27238", "pdf_url": "https://arxiv.org/pdf/2510.27238", "rank": 8.428571428571429, "title": "DRAMA: Unifying Data Retrieval and Analysis for Open-Domain Analytic Queries"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.27238" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3171,6 +3919,11 @@ MARAG-R1 首次用强化学习让 LLM 自主协调多种检索工具，突破单
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MindSearch: Mimicking Human Minds Elicits Deep AI Searcher
+                                                <button class="mark-button" 
+                                                        data-paper-id="2407.20183"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2407.20183", "authors": ["Chen", "Liu", "Wang", "Liu", "Zhang", "Chen", "Zhao"], "id": "2407.20183", "pdf_url": "https://arxiv.org/pdf/2407.20183", "rank": 8.357142857142858, "title": "MindSearch: Mimicking Human Minds Elicits Deep AI Searcher"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2407.20183" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3479,6 +4232,11 @@ MARAG-R1 首次用强化学习让 LLM 自主协调多种检索工具，突破单
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Training a Generally Curious Agent
+                                                <button class="mark-button" 
+                                                        data-paper-id="2502.17543"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2502.17543", "authors": ["Tajwar", "Jiang", "Thankaraj", "Rahman", "Kolter", "Schneider", "Salakhutdinov"], "id": "2502.17543", "pdf_url": "https://arxiv.org/pdf/2502.17543", "rank": 8.357142857142858, "title": "Training a Generally Curious Agent"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2502.17543" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3760,6 +4518,11 @@ MARAG-R1 首次用强化学习让 LLM 自主协调多种检索工具，突破单
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 GenSwarm: Scalable Multi-Robot Code-Policy Generation and Deployment via Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2503.23875"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2503.23875", "authors": ["Ji", "Chen", "Chen", "Zhu", "Xu", "Gro\u00c3\u009f", "Zhou", "Cao", "Zhao"], "id": "2503.23875", "pdf_url": "https://arxiv.org/pdf/2503.23875", "rank": 8.357142857142858, "title": "GenSwarm: Scalable Multi-Robot Code-Policy Generation and Deployment via Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2503.23875" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3994,6 +4757,11 @@ MARAG-R1 首次用强化学习让 LLM 自主协调多种检索工具，突破单
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 NaviAgent: Bilevel Planning on Tool Navigation Graph for Large-Scale Orchestration
+                                                <button class="mark-button" 
+                                                        data-paper-id="2506.19500"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2506.19500", "authors": ["Jiang", "Zhou", "GU", "Han", "Li"], "id": "2506.19500", "pdf_url": "https://arxiv.org/pdf/2506.19500", "rank": 8.357142857142858, "title": "NaviAgent: Bilevel Planning on Tool Navigation Graph for Large-Scale Orchestration"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2506.19500" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -4304,6 +5072,11 @@ MARAG-R1 首次用强化学习让 LLM 自主协调多种检索工具，突破单
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 PartnerMAS: An LLM Hierarchical Multi-Agent Framework for Business Partner Selection on High-Dimensional Features
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.24046"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.24046", "authors": ["Li", "Wu", "Li", "Hu", "Wang", "Huang", "Hua", "Wang"], "id": "2509.24046", "pdf_url": "https://arxiv.org/pdf/2509.24046", "rank": 8.357142857142858, "title": "PartnerMAS: An LLM Hierarchical Multi-Agent Framework for Business Partner Selection on High-Dimensional Features"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.24046" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -4513,6 +5286,11 @@ MARAG-R1 首次用强化学习让 LLM 自主协调多种检索工具，突破单
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 CATArena: Evaluation of LLM Agents through Iterative Tournament Competitions
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.26852"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.26852", "authors": ["Fu", "Ding", "Zhu", "Zhang", "Qiu", "Liu", "Zhang", "Cao", "Cai", "Ding", "Yu"], "id": "2510.26852", "pdf_url": "https://arxiv.org/pdf/2510.26852", "rank": 8.357142857142858, "title": "CATArena: Evaluation of LLM Agents through Iterative Tournament Competitions"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.26852" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -4918,6 +5696,11 @@ MARAG-R1 首次用强化学习让 LLM 自主协调多种检索工具，突破单
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Heterogeneous Robot Collaboration in Unstructured Environments with Grounded Generative Intelligence
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.26915"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.26915", "authors": ["Ravichandran", "Cladera", "Prabhu", "Hughes", "Murali", "Taylor", "Pappas", "Kumar"], "id": "2510.26915", "pdf_url": "https://arxiv.org/pdf/2510.26915", "rank": 8.357142857142858, "title": "Heterogeneous Robot Collaboration in Unstructured Environments with Grounded Generative Intelligence"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.26915" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5084,6 +5867,11 @@ MARAG-R1 首次用强化学习让 LLM 自主协调多种检索工具，突破单
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Adaptive Data Flywheel: Applying MAPE Control Loops to AI Agent Improvement
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.27051"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.27051", "authors": ["Shukla", "Knowles", "Madugula", "Farris", "Angilly", "Pombo", "Xu", "An", "Balasubramanian", "Yu", "Ren", "Akkiraju"], "id": "2510.27051", "pdf_url": "https://arxiv.org/pdf/2510.27051", "rank": 8.357142857142858, "title": "Adaptive Data Flywheel: Applying MAPE Control Loops to AI Agent Improvement"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.27051" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5287,6 +6075,11 @@ MARAG-R1 首次用强化学习让 LLM 自主协调多种检索工具，突破单
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Dialogue as Discovery: Navigating Human Intent Through Principled Inquiry
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.27410"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.27410", "authors": ["Sun", "Feng", "Chang", "Li", "Li", "Ai", "Zhang", "Dai", "Zhang"], "id": "2510.27410", "pdf_url": "https://arxiv.org/pdf/2510.27410", "rank": 8.357142857142858, "title": "Dialogue as Discovery: Navigating Human Intent Through Principled Inquiry"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.27410" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5536,6 +6329,11 @@ $$r_t=H(P_t)−H(P_{t+1})=\sum_{V_i\in \text{answered}}H(P_t(V_i))$$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 InnovatorBench: Evaluating Agents' Ability to Conduct Innovative LLM Research
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.27598"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.27598", "authors": ["Wu", "Fu", "Si", "Huang", "Jiang", "Li", "Xia", "Sun", "Xu", "Hu", "Lu", "Cai", "Ye", "Zhu", "Xiao", "Liu"], "id": "2510.27598", "pdf_url": "https://arxiv.org/pdf/2510.27598", "rank": 8.357142857142858, "title": "InnovatorBench: Evaluating Agents\u0027 Ability to Conduct Innovative LLM Research"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.27598" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5608,6 +6406,11 @@ $$r_t=H(P_t)−H(P_{t+1})=\sum_{V_i\in \text{answered}}H(P_t(V_i))$$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 VeriMoA: A Mixture-of-Agents Framework for Spec-to-HDL Generation
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.27617"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.27617", "authors": ["Ping", "Bhattacharjee", "Zhang", "Li", "Yang", "Cheng", "Zhang", "Thomason", "Jannesari", "Ahmed", "Bogdan"], "id": "2510.27617", "pdf_url": "https://arxiv.org/pdf/2510.27617", "rank": 8.357142857142858, "title": "VeriMoA: A Mixture-of-Agents Framework for Spec-to-HDL Generation"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.27617" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5876,6 +6679,11 @@ $$ \min q(H_{i+1}) \geq \min q(H_i) $$</li>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 KAT-Coder Technical Report
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.18779"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.18779", "authors": ["Zhan", "Deng", "Wang", "Zhang", "Tang", "Zhang", "Lai", "Huang", "Xiang", "Wu", "Zhuang", "Wang", "Yan", "Lei", "Feng", "Wang", "Lin", "Li", "Xie", "Cui", "Chen", "Wang", "Li", "Zhu", "Zhang", "Xu", "Yu", "Yao", "Lei", "Zhang", "Li", "Xiong", "Gao", "Li", "Li", "Liu", "Zhang", "Peng", "Zhang", "Chen"], "id": "2510.18779", "pdf_url": "https://arxiv.org/pdf/2510.18779", "rank": 8.357142857142858, "title": "KAT-Coder Technical Report"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.18779" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -6136,634 +6944,6 @@ $$A'<em>{ij}=(1+\lambda(D_i-\bar D))(1+\mu(H</em>{ij}-\bar H_i))A_{ij}$$<br />
                 </div>
             </div>
             
-            <div id="tab-RLHF" class="tab-content ">
-                <div class="content-wrapper">
-                    <div class="papers-list" id="papers-list-RLHF">
-                        <!-- 领域汇总分析 -->
-                        
-                        <div class="domain-summary-display">
-                <!-- <h3>📊 领域汇总分析</h3> -->
-                
-                        <!-- 完整汇总内容（单一文本） -->
-                        
-                <div class="summary-section">
-                    <div class="analysis-content"><h3>研究全貌</h3>
-<p>本批次RLHF领域共收录2篇论文，研究方向主要集中在<strong>奖励模型的公平性</strong>与<strong>偏好对齐的精细化控制</strong>两个维度。前者关注奖励模型在人类偏好学习过程中可能引入的系统性偏见，尤其是由输入文本中非语义性前缀（如身份标识）引发的歧视性偏好；后者则聚焦于优化偏好对齐过程中的训练机制，提升模型对关键语义单元的敏感度。当前热点问题是如何在提升模型对齐效果的同时，保障其决策的公平性与可控性。整体趋势显示，RLHF研究正从“粗粒度整体对齐”向“细粒度、可解释、低偏见”的精细化对齐演进。</p>
-<h3>重点方法深度解析</h3>
-<p>本批次中，以下两篇论文提出了极具启发性的新方法：</p>
-<p><strong>《Detecting Prefix Bias in LLM-based Reward Models》</strong> <a href="https://arxiv.org/abs/2505.13487" target="_blank" rel="noopener noreferrer">URL</a><br />
-该论文首次系统性地提出并量化“前缀偏见”问题，即奖励模型因输入中微小的身份相关前缀（如“一位黑人医生说”vs“一位白人医生说”）而产生偏好偏移。作者提出“自影响”（self-influence）与“交叉影响”（cross-influence）两个新指标，用于衡量特定前缀对奖励打分的扰动程度。技术上，通过在多个开源偏好数据集（如Anthropic HH、OpenAssistant）上构建对照样本，系统评估不同奖励模型（如RewardBench基准中的T5、DeBERTa等）的偏见程度。实验发现，所有模型均存在显著的种族与性别偏见，且与架构无关。作者进一步提出一种基于反事实数据增强的缓解策略，在训练中引入平衡的前缀变体，有效降低偏见达40%以上。该方法适用于需要高公平性保障的场景，如医疗、招聘等敏感领域。</p>
-<p><strong>《SparsePO: Controlling Preference Alignment of LLMs via Sparse Token Masks》</strong> <a href="https://arxiv.org/abs/2410.05102" target="_blank" rel="noopener noreferrer">URL</a><br />
-该论文挑战了传统偏好优化（如DPO）中“所有token同等贡献”的假设，提出SparsePO——一种在token级别动态加权KL散度与奖励信号的新目标函数。其核心是引入可学习或基于参考模型生成的稀疏权重掩码，使模型自动识别对偏好判断起关键作用的token（如“有毒”、“无害”等关键词）。训练中通过正则化诱导掩码稀疏性，实现对齐信号的聚焦。在多个任务（如摘要、对话）中，SparsePO在RewardBench和自建测试集上实现+10%摘要胜率和+3%对话胜率提升，且不损害推理连贯性。该方法特别适合需精细控制生成内容的场景，如内容审核、情感调控等。</p>
-<p>两篇工作形成互补：前者揭示了RLHF中潜在的系统性偏见，后者则提供了更精细的对齐机制。前者偏重诊断与公平性，后者聚焦优化与性能，共同推动RLHF向更可靠、可控的方向发展。</p>
-<h3>实践启示</h3>
-<p>这两项研究对大模型应用开发具有重要指导意义。对于高风险场景（如公共服务、招聘），应优先采用前缀偏见检测机制，并在训练中引入反事实数据增强，以降低歧视风险。而对于内容生成类应用（如客服、摘要），SparsePO提供了一种更高效的对齐策略，建议在DPO基础上集成稀疏掩码机制，提升关键语义控制能力。可落地的建议包括：在奖励模型部署前进行系统性偏见扫描；在偏好训练中引入token级注意力机制。实现时需注意：前缀偏见检测需构建高质量对照样本集，SparsePO的掩码稀疏度需通过验证集调优，避免过度稀疏导致训练不稳定。</p>
-</div>
-                </div>
-                
-                
-            </div>
-            
-                        
-                        <div class="topic-content">
-                            
-                                
-                                <div class="paper-item-compact" id="paper-item-2505.13487">
-                                    <div class="paper-header" onclick="showPaperDetail('2505.13487', 'RLHF')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Detecting Prefix Bias in LLM-based Reward Models
-                                                <a href="https://arxiv.org/abs/2505.13487" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ADetecting%20Prefix%20Bias%20in%20LLM-based%20Reward%20Models%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2505.13487&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ADetecting%20Prefix%20Bias%20in%20LLM-based%20Reward%20Models%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2505.13487%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Kumar, He, Markosyan, Chern, Arrieta-Ibarra</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文提出了一种检测基于大语言模型的奖励模型中前缀偏见的新方法，通过引入‘自影响’和‘交叉影响’指标，系统性地揭示了在种族和性别维度上的显著偏见。研究覆盖多个开源数据集与模型架构，验证了偏见的普遍性，并提出一种数据增强策略有效缓解该问题。方法创新性强，实验设计严谨，证据充分，对公平性研究具有重要价值，叙述整体清晰但部分技术细节可进一步优化。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.4</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2505.13487" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Detecting Prefix Bias in LLM-based Reward Models</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 2 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>该论文聚焦于“奖励模型中的前缀偏差（prefix bias）”这一尚未被充分研究的问题，具体目标可概括为：</p>
-<ul>
-<li><p><strong>问题定义</strong><br />
-在 RLHF（Reinforcement Learning from Human Feedback）流程中，奖励模型（RM）被用来为语言模型输出打分，以指导后续强化学习微调。然而，当 RM 在推理阶段看到<strong>仅在查询前缀出现微小差异</strong>（如加入“我是一名女性。”或“我是一名黑人。”）的同一回答时，其偏好分数会发生系统性偏移。这种“前缀偏差”可能导致下游微调模型学到不公平或有害的偏好。</p>
-</li>
-<li><p><strong>核心研究问题</strong></p>
-<ol>
-<li>如何<strong>检测并量化</strong> RM 对这类身份前缀的敏感度？</li>
-<li>该偏差在<strong>不同开源偏好数据集与模型架构</strong>上是否普遍存在？</li>
-<li>偏差主要源自<strong>预训练 LLM 本身</strong>还是<strong>偏好数据集</strong>？</li>
-<li>如何通过<strong>数据增强</strong>等干预手段减缓前缀偏差，同时不显著降低 RM 的原始准确率？</li>
-</ol>
-</li>
-<li><p><strong>贡献总结</strong></p>
-<ul>
-<li>提出 <strong>auto-influence</strong>（偏好偏移度量）与 <strong>cross-influence</strong>（准确率偏移度量）两种指标，系统评估 RM 的前缀偏差。</li>
-<li>在多个公开偏好数据集（SHP、Anthropic-HH 等）和多种模型（Llama-2、Falcon、GPT-J 等）上验证：<ul>
-<li>所有 RM 均出现显著的性别/种族前缀偏差；</li>
-<li>偏差模式在训练后趋于一致，说明<strong>数据集是主要来源</strong>。</li>
-</ul>
-</li>
-<li>设计<strong>前缀增强训练</strong>策略：在训练阶段随机给回答拼接不同前缀，再乘以 3 倍数据量进行训练，可将 auto/cross-influence 降低至接近 0，同时保持原始准确率。</li>
-</ul>
-</li>
-</ul>
-<h2>相关工作</h2>
-<p>论文在第 2 节“Related Work”中系统梳理了与本研究直接相关的三条主线，并指出自身与它们的区别。可归纳为以下三类：</p>
-<ol>
-<li><p><strong>LLM 中的社会偏见</strong></p>
-<ul>
-<li>训练语料嵌入的系统性偏见（Bender et al., 2021；Dodge et al., 2021）。</li>
-<li>下游危害：临床建议中的种族差异（Omiye et al., 2023）、姓名补全中的性别模式（Kotek et al., 2023；Haim et al., 2024）。</li>
-<li>综述性梳理（Gallegos et al., 2023）。</li>
-<li><strong>前缀扰动</strong>仅用于认证或鲁棒性测试（Chaudhary et al., 2024），<strong>未触及奖励模型阶段</strong>。</li>
-</ul>
-</li>
-<li><p><strong>身份-上下文诱发偏见</strong></p>
-<ul>
-<li>基于用户推断身份的聊天机器人偏见（Kantharuban et al., 2024）。</li>
-<li>“第一人称公平”框架，用姓名探针揭示人口统计偏见（Eloundou et al., 2024）。</li>
-<li>这些工作聚焦<strong>生成/对话模型本身</strong>，而本文聚焦<strong>RLHF 流程中的奖励模型</strong>。</li>
-</ul>
-</li>
-<li><p><strong>奖励模型（RM）研究</strong></p>
-<ul>
-<li>过度优化与奖励黑客（Gao et al., 2023；Coste et al., 2023），但未考虑<strong>偏见</strong>。</li>
-<li>Mire et al. (2025) 首次发现 RM 对非洲裔美国英语（AAL）存在代表性惩罚，<strong>仍未探讨前缀攻击场景</strong>。</li>
-<li>本文是<strong>首个</strong>针对“前缀式身份扰动”在 RM 中引入偏见并进行系统量化与缓解的研究。</li>
-</ul>
-</li>
-</ol>
-<p>简言之，既有文献要么研究生成模型的社会偏见，要么研究 RM 的优化失败，而<strong>将前缀扰动用于诊断并缓解 RM 中的人口统计偏见</strong>这一视角，尚属空白。</p>
-<h2>解决方案</h2>
-<p>论文采用“检测→归因→缓解”三段式流程解决前缀偏差问题，具体方法如下：</p>
-<ol>
-<li><p>检测：设计两项可解释指标</p>
-<ul>
-<li><p><strong>Auto-Influence</strong><br />
-度量同一回答仅因前缀不同（如“我是一名女性。”vs“我是一名男性。”）而被奖励模型偏好的程度。<br />
-公式：<br />
-$$ \omega = w(p_1,p_2) - 0.5,\quad w(\cdot)=\frac{1}{|D_u|}\sum_{q,a}\mathbb{1}[S(q,p_1+a)&gt;S(q,p_2+a)]$$<br />
-理想无偏时 $\omega=0$。</p>
-</li>
-<li><p><strong>Cross-Influence</strong><br />
-度量前缀被分别加到“正确”与“错误”回答后，RM 准确率相对无前缀基线的下降幅度。<br />
-公式：<br />
-$$\alpha = \text{acc}(p_1,p_2) - \text{acc}(p_e,p_e)$$<br />
-其中 $p_e$ 为空前缀。$\alpha$ 越大说明前缀越能扭曲排序。</p>
-</li>
-</ul>
-</li>
-<li><p>归因：分离“模型”与“数据”源头</p>
-<ul>
-<li>在 7 种不同预训练 LLM（OPT-350M 到 Llama-2-13B）上重复训练 RM，发现<strong>训练后偏好模式趋同</strong>，而零-shot 基模型各自偏好不同。</li>
-<li>结论：前缀偏差<strong>主要源自偏好数据集</strong>，而非基模型固有权重。</li>
-</ul>
-</li>
-<li><p>缓解：数据增强训练</p>
-<ul>
-<li>对每条原始样本 $&lt;q,a_1,a_2&gt;$，随机采样 3 组前缀对 $(p_i,p_j)$，生成 3 份“带前缀”副本，构成增强数据集。</li>
-<li>用相同 Bradley-Terry 损失<br />
-$$L=-\log\sigma!\bigl(S(c)-S(r)\bigr)$$<br />
-重新训练 RM。</li>
-<li>效果：<br />
-– $\omega$ 与 $\alpha$ 的均值均降至接近 0；<br />
-– 原始准确率（相对于 SOTA）几乎不变；<br />
-– 跨任务泛化：用“种族前缀”增强的模型在“性别前缀”测试上同样显著降低偏差。</li>
-</ul>
-</li>
-</ol>
-<p>通过“指标→诊断→干预”闭环，论文既给出了可复现的评测协议，也提供了即插即用的数据层修正方案。</p>
-<h2>实验验证</h2>
-<p>论文共设计 5 组实验，覆盖“检测−归因−缓解”完整链条，全部在公开偏好数据集与多种开源 LLM 上完成。核心实验一览如下（按出现顺序归纳）：</p>
-<ol>
-<li><p>偏差检测实验<br />
-1.1 单模型单数据集案例（Llama-2-7B + SHP/legaladvice）</p>
-<ul>
-<li>性别前缀：$P_e$/ $P_m$/ $P_{wo}$ 三三对比，计算 $\omega$ 与 $\alpha$ 矩阵。</li>
-<li>种族前缀：$P_e$/ $P_b$/ $P_h$/ $P_w$ 四四对比，同上。<br />
-结果：$P_{wo}$ 对空/男前缀 winrate 偏差高达 +0.488；在错误回答上加 $P_{wo}$ 使准确率跌 18%。</li>
-</ul>
-<p>1.2 跨架构对比（7 种预训练 LLM）<br />
-模型：OPT-350M、Flan-T5-Large、GPT-J-6B、Falcon-7B、Llama-7B、Llama-2-7B、Llama-2-13B。<br />
-数据集：SHP/legaladvice。<br />
-观测指标：平均 $|\omega|$（$\bar\omega$）与平均 $|\alpha|$（$\bar\alpha$）。<br />
-结论：除最小模型外，$\bar\omega$ 均 &gt;0.35；更大模型 $\bar\alpha$ 略低，但偏差普遍存在。</p>
-<p>1.3 跨数据集对比<br />
-数据集：SHP 的 4 个子论坛（legaladvice、explainlikeimfive、askhr、askacademia）+ Anthropic-HH 全集 &amp; 无害子集。<br />
-模型：同上 7 款。<br />
-结果：所有 SHP 子集均出现显著 $\omega$、$\alpha$；Anthropic-HH 幅度稍小但仍达 10% 级。</p>
-</li>
-<li><p>偏差方向可视化</p>
-<ul>
-<li>对 SHP：$P_{wo}$ 普遍最被偏好，种族前缀呈 $P_b&gt;P_h&gt;P_w&gt;P_e$。</li>
-<li>对 Anthropic-HH：$P_e$ 最被偏好，人类式身份前缀反而降分。</li>
-</ul>
-</li>
-<li><p>源头归因实验<br />
-方法：用零-shot  prompting 让“基模型”直接做 pairwise 比较，提取 logits 计算 $\omega$。<br />
-结果：各基模型零-shot 偏好差异大；一旦经过偏好训练，winrate 分布趋于一致→<strong>偏差主要来自数据集</strong>。</p>
-</li>
-<li><p>缓解实验：数据增强训练<br />
-设置：Llama-2-7B 在 SHP 原始数据 vs 3×前缀增强数据（随机采样性别或种族前缀对）。<br />
-评估：</p>
-<ul>
-<li>同前缀测试：$\bar\omega$、$\bar\alpha$ 均降至≈0。</li>
-<li>跨前缀泛化：用性别增强→测种族前缀，$\bar\alpha$ 仍显著下降。</li>
-<li>性能代价：增强模型 vs SOTA 的准确率比值 ≥96%，显著优于零-shot 基线。</li>
-</ul>
-</li>
-<li><p>补充消融</p>
-<ul>
-<li>图 8 给出所有模型在所有数据集上的种族前缀 $\bar\omega$、$\bar\alpha$ 热图，验证偏差普遍性。</li>
-<li>附录表 7 汇总各模型在原始数据集上的绝对准确率，用于计算“准确率比值”基准。</li>
-</ul>
-</li>
-</ol>
-<p>以上实验共同证明：前缀偏差可被稳定检测、主要源自偏好数据、且可通过低成本数据增强显著抑制。</p>
-<h2>未来工作</h2>
-<p>以下方向可视为对该工作的直接延伸或深层拓展，均围绕“奖励模型偏差”这一核心，但分别从<strong>攻击面、机制、评价、防护、理论</strong>五个维度展开：</p>
-<hr />
-<h3>1. 攻击面扩展</h3>
-<ul>
-<li><strong>Suffix/In-fix Bias</strong><br />
-将身份提示从“前缀”移至句中或句尾，检验 RM 是否仍表现出同等强度偏差；可揭示模型对位置敏感的注意力机制漏洞。</li>
-<li><strong>Implicit Identity Cues</strong><br />
-用方言、俚语、风格或话题替代显式身份字符串（如 AAL、LGBTQ+ 词汇），探测“无显性声明”时的隐性歧视。</li>
-<li><strong>多轮上下文累积偏差</strong><br />
-在对话历史里分散植入身份信号，观察偏好是否随轮次指数级放大，模拟真实聊天场景下的“慢变量”偏差。</li>
-</ul>
-<hr />
-<h3>2. 机制深挖</h3>
-<ul>
-<li><strong>注意力与梯度归因</strong><br />
-对 $S(c)-S(r)$ 执行 integrated gradients 或注意力 rollout，定位哪些 token 对分数差异贡献最大，验证模型是否“只看前缀、忽略内容”。</li>
-<li><strong>表示空间探测</strong><br />
-用线性探针或 CCS 提取 RM 隐藏状态，检验是否存在一条“人口统计主轴”，沿该轴移动即可连续改变偏好得分。</li>
-<li><strong>Scaling Law for Bias</strong><br />
-固定数据集，系统变化模型规模（1B→70B）与数据量，拟合 $\bar\omega(N,D)$、$\bar\alpha(N,D)$ 的幂律关系，回答“更大模型是否必然更公平”。</li>
-</ul>
-<hr />
-<h3>3. 评价维度补全</h3>
-<ul>
-<li><strong>Intersectional Bias 指标</strong><br />
-同时叠加性别+种族+年龄前缀（如“我是一名年长的黑人女性”），设计高阶张量度量 $\omega(p_1\cap q_1, p_2\cap q_2)$，检测交叉歧视。</li>
-<li><strong>多语言与文化迁移</strong><br />
-将前缀攻击扩展到中文、西班牙语等非英语数据，观察偏差模式是否呈现“文化特异性”或“普遍一致性”。</li>
-<li><strong>动态分布漂移下的鲁棒性</strong><br />
-模拟部署后用户分布随时间漂移，用在线学习或continual RLHF更新RM，量化偏差是否出现“反噬”式放大。</li>
-</ul>
-<hr />
-<h3>4. 防护与治理</h3>
-<ul>
-<li><strong>对抗训练</strong><br />
-将前缀扰动视为对抗样本，在训练阶段用 min-max 博弈目标<br />
-$$\min_\theta \mathbb{E}<em>{p\sim\Delta}\max</em>{p'} L(\theta; p')$$<br />
-寻求最坏情况偏差最小化，而非仅平均情况。</li>
-<li><strong>公平约束强化学习</strong><br />
-在 PPO 阶段把 $\bar\omega\le\epsilon$ 作为即时惩罚项加入奖励信号，实现“微调即公平”，而非先训练后修补。</li>
-<li><strong>可验证鲁棒性</strong><br />
-借鉴 certified robustness 思路，对前缀 token 的任意替换给出偏好分数差异的上界证明，提供形式化公平保证。</li>
-</ul>
-<hr />
-<h3>5. 理论与伦理</h3>
-<ul>
-<li><strong>偏好数据的因果模型</strong><br />
-用因果图显式建模“标注者身份→语言风格→人类偏好→RM 输出”，通过 do-intervention 量化若阻断风格路径，偏差可消除多少。</li>
-<li><strong>社会福利视角的公平折衷</strong><br />
-将 $\bar\omega$、$\bar\alpha$ 与下游任务效用放入同一 Pareto 前沿，研究“公平–性能”边界是否因模型规模扩大而改善，为政策制定提供量化依据。</li>
-<li><strong>开源基准与红队平台</strong><br />
-建立持续更新的“奖励模型红队排行榜”，允许社区提交新的前缀、后缀或隐式攻击，推动偏差检测工具标准化。</li>
-</ul>
-<hr />
-<p>以上任何一条均可直接接入现有代码库，通过替换数据或损失函数即可快速验证；同时，它们也指向更基础的科学问题——“对齐信号本身是否可能自带结构性不公”，值得长期投入。</p>
-<h2>总结</h2>
-<p><strong>论文核心概要</strong><br />
-题目：Detecting Prefix Bias in LLM-based Reward Models<br />
-任务：揭示并缓解 RLHF 奖励模型对“身份前缀”的系统性偏好偏移。</p>
-<ol>
-<li><p>问题<br />
-在 RLHF 流程中，奖励模型（RM）负责给 prompt-response 打分。若仅在 response 前插入一句身份提示（如“我是一名女性。”），RM 对同一回答的评分会显著变化，导致下游微调模型学到不公平偏好。该现象被称为 <strong>prefix bias</strong>，此前未被系统研究。</p>
-</li>
-<li><p>方法</p>
-<ul>
-<li>提出两项指标：<br />
-– <strong>Auto-Influence</strong>（winrate 偏差 $\omega$）：测量同一回答因前缀不同而被偏好的程度。<br />
-– <strong>Cross-Influence</strong>（accuracy 偏差 $\alpha$）：测量前缀加到正/误回答后 RM 准确率的变化。</li>
-<li>在 7 种开源 LLM（350M–13B）与 6 个公开偏好数据集（SHP、Anthropic-HH 等）上大规模评测。</li>
-<li>通过零-shot 实验对比“基模型”与“训练后 RM”，定位偏差主要源自<strong>偏好数据</strong>而非预训练权重。</li>
-<li>设计<strong>数据增强</strong>干预：训练阶段为每条样本随机拼接 3 组前缀，再乘以 3 倍数据量重训 RM，显著降低 $\omega$ 与 $\alpha$ 且几乎不损失准确率。</li>
-</ul>
-</li>
-<li><p>主要发现</p>
-<ul>
-<li>所有模型、所有数据集均出现显著前缀偏差：性别前缀最大 $\omega$≈0.49，种族前缀使准确率最多跌 18%。</li>
-<li>偏差方向“反常识”：SHP 数据更偏好“女性”“黑人”前缀；Anthropic-HH 则偏好“无前缀”“白人”。</li>
-<li>增强训练后 $\omega,\alpha$ 均值逼近 0，且可泛化到未见前缀；原始准确率保持 ≥96% SOTA 水平。</li>
-</ul>
-</li>
-<li><p>结论<br />
-前缀偏差在 RLHF 奖励模型中普遍存在，主要由偏好数据引入，可通过低成本数据增强有效抑制。论文提供了可复现的评测协议与即插即用的缓解方案，强调在奖励建模阶段就必须进行偏见审计与干预。</p>
-</li>
-</ol>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.4</span></span>
-                                            <span>置信度: 0.95</span>
-                                            <span>分类: RLHF</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">RLHF</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2505.13487" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2505.13487" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="paper-item-compact" id="paper-item-2410.05102">
-                                    <div class="paper-header" onclick="showPaperDetail('2410.05102', 'RLHF')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                SparsePO: Controlling Preference Alignment of LLMs via Sparse Token Masks
-                                                <a href="https://arxiv.org/abs/2410.05102" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ASparsePO%3A%20Controlling%20Preference%20Alignment%20of%20LLMs%20via%20Sparse%20Token%20Masks%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2410.05102&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ASparsePO%3A%20Controlling%20Preference%20Alignment%20of%20LLMs%20via%20Sparse%20Token%20Masks%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2410.05102%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Christopoulou, Cardenas, Lampouras, Bou-Ammar, Wang</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文提出了SparsePO，一种通过稀疏化令牌掩码来控制大语言模型偏好对齐的新方法。该方法在令牌级别动态加权奖励和KL散度贡献，自动学习重要令牌，提升了生成结果的偏好对齐效果。在情感控制、对话、摘要和代码生成等多个任务上均表现出优于现有方法的性能，尤其在推理任务上提升达2个百分点。方法创新性强，实验充分，具备良好的通用性和可扩展性，但论文表达清晰度尚有提升空间。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.4</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2410.05102" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">SparsePO: Controlling Preference Alignment of LLMs via Sparse Token Masks</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 30 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>这篇论文提出了一种名为SparsePO（SPARSEPO: CONTROLLING PREFERENCE ALIGNMENT OF LLMS VIA SPARSE TOKEN MASKS）的新方法，旨在解决如何更有效地对齐大型语言模型（LLMs）以符合人类期望行为的问题。具体来说，论文试图解决的问题包括：</p>
-<ol>
-<li><p><strong>直接偏好优化（Direct Preference Optimization, DPO）的局限性</strong>：DPO方法在优化时将所有token平等对待，但人类对文本的偏好往往只与某些特定词语或短语有关。</p>
-</li>
-<li><p><strong>粒度更细的偏好建模</strong>：在某些领域，偏好可能由特定方面（如情感、毒性）决定，或者决策依赖于某些子序列。这就需要更细粒度的更新。</p>
-</li>
-<li><p><strong>提升模型的多样性和灵活性</strong>：通过仅允许某些token与参考模型保持接近，其余的token可以超越它，从而产生更多样化的响应。</p>
-</li>
-<li><p><strong>自动学习token级别的权重</strong>：提出的方法自动学习在训练过程中对每个token的KL散度和奖励进行加权，从而实现更有效的偏好对齐。</p>
-</li>
-</ol>
-<p>论文的核心贡献是提出了一种灵活的框架，通过引入稀疏的token级偏好优化（SparsePO），自动学习在偏好优化训练期间对每个token的KL散度和奖励进行加权。这种方法通过引入一个mask函数，该函数为序列中的每个token产生一个标量，以控制该token在损失函数中的KL参与度。通过实验，论文证明了该方法可以有效地平衡预期的ground-truth奖励和响应级别的KL散度，并在多个领域中取得了良好的性能。</p>
-<h2>相关工作</h2>
-<p>这篇论文提到了多个与研究主题相关的工作，主要集中在如何优化和调整大型语言模型（LLMs）以符合人类偏好。以下是一些关键的相关研究：</p>
-<ol>
-<li><p><strong>Direct Preference Optimization (DPO)</strong>:</p>
-<ul>
-<li>Rafailov et al., 2023 提出了直接偏好优化（DPO），这是一种简化的、离线的方法，用于训练模型以符合人类的偏好数据，无需复杂的强化学习过程。</li>
-</ul>
-</li>
-<li><p><strong>Reinforcement Learning from Human Feedback (RLHF)</strong>:</p>
-<ul>
-<li>Christiano et al., 2017 提出了一种通过人类反馈进行强化学习的方法，这是早期用于训练模型符合人类偏好的主要方法。</li>
-</ul>
-</li>
-<li><p><strong>Token-level Direct Preference Optimization (TDPO)</strong>:</p>
-<ul>
-<li>Zeng et al., 2024 提出了TDPO，将序列级别的DPO目标转化为token级别，使得KL散度作为正则化项与原始目标一起优化。</li>
-</ul>
-</li>
-<li><p><strong>Model Activation-based Mask (MAPO)</strong>:</p>
-<ul>
-<li>Huben et al., 2023 提出了基于模型激活的mask方法，利用参考模型中每个token的激活信息来生成token级别的权重mask。</li>
-</ul>
-</li>
-<li><p><strong>Learnable Sparse Mask (SPARSEPO)</strong>:</p>
-<ul>
-<li>论文中提出的第二种mask计算策略，通过学习参数来计算mask，可以是针对奖励和KL散度共享或独立的。</li>
-</ul>
-</li>
-<li><p><strong>Preference Optimization with an Offset (POO)</strong>:</p>
-<ul>
-<li>Amini et al., 2024 提出了一种偏好优化方法，它基于外部奖励模型为每个响应分配的分数，要求优先响应的似然度比非优先响应大一个偏移值。</li>
-</ul>
-</li>
-<li><p><strong>SimPO</strong>:</p>
-<ul>
-<li>Meng et al., 2024 提出了一种简单的偏好优化方法，使用序列的平均对数概率而不是总和，并要求响应间的差异至少等于一个边际值。</li>
-</ul>
-</li>
-<li><p><strong>DPO-Positive</strong>:</p>
-<ul>
-<li>Pal et al., 2024 提出了一种方法，其中对于策略模型，优先响应的对数概率需要高于参考模型。</li>
-</ul>
-</li>
-<li><p><strong>β-DPO</strong>:</p>
-<ul>
-<li>Wu et al., 2024 提出了一种动态优化β值的方法，针对每个批次进行调整。</li>
-</ul>
-</li>
-</ol>
-<p>这些研究展示了不同的方法和策略，用于改进和优化大型语言模型以更好地符合人类的偏好和期望行为。论文提出的SparsePO方法在这些现有工作的基础上，通过引入token级别的稀疏性来控制偏好对齐，旨在提高模型的灵活性和响应的多样性。</p>
-<h2>解决方案</h2>
-<p>论文通过提出一种名为Sparse Token-level Preference Optimization（SparsePO）的新方法来解决偏好对齐问题。这个方法的核心思想是在偏好优化（PO）训练过程中，自动学习每个token在奖励（reward）和KL散度（KL divergence）中的权重。下面是解决这个问题的关键步骤：</p>
-<ol>
-<li><p><strong>引入token级别的优化目标</strong>：论文首先将优化目标从序列级别转换为token级别，这样可以更细致地控制每个token对于整体优化目标的贡献。</p>
-</li>
-<li><p><strong>稀疏性权重（Sparse Weight Masks）</strong>：论文提出了两种不同的mask函数，用于自动学习每个token的KL散度和奖励的权重。这些mask函数可以是：</p>
-<ul>
-<li><strong>基于模型激活的mask（MAPO）</strong>：利用参考模型的内部激活信息来生成token级别的权重mask。</li>
-<li><strong>可学习的稀疏mask（SPARSEPO）</strong>：通过训练过程中学习的参数来生成mask。</li>
-</ul>
-</li>
-<li><p><strong>控制mask的稀疏性</strong>：通过引入ReLU激活函数，模型可以自动学习每个token的重要性，从而实现mask的稀疏性。论文发现，这种稀疏性可以通过调整β参数来控制。</p>
-</li>
-<li><p><strong>优化目标</strong>：论文提出了一个包含mask的新优化目标，使得模型在训练时可以学习到如何最佳地权衡每个token的奖励和KL散度贡献。</p>
-</li>
-<li><p><strong>实验验证</strong>：论文通过在多个领域的任务（如情感控制、对话、文本摘要和文本到代码生成）上进行广泛的实验，证明了SparsePO方法可以有效地提高模型对齐到目标偏好的能力，并在一些任务上取得了比其他PO方法更好的性能。</p>
-</li>
-</ol>
-<p>通过上述步骤，SparsePO方法能够更灵活地对齐模型的行为与人类偏好，同时保持生成响应的多样性。论文的实验结果表明，SparsePO能够根据目标任务为token分配有意义的权重，并生成更符合期望偏好的响应。</p>
-<h2>实验验证</h2>
-<p>论文中进行了多个实验来验证SparsePO方法的有效性，实验覆盖了不同的领域和任务，具体包括：</p>
-<ol>
-<li><p><strong>情感控制（Sentiment Control）</strong>：</p>
-<ul>
-<li>使用IMDB数据集进行电影评论的情感控制实验，将模型通过PO训练以生成正面的电影评论。</li>
-<li>分析了预期奖励和响应级别的KL散度之间的权衡（Pareto frontier）。</li>
-<li>研究了掩码稀疏性和token级别的KL散度之间的关系。</li>
-</ul>
-</li>
-<li><p><strong>对话中的有用性和无害性控制（Helpfulness &amp; Harmlessness Control）</strong>：</p>
-<ul>
-<li>使用Anthropic HH数据集进行单轮对话任务，训练Pythia 1.4B模型生成有用和无害的对话回复。</li>
-<li>在OpenLLM Leaderboard上评估了模型在多个推理和指令执行任务上的性能。</li>
-</ul>
-</li>
-<li><p><strong>摘要质量控制（Summary Quality Control）</strong>：</p>
-<ul>
-<li>使用Reddit TL;DR数据集及其偏好注释进行摘要质量控制实验。</li>
-<li>评估了摘要的相关性、多样性和忠实度。</li>
-</ul>
-</li>
-<li><p><strong>文本到代码生成（Text-to-Code Generation）</strong>：</p>
-<ul>
-<li>使用MBPP数据集进行文本到代码生成任务的PO实验。</li>
-<li>优化目标是生成正确的、可执行的Python程序。</li>
-</ul>
-</li>
-<li><p><strong>掩码计算（Mask Computation）</strong>：</p>
-<ul>
-<li>提出了两种策略来获取掩码：基于模型激活的掩码（MAPO）和可学习的稀疏掩码（SPARSEPO）。</li>
-<li>分析了不同β值下掩码的稀疏性水平和token级别的KL散度。</li>
-</ul>
-</li>
-<li><p><strong>定性分析（Qualitative Analysis）</strong>：</p>
-<ul>
-<li>对比了TDPO和SparsePO学习到的掩码在具体示例句子上的token级别值。</li>
-</ul>
-</li>
-<li><p><strong>消融研究（Ablation Studies）</strong>：</p>
-<ul>
-<li>探讨了掩码架构设计选择对模型性能的影响。</li>
-<li>研究了掩码权重衰减正则化对模型性能的影响。</li>
-<li>实验了使用二进制和随机掩码的SparsePO变体。</li>
-</ul>
-</li>
-</ol>
-<p>这些实验验证了SparsePO方法在不同任务中的有效性，并展示了其在平衡预期奖励和响应级别的KL散度、提高模型对齐目标偏好的能力以及生成更多样化响应方面的潜力。</p>
-<h2>未来工作</h2>
-<p>尽管SparsePO在多个任务和领域中显示出了良好的性能，但仍有一些可以进一步探索的方向：</p>
-<ol>
-<li><p><strong>更细粒度的掩码学习</strong>：当前的掩码学习是基于每个token的，探索基于子词（subword）或者词组的掩码可能进一步提高模型的灵活性和性能。</p>
-</li>
-<li><p><strong>不同领域的应用</strong>：在更多不同的领域和任务上测试SparsePO，例如机器翻译、自动文摘、问答系统等，以验证其泛化能力。</p>
-</li>
-<li><p><strong>计算效率</strong>：研究如何优化SparsePO的训练过程，以减少计算资源消耗，提高训练效率。</p>
-</li>
-<li><p><strong>长期依赖关系</strong>：探索模型如何在长文本中维持对重要token的长期依赖关系的理解。</p>
-</li>
-<li><p><strong>解释性和可视化</strong>：研究如何提高模型决策过程的可解释性，例如通过可视化技术展示哪些token对模型输出有重要影响。</p>
-</li>
-<li><p><strong>多模态数据集</strong>：在包含图像、视频等多模态数据的任务中测试SparsePO，探索其在处理非文本信息时的表现。</p>
-</li>
-<li><p><strong>更复杂的偏好表示</strong>：研究如何整合更复杂的人类反馈，而不仅仅是简单的偏好对，可能包括强度、理由等。</p>
-</li>
-<li><p><strong>鲁棒性和安全性</strong>：进一步探索模型在面对对抗性攻击和不公平数据时的鲁棒性和安全性。</p>
-</li>
-<li><p><strong>实时应用</strong>：研究如何将SparsePO集成到实时应用中，例如在线对话系统，并处理实时反馈。</p>
-</li>
-<li><p><strong>跨语言评估</strong>：在不同语言的数据集上评估SparsePO，探索其在跨语言任务中的有效性。</p>
-</li>
-<li><p><strong>模型压缩和加速</strong>：研究如何将SparsePO与模型压缩技术结合，以便于在资源受限的设备上部署。</p>
-</li>
-<li><p><strong>掩码的可转移性</strong>：探索在源任务上学到的掩码是否可以迁移到目标任务上，从而减少在新任务上的标注工作。</p>
-</li>
-</ol>
-<p>这些方向不仅可以推动SparsePO的发展，也有助于提升大型语言模型在实际应用中的性能和可靠性。</p>
-<h2>总结</h2>
-<p>这篇论文的主要内容可以总结如下：</p>
-<ol>
-<li><p><strong>问题陈述</strong>：</p>
-<ul>
-<li>大型语言模型（LLMs）需要与人类偏好对齐以表现出期望的行为。</li>
-<li>现有的偏好优化（PO）方法，如直接偏好优化（DPO），在序列级别上操作，并不区分每个token的重要性。</li>
-</ul>
-</li>
-<li><p><strong>研究动机</strong>：</p>
-<ul>
-<li>人类对语言的偏好并不对序列中的每个词都敏感，而是依赖于特定的词或短语。</li>
-<li>需要一种更细粒度的方法来更新模型的行为，以便更好地对齐人类偏好。</li>
-</ul>
-</li>
-<li><p><strong>方法（SparsePO）</strong>：</p>
-<ul>
-<li>提出了一种新的偏好优化方法，称为Sparse Token-level Preference Optimization（SparsePO）。</li>
-<li>引入了稀疏的token级权重掩码（mask），这些掩码在训练期间自动学习，以控制每个token的KL散度和奖励贡献。</li>
-<li>提出了两种掩码计算策略：基于模型激活的掩码（MAPO）和可学习的稀疏掩码（SPARSEPO）。</li>
-</ul>
-</li>
-<li><p><strong>实验</strong>：</p>
-<ul>
-<li>在多个领域（如情感控制、对话、文本摘要和文本到代码生成）进行了广泛的实验。</li>
-<li>实验结果表明，SparsePO能够根据目标任务为token分配有意义的权重，并生成更符合期望偏好的响应。</li>
-</ul>
-</li>
-<li><p><strong>主要贡献</strong>：</p>
-<ul>
-<li>提出了SparsePO框架，用于在PO中加权token级的奖励和KL贡献。</li>
-<li>对掩码的稀疏性和奖励前沿进行了分析，并展示了如何与控制的KL散度相关联。</li>
-<li>在不同领域中使用所提出方法的定量和定性收益。</li>
-</ul>
-</li>
-<li><p><strong>结论</strong>：</p>
-<ul>
-<li>SparsePO通过学习每个token的奖励和KL散度的权重，有效地对齐了模型的偏好。</li>
-<li>该方法在多个任务和领域中一致地优于现有的PO方法，并能够根据目标偏好为token分配更高的奖励和更低的KL值。</li>
-</ul>
-</li>
-</ol>
-<p>整体而言，这篇论文提出了一种新的偏好优化策略，通过在token级别上引入稀疏性来更好地控制模型的行为，并在多个任务上验证了其有效性。</p>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.4</span></span>
-                                            <span>置信度: 0.92</span>
-                                            <span>分类: RLHF</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">RLHF</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2410.05102" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2410.05102" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
             <div id="tab-Hallucination" class="tab-content ">
                 <div class="content-wrapper">
                     <div class="papers-list" id="papers-list-Hallucination">
@@ -6801,6 +6981,11 @@ $$\min_\theta \mathbb{E}<em>{p\sim\Delta}\max</em>{p'} L(\theta; p')$$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Cancer-Myth: Evaluating Large Language Models on Patient Questions with False Presuppositions
+                                                <button class="mark-button" 
+                                                        data-paper-id="2504.11373"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2504.11373", "authors": ["Zhu", "Chen", "Yu", "Lin", "Law", "Jizzini", "Nieva", "Liu", "Jia"], "id": "2504.11373", "pdf_url": "https://arxiv.org/pdf/2504.11373", "rank": 8.5, "title": "Cancer-Myth: Evaluating Large Language Models on Patient Questions with False Presuppositions"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2504.11373" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -7184,6 +7369,11 @@ $$U = \alpha \cdot \text{Medical Benefit} - \beta \cdot \text{Psychological Harm
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Balancing Knowledge Updates: Toward Unified Modular Editing in LLMs
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.27400"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.27400", "authors": ["Liu", "Wang", "Zhao", "Hu"], "id": "2510.27400", "pdf_url": "https://arxiv.org/pdf/2510.27400", "rank": 8.357142857142858, "title": "Balancing Knowledge Updates: Toward Unified Modular Editing in LLMs"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.27400" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -7625,6 +7815,11 @@ $$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Spatial-SSRL: Enhancing Spatial Understanding via Self-Supervised Reinforcement Learning
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.27606"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.27606", "authors": ["Liu", "Zhang", "Zang", "Cao", "Xing", "Dong", "Duan", "Lin", "Wang"], "id": "2510.27606", "pdf_url": "https://arxiv.org/pdf/2510.27606", "rank": 8.642857142857144, "title": "Spatial-SSRL: Enhancing Spatial Understanding via Self-Supervised Reinforcement Learning"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.27606" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -8252,6 +8447,11 @@ Spatial-SSRL-3B/7B（统一 CoT）</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Towards Universal Video Retrieval: Generalizing Video Embedding via Synthesized Multimodal Pyramid Curriculum
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.27571"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.27571", "authors": ["Guo", "Li", "Zhang", "Long", "Xie", "Chu"], "id": "2510.27571", "pdf_url": "https://arxiv.org/pdf/2510.27571", "rank": 8.5, "title": "Towards Universal Video Retrieval: Generalizing Video Embedding via Synthesized Multimodal Pyramid Curriculum"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.27571" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -8908,6 +9108,11 @@ TXT 0.657、CMP 0.312、FG 0.570、LC 0.814、S 0.821、T 0.469，均优于所�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 VRoPE: Rotary Position Embedding for Video Large Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2502.11664"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2502.11664", "authors": ["Liu", "Guo", "Tang", "Yue", "Cai", "Ma", "Liu", "Chen", "Liu"], "id": "2502.11664", "pdf_url": "https://arxiv.org/pdf/2502.11664", "rank": 8.357142857142858, "title": "VRoPE: Rotary Position Embedding for Video Large Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2502.11664" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9187,6 +9392,11 @@ v \
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Do Vision-Language Models Measure Up? Benchmarking Visual Measurement Reading with MeasureBench
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.26865"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.26865", "authors": ["Lin", "Liu", "Xu", "Yue", "He", "Zhao", "Chen", "Liu", "Yao", "Yang"], "id": "2510.26865", "pdf_url": "https://arxiv.org/pdf/2510.26865", "rank": 8.357142857142858, "title": "Do Vision-Language Models Measure Up? Benchmarking Visual Measurement Reading with MeasureBench"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.26865" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9365,6 +9575,11 @@ v \
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 FMint-SDE: A Multimodal Foundation Model for Accelerating Numerical Simulation of SDEs via Error Correction
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.27173"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.27173", "authors": ["Yuan", "Yang", "Cameron"], "id": "2510.27173", "pdf_url": "https://arxiv.org/pdf/2510.27173", "rank": 8.357142857142858, "title": "FMint-SDE: A Multimodal Foundation Model for Accelerating Numerical Simulation of SDEs via Error Correction"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.27173" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9540,6 +9755,11 @@ $$</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 FOCUS: Efficient Keyframe Selection for Long Video Understanding
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.27280"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.27280", "authors": ["Zhu", "Xu", "Luo", "Liu", "Sarkar", "Yang", "You"], "id": "2510.27280", "pdf_url": "https://arxiv.org/pdf/2510.27280", "rank": 8.357142857142858, "title": "FOCUS: Efficient Keyframe Selection for Long Video Understanding"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.27280" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9786,6 +10006,11 @@ $$ \beta_a(n)=\sqrt{\frac{2\hat\sigma_a^2\ln n}{N_a(n)}} +\frac{3\ln n}{N_a(n)} 
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 T3: Test-Time Model Merging in VLMs for Zero-Shot Medical Imaging Analysis
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.27265"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.27265", "authors": ["Imam", "Wang", "Mahapatra", "Yaqub"], "id": "2510.27265", "pdf_url": "https://arxiv.org/pdf/2510.27265", "rank": 8.357142857142858, "title": "T3: Test-Time Model Merging in VLMs for Zero-Shot Medical Imaging Analysis"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.27265" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9993,6 +10218,11 @@ T³ 在不同模态、不同主干网络下均保持稳定增益，平均提升�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Can MLLMs Read the Room? A Multimodal Benchmark for Verifying Truthfulness in Multi-Party Social Interactions
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.27195"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.27195", "authors": ["Kang", "Huang", "Ouyang", "Zhang", "Sato"], "id": "2510.27195", "pdf_url": "https://arxiv.org/pdf/2510.27195", "rank": 8.357142857142858, "title": "Can MLLMs Read the Room? A Multimodal Benchmark for Verifying Truthfulness in Multi-Party Social Interactions"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.27195" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -10197,7 +10427,7 @@ T³ 在不同模态、不同主干网络下均保持稳定增益，平均提升�
         <!-- Footer with filter info -->
         
         <div class="footer">
-            主题筛选: SFT, RLHF, Finance, Multimodal, Agent, Hallucination | 状态: 已启用
+            主题筛选: Agent, SFT, Multimodal, RLHF, Hallucination, Finance, Pretraining | 状态: 已启用
         </div>
         
         </div>
@@ -10207,7 +10437,10 @@ T³ 在不同模态、不同主干网络下均保持稳定增益，平均提升�
     <div class="detail-panel" id="detailPanel">
         <div class="detail-panel-header">
             <span class="detail-panel-title">论文详情</span>
-            <button class="detail-panel-close" onclick="closeDetailPanel()">✕</button>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="mark-button" id="detailPanelMarkButton" onclick="handleDetailPanelMark(event);" title="标记这篇论文">☆</button>
+                <button class="detail-panel-close" onclick="closeDetailPanel()">✕</button>
+            </div>
         </div>
         <div class="detail-panel-content" id="detailPanelContent">
             <!-- 动态加载论文详情 -->
@@ -10219,7 +10452,10 @@ T³ 在不同模态、不同主干网络下均保持稳定增益，平均提升�
         <div class="mobile-modal-content" onclick="event.stopPropagation()">
             <div class="mobile-modal-header">
                 <span class="detail-panel-title">论文详情</span>
-                <button class="mobile-modal-close" onclick="closeMobileModal()">✕</button>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="mark-button" id="mobileModalMarkButton" onclick="handleMobileModalMark(event);" title="标记这篇论文">☆</button>
+                    <button class="mobile-modal-close" onclick="closeMobileModal()">✕</button>
+                </div>
             </div>
             <div class="mobile-modal-body" id="mobileModalContent">
                 <!-- 动态加载论文详情 -->
@@ -10229,6 +10465,243 @@ T³ 在不同模态、不同主干网络下均保持稳定增益，平均提升�
 
     <script>
         let currentPaperId = null;
+        let currentPaperData = null;
+
+        // ========== 标记功能 ==========
+        
+        // 获取所有标记的论文
+        function getMarkedPapers() {
+            try {
+                const stored = localStorage.getItem('markedPapers');
+                return stored ? JSON.parse(stored) : [];
+            } catch (e) {
+                console.error('读取标记论文失败:', e);
+                return [];
+            }
+        }
+        
+        // 保存标记的论文
+        function saveMarkedPapers(papers) {
+            try {
+                localStorage.setItem('markedPapers', JSON.stringify(papers));
+            } catch (e) {
+                console.error('保存标记论文失败:', e);
+            }
+        }
+        
+        // 检查论文是否已标记
+        function isMarked(paperId) {
+            const markedPapers = getMarkedPapers();
+            return markedPapers.some(p => p.id === paperId);
+        }
+        
+        // 获取论文的完整信息（从页面中提取）
+        function getPaperData(paperId, basicData) {
+            // 从subtitle中提取日期
+            const subtitle = document.querySelector('.header p');
+            let date = '未知';
+            if (subtitle) {
+                const dateMatch = subtitle.textContent.match(/(\d{4}-\d{2}-\d{2})/);
+                if (dateMatch) {
+                    date = dateMatch[1];
+                }
+            }
+            
+            // 获取报告路径（相对路径）
+            // 如果路径包含web/reports，提取web/reports之后的部分
+            // 否则使用完整路径
+            let reportPath = window.location.pathname.replace(/^\/+/, '');
+            const webReportsMatch = reportPath.match(/web\/reports\/(.+)$/);
+            if (webReportsMatch) {
+                reportPath = webReportsMatch[1];
+            } else {
+                // 尝试提取reports之后的部分
+                const reportsMatch = reportPath.match(/reports\/(.+)$/);
+                if (reportsMatch) {
+                    reportPath = reportsMatch[1];
+                }
+            }
+            
+            return {
+                id: paperId,
+                title: basicData.title || '',
+                authors: basicData.authors || [],
+                arxiv_url: basicData.arxiv_url || '',
+                pdf_url: basicData.pdf_url || '',
+                rank: basicData.rank || null,
+                date: date,
+                reportPath: reportPath,
+                markedAt: new Date().toISOString()
+            };
+        }
+        
+        // 切换标记状态
+        function toggleMark(paperId, paperData) {
+            const markedPapers = getMarkedPapers();
+            const isCurrentlyMarked = isMarked(paperId);
+            
+            if (isCurrentlyMarked) {
+                // 取消标记
+                const filtered = markedPapers.filter(p => p.id !== paperId);
+                saveMarkedPapers(filtered);
+                updateMarkButtonState(paperId, false);
+            } else {
+                // 添加标记
+                const fullPaperData = getPaperData(paperId, paperData);
+                markedPapers.push(fullPaperData);
+                saveMarkedPapers(markedPapers);
+                updateMarkButtonState(paperId, true);
+            }
+        }
+        
+        // 更新标记按钮状态
+        function updateMarkButtonState(paperId, isMarked) {
+            // 更新列表中的按钮
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            if (listButton) {
+                listButton.textContent = isMarked ? '⭐' : '☆';
+                listButton.classList.toggle('marked', isMarked);
+            }
+            
+            // 更新详情面板中的按钮
+            if (currentPaperId === paperId) {
+                const detailButton = document.getElementById('detailPanelMarkButton');
+                const mobileButton = document.getElementById('mobileModalMarkButton');
+                
+                if (detailButton) {
+                    detailButton.textContent = isMarked ? '⭐' : '☆';
+                    detailButton.classList.toggle('marked', isMarked);
+                }
+                if (mobileButton) {
+                    mobileButton.textContent = isMarked ? '⭐' : '☆';
+                    mobileButton.classList.toggle('marked', isMarked);
+                }
+            }
+        }
+        
+        // 处理列表中的标记点击（从按钮元素获取数据）
+        function handleMarkClickFromButton(button) {
+            const paperId = button.getAttribute('data-paper-id');
+            const paperDataStr = button.getAttribute('data-paper-data');
+            try {
+                const paperData = JSON.parse(paperDataStr);
+                toggleMark(paperId, paperData);
+            } catch (e) {
+                console.error('解析论文数据失败:', e);
+            }
+        }
+        
+        // 处理详情面板中的标记点击
+        function handleDetailPanelMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 处理移动端弹窗中的标记点击
+        function handleMobileModalMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 初始化标记状态（页面加载时）
+        function initMarkStates() {
+            const markedPapers = getMarkedPapers();
+            const markedIds = new Set(markedPapers.map(p => p.id));
+            
+            // 更新所有标记按钮的状态
+            document.querySelectorAll('.mark-button[data-paper-id]').forEach(button => {
+                const paperId = button.getAttribute('data-paper-id');
+                if (markedIds.has(paperId)) {
+                    button.textContent = '⭐';
+                    button.classList.add('marked');
+                } else {
+                    button.textContent = '☆';
+                    button.classList.remove('marked');
+                }
+            });
+        }
 
         // 切换标签页
         function showTab(tabId, event) {
@@ -10255,6 +10728,49 @@ T³ 在不同模态、不同主干网络下均保持稳定增益，平均提升�
             }
         }
 
+        // 从DOM元素中提取论文数据
+        function extractPaperDataFromDOM(paperItem, paperId) {
+            if (!paperItem) return null;
+            
+            const paperTitleEl = paperItem.querySelector('.paper-title');
+            const paperAuthorsEl = paperItem.querySelector('.paper-authors');
+            const paperScoreEl = paperItem.querySelector('.paper-score');
+            const arxivLinkEl = paperItem.querySelector('.arxiv-link');
+            
+            // 提取标题，去除标记按钮和链接
+            let title = '';
+            if (paperTitleEl) {
+                title = paperTitleEl.cloneNode(true);
+                // 移除按钮和链接
+                title.querySelectorAll('.mark-button, .arxiv-link, .ai-links').forEach(el => el.remove());
+                title = title.textContent.trim();
+            }
+            
+            return {
+                id: paperId,
+                title: title || '',
+                authors: paperAuthorsEl ? paperAuthorsEl.textContent.split(',').map(a => a.trim()) : [],
+                arxiv_url: arxivLinkEl ? arxivLinkEl.href : '',
+                pdf_url: arxivLinkEl ? arxivLinkEl.href.replace('/abs/', '/pdf/') : '',
+                rank: paperScoreEl && paperScoreEl.textContent !== 'N/A' ? parseFloat(paperScoreEl.textContent) : null
+            };
+        }
+
+        // 渲染元素中的数学公式
+        function renderMathInElementLocal(element) {
+            if (typeof renderMathInElement !== 'undefined' && element) {
+                renderMathInElement(element, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
         // 显示论文详情
         function showPaperDetail(paperId, topicId) {
             const detailsContent = document.getElementById('details-' + paperId);
@@ -10271,6 +10787,43 @@ T³ 在不同模态、不同主干网络下均保持稳定增益，平均提升�
             
             currentPaperId = paperId;
             
+            // 从列表项中提取论文数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            
+            // 优先从列表按钮的data属性获取数据
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        currentPaperData = JSON.parse(paperDataStr);
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                        // 如果解析失败，从页面元素提取
+                        currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                    }
+                } else {
+                    // 如果没有data属性，从页面元素提取
+                    currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                }
+            } else {
+                // 如果找不到列表按钮，从页面元素提取
+                currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+            }
+            
+            // 更新详情面板中的标记按钮状态
+            const isCurrentlyMarked = isMarked(paperId);
+            const detailButton = document.getElementById('detailPanelMarkButton');
+            const mobileButton = document.getElementById('mobileModalMarkButton');
+            
+            if (detailButton) {
+                detailButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                detailButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            if (mobileButton) {
+                mobileButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                mobileButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            
             // 检测设备类型
             const isMobile = window.innerWidth <= 1024;
             
@@ -10278,12 +10831,16 @@ T³ 在不同模态、不同主干网络下均保持稳定增益，平均提升�
                 // 移动端：显示弹窗
                 const modalContent = document.getElementById('mobileModalContent');
                 modalContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(modalContent);
                 document.getElementById('mobileModal').classList.add('active');
                 document.body.style.overflow = 'hidden'; // 禁止背景滚动
             } else {
                 // 宽屏：显示右侧面板
                 const panelContent = document.getElementById('detailPanelContent');
                 panelContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(panelContent);
                 document.getElementById('detailPanel').classList.add('active');
                 
                 // 调整论文列表宽度
@@ -10345,6 +10902,7 @@ T³ 在不同模态、不同主干网络下均保持稳定增益，平均提升�
                     if (detailsContent) {
                         const modalContent = document.getElementById('mobileModalContent');
                         modalContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(modalContent);
                         mobileModal.classList.add('active');
                         document.body.style.overflow = 'hidden';
                     }
@@ -10356,6 +10914,7 @@ T³ 在不同模态、不同主干网络下均保持稳定增益，平均提升�
                     if (detailsContent) {
                         const panelContent = document.getElementById('detailPanelContent');
                         panelContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(panelContent);
                         detailPanel.classList.add('active');
                     }
                 }
@@ -10367,6 +10926,45 @@ T³ 在不同模态、不同主干网络下均保持稳定增益，平均提升�
             const firstNavItem = document.querySelector('.nav-item');
             if (firstNavItem) {
                 firstNavItem.classList.add('active');
+            }
+            
+            // 初始化标记状态
+            initMarkStates();
+            
+            // 检查URL hash，如果包含paper-item-xxx，自动打开该论文详情
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#paper-item-')) {
+                const paperId = hash.replace('#paper-item-', '');
+                // 查找该论文所在的topic
+                const paperItem = document.getElementById('paper-item-' + paperId);
+                if (paperItem) {
+                    // 找到论文所在的tab
+                    const tabContent = paperItem.closest('.tab-content');
+                    if (tabContent) {
+                        const tabId = tabContent.id.replace('tab-', '');
+                        // 切换到对应的tab
+                        showTab(tabId, null);
+                        // 延迟一下，确保tab切换完成后再显示详情
+                        setTimeout(() => {
+                            showPaperDetail(paperId, tabId);
+                            // 滚动到论文位置
+                            paperItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
+                    }
+                }
+            }
+            
+            // 初始化KaTeX自动渲染数学公式
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
             }
         });
 

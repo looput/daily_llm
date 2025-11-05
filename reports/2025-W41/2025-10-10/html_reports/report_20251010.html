@@ -1096,8 +1096,88 @@
             .detail-panel {
                 display: none !important;
             }
+            
+            /* 移动端优化领域汇总显示，去掉双层嵌套效果 */
+            .domain-summary-display {
+                background: white;
+                border: 1px solid #e8e8e8;
+                padding: 12px 16px;
+                margin-bottom: 20px;
+            }
+            
+            .domain-summary-display .summary-section,
+            .domain-summary-display .insights-section,
+            .domain-summary-display .trends-section {
+                background: transparent;
+                border: none;
+                border-radius: 0;
+                padding: 0;
+                margin: 0;
+            }
+        }
+        
+        /* KaTeX数学公式样式 */
+        .katex {
+            font-size: 1.1em;
+        }
+        
+        .katex-display {
+            margin: 1em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        
+        .katex-display > .katex {
+            white-space: nowrap;
+        }
+        
+        /* 标记按钮样式 */
+        .mark-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            color: #999;
+            transition: all 0.2s;
+            border-radius: 4px;
+            padding: 0;
+            margin-left: 8px;
+            flex-shrink: 0;
+            vertical-align: middle;
+        }
+        
+        .mark-button:hover {
+            background: #f5f5f5;
+            color: #ffa500;
+            transform: scale(1.1);
+        }
+        
+        .mark-button.marked {
+            color: #ffa500;
+        }
+        
+        .mark-button.marked:hover {
+            color: #ff8c00;
+        }
+        
+        .paper-title .mark-button {
+            margin-left: 8px;
+        }
+        
+        .detail-panel-header .mark-button,
+        .mobile-modal-header .mark-button {
+            margin-right: 8px;
         }
     </style>
+    <!-- KaTeX数学公式渲染库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
 </head>
 <body>
     <!-- 移动端菜单按钮 -->
@@ -1122,15 +1202,15 @@
                 </a>
                 
                 <a class="nav-item " 
-                   onclick="showTab('Agent', event)">
-                    智能体（Agent）
-                    <span class="nav-item-count">24</span>
-                </a>
-                
-                <a class="nav-item " 
                    onclick="showTab('RLHF', event)">
                     强化学习对齐（RLHF）
                     <span class="nav-item-count">2</span>
+                </a>
+                
+                <a class="nav-item " 
+                   onclick="showTab('Agent', event)">
+                    智能体（Agent）
+                    <span class="nav-item-count">24</span>
                 </a>
                 
                 <a class="nav-item " 
@@ -1152,7 +1232,7 @@
         <div class="container">
             <div class="header">
                 <h1>大模型论文速读（51/623）</h1>
-                <p>生成时间: 2025-11-04</p>
+                <p>日报: 2025-10-10 | 生成时间: 2025-11-05</p>
             </div>
             
             <!-- Tab Contents -->
@@ -1194,6 +1274,11 @@
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Profit Mirage: Revisiting Information Leakage in LLM-based Financial Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.07920"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.07920", "authors": ["Li", "Zeng", "Xing", "Xu", "Xu"], "id": "2510.07920", "pdf_url": "https://arxiv.org/pdf/2510.07920", "rank": 8.5, "title": "Profit Mirage: Revisiting Information Leakage in LLM-based Financial Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.07920" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -1340,6 +1425,11 @@
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Bloated Disclosures: Can ChatGPT Help Investors Process Information?
+                                                <button class="mark-button" 
+                                                        data-paper-id="2306.10224"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2306.10224", "authors": ["Kim", "Muhn", "Nikolaev"], "id": "2306.10224", "pdf_url": "https://arxiv.org/pdf/2306.10224", "rank": 8.357142857142858, "title": "Bloated Disclosures: Can ChatGPT Help Investors Process Information?"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2306.10224" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -1551,6 +1641,897 @@
                 </div>
             </div>
             
+            <div id="tab-RLHF" class="tab-content ">
+                <div class="content-wrapper">
+                    <div class="papers-list" id="papers-list-RLHF">
+                        <!-- 领域汇总分析 -->
+                        
+                        <div class="domain-summary-display">
+                <!-- <h3>📊 领域汇总分析</h3> -->
+                
+                        <!-- 完整汇总内容（单一文本） -->
+                        
+                <div class="summary-section">
+                    <div class="analysis-content"><h3>研究全貌</h3>
+<p>本批次RLHF领域共收录2篇论文，研究方向主要集中在<strong>奖励建模的精细化表达</strong>与<strong>代码生成任务中的细粒度对齐优化</strong>。前者关注如何通过结构化语言标准（如评分细则）提升奖励模型的可解释性与多维评估能力，后者聚焦于代码生成中传统偏好学习缺乏错误定位能力的问题。当前热点问题是如何突破传统标量或成对比较的粗粒度反馈机制，实现更精准、可解释、可扩展的对齐信号建模。整体趋势正从“整体响应级”对齐向“细粒度修正驱动”的范式演进，强调对错误区域的定位能力与人类决策逻辑的模拟。</p>
+<h3>重点方法深度解析</h3>
+<p>本批次中，两篇论文分别代表了RLHF在<strong>结构化奖励设计</strong>与<strong>任务特定对齐机制</strong>上的前沿探索，其中以下两个方法尤为突出：</p>
+<p><strong>《OpenRubrics: Towards Scalable Synthetic Rubric Generation for Reward Modeling and LLM Alignment》</strong> <a href="https://arxiv.org/abs/2510.07743" target="_blank" rel="noopener noreferrer">URL</a><br />
+该工作针对传统奖励模型难以捕捉人类偏好多维性的缺陷，提出“评分标准即奖励”（RaR）的新范式。其核心创新在于引入<strong>对比式评分标准生成（CRG）</strong>：通过分析优选与被拒响应的差异，自动提取显性“硬规则”（如“不得使用被动语态”）和隐性“原则”（如“应保持逻辑连贯”），形成结构化评分标准。技术上结合大模型生成与<strong>基于偏好标签一致性的拒绝采样</strong>，过滤噪声，提升生成评分标准的可靠性。最终构建的Rubric-RM在多个奖励建模基准上超越同规模基线6.8%，并在指令遵循与生物医学任务中实现策略模型性能迁移。该方法适用于需要高可解释性与多维度评估的场景，如教育评估、内容审核等。</p>
+<p><strong>《Teaching Your Models to Understand Code via Focal Preference Alignment》</strong> <a href="https://arxiv.org/abs/2503.02783" target="_blank" rel="noopener noreferrer">URL</a><br />
+该研究针对代码生成中传统DPO仅基于整体通过率进行对齐、忽略错误位置的问题，提出<strong>Target-DPO</strong>框架。其核心是模拟人类调试过程，在新构建的<strong>CodeFlow数据集</strong>（包含迭代修复路径）基础上，通过定位测试失败的代码片段，仅对错误相关token进行偏好对齐。技术上设计了<strong>聚焦式DPO损失函数</strong>，限制梯度更新范围至“修改区域”，避免无关代码干扰。实验表明，Target-DPO在BigCodeBench等挑战性任务上显著提升代码生成成功率，错误率明显下降。该方法特别适用于代码修复、程序合成等需精准纠错的场景，是任务定制化对齐的典范。</p>
+<p>两方法均突破传统RLHF的粗粒度建模局限，但路径不同：OpenRubrics从<strong>奖励信号结构化</strong>入手，提升通用性与可解释性；Target-DPO则从<strong>对齐粒度精细化</strong>出发，增强任务特定性能。前者更适合作为通用对齐基础设施，后者更适合垂直领域深度优化。</p>
+<h3>实践启示</h3>
+<p>这两项研究为大模型应用开发提供了重要借鉴：在需要<strong>可解释评估</strong>的场景（如医疗、教育），应优先采用OpenRubrics类结构化奖励建模方法，提升用户信任与调试效率；而在<strong>高精度任务</strong>（如代码生成、逻辑推理）中，应借鉴Target-DPO的细粒度对齐思想，聚焦错误区域优化。建议开发者结合自身任务特性，构建包含迭代修正路径的高质量偏好数据，并设计局部对齐机制。实现时需注意：结构化评分标准需严格验证与人类一致性，避免生成“虚假规则”；细粒度对齐则需精准定位错误区域，建议结合静态分析工具辅助标注。</p>
+</div>
+                </div>
+                
+                
+            </div>
+            
+                        
+                        <div class="topic-content">
+                            
+                                
+                                <div class="paper-item-compact" id="paper-item-2510.07743">
+                                    <div class="paper-header" onclick="showPaperDetail('2510.07743', 'RLHF')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                OpenRubrics: Towards Scalable Synthetic Rubric Generation for Reward Modeling and LLM Alignment
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.07743"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.07743", "authors": ["Liu", "Xu", "Yu", "Hong", "Yang", "Zhao", "Wang"], "id": "2510.07743", "pdf_url": "https://arxiv.org/pdf/2510.07743", "rank": 8.5, "title": "OpenRubrics: Towards Scalable Synthetic Rubric Generation for Reward Modeling and LLM Alignment"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2510.07743" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AOpenRubrics%3A%20Towards%20Scalable%20Synthetic%20Rubric%20Generation%20for%20Reward%20Modeling%20and%20LLM%20Alignment%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2510.07743&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AOpenRubrics%3A%20Towards%20Scalable%20Synthetic%20Rubric%20Generation%20for%20Reward%20Modeling%20and%20LLM%20Alignment%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2510.07743%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Liu, Xu, Yu, Hong, Yang, Zhao, Wang</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文提出了OpenRubrics，一个大规模、多样化的（提示，评分标准）数据集，并引入了对比式评分标准生成（CRG）方法，通过区分优选与被拒响应来生成兼具显性约束（硬规则）和隐性质量（原则）的评分标准。结合偏好标签一致性过滤，显著提升了评分标准的质量与可靠性。基于此构建的Rubric-RM在多个奖励建模基准上超越同规模基线模型6.8%，并在策略模型对齐任务中取得显著增益。研究数据与模型均已开源，方法设计严谨，实验证据充分，为LLM对齐提供了可解释、可扩展的新范式。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">8.5</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2510.07743" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">OpenRubrics: Towards Scalable Synthetic Rubric Generation for Reward Modeling and LLM Alignment</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 16 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>论文旨在解决现有奖励模型在 RLHF（基于人类反馈的强化学习）中表达能力不足的问题。传统方法通常依赖标量打分或成对偏好标签，难以刻画人类偏好的多维度特性。为此，作者提出“Rubric-as-Reward（RaR）”范式，用结构化自然语言标准（rubric）替代简单分数，以显式、可解释的方式分解响应质量。然而，高质量 rubric 的规模化生成仍面临成本高、一致性差等挑战。OpenRubrics 通过以下手段解决该问题：</p>
+<ol>
+<li>构建大规模 (prompt, rubric) 数据集，覆盖多领域任务。</li>
+<li>提出 Contrastive Rubric Generation（CRG），利用“优选/拒绝”响应对比，自动抽取出硬规则（hard rules）与原则（principles）。</li>
+<li>引入偏好–标签一致性过滤，用拒绝采样剔除噪声 rubric，确保可靠性。</li>
+</ol>
+<p>最终训练的 Rubric-RM 在 8 项奖励模型基准上平均提升 6.8%，并在策略优化中带来 2.9% 的额外增益，显著缩小了昂贵人工评估与自动奖励建模之间的差距。</p>
+<h2>相关工作</h2>
+<p>相关研究可归纳为两条主线：<strong>奖励建模（Reward Modeling）</strong>与<strong>Rubric-as-Rewards（RaR）</strong>。以下按主题梳理代表性工作，并指出 OpenRubrics 与之的差异。</p>
+<hr />
+<h3>奖励建模（Reward Modeling）</h3>
+<ol>
+<li><p><strong>标量/成对奖励</strong></p>
+<ul>
+<li>Bradley-Terry 框架下的点对点打分：$p(y^+ \succ y^-|\mathbf{x})=\sigma(r_\theta(\mathbf{x},y^+)-r_\theta(\mathbf{x},y^-))$</li>
+<li>代表：Ouyang et al. 2022（InstructGPT）、Lambert et al. 2025b（RewardBench）。</li>
+</ul>
+</li>
+<li><p><strong>生成式奖励模型（GenRM）</strong></p>
+<ul>
+<li>引入 Chain-of-Thought 合成中间推理：$r_\theta(\mathbf{x},y)=\mathbb{E}<em>{\mathbf{c}\sim \pi</em>\theta(\cdot|\mathbf{x},y)}[\mathrm{logit}(c_{\text{label}})]$</li>
+<li>代表：Ankner et al. 2024（Critique-out-Loud）、Yu et al. 2025、Zhang et al. 2025b。</li>
+</ul>
+</li>
+<li><p><strong>强化学习优化奖励</strong></p>
+<ul>
+<li>用 RL 进一步微调奖励本身：$\mathcal{L}<em>{\text{RL}}=-\mathbb{E}</em>{\mathbf{x}}[\log \pi_\phi(y^+|\mathbf{x}) \cdot r_\theta(\mathbf{x},y^+)]$</li>
+<li>代表：Chen et al. 2025a（JudgeLRM）、Whitehouse et al. 2025（J1）。</li>
+</ul>
+</li>
+</ol>
+<p><strong>差异</strong>：上述方法仍输出标量或单 token 偏好，缺乏可解释维度；OpenRubrics 用结构化 rubric 作为中间语义层，实现“先分解、后打分”。</p>
+<hr />
+<h3>Rubric-as-Rewards（RaR）</h3>
+<ol>
+<li><p><strong>人工构建 Rubric</strong></p>
+<ul>
+<li>Arora et al. 2025（HealthBench）聘请领域专家撰写医学评分标准，成本高且难扩展。</li>
+</ul>
+</li>
+<li><p><strong>Prompt 式即时生成</strong></p>
+<ul>
+<li>Gunjal et al. 2025 直接提示 GPT 生成 rubric，再用于 PPO 奖励；缺乏质量控制，且调用商用 API 费用高昂。</li>
+</ul>
+</li>
+<li><p><strong>迭代修正 Rubric</strong></p>
+<ul>
+<li>Zhang et al. 2025a 通过多轮自我修正缓解奖励过度优化，但未解决规模化与一致性问题。</li>
+</ul>
+</li>
+</ol>
+<p><strong>差异</strong>：OpenRubrics 首次提出<strong>对比式合成</strong>（CRG）与<strong>偏好一致性过滤</strong>，实现低成本、可扩展、高一致性的 rubric 数据生产，并配套端到端 Rubric-RM 训练流程。</p>
+<h2>解决方案</h2>
+<p>论文通过“数据–方法–模型”三位一体框架系统解决高质量 rubric 难以规模化生成的难题，具体路线如下：</p>
+<hr />
+<h3>1. 数据层：OpenRubrics 大规模语料</h3>
+<ul>
+<li><strong>来源混合</strong><br />
+整合 7 类公开偏好数据集（UltraFeedback、Tulu、HelpSteer3、Skywork、Tulu3-IF、MegaScience、Medical-o1），覆盖通用对话、STEM、医学等多领域，保证域多样性。</li>
+<li><strong>偏好对构建</strong><br />
+对已有标注取最高/最低分；对无标注数据用 Qwen-3-8B/14B、Llama-3.1-8B、Gemma-3-12B 生成 4 回复，再用开源奖励模型 ensemble 排序，形成 (x, y⁺, y⁻) 三元组。</li>
+</ul>
+<hr />
+<h3>2. 方法层：Contrastive Rubric Generation（CRG）+ 一致性过滤</h3>
+<ul>
+<li><p><strong>双类型 rubric 设计</strong></p>
+<ul>
+<li>Hard Rule：从 prompt 显式抽取“可验证”约束（字数、格式、禁用内容）。</li>
+<li>Principle：对比 y⁺/y⁻ 后抽象出通用质量维度（逻辑连贯、事实准确、风格得体）。</li>
+</ul>
+</li>
+<li><p><strong>CRG 算法</strong><br />
+给定 (x, y⁺, y⁻)，用 LLM h_ψ 生成 rubric：<br />
+$$ \mathcal{R}(x) \sim h_\psi(x, y^+, y^-, \ell) $$<br />
+其中 ℓ 为偏好标签，负例对比迫使模型挖掘<strong>区分性</strong>维度。</p>
+</li>
+<li><p><strong>Preference–Label Consistency 过滤</strong><br />
+再次提示 h_ψ 用同一 rubric 重判 (y⁺, y⁻)，仅保留预测与原始标签一致者：<br />
+$$ \mathcal{R}^*(x)= \begin{cases}\mathcal{R}(x), &amp; \hat{\ell}=\ell \ \emptyset, &amp; \text{otherwise}\end{cases} $$<br />
+拒绝采样后噪声显著下降，保证 rubric–偏好对齐。</p>
+</li>
+</ul>
+<hr />
+<h3>3. 模型层：Rubric-RM 两阶段流水线</h3>
+<ul>
+<li><p><strong>Stage-1 Rubric Generator g_θ</strong><br />
+在过滤后数据 $\mathcal{D}<em>{\text{rubric}}={(x, y^+, y^-, \mathcal{R}^*(x))}$ 上做 SFT，学习<br />
+$$ \mathcal{L}</em>{\text{rubric}}^{\text{SFT}}= -\mathbb{E}\sum_{t=1}^{|\mathcal{R}^<em>|} \log p_\theta(\mathcal{R}^</em><em>t \mid x, \mathcal{R}^*</em>{&lt;t}) $$<br />
+推理时输入 (x, y_A, y_B) 即可自动生成对应 rubric。</p>
+</li>
+<li><p><strong>Stage-2 Rubric-conditioned Judge r_ϕ</strong><br />
+在同一数据上额外加入偏好标签 $\hat{\ell}$，优化<br />
+$$ \mathcal{L}<em>{\text{rm}}^{\text{SFT}}= -\mathbb{E}\sum</em>{t=1}^{|\hat{\ell}|} \log p_\phi(\hat{\ell}<em>t \mid x, y^+, y^-, \mathcal{R}^*(x), \hat{\ell}</em>{&lt;t}) $$<br />
+推理时先调用 g_θ 得到 $\hat{\mathcal{R}}(x)$，再让 r_ϕ 输出“A 更好”或“B 更好”，实现<strong>可解释</strong>的成对奖励。</p>
+</li>
+</ul>
+<hr />
+<h3>4. 效果验证</h3>
+<ul>
+<li><p><strong>奖励模型角度</strong><br />
+Rubric-RM-8B 在 8 项基准平均 68.5%，超越同规模基线 6.8%；ensemble 后达 71.2%，逼近 14B 模型。</p>
+</li>
+<li><p><strong>策略优化角度</strong><br />
+以 Rubric-RM 为奖励做 DPO，IFEval 提升 3.9%，IFBench 新 SOTA 33.7；医学场景 HealthBench 再涨 1.1–1.3 分，验证 rubric 信号可跨域迁移。</p>
+</li>
+</ul>
+<hr />
+<p>通过“对比生成 → 一致性过滤 → 两阶段微调”闭环，论文首次实现<strong>低成本、高一致、可解释</strong>的 rubric 大规模生产，并将其无缝嵌入 RLHF 流程，显著缩小人工评估与自动奖励之间的鸿沟。</p>
+<h2>实验验证</h2>
+<p>论文从<strong>奖励模型性能</strong>与<strong>策略优化效果</strong>两条主线展开实验，共覆盖 <strong>8 个奖励建模基准</strong>、<strong>3 项指令遵循评测</strong>、<strong>2 个人类偏好对齐基准</strong>以及 <strong>1 个医学领域专项基准</strong>，并补充效率与案例剖析。具体配置与结果如下：</p>
+<hr />
+<h3>1. 奖励模型主实验（§5.2）</h3>
+<p><strong>基准</strong><br />
+RewardBench(Chat/Chat-Hard)、RM-Bench、PPE-IFEval、FollowBench、InfoBench、IFBench、RewardBench2(Precise-IF/Focus)、HelpSteer3 → <strong>8 套榜单</strong>。</p>
+<p><strong>对比方法</strong></p>
+<ul>
+<li>同规模白盒：JudgeLRM-7B、RRM-7B、RM-R1-7B（Qwen &amp; DeepSeek 蒸馏）</li>
+<li>更大规模：RM-R1-14B</li>
+<li>黑盒 API：Claude-3.5-Sonnet、GPT-4.1-Mini(Rubric+Judge)、Gemini-2.5-FlashLite(直接 Judge)</li>
+<li>消融：Qwen-3-8B 零样本“先 rubric 后 judge”流水线</li>
+</ul>
+<p><strong>结果</strong></p>
+<table>
+<thead>
+<tr>
+  <th>模型</th>
+  <th>平均得分</th>
+  <th>Δ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Rubric-RM-8B</td>
+  <td>68.5</td>
+  <td>–</td>
+</tr>
+<tr>
+  <td>Rubric-RM-8B-voting@5</td>
+  <td><strong>71.2</strong></td>
+  <td>+2.7</td>
+</tr>
+<tr>
+  <td>同规模最强基线</td>
+  <td>61.7</td>
+  <td><strong>+6.8</strong></td>
+</tr>
+<tr>
+  <td>14B 基线</td>
+  <td>71.7</td>
+  <td>持平</td>
+</tr>
+</tbody>
+</table>
+<p><strong>结论</strong>：rubric-aware 训练在 8B 参数下即可超越 7B 级模型 6.8%，ensemble 后追平 14B；在指令遵循类榜单（FollowBench、InfoBench）优势更明显。</p>
+<hr />
+<h3>2. 策略优化实验（§5.3）</h3>
+<h4>2.1 指令遵循</h4>
+<p><strong>基准</strong><br />
+IFEval（Prompt/Inst 各 Loose/Strict）、InfoBench、IFBench → <strong>3 套</strong>。</p>
+<p><strong>设置</strong><br />
+固定基础模型 Qwen2.5-7B-Instruct，分别用不同奖励做 DPO（不改动超参）。</p>
+<p><strong>结果</strong></p>
+<table>
+<thead>
+<tr>
+  <th>奖励源</th>
+  <th>IFEval AVG</th>
+  <th>InfoBench</th>
+  <th>IFBench</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Skywork</td>
+  <td>76.0</td>
+  <td>82.0</td>
+  <td>28.2</td>
+</tr>
+<tr>
+  <td>ArmoRM</td>
+  <td>76.0</td>
+  <td>83.5</td>
+  <td>–</td>
+</tr>
+<tr>
+  <td>RLCF</td>
+  <td>78.6</td>
+  <td>84.1</td>
+  <td>28.2</td>
+</tr>
+<tr>
+  <td><strong>Rubric-RM</strong></td>
+  <td><strong>79.9</strong></td>
+  <td><strong>82.9</strong></td>
+  <td><strong>33.7</strong></td>
+</tr>
+</tbody>
+</table>
+<p>IFBench 刷新公开模型最高分，相对次优提升 <strong>5.5</strong> 分。</p>
+<h4>2.2 人类偏好对齐</h4>
+<p><strong>基准</strong><br />
+Arena-Hard、AlpacaEval（均报告 vanilla / 风格 / 长度受控）。</p>
+<p><strong>结果</strong></p>
+<table>
+<thead>
+<tr>
+  <th>奖励源</th>
+  <th>Arena-Hard</th>
+  <th>AlpacaEval</th>
+  <th>平均</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Skywork</td>
+  <td>50.3</td>
+  <td>41.5</td>
+  <td>45.9</td>
+</tr>
+<tr>
+  <td>RLCF</td>
+  <td>48.4</td>
+  <td>37.1</td>
+  <td>42.8</td>
+</tr>
+<tr>
+  <td><strong>Rubric-RM</strong></td>
+  <td><strong>56.9</strong></td>
+  <td><strong>50.5</strong></td>
+  <td><strong>53.7</strong></td>
+</tr>
+</tbody>
+</table>
+<p>长度受控下 AlpacaEval 提升 <strong>&gt;13</strong> 分，显著抑制冗长幻觉。</p>
+<hr />
+<h3>3. 医学领域专项（§5.4）</h3>
+<h4>3.1 奖励模型</h4>
+<p><strong>基准</strong><br />
+HealthBench（2500 条医学问答对）。</p>
+<p><strong>结果</strong></p>
+<table>
+<thead>
+<tr>
+  <th>模型</th>
+  <th>得分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>RRM-7B</td>
+  <td>63.3</td>
+</tr>
+<tr>
+  <td>RM-R1-7B</td>
+  <td>55.4–66.9</td>
+</tr>
+<tr>
+  <td>RM-R1-14B</td>
+  <td>69.9</td>
+</tr>
+<tr>
+  <td><strong>Rubric-RM-8B</strong></td>
+  <td><strong>68.3</strong></td>
+</tr>
+<tr>
+  <td><strong>+voting@5</strong></td>
+  <td><strong>72.9</strong></td>
+</tr>
+</tbody>
+</table>
+<p>与 14B 最佳差距 &lt;2 分，远超同规模基线 <strong>+4.9</strong>。</p>
+<h4>3.2 策略优化</h4>
+<p><strong>设置</strong><br />
+Qwen2.5-7B-Instruct → DPO，偏好对由不同奖励标注。</p>
+<p><strong>结果</strong></p>
+<table>
+<thead>
+<tr>
+  <th>奖励源</th>
+  <th>HealthBench 得分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>ArmoRM</td>
+  <td>22.5</td>
+</tr>
+<tr>
+  <td>RM-R1-7B</td>
+  <td>22.7</td>
+</tr>
+<tr>
+  <td><strong>Rubric-RM</strong></td>
+  <td><strong>23.8</strong></td>
+</tr>
+</tbody>
+</table>
+<p>绝对提升 <strong>1.1–1.3</strong>，验证 rubric 信号在专科场景同样更干净。</p>
+<hr />
+<h3>4. 效率对比（§5.5）</h3>
+<p><strong>指标</strong><br />
+vLLM 推理 100 条样本 wall-clock 时间（秒）。</p>
+<table>
+<thead>
+<tr>
+  <th>模型</th>
+  <th>时间</th>
+  <th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>JudgeLRM-7B</td>
+  <td>25.7</td>
+  <td>最快，但无 rubric</td>
+</tr>
+<tr>
+  <td>RRM-7B</td>
+  <td>203.4</td>
+  <td>长链式思考</td>
+</tr>
+<tr>
+  <td>RM-R1-14B</td>
+  <td>322–382</td>
+  <td>14B 推理</td>
+</tr>
+<tr>
+  <td><strong>Rubric-RM-8B</strong></td>
+  <td><strong>130.8</strong></td>
+  <td>两段短解码，可缓存 rubric</td>
+</tr>
+</tbody>
+</table>
+<p>在提供可解释信号的同时，速度优于同类型推理奖励模型，且 rubric 可离线复用，适合大规模偏好打分。</p>
+<hr />
+<h3>5. 案例剖析（§5.6）</h3>
+<p>选取 RewardBench-ChatHard 与 FollowBench 各一例，对比 JudgeLRM-7B、RRM-7B、RM-R1-7B 的错误：</p>
+<ul>
+<li><p><strong>基线共性失误</strong><br />
+– 忽视显式硬规则（段落数、引用日期）<br />
+– 被“学术外观”长回答误导，产生幻觉</p>
+</li>
+<li><p><strong>Rubric-RM 行为</strong><br />
+– 先执行 Gatekeeper（段落上限、引用完整性）→ 排除不合规响应<br />
+– 再对原则维度（生动性、经济性分析）打分<br />
+– 最终选中正确答案，显著降低冗长幻觉与 citation 错误</p>
+</li>
+</ul>
+<hr />
+<h3>总结</h3>
+<p>实验链条覆盖<strong>通用奖励建模 → 指令遵循策略 → 人类偏好对齐 → 医学专科 → 效率与可解释性</strong>，共 <strong>14 项基准</strong> 均取得一致提升，充分验证 OpenRubrics 框架在规模、性能、效率与可解释性四方面的综合优势。</p>
+<h2>未来工作</h2>
+<p>以下方向可在此基础上继续推进，分为<strong>数据与任务扩展</strong>、<strong>方法改进</strong>、<strong>理论分析</strong>与<strong>系统应用</strong>四大类。</p>
+<hr />
+<h3>1. 数据与任务扩展</h3>
+<ul>
+<li><p><strong>开放域长文本</strong><br />
+当前 rubric 主要围绕指令遵循、医学问答等“约束清晰”场景。对创意写作、长文档总结、多轮对话等<strong>目标模糊</strong>任务，需研究如何自动发现<strong>隐式维度</strong>（情感基调、叙事一致性、角色连贯性）。</p>
+</li>
+<li><p><strong>多语言与文化 rubric</strong><br />
+现有数据以英文为主。不同语言对礼貌、幽默、修辞的偏好差异显著，可构建<strong>跨语言对比偏好对</strong>，生成文化敏感 rubric，检验奖励模型是否引入文化偏见。</p>
+</li>
+<li><p><strong>多模态 rubric</strong><br />
+将文本 rubric 扩展至<strong>图文交错</strong>或<strong>视频脚本</strong>场景：自动析出“图文一致性”“视觉元素提及度”等跨模态 hard rule，验证 RaR 在 VLHF（Vision-Language Human Feedback）中的可迁移性。</p>
+</li>
+</ul>
+<hr />
+<h3>2. 方法改进</h3>
+<ul>
+<li><p><strong>可验证奖励与 rubric 的混合信号</strong><br />
+对数学、编程等可执行场景，引入<strong>单元测试</strong>或<strong>符号验证</strong>作为额外 hard rule，研究<br />
+$$ r_{\text{hybrid}} = \alpha r_{\text{rubric}} + (1-\alpha) r_{\text{verifiable}} $$<br />
+的最优融合策略，避免纯 rubric 在“对错”分明任务上的奖励噪声。</p>
+</li>
+<li><p><strong>迭代式 rubric 精炼</strong><br />
+当前仅做一次拒绝采样。可借鉴主动学习：让策略模型持续采样→人类仅对 rubric 误判案例给出修正→在线更新 g_θ 与 r_ϕ，形成<strong>rubrics-in-the-loop RLHF</strong>。</p>
+</li>
+<li><p><strong>层次化 rubric 结构</strong><br />
+将单扁平列表升级为<strong>树状</strong>或<strong>带权图</strong>结构：父节点代表高层能力（“逻辑性”），子节点展开为可度量的子准则（“因果连接词使用”“前提-结论匹配”），并学习节点权重，实现<strong>可解释且可微</strong>的奖励计算。</p>
+</li>
+</ul>
+<hr />
+<h3>3. 理论分析</h3>
+<ul>
+<li><p><strong>rubric 复杂度 – 奖励误差 trade-off</strong><br />
+研究 rubric 条目数 k 与奖励模型泛化误差界的定量关系：<br />
+$$ \epsilon(k,n) \approx \tilde{\mathcal{O}}\left(\sqrt{k/n}\right) + \text{Bias}(k) $$<br />
+通过实验+PAC-Bayes 分析寻找最优 k，防止过度细化导致的奖励过拟合。</p>
+</li>
+<li><p><strong>Gatekeeper 阶段的决策单调性</strong><br />
+证明“先硬规则后原则”的两阶段判定在满足何种<strong>偏好序保持</strong>条件下，能保证与真实偏好的<strong>单调一致性</strong>，为后续安全关键应用提供理论保证。</p>
+</li>
+</ul>
+<hr />
+<h3>4. 系统与应用</h3>
+<ul>
+<li><p><strong>rubric 缓存与分布式奖励服务</strong><br />
+利用 rubric 与具体响应无关的可复用特性，构建<strong>全局 rubric 缓存池</strong>；结合 KV-Cache 分片，实现百万 QPS 级在线排序，降低大模型部署成本。</p>
+</li>
+<li><p><strong>人机协同写作平台</strong><br />
+将 Rubric-RM 嵌入写作辅助界面：实时显示未满足的 hard rule 与原则得分，让用户<strong>即时修正</strong>；收集用户修改后的偏好，反哺 rubric 训练，形成数据飞轮。</p>
+</li>
+<li><p><strong>对齐审计与法规合规</strong><br />
+把 rubric 作为<strong>可审计证据链</strong>：对每条生成内容输出对应的结构化评判，便于监管方核查模型是否遵守法规（禁止歧视、版权限制等），提升 LLM 在医疗、金融等高风险行业的可部署性。</p>
+</li>
+</ul>
+<hr />
+<h3>总结</h3>
+<p>未来工作可从<strong>开放域隐式维度发现、可验证奖励融合、层次化结构、理论误差界、分布式缓存与合规审计</strong>等多角度切入，进一步释放 rubric-as-rewards 在规模化、安全性与可解释性方面的潜力。</p>
+<h2>总结</h2>
+<p><strong>OpenRubrics: Towards Scalable Synthetic Rubric Generation for Reward Modeling and LLM Alignment</strong><br />
+提出一种<strong>可扩展、可解释</strong>的奖励建模新范式，用结构化自然语言标准（rubric）取代传统标量或成对偏好信号，系统解决高质量 rubric 难以大规模获取的痛点，显著提升 RLHF 对齐效果。</p>
+<hr />
+<h3>1. 背景与动机</h3>
+<ul>
+<li>现有奖励模型多为<strong>单点分数</strong>或<strong>二元偏好</strong>，无法刻画人类偏好的<strong>多维度、可解释</strong>需求。</li>
+<li>Rubric-as-Rewards (RaR) 提供显式评价维度，但依赖<strong>专家撰写或昂贵 API</strong>，规模与一致性受限。</li>
+</ul>
+<hr />
+<h3>2. 贡献总览</h3>
+<table>
+<thead>
+<tr>
+  <th>维度</th>
+  <th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>数据</strong></td>
+  <td>发布 <strong>OpenRubrics</strong> 数据集：35.6 万 (prompt, rubric) 对，覆盖通用对话、STEM、医学等 7 大源。</td>
+</tr>
+<tr>
+  <td><strong>方法</strong></td>
+  <td>① <strong>Contrastive Rubric Generation (CRG)</strong>：利用 (优选, 拒绝) 响应对比，自动抽取<strong>硬规则</strong>与<strong>原则</strong>；&lt;br&gt;② <strong>偏好–标签一致性过滤</strong>：拒绝采样保留与真实偏好对齐的 rubric。</td>
+</tr>
+<tr>
+  <td><strong>模型</strong></td>
+  <td><strong>Rubric-RM</strong> 两阶段流水线：&lt;br&gt;1. rubric 生成器 g_θ 先产出评价标准；&lt;br&gt;2. rubric 条件奖励模型 r_ϕ 再输出成对偏好。</td>
+</tr>
+<tr>
+  <td><strong>实验</strong></td>
+  <td>在 <strong>14 项基准</strong> 上验证：&lt;br&gt;– 奖励建模平均 <strong>+6.8%</strong>；&lt;br&gt;– 策略优化指令遵循 <strong>+2.9%</strong>；&lt;br&gt;– 医学场景 HealthBench <strong>+1.3</strong>；&lt;br&gt;– 推理速度优于同类型推理奖励模型。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>3. 技术要点</h3>
+<ul>
+<li><p><strong>双类型 rubric</strong></p>
+<ul>
+<li>Hard Rule：prompt 显式约束（字数、格式、禁用词）。</li>
+<li>Principle：抽象通用质量（逻辑、事实、风格）。</li>
+</ul>
+</li>
+<li><p><strong>CRG 公式</strong><br />
+$$ \mathcal{R}(x) \sim h_\psi(x, y^+, y^-, \ell) $$<br />
+负例对比迫使模型发现<strong>区分性</strong>维度。</p>
+</li>
+<li><p><strong>一致性过滤</strong><br />
+用同一 rubric 重判 (y⁺, y⁻)，仅保留预测与原始标签一致者：<br />
+$$ \mathcal{R}^*(x)=\begin{cases}\mathcal{R}(x), &amp; \hat{\ell}=\ell \ \emptyset, &amp; \text{otherwise}\end{cases} $$</p>
+</li>
+<li><p><strong>两阶段推理</strong></p>
+<ol>
+<li>生成 $\hat{\mathcal{R}}(x)=g_\theta(x, y_A, y_B)$ → 可缓存</li>
+<li>预测 $\hat{\ell}=\arg\max_{k\in{\text{A},\text{B}}} p_\phi(k \mid x, y_A, y_B, \hat{\mathcal{R}}(x))$</li>
+</ol>
+</li>
+</ul>
+<hr />
+<h3>4. 主要结果</h3>
+<ul>
+<li><p><strong>Reward Model</strong><br />
+Rubric-RM-8B 在 8 项奖励基准平均 <strong>68.5%</strong>，ensemble 后 <strong>71.2%</strong>，<strong>超越同规模基线 6.8%</strong>，追平 14B 模型。</p>
+</li>
+<li><p><strong>Policy Optimization</strong><br />
+用 Rubric-RM 做 DPO，IFEval <strong>79.9</strong>、IFBench <strong>33.7</strong>（新 SOTA）、Arena-Hard <strong>56.9</strong>，全面领先开源奖励模型。</p>
+</li>
+<li><p><strong>医学专项</strong><br />
+HealthBench 奖励任务 <strong>68.3</strong>→ensemble <strong>72.9</strong>；DPO 后策略 <strong>23.8</strong>，<strong>+1.3</strong> 优于强基线。</p>
+</li>
+<li><p><strong>效率</strong><br />
+推理速度 <strong>130.8 s/100 样例</strong>，低于同类型推理奖励模型（170–380 s），且 rubric 可离线复用。</p>
+</li>
+</ul>
+<hr />
+<h3>5. 结论</h3>
+<p>OpenRubrics 首次实现<strong>低成本、高一致、可解释</strong>的 rubric 大规模合成，将评价过程显式分解为“硬规则+原则”两层，显著缩小<strong>人工评估</strong>与<strong>自动奖励</strong>之间的差距，为 LLM 对齐提供新的<strong>原则驱动</strong>范式。</p>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.5</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: RLHF</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">RLHF</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2510.07743" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2510.07743" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2503.02783">
+                                    <div class="paper-header" onclick="showPaperDetail('2503.02783', 'RLHF')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Teaching Your Models to Understand Code via Focal Preference Alignment
+                                                <button class="mark-button" 
+                                                        data-paper-id="2503.02783"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2503.02783", "authors": ["Wu", "Li", "Zhang", "Liu", "Huang", "Luo", "Zhang", "Li", "Chu", "Yang", "Li"], "id": "2503.02783", "pdf_url": "https://arxiv.org/pdf/2503.02783", "rank": 8.357142857142858, "title": "Teaching Your Models to Understand Code via Focal Preference Alignment"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2503.02783" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ATeaching%20Your%20Models%20to%20Understand%20Code%20via%20Focal%20Preference%20Alignment%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2503.02783&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ATeaching%20Your%20Models%20to%20Understand%20Code%20via%20Focal%20Preference%20Alignment%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2503.02783%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Wu, Li, Zhang, Liu, Huang, Luo, Zhang, Li, Chu, Yang, Li</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文提出了一种名为IterPref的新型偏好对齐框架，通过模拟人类迭代调试过程，实现对代码大模型的细粒度优化。该方法结合新构建的CodeFlow数据集和改进的DPO算法，精准定位错误区域并聚焦关键token进行对齐，在多个主流代码生成基准上显著优于现有方法。创新性强，实验充分，且计划开源代码与数据，具有较高学术价值。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">8.4</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2503.02783" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Teaching Your Models to Understand Code via Focal Preference Alignment</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 5 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>这篇论文试图解决在代码生成领域中，如何通过偏好学习（Preference Learning）提升大型语言模型（Code LLMs）的代码生成准确性和错误纠正能力的问题。具体而言，现有的偏好学习方法主要依赖于测试用例的通过率来构建偏好对，这种方法存在局限性，因为它无法精确地识别代码中的错误区域，从而导致模型无法学习到更有效的错误纠正模式。论文提出了一种新的偏好对齐框架IterPref，通过模拟人类迭代调试的过程，明确地定位错误区域，并对相应的代码片段进行对齐优化，以克服现有方法的不足。</p>
+<h2>相关工作</h2>
+<p>以下是与IterPref相关的研究工作：</p>
+<h3>代码语言模型（Code Language Models）</h3>
+<ul>
+<li><strong>Qwen2.5-Coder</strong>：由Hui等人（2024a）提出，是一个强大的代码生成模型，在多种代码生成任务中表现出色。</li>
+<li><strong>DeepSeekCoder</strong>：由Guo等人（2024）提出，展示了在代码生成任务中的优秀能力。</li>
+<li><strong>StarCoder</strong>：由Li等人（2023）和Lozhkov等人（2024）提出，是一个专注于代码生成的模型。</li>
+<li><strong>Magicoder</strong>：由Wei等人（2024）提出，通过开源指令（OSS-Instruct）来增强代码生成能力。</li>
+<li><strong>EpiCoder</strong>：由Wang等人（2025b）提出，通过基于特征树的合成框架生成高质量的代码和测试用例。</li>
+</ul>
+<h3>强化学习（Reinforcement Learning）在代码生成中的应用</h3>
+<ul>
+<li><strong>DPO（Direct Preference Optimization）</strong>：由Rafailov等人（2023）提出，是一种不需要显式奖励模型的偏好优化方法，已被广泛应用于代码生成任务。</li>
+<li><strong>RPO（Reward-based Preference Optimization）</strong>：由Liu等人（2024a）和Pang等人（2024）提出，是DPO的一种变体，通过加权的监督微调（SFT）损失来优化代码生成。</li>
+<li><strong>KTO（Knowledge Transfer Optimization）</strong>：由Ethayarajh等人（2024）提出，旨在通过知识转移来优化代码生成。</li>
+</ul>
+<h3>代码偏好对的构建（Code Preference Construction）</h3>
+<ul>
+<li><strong>PLUM</strong>：由Zhang等人（2024）提出，通过基于测试用例通过率的排名来构建偏好对。</li>
+<li><strong>Code-Optimise</strong>：由Gee等人（2025）提出，进一步整合了效率作为学习信号，并通过单元测试反馈和执行时间进行注释。</li>
+<li><strong>CodeDPO</strong>：由Zhang等人（2025）提出，针对正确性和效率，提出了一个受PageRank启发的迭代算法来更精确地选择对。</li>
+<li><strong>AceCoder</strong>：由Li等人（2024）提出，通过选择具有明显通过率差异的对来构建偏好对。</li>
+<li><strong>DSTC</strong>：由Liu等人（2024b）提出，通过自动生成代码片段和测试用例来构建偏好对，不依赖外部LLM进行生成和注释。</li>
+</ul>
+<p>这些研究为IterPref提供了背景和基础，IterPref通过引入迭代调试的概念，进一步提升了代码生成模型的性能，特别是在错误纠正和复杂任务处理方面。</p>
+<h2>解决方案</h2>
+<p>论文通过提出IterPref框架来解决现有偏好学习方法在代码生成中的局限性问题，具体方法如下：</p>
+<h3>1. 模拟人类迭代调试过程</h3>
+<p>IterPref框架模拟人类开发者在调试代码时的行为，即先定位产生错误的代码模块，然后专注于修复该部分。通过这种方式，IterPref能够明确地识别出代码中的错误区域，并对这些区域进行针对性的优化。</p>
+<h3>2. 构建CodeFlow数据集</h3>
+<p>为了生成高质量的偏好对，论文构建了一个新的函数级数据集CodeFlow。在这个数据集中，每个样本都通过迭代调试过程逐步改进，直到通过所有单元测试。通过记录调试过程中的代码修改历史，CodeFlow数据集能够自然地捕捉到错误纠正的关键变化，为偏好学习提供了丰富的训练信号。</p>
+<h3>3. 提出改进的DPO算法</h3>
+<p>IterPref对传统的DPO算法进行了改进，以实现更细粒度的对齐。具体来说，IterPref在优化过程中明确地标记出需要优化的错误特定标记（tokens），并对这些标记进行惩罚，而对正确的标记则保持不变。这种针对性的策略减少了优化过程中的噪声，使模型能够更专注于学习错误模式。</p>
+<h3>4. 明确识别关键错误标记</h3>
+<p>IterPref通过对比修正后的代码和之前的迭代版本，明确地识别出导致功能差异的关键标记。通过这种方式，IterPref能够引导模型学习到更有效的错误纠正模式，从而提高代码生成的准确性和鲁棒性。</p>
+<h3>5. 实验验证</h3>
+<p>通过在多个基准测试集上进行广泛的实验，IterPref展示了其在代码生成任务中的显著性能提升。这些实验结果表明，IterPref不仅提高了基本编码任务的性能，还在更具挑战性的任务（如BigCodeBench）上取得了优异的成绩。</p>
+<h3>6. 深入分析</h3>
+<p>论文还对IterPref的性能提升进行了深入分析，揭示了其在减少错误发生频率方面的优势。此外，IterPref还提供了一种高效的偏好对标注路径，通过减少外部LLM调用和执行时间，提高了偏好对的生成效率。</p>
+<p>通过上述方法，IterPref有效地解决了现有偏好学习方法在代码生成中的局限性，为代码生成领域提供了一种新的、更有效的解决方案。</p>
+<h2>实验验证</h2>
+<p>论文进行了广泛的实验来验证IterPref框架的有效性，具体实验设置和结果如下：</p>
+<h3>实验设置</h3>
+<ul>
+<li><strong>模型选择</strong>：实验涵盖了多种基础和指令微调的代码生成模型，包括DeepSeek-Coder-7B-Instruct、CodeQwen1.5-7BChat、Qwen2.5-Coder-7B和StarCoder2-15B。</li>
+<li><strong>基准测试集</strong>：使用了五个基准测试集来评估模型性能，包括HumanEval、MBPP、LiveCodeBench（LCB）和BigCodeBench（BCB）。其中，BCB包括完整的代码生成任务和仅指令的任务，以及难度较高的子集。</li>
+<li><strong>训练细节</strong>：对于指令微调的模型，训练了2个周期；对于基础模型，训练了5个周期。使用了全参数微调，并根据验证损失选择最佳模型进行评估。IterPref的超参数设置为学习率1e-5（7B模型）和5e-6（14B模型），全局批量大小为128，采用余弦调度器和热身策略。最大序列长度设置为2048个标记。DPO算法中的β设置为0.1，RPO中的α设置为1.0。</li>
+</ul>
+<h3>实验结果</h3>
+<p>实验结果表明，IterPref在多个基准测试集上显著提升了代码生成模型的性能，具体如下：</p>
+<ul>
+<li><strong>HumanEval</strong>：IterPref-DPO在DeepSeek-Coder-7B-Instruct上达到了76.2%的通过率，比DPO高出6.7个百分点；IterPref-RPO在CodeQwen1.5-7BChat上达到了89.6%的通过率，比RPO高出10.3个百分点。</li>
+<li><strong>MBPP</strong>：IterPref-DPO在DeepSeek-Coder-7B-Instruct上达到了72.0%的通过率，比DPO高出6.8个百分点；IterPref-RPO在CodeQwen1.5-7BChat上达到了86.0%的通过率，比RPO高出12.8个百分点。</li>
+<li><strong>BigCodeBench</strong>：IterPref在完整任务和仅指令任务上均取得了显著的性能提升。例如，在BCB-Full的指令任务上，IterPref-RPO在Qwen2.5-Coder-7B上达到了83.3%的通过率，比RPO高出12.4个百分点；在BCB-Hard的完整任务上，IterPref-RPO在Qwen2.5-Coder-7B上达到了69.6%的通过率，比RPO高出16.7个百分点。</li>
+</ul>
+<h3>性能提升分析</h3>
+<ul>
+<li><strong>细粒度对齐</strong>：IterPref通过明确标记错误特定的标记并对其进行惩罚，减少了优化过程中的噪声，使模型能够更专注于学习错误模式。这种细粒度的对齐方式显著提高了模型在代码生成任务中的性能。</li>
+<li><strong>错误减少</strong>：IterPref在减少错误发生频率方面表现出色。例如，在BigCodeBench的完整任务上，IterPref-RPO在Qwen2.5-Coder-7B上将错误发生频率降低了约30%。</li>
+<li><strong>偏好对标注效率</strong>：IterPref提供了一种高效的偏好对标注路径。与现有的基于采样的方法相比，IterPref通过迭代调试过程生成偏好对，显著减少了外部LLM调用和执行时间。</li>
+</ul>
+<h3>消融研究</h3>
+<p>论文还进行了消融研究，探索了不同训练策略对IterPref性能的影响，包括：</p>
+<ul>
+<li><strong>SFT（监督微调）</strong>：仅使用偏好对中的正样本进行监督微调，虽然也能取得一定的性能提升，但不如IterPref全面。</li>
+<li><strong>Hybrid Training（混合训练）</strong>：将IterPref方法与传统的DPO方法结合，结果表明IterPref方法更为有效。</li>
+<li><strong>Diff-Augmentation（差异增强）</strong>：在不优选样本中加入更多上下文标记，但实验结果表明，这可能会使模型混淆，降低性能。</li>
+<li><strong>Symmetric Masking Strategy（对称掩码策略）</strong>：仅从D+和D-中学习，而不使用完整的正样本，结果表明，这会导致模型无法保留基本的代码生成能力。</li>
+</ul>
+<p>综上所述，IterPref通过模拟人类迭代调试过程，明确识别错误区域，并通过改进的DPO算法进行细粒度对齐，显著提升了代码生成模型的性能，并在多个基准测试集上取得了优异的成绩。</p>
+<h2>未来工作</h2>
+<p>尽管IterPref在代码生成领域取得了显著的性能提升，但仍有一些可以进一步探索的点，以进一步优化和扩展该框架的应用。以下是一些潜在的研究方向：</p>
+<h3>1. <strong>数据集扩展</strong></h3>
+<ul>
+<li><strong>扩大数据集规模</strong>：当前的CodeFlow数据集包含59k个样本，进一步扩展数据集的规模可能会进一步提升模型的泛化能力和性能。</li>
+<li><strong>多样化数据集</strong>：增加更多类型的代码任务和更复杂的错误模式，以提高模型在不同场景下的适应性。</li>
+</ul>
+<h3>2. <strong>测试用例质量提升</strong></h3>
+<ul>
+<li><strong>高质量测试用例生成</strong>：IterPref依赖于生成的测试用例来验证代码的正确性。进一步提升测试用例的质量和覆盖范围，可以更有效地捕捉代码中的错误。</li>
+<li><strong>动态测试用例生成</strong>：探索动态生成测试用例的方法，以适应代码的逐步改进过程，从而更真实地模拟人类调试过程。</li>
+</ul>
+<h3>3. <strong>错误定位和修复的自动化</strong></h3>
+<ul>
+<li><strong>自动错误定位</strong>：目前IterPref依赖于Longest Common Subsequence（LCS）算法来提取关键差异。研究更先进的自动错误定位技术，如基于深度学习的方法，可能会进一步提高错误定位的准确性。</li>
+<li><strong>自动修复建议</strong>：结合自动修复技术，如代码补丁生成，为模型提供更具体的修复建议，从而进一步提升模型的修复能力。</li>
+</ul>
+<h3>4. <strong>多语言支持</strong></h3>
+<ul>
+<li><strong>跨语言代码生成</strong>：目前IterPref主要关注Python语言的代码生成。扩展到其他编程语言，如Java、C++等，可以进一步验证IterPref的普适性和有效性。</li>
+<li><strong>多语言数据集构建</strong>：构建多语言的CodeFlow数据集，以支持跨语言的代码生成和调试。</li>
+</ul>
+<h3>5. <strong>模型架构改进</strong></h3>
+<ul>
+<li><strong>结合预训练模型</strong>：探索将IterPref与更先进的预训练模型结合，如GPT-4、LLaMA等，以进一步提升模型的性能。</li>
+<li><strong>多任务学习</strong>：将IterPref与其他代码生成任务（如代码补全、代码注释生成等）结合，形成多任务学习框架，以提高模型的综合性能。</li>
+</ul>
+<h3>6. <strong>性能评估和指标</strong></h3>
+<ul>
+<li><strong>更全面的评估指标</strong>：除了通过率（pass@1）之外，引入更多评估指标，如代码质量、可读性、执行效率等，以更全面地评估模型的性能。</li>
+<li><strong>长期性能评估</strong>：进行长期性能评估，观察模型在持续迭代和优化过程中的表现，以确保模型的稳定性和持续改进能力。</li>
+</ul>
+<h3>7. <strong>用户交互和反馈</strong></h3>
+<ul>
+<li><strong>用户反馈集成</strong>：将用户反馈纳入模型训练过程，使模型能够更好地适应用户的需求和偏好。</li>
+<li><strong>交互式代码生成</strong>：开发交互式代码生成系统，允许用户在生成过程中提供反馈，从而进一步优化生成的代码。</li>
+</ul>
+<h3>8. <strong>理论分析和解释</strong></h3>
+<ul>
+<li><strong>理论分析</strong>：对IterPref的理论性能进行深入分析，探讨其在不同条件下的收敛性和稳定性。</li>
+<li><strong>模型解释性</strong>：研究IterPref的决策过程和学习机制，提高模型的可解释性，以便更好地理解其工作原理。</li>
+</ul>
+<h3>9. <strong>实际应用和部署</strong></h3>
+<ul>
+<li><strong>工业级应用</strong>：将IterPref应用于实际的软件开发环境中，评估其在工业级项目中的有效性和实用性。</li>
+<li><strong>持续集成和持续部署（CI/CD）</strong>：探索IterPref在CI/CD流程中的应用，以实现自动化的代码生成和调试。</li>
+</ul>
+<p>通过进一步探索这些方向，IterPref有望在代码生成领域取得更大的突破，为开发更高效、更准确的代码生成模型提供新的思路和方法。</p>
+<h2>总结</h2>
+<p>当然，以下是论文的主要内容总结：</p>
+<h3>论文标题</h3>
+<p>IterPref: Focal Preference Learning for Code Generation via Iterative Debugging</p>
+<h3>作者</h3>
+<p>Jie Wu, Haoling Li, Xin Zhang, Jianwen Luo, Yangyu Huang, Ruihang Chu, Yujiu Yang, Scarlett Li, Tsinghua University, Microsoft Research, CASIA</p>
+<h3>摘要</h3>
+<p>IterPref是一个新的偏好对齐框架，通过模拟人类迭代调试过程来优化代码生成模型（Code LLMs）。现有方法主要依赖于测试用例的通过率来构建偏好对，但这种方法无法精确识别代码中的错误区域，导致模型无法学习到更有效的错误纠正模式。IterPref通过明确识别错误区域并对相应的标记进行对齐优化，克服了现有方法的不足。IterPref还引入了CodeFlow数据集，其中的样本通过迭代调试逐步改进，直到通过所有单元测试。广泛的实验表明，IterPref在代码生成任务中取得了显著的性能提升，特别是在复杂的编码任务（如BigCodeBench）上表现出色。IterPref的代码和数据将近期公开。</p>
+<h3>1. 引言</h3>
+<p>偏好学习是提升代码生成模型性能的有力补充，尤其是在高质量偏好数据稀缺的情况下。现有方法主要依赖于测试用例的通过率来构建偏好对，但这种方法存在局限性，因为它无法精确识别代码中的错误区域。IterPref通过模拟人类调试代码的方式，明确识别错误区域并对相应的标记进行对齐优化，从而提升模型的错误纠正能力。</p>
+<h3>2. 相关工作</h3>
+<ul>
+<li><strong>代码语言模型</strong>：介绍了Qwen2.5-Coder、DeepSeekCoder、StarCoder、Magicoder和EpiCoder等强大的代码生成模型。</li>
+<li><strong>强化学习在代码生成中的应用</strong>：讨论了DPO、RPO和KTO等方法在代码生成中的应用。</li>
+<li><strong>代码偏好对的构建</strong>：介绍了PLUM、Code-Optimise、CodeDPO、AceCoder和DSTC等方法。</li>
+</ul>
+<h3>3. IterPref框架</h3>
+<p>IterPref框架通过以下两个步骤来优化代码生成模型：</p>
+<ol>
+<li><strong>生成偏好代码片段</strong>：通过迭代调试过程生成偏好对，明确识别错误区域。</li>
+<li><strong>细粒度对齐</strong>：通过改进的DPO算法，对错误特定的标记进行惩罚，减少优化过程中的噪声。</li>
+</ol>
+<h4>3.1 生成偏好代码片段</h4>
+<ul>
+<li><strong>生成原始代码片段和测试用例</strong>：使用EpiCoder的提示模板和GPT-4o生成高质量的代码和测试用例。</li>
+<li><strong>通过验证进行迭代改进</strong>：对生成的代码进行单元测试验证，逐步改进代码直到通过测试。</li>
+<li><strong>提取关键差异</strong>：使用最长公共子序列（LCS）算法提取关键差异，明确识别错误区域。</li>
+<li><strong>偏好对质量控制</strong>：通过规则过滤和LLM-as-a-judge方法确保偏好对的质量。</li>
+</ul>
+<h4>3.2 细粒度对齐</h4>
+<ul>
+<li><strong>改进的DPO算法</strong>：通过明确标记错误特定的标记并对其进行惩罚，减少优化过程中的噪声。</li>
+<li><strong>优化目标</strong>：通过对比关键标记，引导模型学习更有效的错误纠正模式。</li>
+</ul>
+<h3>4. 实验</h3>
+<ul>
+<li><strong>实验设置</strong>：使用多种基础和指令微调的代码生成模型，评估了HumanEval、MBPP、LiveCodeBench和BigCodeBench等基准测试集。</li>
+<li><strong>主要结果</strong>：IterPref在多个基准测试集上取得了显著的性能提升，特别是在复杂的编码任务上表现出色。</li>
+<li><strong>错误减少</strong>：IterPref显著减少了错误发生频率，提高了代码生成的准确性。</li>
+<li><strong>偏好对标注效率</strong>：IterPref通过迭代调试过程生成偏好对，显著减少了外部LLM调用和执行时间。</li>
+</ul>
+<h3>5. 分析</h3>
+<ul>
+<li><strong>错误类型分析</strong>：IterPref显著减少了常见错误类型的频率，提高了代码生成的鲁棒性。</li>
+<li><strong>偏好对标注效率</strong>：IterPref提供了一种高效的偏好对标注路径，减少了外部LLM调用和执行时间。</li>
+</ul>
+<h3>6. 消融研究</h3>
+<ul>
+<li><strong>监督微调（SFT）</strong>：仅使用偏好对中的正样本进行监督微调，虽然也能取得一定的性能提升，但不如IterPref全面。</li>
+<li><strong>混合训练（Hybrid Training）</strong>：将IterPref方法与传统的DPO方法结合，结果表明IterPref方法更为有效。</li>
+<li><strong>差异增强（Diff-Augmentation）</strong>：在不优选样本中加入更多上下文标记，但实验结果表明，这可能会使模型混淆，降低性能。</li>
+<li><strong>对称掩码策略（Symmetric Masking Strategy）</strong>：仅从D+和D-中学习，而不使用完整的正样本，结果表明，这会导致模型无法保留基本的代码生成能力。</li>
+</ul>
+<h3>7. 结论</h3>
+<p>IterPref通过模拟人类迭代调试过程，明确识别错误区域，并通过改进的DPO算法进行细粒度对齐，显著提升了代码生成模型的性能。CodeFlow数据集的构建为偏好对的生成提供了丰富的训练信号。广泛的实验结果表明，IterPref在代码生成任务中取得了显著的性能提升，特别是在复杂的编码任务上表现出色。</p>
+<h3>8. 限制</h3>
+<ul>
+<li><strong>测试用例质量</strong>：IterPref依赖于生成的测试用例，测试用例的质量直接影响IterPref的性能。</li>
+<li><strong>数据集规模</strong>：当前的CodeFlow数据集包含59k个样本，进一步扩展数据集的规模可能会进一步提升模型的泛化能力。</li>
+</ul>
+<h3>9. 未来工作</h3>
+<ul>
+<li><strong>数据集扩展</strong>：扩大CodeFlow数据集的规模，增加更多类型的代码任务和错误模式。</li>
+<li><strong>测试用例质量提升</strong>：进一步提升测试用例的质量和覆盖范围，以更有效地捕捉代码中的错误。</li>
+<li><strong>错误定位和修复的自动化</strong>：研究更先进的自动错误定位和修复技术，以进一步提升模型的修复能力。</li>
+<li><strong>多语言支持</strong>：扩展到其他编程语言，构建多语言的CodeFlow数据集。</li>
+<li><strong>模型架构改进</strong>：结合更先进的预训练模型，形成多任务学习框架，以提高模型的综合性能。</li>
+</ul>
+<p>IterPref通过模拟人类迭代调试过程，明确识别错误区域，并通过改进的DPO算法进行细粒度对齐，显著提升了代码生成模型的性能。CodeFlow数据集的构建为偏好对的生成提供了丰富的训练信号。广泛的实验结果表明，IterPref在代码生成任务中取得了显著的性能提升，特别是在复杂的编码任务上表现出色。</p>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.4</span></span>
+                                            <span>置信度: 0.92</span>
+                                            <span>分类: RLHF</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">RLHF</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2503.02783" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2503.02783" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div id="tab-Agent" class="tab-content ">
                 <div class="content-wrapper">
                     <div class="papers-list" id="papers-list-Agent">
@@ -1588,6 +2569,11 @@
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 AutoQual: An LLM Agent for Automated Discovery of Interpretable Features for Review Quality Assessment
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.08081"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.08081", "authors": ["Lan", "Feng", "Liu", "Shi", "Li"], "id": "2510.08081", "pdf_url": "https://arxiv.org/pdf/2510.08081", "rank": 8.642857142857144, "title": "AutoQual: An LLM Agent for Automated Discovery of Interpretable Features for Review Quality Assessment"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.08081" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -1912,6 +2898,11 @@ AutoQual+PLM F1=0.8364 / AUROC=0.9203，相对 Fine-tuned PLM 提升 +1.4pp F1�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 xRouter: Training Cost-Aware LLMs Orchestration System via Reinforcement Learning
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.08439"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.08439", "authors": ["Qian", "Liu", "Kokane", "Prabhakar", "Qiu", "Chen", "Liu", "Ji", "Yao", "Heinecke", "Savarese", "Xiong", "Wang"], "id": "2510.08439", "pdf_url": "https://arxiv.org/pdf/2510.08439", "rank": 8.642857142857144, "title": "xRouter: Training Cost-Aware LLMs Orchestration System via Reinforcement Learning"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.08439" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -2316,6 +3307,11 @@ $$R_{\text{final}} = \mathbb{I}{\text{success}} \cdot (K - \lambda C)$$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 AutoAgent: A Fully-Automated and Zero-Code Framework for LLM Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2502.05957"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2502.05957", "authors": ["Tang", "Fan", "Huang"], "id": "2502.05957", "pdf_url": "https://arxiv.org/pdf/2502.05957", "rank": 8.5, "title": "AutoAgent: A Fully-Automated and Zero-Code Framework for LLM Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2502.05957" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -2659,6 +3655,11 @@ $$R_{\text{final}} = \mathbb{I}{\text{success}} \cdot (K - \lambda C)$$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 An LLM-Powered Cooperative Framework for Large-Scale Multi-Vehicle Navigation
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.07825"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.07825", "authors": ["Zhou", "Lai", "Han", "Liu"], "id": "2510.07825", "pdf_url": "https://arxiv.org/pdf/2510.07825", "rank": 8.5, "title": "An LLM-Powered Cooperative Framework for Large-Scale Multi-Vehicle Navigation"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.07825" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -2855,6 +3856,11 @@ $$R_{\text{final}} = \mathbb{I}{\text{success}} \cdot (K - \lambda C)$$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 From Correction to Mastery: Reinforced Distillation of Large Language Model Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.14257"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.14257", "authors": ["Lyu", "Wang", "Huang", "Xu"], "id": "2509.14257", "pdf_url": "https://arxiv.org/pdf/2509.14257", "rank": 8.357142857142858, "title": "From Correction to Mastery: Reinforced Distillation of Large Language Model Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.14257" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3106,6 +4112,11 @@ $$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Search Wisely: Mitigating Sub-optimal Agentic Searches By Reducing Uncertainty
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.17281"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.17281", "authors": ["Wu", "Zhang", "Zhang", "Du", "Chen"], "id": "2505.17281", "pdf_url": "https://arxiv.org/pdf/2505.17281", "rank": 8.357142857142858, "title": "Search Wisely: Mitigating Sub-optimal Agentic Searches By Reducing Uncertainty"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2505.17281" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3452,6 +4463,11 @@ $$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MAHL: Multi-Agent LLM-Guided Hierarchical Chiplet Design with Adaptive Debugging
+                                                <button class="mark-button" 
+                                                        data-paper-id="2508.14053"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2508.14053", "authors": ["Tang", "Qin", "Xu", "Nalla", "Cao", "Yang", "Zhao", "Ding"], "id": "2508.14053", "pdf_url": "https://arxiv.org/pdf/2508.14053", "rank": 8.357142857142858, "title": "MAHL: Multi-Agent LLM-Guided Hierarchical Chiplet Design with Adaptive Debugging"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2508.14053" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3797,6 +4813,11 @@ h_i = h_{\text{user}}^i, &amp; \text{otherwise}
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Learn the Ropes, Then Trust the Wins: Self-imitation with Progressive Exploration for Agentic Reinforcement Learning
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.22601"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.22601", "authors": ["Qin", "Tan", "He", "Li", "Lin", "Li", "Xu", "Shi", "Cai", "Rui", "Cai", "Cai", "Zhang", "Ye", "Li", "Sun"], "id": "2509.22601", "pdf_url": "https://arxiv.org/pdf/2509.22601", "rank": 8.357142857142858, "title": "Learn the Ropes, Then Trust the Wins: Self-imitation with Progressive Exploration for Agentic Reinforcement Learning"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.22601" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -4044,6 +5065,11 @@ $$M^i_t=0 ; \text{if}; t\in \text{Uniform}\bigl({t|\omega_{\text{lb}}!\le!\text{
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 PARL-MT: Learning to Call Functions in Multi-Turn Conversation with Progress Awareness
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.23206"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.23206", "authors": ["Chai", "Cao", "Ran", "Yang", "Lin", "Peng", "Wang", "Ding", "Wan", "Wen", "Liu", "Zhang", "Huang", "Wen"], "id": "2509.23206", "pdf_url": "https://arxiv.org/pdf/2509.23206", "rank": 8.357142857142858, "title": "PARL-MT: Learning to Call Functions in Multi-Turn Conversation with Progress Awareness"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.23206" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -4455,6 +5481,11 @@ rollout 阶段每步先采样紧凑感知 $S^a_{i,j}$ 再生成动作，显著�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 AgentAsk: Multi-Agent Systems Need to Ask
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.07593"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.07593", "authors": ["Lin", "Yang", "Lai", "Zhang", "Zhang", "Zhang", "Yu", "Yu", "Wang", "Wang"], "id": "2510.07593", "pdf_url": "https://arxiv.org/pdf/2510.07593", "rank": 8.357142857142858, "title": "AgentAsk: Multi-Agent Systems Need to Ask"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.07593" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -4888,6 +5919,11 @@ $$\min_\theta \max_{\tilde x_t\in\mathcal B(x_t)} \mathbb E[U(\tau|\tilde x_t)]$
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Traceability and Accountability in Role-Specialized Multi-Agent LLM Pipelines
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.07614"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.07614", "authors": ["Barrak"], "id": "2510.07614", "pdf_url": "https://arxiv.org/pdf/2510.07614", "rank": 8.357142857142858, "title": "Traceability and Accountability in Role-Specialized Multi-Agent LLM Pipelines"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.07614" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5054,6 +6090,11 @@ $$\min_\theta \max_{\tilde x_t\in\mathcal B(x_t)} \mathbb E[U(\tau|\tilde x_t)]$
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 HiPRAG: Hierarchical Process Rewards for Efficient Agentic Retrieval Augmented Generation
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.07794"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.07794", "authors": ["Wu", "Zhang", "Wan", "Zhao", "He", "Du", "Chen"], "id": "2510.07794", "pdf_url": "https://arxiv.org/pdf/2510.07794", "rank": 8.357142857142858, "title": "HiPRAG: Hierarchical Process Rewards for Efficient Agentic Retrieval Augmented Generation"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.07794" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5305,6 +6346,11 @@ $$R(T)=A(T)(1-\lambda_f)+\lambda_f F(T)+\lambda_p A(T)F(T)\frac{N_{\text{corr}}(
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Dynamic Generation of Multi-LLM Agents Communication Topologies with Graph Diffusion Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.07799"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.07799", "authors": ["Jiang", "Wan", "Yin", "Li", "Wu", "Liang", "Li", "Sun", "Wang", "Chang", "Wu"], "id": "2510.07799", "pdf_url": "https://arxiv.org/pdf/2510.07799", "rank": 8.357142857142858, "title": "Dynamic Generation of Multi-LLM Agents Communication Topologies with Graph Diffusion Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.07799" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5632,6 +6678,11 @@ $$R(A,C)=f(\text{Utility},\text{Cost},\text{Sparsity},\text{Robustness}).$$</li>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Self-Improving LLM Agents at Test-Time
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.07841"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.07841", "authors": ["Acikgoz", "Qian", "Ji", "Hakkani-T\u00c3\u00bcr", "Tur"], "id": "2510.07841", "pdf_url": "https://arxiv.org/pdf/2510.07841", "rank": 8.357142857142858, "title": "Self-Improving LLM Agents at Test-Time"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.07841" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -6316,6 +7367,11 @@ TT-SI 通过“不确定采样 + 自生成伪标签”显式构造了高 $r_{\te
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Learning on the Job: An Experience-Driven Self-Evolving Agent for Long-Horizon Tasks
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.08002"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.08002", "authors": ["Yang", "Yang", "Wen", "Fu", "Mei", "Wu", "Cai", "Shen", "Deng", "Shi", "Qiao", "Li"], "id": "2510.08002", "pdf_url": "https://arxiv.org/pdf/2510.08002", "rank": 8.357142857142858, "title": "Learning on the Job: An Experience-Driven Self-Evolving Agent for Long-Horizon Tasks"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.08002" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -6673,6 +7729,11 @@ Plan → Execute → Reflect → Memorize</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Prepared mind, fast response: A temporal decoupling framework for adaptive knowledge orchestration in open-domain dialogue
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.08175"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.08175", "authors": ["Gan", "Liang", "Li"], "id": "2510.08175", "pdf_url": "https://arxiv.org/pdf/2510.08175", "rank": 8.357142857142858, "title": "Prepared mind, fast response: A temporal decoupling framework for adaptive knowledge orchestration in open-domain dialogue"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.08175" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -6899,6 +7960,11 @@ Plan → Execute → Reflect → Memorize</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Chain-of-Trigger: An Agentic Backdoor that Paradoxically Enhances Agentic Robustness
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.08238"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.08238", "authors": ["Qiu", "Ma", "Xu", "Zhang", "Zhao"], "id": "2510.08238", "pdf_url": "https://arxiv.org/pdf/2510.08238", "rank": 8.357142857142858, "title": "Chain-of-Trigger: An Agentic Backdoor that Paradoxically Enhances Agentic Robustness"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.08238" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -7459,6 +8525,11 @@ $$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Opponent Shaping in LLM Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.08255"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.08255", "authors": ["Segura", "Hailes", "Musolesi"], "id": "2510.08255", "pdf_url": "https://arxiv.org/pdf/2510.08255", "rank": 8.357142857142858, "title": "Opponent Shaping in LLM Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.08255" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -7908,6 +8979,11 @@ $$ r_i = α·(1 – 贡献_i) + β·∑_j 贡献_j $$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 QAgent: A modular Search Agent with Interactive Query Understanding
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.08383"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.08383", "authors": ["Jiang", "Shen", "Niu", "Zhao", "Su", "Zheng"], "id": "2510.08383", "pdf_url": "https://arxiv.org/pdf/2510.08383", "rank": 8.357142857142858, "title": "QAgent: A modular Search Agent with Interactive Query Understanding"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.08383" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -8232,6 +9308,11 @@ $$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 AutoMLGen: Navigating Fine-Grained Optimization for Coding Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.08511"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.08511", "authors": ["Du", "Yan", "Jiang", "Yuan", "Hu", "Li", "He", "Zhang", "Bai"], "id": "2510.08511", "pdf_url": "https://arxiv.org/pdf/2510.08511", "rank": 8.357142857142858, "title": "AutoMLGen: Navigating Fine-Grained Optimization for Coding Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.08511" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -8450,6 +9531,11 @@ $$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 FlowSearch: Advancing deep research with dynamic structured knowledge flow
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.08521"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.08521", "authors": ["Hu", "Ma", "Fan", "Shi", "Cao", "Zhou", "Yuan", "Yan", "Zhang", "Bai", "Zhang"], "id": "2510.08521", "pdf_url": "https://arxiv.org/pdf/2510.08521", "rank": 8.357142857142858, "title": "FlowSearch: Advancing deep research with dynamic structured knowledge flow"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.08521" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9037,6 +10123,11 @@ Answer &lt;- Collector(根节点)     // 最终汇总
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 BLAZER: Bootstrapping LLM-based Manipulation Agents with Zero-Shot Data Generation
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.08572"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.08572", "authors": ["Das", "Singh", "Turmakhan", "Sohail", "Han", "Nakov", "Pizzati", "Laptev"], "id": "2510.08572", "pdf_url": "https://arxiv.org/pdf/2510.08572", "rank": 8.357142857142858, "title": "BLAZER: Bootstrapping LLM-based Manipulation Agents with Zero-Shot Data Generation"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.08572" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9270,6 +10361,11 @@ $$ \text{LLM}<em>{\text{BLAZER}} ← \text{SFT}(\text{LLaMA-8B}, D</em>{\text{BL
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 WebAgent-R1: Training Web Agents via End-to-End Multi-Turn Reinforcement Learning
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.16421"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.16421", "authors": ["Wei", "Yao", "Liu", "Zhang", "Lu", "Qiu", "Yu", "Xu", "Zhang", "Yin", "Yun", "Li"], "id": "2505.16421", "pdf_url": "https://arxiv.org/pdf/2505.16421", "rank": 8.357142857142858, "title": "WebAgent-R1: Training Web Agents via End-to-End Multi-Turn Reinforcement Learning"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2505.16421" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9469,6 +10565,11 @@ L_{\text{BC}} = -\mathbb{E}<em>{(h_t, a_t) \sim D} \left[ \log \pi</em>\theta(a_
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MemWeaver: A Hierarchical Memory from Textual Interactive Behaviors for Personalized Generation
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.07713"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.07713", "authors": ["Yu", "Cheng", "Wang", "Liu", "Liu", "Guo", "Tao"], "id": "2510.07713", "pdf_url": "https://arxiv.org/pdf/2510.07713", "rank": 8.357142857142858, "title": "MemWeaver: A Hierarchical Memory from Textual Interactive Behaviors for Personalized Generation"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.07713" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9735,887 +10836,6 @@ $$\mathcal{M}_u^{\text{cog}}=\text{LLM}({s_1,…,s_T})$$<br />
                 </div>
             </div>
             
-            <div id="tab-RLHF" class="tab-content ">
-                <div class="content-wrapper">
-                    <div class="papers-list" id="papers-list-RLHF">
-                        <!-- 领域汇总分析 -->
-                        
-                        <div class="domain-summary-display">
-                <!-- <h3>📊 领域汇总分析</h3> -->
-                
-                        <!-- 完整汇总内容（单一文本） -->
-                        
-                <div class="summary-section">
-                    <div class="analysis-content"><h3>研究全貌</h3>
-<p>本批次RLHF领域共收录2篇论文，研究方向主要集中在<strong>奖励建模的精细化表达</strong>与<strong>代码生成任务中的细粒度对齐优化</strong>。前者关注如何通过结构化语言标准（如评分细则）提升奖励模型的可解释性与多维评估能力，后者聚焦于代码生成中传统偏好学习缺乏错误定位能力的问题。当前热点问题是如何突破传统标量或成对比较的粗粒度反馈机制，实现更精准、可解释、可扩展的对齐信号建模。整体趋势正从“整体响应级”对齐向“细粒度修正驱动”的范式演进，强调对错误区域的定位能力与人类决策逻辑的模拟。</p>
-<h3>重点方法深度解析</h3>
-<p>本批次中，两篇论文分别代表了RLHF在<strong>结构化奖励设计</strong>与<strong>任务特定对齐机制</strong>上的前沿探索，其中以下两个方法尤为突出：</p>
-<p><strong>《OpenRubrics: Towards Scalable Synthetic Rubric Generation for Reward Modeling and LLM Alignment》</strong> <a href="https://arxiv.org/abs/2510.07743" target="_blank" rel="noopener noreferrer">URL</a><br />
-该工作针对传统奖励模型难以捕捉人类偏好多维性的缺陷，提出“评分标准即奖励”（RaR）的新范式。其核心创新在于引入<strong>对比式评分标准生成（CRG）</strong>：通过分析优选与被拒响应的差异，自动提取显性“硬规则”（如“不得使用被动语态”）和隐性“原则”（如“应保持逻辑连贯”），形成结构化评分标准。技术上结合大模型生成与<strong>基于偏好标签一致性的拒绝采样</strong>，过滤噪声，提升生成评分标准的可靠性。最终构建的Rubric-RM在多个奖励建模基准上超越同规模基线6.8%，并在指令遵循与生物医学任务中实现策略模型性能迁移。该方法适用于需要高可解释性与多维度评估的场景，如教育评估、内容审核等。</p>
-<p><strong>《Teaching Your Models to Understand Code via Focal Preference Alignment》</strong> <a href="https://arxiv.org/abs/2503.02783" target="_blank" rel="noopener noreferrer">URL</a><br />
-该研究针对代码生成中传统DPO仅基于整体通过率进行对齐、忽略错误位置的问题，提出<strong>Target-DPO</strong>框架。其核心是模拟人类调试过程，在新构建的<strong>CodeFlow数据集</strong>（包含迭代修复路径）基础上，通过定位测试失败的代码片段，仅对错误相关token进行偏好对齐。技术上设计了<strong>聚焦式DPO损失函数</strong>，限制梯度更新范围至“修改区域”，避免无关代码干扰。实验表明，Target-DPO在BigCodeBench等挑战性任务上显著提升代码生成成功率，错误率明显下降。该方法特别适用于代码修复、程序合成等需精准纠错的场景，是任务定制化对齐的典范。</p>
-<p>两方法均突破传统RLHF的粗粒度建模局限，但路径不同：OpenRubrics从<strong>奖励信号结构化</strong>入手，提升通用性与可解释性；Target-DPO则从<strong>对齐粒度精细化</strong>出发，增强任务特定性能。前者更适合作为通用对齐基础设施，后者更适合垂直领域深度优化。</p>
-<h3>实践启示</h3>
-<p>这两项研究为大模型应用开发提供了重要借鉴：在需要<strong>可解释评估</strong>的场景（如医疗、教育），应优先采用OpenRubrics类结构化奖励建模方法，提升用户信任与调试效率；而在<strong>高精度任务</strong>（如代码生成、逻辑推理）中，应借鉴Target-DPO的细粒度对齐思想，聚焦错误区域优化。建议开发者结合自身任务特性，构建包含迭代修正路径的高质量偏好数据，并设计局部对齐机制。实现时需注意：结构化评分标准需严格验证与人类一致性，避免生成“虚假规则”；细粒度对齐则需精准定位错误区域，建议结合静态分析工具辅助标注。</p>
-</div>
-                </div>
-                
-                
-            </div>
-            
-                        
-                        <div class="topic-content">
-                            
-                                
-                                <div class="paper-item-compact" id="paper-item-2510.07743">
-                                    <div class="paper-header" onclick="showPaperDetail('2510.07743', 'RLHF')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                OpenRubrics: Towards Scalable Synthetic Rubric Generation for Reward Modeling and LLM Alignment
-                                                <a href="https://arxiv.org/abs/2510.07743" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AOpenRubrics%3A%20Towards%20Scalable%20Synthetic%20Rubric%20Generation%20for%20Reward%20Modeling%20and%20LLM%20Alignment%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2510.07743&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AOpenRubrics%3A%20Towards%20Scalable%20Synthetic%20Rubric%20Generation%20for%20Reward%20Modeling%20and%20LLM%20Alignment%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2510.07743%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Liu, Xu, Yu, Hong, Yang, Zhao, Wang</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文提出了OpenRubrics，一个大规模、多样化的（提示，评分标准）数据集，并引入了对比式评分标准生成（CRG）方法，通过区分优选与被拒响应来生成兼具显性约束（硬规则）和隐性质量（原则）的评分标准。结合偏好标签一致性过滤，显著提升了评分标准的质量与可靠性。基于此构建的Rubric-RM在多个奖励建模基准上超越同规模基线模型6.8%，并在策略模型对齐任务中取得显著增益。研究数据与模型均已开源，方法设计严谨，实验证据充分，为LLM对齐提供了可解释、可扩展的新范式。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.5</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2510.07743" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">OpenRubrics: Towards Scalable Synthetic Rubric Generation for Reward Modeling and LLM Alignment</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 16 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>论文旨在解决现有奖励模型在 RLHF（基于人类反馈的强化学习）中表达能力不足的问题。传统方法通常依赖标量打分或成对偏好标签，难以刻画人类偏好的多维度特性。为此，作者提出“Rubric-as-Reward（RaR）”范式，用结构化自然语言标准（rubric）替代简单分数，以显式、可解释的方式分解响应质量。然而，高质量 rubric 的规模化生成仍面临成本高、一致性差等挑战。OpenRubrics 通过以下手段解决该问题：</p>
-<ol>
-<li>构建大规模 (prompt, rubric) 数据集，覆盖多领域任务。</li>
-<li>提出 Contrastive Rubric Generation（CRG），利用“优选/拒绝”响应对比，自动抽取出硬规则（hard rules）与原则（principles）。</li>
-<li>引入偏好–标签一致性过滤，用拒绝采样剔除噪声 rubric，确保可靠性。</li>
-</ol>
-<p>最终训练的 Rubric-RM 在 8 项奖励模型基准上平均提升 6.8%，并在策略优化中带来 2.9% 的额外增益，显著缩小了昂贵人工评估与自动奖励建模之间的差距。</p>
-<h2>相关工作</h2>
-<p>相关研究可归纳为两条主线：<strong>奖励建模（Reward Modeling）</strong>与<strong>Rubric-as-Rewards（RaR）</strong>。以下按主题梳理代表性工作，并指出 OpenRubrics 与之的差异。</p>
-<hr />
-<h3>奖励建模（Reward Modeling）</h3>
-<ol>
-<li><p><strong>标量/成对奖励</strong></p>
-<ul>
-<li>Bradley-Terry 框架下的点对点打分：$p(y^+ \succ y^-|\mathbf{x})=\sigma(r_\theta(\mathbf{x},y^+)-r_\theta(\mathbf{x},y^-))$</li>
-<li>代表：Ouyang et al. 2022（InstructGPT）、Lambert et al. 2025b（RewardBench）。</li>
-</ul>
-</li>
-<li><p><strong>生成式奖励模型（GenRM）</strong></p>
-<ul>
-<li>引入 Chain-of-Thought 合成中间推理：$r_\theta(\mathbf{x},y)=\mathbb{E}<em>{\mathbf{c}\sim \pi</em>\theta(\cdot|\mathbf{x},y)}[\mathrm{logit}(c_{\text{label}})]$</li>
-<li>代表：Ankner et al. 2024（Critique-out-Loud）、Yu et al. 2025、Zhang et al. 2025b。</li>
-</ul>
-</li>
-<li><p><strong>强化学习优化奖励</strong></p>
-<ul>
-<li>用 RL 进一步微调奖励本身：$\mathcal{L}<em>{\text{RL}}=-\mathbb{E}</em>{\mathbf{x}}[\log \pi_\phi(y^+|\mathbf{x}) \cdot r_\theta(\mathbf{x},y^+)]$</li>
-<li>代表：Chen et al. 2025a（JudgeLRM）、Whitehouse et al. 2025（J1）。</li>
-</ul>
-</li>
-</ol>
-<p><strong>差异</strong>：上述方法仍输出标量或单 token 偏好，缺乏可解释维度；OpenRubrics 用结构化 rubric 作为中间语义层，实现“先分解、后打分”。</p>
-<hr />
-<h3>Rubric-as-Rewards（RaR）</h3>
-<ol>
-<li><p><strong>人工构建 Rubric</strong></p>
-<ul>
-<li>Arora et al. 2025（HealthBench）聘请领域专家撰写医学评分标准，成本高且难扩展。</li>
-</ul>
-</li>
-<li><p><strong>Prompt 式即时生成</strong></p>
-<ul>
-<li>Gunjal et al. 2025 直接提示 GPT 生成 rubric，再用于 PPO 奖励；缺乏质量控制，且调用商用 API 费用高昂。</li>
-</ul>
-</li>
-<li><p><strong>迭代修正 Rubric</strong></p>
-<ul>
-<li>Zhang et al. 2025a 通过多轮自我修正缓解奖励过度优化，但未解决规模化与一致性问题。</li>
-</ul>
-</li>
-</ol>
-<p><strong>差异</strong>：OpenRubrics 首次提出<strong>对比式合成</strong>（CRG）与<strong>偏好一致性过滤</strong>，实现低成本、可扩展、高一致性的 rubric 数据生产，并配套端到端 Rubric-RM 训练流程。</p>
-<h2>解决方案</h2>
-<p>论文通过“数据–方法–模型”三位一体框架系统解决高质量 rubric 难以规模化生成的难题，具体路线如下：</p>
-<hr />
-<h3>1. 数据层：OpenRubrics 大规模语料</h3>
-<ul>
-<li><strong>来源混合</strong><br />
-整合 7 类公开偏好数据集（UltraFeedback、Tulu、HelpSteer3、Skywork、Tulu3-IF、MegaScience、Medical-o1），覆盖通用对话、STEM、医学等多领域，保证域多样性。</li>
-<li><strong>偏好对构建</strong><br />
-对已有标注取最高/最低分；对无标注数据用 Qwen-3-8B/14B、Llama-3.1-8B、Gemma-3-12B 生成 4 回复，再用开源奖励模型 ensemble 排序，形成 (x, y⁺, y⁻) 三元组。</li>
-</ul>
-<hr />
-<h3>2. 方法层：Contrastive Rubric Generation（CRG）+ 一致性过滤</h3>
-<ul>
-<li><p><strong>双类型 rubric 设计</strong></p>
-<ul>
-<li>Hard Rule：从 prompt 显式抽取“可验证”约束（字数、格式、禁用内容）。</li>
-<li>Principle：对比 y⁺/y⁻ 后抽象出通用质量维度（逻辑连贯、事实准确、风格得体）。</li>
-</ul>
-</li>
-<li><p><strong>CRG 算法</strong><br />
-给定 (x, y⁺, y⁻)，用 LLM h_ψ 生成 rubric：<br />
-$$ \mathcal{R}(x) \sim h_\psi(x, y^+, y^-, \ell) $$<br />
-其中 ℓ 为偏好标签，负例对比迫使模型挖掘<strong>区分性</strong>维度。</p>
-</li>
-<li><p><strong>Preference–Label Consistency 过滤</strong><br />
-再次提示 h_ψ 用同一 rubric 重判 (y⁺, y⁻)，仅保留预测与原始标签一致者：<br />
-$$ \mathcal{R}^*(x)= \begin{cases}\mathcal{R}(x), &amp; \hat{\ell}=\ell \ \emptyset, &amp; \text{otherwise}\end{cases} $$<br />
-拒绝采样后噪声显著下降，保证 rubric–偏好对齐。</p>
-</li>
-</ul>
-<hr />
-<h3>3. 模型层：Rubric-RM 两阶段流水线</h3>
-<ul>
-<li><p><strong>Stage-1 Rubric Generator g_θ</strong><br />
-在过滤后数据 $\mathcal{D}<em>{\text{rubric}}={(x, y^+, y^-, \mathcal{R}^*(x))}$ 上做 SFT，学习<br />
-$$ \mathcal{L}</em>{\text{rubric}}^{\text{SFT}}= -\mathbb{E}\sum_{t=1}^{|\mathcal{R}^<em>|} \log p_\theta(\mathcal{R}^</em><em>t \mid x, \mathcal{R}^*</em>{&lt;t}) $$<br />
-推理时输入 (x, y_A, y_B) 即可自动生成对应 rubric。</p>
-</li>
-<li><p><strong>Stage-2 Rubric-conditioned Judge r_ϕ</strong><br />
-在同一数据上额外加入偏好标签 $\hat{\ell}$，优化<br />
-$$ \mathcal{L}<em>{\text{rm}}^{\text{SFT}}= -\mathbb{E}\sum</em>{t=1}^{|\hat{\ell}|} \log p_\phi(\hat{\ell}<em>t \mid x, y^+, y^-, \mathcal{R}^*(x), \hat{\ell}</em>{&lt;t}) $$<br />
-推理时先调用 g_θ 得到 $\hat{\mathcal{R}}(x)$，再让 r_ϕ 输出“A 更好”或“B 更好”，实现<strong>可解释</strong>的成对奖励。</p>
-</li>
-</ul>
-<hr />
-<h3>4. 效果验证</h3>
-<ul>
-<li><p><strong>奖励模型角度</strong><br />
-Rubric-RM-8B 在 8 项基准平均 68.5%，超越同规模基线 6.8%；ensemble 后达 71.2%，逼近 14B 模型。</p>
-</li>
-<li><p><strong>策略优化角度</strong><br />
-以 Rubric-RM 为奖励做 DPO，IFEval 提升 3.9%，IFBench 新 SOTA 33.7；医学场景 HealthBench 再涨 1.1–1.3 分，验证 rubric 信号可跨域迁移。</p>
-</li>
-</ul>
-<hr />
-<p>通过“对比生成 → 一致性过滤 → 两阶段微调”闭环，论文首次实现<strong>低成本、高一致、可解释</strong>的 rubric 大规模生产，并将其无缝嵌入 RLHF 流程，显著缩小人工评估与自动奖励之间的鸿沟。</p>
-<h2>实验验证</h2>
-<p>论文从<strong>奖励模型性能</strong>与<strong>策略优化效果</strong>两条主线展开实验，共覆盖 <strong>8 个奖励建模基准</strong>、<strong>3 项指令遵循评测</strong>、<strong>2 个人类偏好对齐基准</strong>以及 <strong>1 个医学领域专项基准</strong>，并补充效率与案例剖析。具体配置与结果如下：</p>
-<hr />
-<h3>1. 奖励模型主实验（§5.2）</h3>
-<p><strong>基准</strong><br />
-RewardBench(Chat/Chat-Hard)、RM-Bench、PPE-IFEval、FollowBench、InfoBench、IFBench、RewardBench2(Precise-IF/Focus)、HelpSteer3 → <strong>8 套榜单</strong>。</p>
-<p><strong>对比方法</strong></p>
-<ul>
-<li>同规模白盒：JudgeLRM-7B、RRM-7B、RM-R1-7B（Qwen &amp; DeepSeek 蒸馏）</li>
-<li>更大规模：RM-R1-14B</li>
-<li>黑盒 API：Claude-3.5-Sonnet、GPT-4.1-Mini(Rubric+Judge)、Gemini-2.5-FlashLite(直接 Judge)</li>
-<li>消融：Qwen-3-8B 零样本“先 rubric 后 judge”流水线</li>
-</ul>
-<p><strong>结果</strong></p>
-<table>
-<thead>
-<tr>
-  <th>模型</th>
-  <th>平均得分</th>
-  <th>Δ</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>Rubric-RM-8B</td>
-  <td>68.5</td>
-  <td>–</td>
-</tr>
-<tr>
-  <td>Rubric-RM-8B-voting@5</td>
-  <td><strong>71.2</strong></td>
-  <td>+2.7</td>
-</tr>
-<tr>
-  <td>同规模最强基线</td>
-  <td>61.7</td>
-  <td><strong>+6.8</strong></td>
-</tr>
-<tr>
-  <td>14B 基线</td>
-  <td>71.7</td>
-  <td>持平</td>
-</tr>
-</tbody>
-</table>
-<p><strong>结论</strong>：rubric-aware 训练在 8B 参数下即可超越 7B 级模型 6.8%，ensemble 后追平 14B；在指令遵循类榜单（FollowBench、InfoBench）优势更明显。</p>
-<hr />
-<h3>2. 策略优化实验（§5.3）</h3>
-<h4>2.1 指令遵循</h4>
-<p><strong>基准</strong><br />
-IFEval（Prompt/Inst 各 Loose/Strict）、InfoBench、IFBench → <strong>3 套</strong>。</p>
-<p><strong>设置</strong><br />
-固定基础模型 Qwen2.5-7B-Instruct，分别用不同奖励做 DPO（不改动超参）。</p>
-<p><strong>结果</strong></p>
-<table>
-<thead>
-<tr>
-  <th>奖励源</th>
-  <th>IFEval AVG</th>
-  <th>InfoBench</th>
-  <th>IFBench</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>Skywork</td>
-  <td>76.0</td>
-  <td>82.0</td>
-  <td>28.2</td>
-</tr>
-<tr>
-  <td>ArmoRM</td>
-  <td>76.0</td>
-  <td>83.5</td>
-  <td>–</td>
-</tr>
-<tr>
-  <td>RLCF</td>
-  <td>78.6</td>
-  <td>84.1</td>
-  <td>28.2</td>
-</tr>
-<tr>
-  <td><strong>Rubric-RM</strong></td>
-  <td><strong>79.9</strong></td>
-  <td><strong>82.9</strong></td>
-  <td><strong>33.7</strong></td>
-</tr>
-</tbody>
-</table>
-<p>IFBench 刷新公开模型最高分，相对次优提升 <strong>5.5</strong> 分。</p>
-<h4>2.2 人类偏好对齐</h4>
-<p><strong>基准</strong><br />
-Arena-Hard、AlpacaEval（均报告 vanilla / 风格 / 长度受控）。</p>
-<p><strong>结果</strong></p>
-<table>
-<thead>
-<tr>
-  <th>奖励源</th>
-  <th>Arena-Hard</th>
-  <th>AlpacaEval</th>
-  <th>平均</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>Skywork</td>
-  <td>50.3</td>
-  <td>41.5</td>
-  <td>45.9</td>
-</tr>
-<tr>
-  <td>RLCF</td>
-  <td>48.4</td>
-  <td>37.1</td>
-  <td>42.8</td>
-</tr>
-<tr>
-  <td><strong>Rubric-RM</strong></td>
-  <td><strong>56.9</strong></td>
-  <td><strong>50.5</strong></td>
-  <td><strong>53.7</strong></td>
-</tr>
-</tbody>
-</table>
-<p>长度受控下 AlpacaEval 提升 <strong>&gt;13</strong> 分，显著抑制冗长幻觉。</p>
-<hr />
-<h3>3. 医学领域专项（§5.4）</h3>
-<h4>3.1 奖励模型</h4>
-<p><strong>基准</strong><br />
-HealthBench（2500 条医学问答对）。</p>
-<p><strong>结果</strong></p>
-<table>
-<thead>
-<tr>
-  <th>模型</th>
-  <th>得分</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>RRM-7B</td>
-  <td>63.3</td>
-</tr>
-<tr>
-  <td>RM-R1-7B</td>
-  <td>55.4–66.9</td>
-</tr>
-<tr>
-  <td>RM-R1-14B</td>
-  <td>69.9</td>
-</tr>
-<tr>
-  <td><strong>Rubric-RM-8B</strong></td>
-  <td><strong>68.3</strong></td>
-</tr>
-<tr>
-  <td><strong>+voting@5</strong></td>
-  <td><strong>72.9</strong></td>
-</tr>
-</tbody>
-</table>
-<p>与 14B 最佳差距 &lt;2 分，远超同规模基线 <strong>+4.9</strong>。</p>
-<h4>3.2 策略优化</h4>
-<p><strong>设置</strong><br />
-Qwen2.5-7B-Instruct → DPO，偏好对由不同奖励标注。</p>
-<p><strong>结果</strong></p>
-<table>
-<thead>
-<tr>
-  <th>奖励源</th>
-  <th>HealthBench 得分</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>ArmoRM</td>
-  <td>22.5</td>
-</tr>
-<tr>
-  <td>RM-R1-7B</td>
-  <td>22.7</td>
-</tr>
-<tr>
-  <td><strong>Rubric-RM</strong></td>
-  <td><strong>23.8</strong></td>
-</tr>
-</tbody>
-</table>
-<p>绝对提升 <strong>1.1–1.3</strong>，验证 rubric 信号在专科场景同样更干净。</p>
-<hr />
-<h3>4. 效率对比（§5.5）</h3>
-<p><strong>指标</strong><br />
-vLLM 推理 100 条样本 wall-clock 时间（秒）。</p>
-<table>
-<thead>
-<tr>
-  <th>模型</th>
-  <th>时间</th>
-  <th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>JudgeLRM-7B</td>
-  <td>25.7</td>
-  <td>最快，但无 rubric</td>
-</tr>
-<tr>
-  <td>RRM-7B</td>
-  <td>203.4</td>
-  <td>长链式思考</td>
-</tr>
-<tr>
-  <td>RM-R1-14B</td>
-  <td>322–382</td>
-  <td>14B 推理</td>
-</tr>
-<tr>
-  <td><strong>Rubric-RM-8B</strong></td>
-  <td><strong>130.8</strong></td>
-  <td>两段短解码，可缓存 rubric</td>
-</tr>
-</tbody>
-</table>
-<p>在提供可解释信号的同时，速度优于同类型推理奖励模型，且 rubric 可离线复用，适合大规模偏好打分。</p>
-<hr />
-<h3>5. 案例剖析（§5.6）</h3>
-<p>选取 RewardBench-ChatHard 与 FollowBench 各一例，对比 JudgeLRM-7B、RRM-7B、RM-R1-7B 的错误：</p>
-<ul>
-<li><p><strong>基线共性失误</strong><br />
-– 忽视显式硬规则（段落数、引用日期）<br />
-– 被“学术外观”长回答误导，产生幻觉</p>
-</li>
-<li><p><strong>Rubric-RM 行为</strong><br />
-– 先执行 Gatekeeper（段落上限、引用完整性）→ 排除不合规响应<br />
-– 再对原则维度（生动性、经济性分析）打分<br />
-– 最终选中正确答案，显著降低冗长幻觉与 citation 错误</p>
-</li>
-</ul>
-<hr />
-<h3>总结</h3>
-<p>实验链条覆盖<strong>通用奖励建模 → 指令遵循策略 → 人类偏好对齐 → 医学专科 → 效率与可解释性</strong>，共 <strong>14 项基准</strong> 均取得一致提升，充分验证 OpenRubrics 框架在规模、性能、效率与可解释性四方面的综合优势。</p>
-<h2>未来工作</h2>
-<p>以下方向可在此基础上继续推进，分为<strong>数据与任务扩展</strong>、<strong>方法改进</strong>、<strong>理论分析</strong>与<strong>系统应用</strong>四大类。</p>
-<hr />
-<h3>1. 数据与任务扩展</h3>
-<ul>
-<li><p><strong>开放域长文本</strong><br />
-当前 rubric 主要围绕指令遵循、医学问答等“约束清晰”场景。对创意写作、长文档总结、多轮对话等<strong>目标模糊</strong>任务，需研究如何自动发现<strong>隐式维度</strong>（情感基调、叙事一致性、角色连贯性）。</p>
-</li>
-<li><p><strong>多语言与文化 rubric</strong><br />
-现有数据以英文为主。不同语言对礼貌、幽默、修辞的偏好差异显著，可构建<strong>跨语言对比偏好对</strong>，生成文化敏感 rubric，检验奖励模型是否引入文化偏见。</p>
-</li>
-<li><p><strong>多模态 rubric</strong><br />
-将文本 rubric 扩展至<strong>图文交错</strong>或<strong>视频脚本</strong>场景：自动析出“图文一致性”“视觉元素提及度”等跨模态 hard rule，验证 RaR 在 VLHF（Vision-Language Human Feedback）中的可迁移性。</p>
-</li>
-</ul>
-<hr />
-<h3>2. 方法改进</h3>
-<ul>
-<li><p><strong>可验证奖励与 rubric 的混合信号</strong><br />
-对数学、编程等可执行场景，引入<strong>单元测试</strong>或<strong>符号验证</strong>作为额外 hard rule，研究<br />
-$$ r_{\text{hybrid}} = \alpha r_{\text{rubric}} + (1-\alpha) r_{\text{verifiable}} $$<br />
-的最优融合策略，避免纯 rubric 在“对错”分明任务上的奖励噪声。</p>
-</li>
-<li><p><strong>迭代式 rubric 精炼</strong><br />
-当前仅做一次拒绝采样。可借鉴主动学习：让策略模型持续采样→人类仅对 rubric 误判案例给出修正→在线更新 g_θ 与 r_ϕ，形成<strong>rubrics-in-the-loop RLHF</strong>。</p>
-</li>
-<li><p><strong>层次化 rubric 结构</strong><br />
-将单扁平列表升级为<strong>树状</strong>或<strong>带权图</strong>结构：父节点代表高层能力（“逻辑性”），子节点展开为可度量的子准则（“因果连接词使用”“前提-结论匹配”），并学习节点权重，实现<strong>可解释且可微</strong>的奖励计算。</p>
-</li>
-</ul>
-<hr />
-<h3>3. 理论分析</h3>
-<ul>
-<li><p><strong>rubric 复杂度 – 奖励误差 trade-off</strong><br />
-研究 rubric 条目数 k 与奖励模型泛化误差界的定量关系：<br />
-$$ \epsilon(k,n) \approx \tilde{\mathcal{O}}\left(\sqrt{k/n}\right) + \text{Bias}(k) $$<br />
-通过实验+PAC-Bayes 分析寻找最优 k，防止过度细化导致的奖励过拟合。</p>
-</li>
-<li><p><strong>Gatekeeper 阶段的决策单调性</strong><br />
-证明“先硬规则后原则”的两阶段判定在满足何种<strong>偏好序保持</strong>条件下，能保证与真实偏好的<strong>单调一致性</strong>，为后续安全关键应用提供理论保证。</p>
-</li>
-</ul>
-<hr />
-<h3>4. 系统与应用</h3>
-<ul>
-<li><p><strong>rubric 缓存与分布式奖励服务</strong><br />
-利用 rubric 与具体响应无关的可复用特性，构建<strong>全局 rubric 缓存池</strong>；结合 KV-Cache 分片，实现百万 QPS 级在线排序，降低大模型部署成本。</p>
-</li>
-<li><p><strong>人机协同写作平台</strong><br />
-将 Rubric-RM 嵌入写作辅助界面：实时显示未满足的 hard rule 与原则得分，让用户<strong>即时修正</strong>；收集用户修改后的偏好，反哺 rubric 训练，形成数据飞轮。</p>
-</li>
-<li><p><strong>对齐审计与法规合规</strong><br />
-把 rubric 作为<strong>可审计证据链</strong>：对每条生成内容输出对应的结构化评判，便于监管方核查模型是否遵守法规（禁止歧视、版权限制等），提升 LLM 在医疗、金融等高风险行业的可部署性。</p>
-</li>
-</ul>
-<hr />
-<h3>总结</h3>
-<p>未来工作可从<strong>开放域隐式维度发现、可验证奖励融合、层次化结构、理论误差界、分布式缓存与合规审计</strong>等多角度切入，进一步释放 rubric-as-rewards 在规模化、安全性与可解释性方面的潜力。</p>
-<h2>总结</h2>
-<p><strong>OpenRubrics: Towards Scalable Synthetic Rubric Generation for Reward Modeling and LLM Alignment</strong><br />
-提出一种<strong>可扩展、可解释</strong>的奖励建模新范式，用结构化自然语言标准（rubric）取代传统标量或成对偏好信号，系统解决高质量 rubric 难以大规模获取的痛点，显著提升 RLHF 对齐效果。</p>
-<hr />
-<h3>1. 背景与动机</h3>
-<ul>
-<li>现有奖励模型多为<strong>单点分数</strong>或<strong>二元偏好</strong>，无法刻画人类偏好的<strong>多维度、可解释</strong>需求。</li>
-<li>Rubric-as-Rewards (RaR) 提供显式评价维度，但依赖<strong>专家撰写或昂贵 API</strong>，规模与一致性受限。</li>
-</ul>
-<hr />
-<h3>2. 贡献总览</h3>
-<table>
-<thead>
-<tr>
-  <th>维度</th>
-  <th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td><strong>数据</strong></td>
-  <td>发布 <strong>OpenRubrics</strong> 数据集：35.6 万 (prompt, rubric) 对，覆盖通用对话、STEM、医学等 7 大源。</td>
-</tr>
-<tr>
-  <td><strong>方法</strong></td>
-  <td>① <strong>Contrastive Rubric Generation (CRG)</strong>：利用 (优选, 拒绝) 响应对比，自动抽取<strong>硬规则</strong>与<strong>原则</strong>；&lt;br&gt;② <strong>偏好–标签一致性过滤</strong>：拒绝采样保留与真实偏好对齐的 rubric。</td>
-</tr>
-<tr>
-  <td><strong>模型</strong></td>
-  <td><strong>Rubric-RM</strong> 两阶段流水线：&lt;br&gt;1. rubric 生成器 g_θ 先产出评价标准；&lt;br&gt;2. rubric 条件奖励模型 r_ϕ 再输出成对偏好。</td>
-</tr>
-<tr>
-  <td><strong>实验</strong></td>
-  <td>在 <strong>14 项基准</strong> 上验证：&lt;br&gt;– 奖励建模平均 <strong>+6.8%</strong>；&lt;br&gt;– 策略优化指令遵循 <strong>+2.9%</strong>；&lt;br&gt;– 医学场景 HealthBench <strong>+1.3</strong>；&lt;br&gt;– 推理速度优于同类型推理奖励模型。</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3>3. 技术要点</h3>
-<ul>
-<li><p><strong>双类型 rubric</strong></p>
-<ul>
-<li>Hard Rule：prompt 显式约束（字数、格式、禁用词）。</li>
-<li>Principle：抽象通用质量（逻辑、事实、风格）。</li>
-</ul>
-</li>
-<li><p><strong>CRG 公式</strong><br />
-$$ \mathcal{R}(x) \sim h_\psi(x, y^+, y^-, \ell) $$<br />
-负例对比迫使模型发现<strong>区分性</strong>维度。</p>
-</li>
-<li><p><strong>一致性过滤</strong><br />
-用同一 rubric 重判 (y⁺, y⁻)，仅保留预测与原始标签一致者：<br />
-$$ \mathcal{R}^*(x)=\begin{cases}\mathcal{R}(x), &amp; \hat{\ell}=\ell \ \emptyset, &amp; \text{otherwise}\end{cases} $$</p>
-</li>
-<li><p><strong>两阶段推理</strong></p>
-<ol>
-<li>生成 $\hat{\mathcal{R}}(x)=g_\theta(x, y_A, y_B)$ → 可缓存</li>
-<li>预测 $\hat{\ell}=\arg\max_{k\in{\text{A},\text{B}}} p_\phi(k \mid x, y_A, y_B, \hat{\mathcal{R}}(x))$</li>
-</ol>
-</li>
-</ul>
-<hr />
-<h3>4. 主要结果</h3>
-<ul>
-<li><p><strong>Reward Model</strong><br />
-Rubric-RM-8B 在 8 项奖励基准平均 <strong>68.5%</strong>，ensemble 后 <strong>71.2%</strong>，<strong>超越同规模基线 6.8%</strong>，追平 14B 模型。</p>
-</li>
-<li><p><strong>Policy Optimization</strong><br />
-用 Rubric-RM 做 DPO，IFEval <strong>79.9</strong>、IFBench <strong>33.7</strong>（新 SOTA）、Arena-Hard <strong>56.9</strong>，全面领先开源奖励模型。</p>
-</li>
-<li><p><strong>医学专项</strong><br />
-HealthBench 奖励任务 <strong>68.3</strong>→ensemble <strong>72.9</strong>；DPO 后策略 <strong>23.8</strong>，<strong>+1.3</strong> 优于强基线。</p>
-</li>
-<li><p><strong>效率</strong><br />
-推理速度 <strong>130.8 s/100 样例</strong>，低于同类型推理奖励模型（170–380 s），且 rubric 可离线复用。</p>
-</li>
-</ul>
-<hr />
-<h3>5. 结论</h3>
-<p>OpenRubrics 首次实现<strong>低成本、高一致、可解释</strong>的 rubric 大规模合成，将评价过程显式分解为“硬规则+原则”两层，显著缩小<strong>人工评估</strong>与<strong>自动奖励</strong>之间的差距，为 LLM 对齐提供新的<strong>原则驱动</strong>范式。</p>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.5</span></span>
-                                            <span>置信度: 0.95</span>
-                                            <span>分类: RLHF</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">RLHF</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2510.07743" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2510.07743" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="paper-item-compact" id="paper-item-2503.02783">
-                                    <div class="paper-header" onclick="showPaperDetail('2503.02783', 'RLHF')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Teaching Your Models to Understand Code via Focal Preference Alignment
-                                                <a href="https://arxiv.org/abs/2503.02783" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ATeaching%20Your%20Models%20to%20Understand%20Code%20via%20Focal%20Preference%20Alignment%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2503.02783&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ATeaching%20Your%20Models%20to%20Understand%20Code%20via%20Focal%20Preference%20Alignment%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2503.02783%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Wu, Li, Zhang, Liu, Huang, Luo, Zhang, Li, Chu, Yang, Li</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文提出了一种名为IterPref的新型偏好对齐框架，通过模拟人类迭代调试过程，实现对代码大模型的细粒度优化。该方法结合新构建的CodeFlow数据集和改进的DPO算法，精准定位错误区域并聚焦关键token进行对齐，在多个主流代码生成基准上显著优于现有方法。创新性强，实验充分，且计划开源代码与数据，具有较高学术价值。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.4</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2503.02783" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Teaching Your Models to Understand Code via Focal Preference Alignment</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 5 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>这篇论文试图解决在代码生成领域中，如何通过偏好学习（Preference Learning）提升大型语言模型（Code LLMs）的代码生成准确性和错误纠正能力的问题。具体而言，现有的偏好学习方法主要依赖于测试用例的通过率来构建偏好对，这种方法存在局限性，因为它无法精确地识别代码中的错误区域，从而导致模型无法学习到更有效的错误纠正模式。论文提出了一种新的偏好对齐框架IterPref，通过模拟人类迭代调试的过程，明确地定位错误区域，并对相应的代码片段进行对齐优化，以克服现有方法的不足。</p>
-<h2>相关工作</h2>
-<p>以下是与IterPref相关的研究工作：</p>
-<h3>代码语言模型（Code Language Models）</h3>
-<ul>
-<li><strong>Qwen2.5-Coder</strong>：由Hui等人（2024a）提出，是一个强大的代码生成模型，在多种代码生成任务中表现出色。</li>
-<li><strong>DeepSeekCoder</strong>：由Guo等人（2024）提出，展示了在代码生成任务中的优秀能力。</li>
-<li><strong>StarCoder</strong>：由Li等人（2023）和Lozhkov等人（2024）提出，是一个专注于代码生成的模型。</li>
-<li><strong>Magicoder</strong>：由Wei等人（2024）提出，通过开源指令（OSS-Instruct）来增强代码生成能力。</li>
-<li><strong>EpiCoder</strong>：由Wang等人（2025b）提出，通过基于特征树的合成框架生成高质量的代码和测试用例。</li>
-</ul>
-<h3>强化学习（Reinforcement Learning）在代码生成中的应用</h3>
-<ul>
-<li><strong>DPO（Direct Preference Optimization）</strong>：由Rafailov等人（2023）提出，是一种不需要显式奖励模型的偏好优化方法，已被广泛应用于代码生成任务。</li>
-<li><strong>RPO（Reward-based Preference Optimization）</strong>：由Liu等人（2024a）和Pang等人（2024）提出，是DPO的一种变体，通过加权的监督微调（SFT）损失来优化代码生成。</li>
-<li><strong>KTO（Knowledge Transfer Optimization）</strong>：由Ethayarajh等人（2024）提出，旨在通过知识转移来优化代码生成。</li>
-</ul>
-<h3>代码偏好对的构建（Code Preference Construction）</h3>
-<ul>
-<li><strong>PLUM</strong>：由Zhang等人（2024）提出，通过基于测试用例通过率的排名来构建偏好对。</li>
-<li><strong>Code-Optimise</strong>：由Gee等人（2025）提出，进一步整合了效率作为学习信号，并通过单元测试反馈和执行时间进行注释。</li>
-<li><strong>CodeDPO</strong>：由Zhang等人（2025）提出，针对正确性和效率，提出了一个受PageRank启发的迭代算法来更精确地选择对。</li>
-<li><strong>AceCoder</strong>：由Li等人（2024）提出，通过选择具有明显通过率差异的对来构建偏好对。</li>
-<li><strong>DSTC</strong>：由Liu等人（2024b）提出，通过自动生成代码片段和测试用例来构建偏好对，不依赖外部LLM进行生成和注释。</li>
-</ul>
-<p>这些研究为IterPref提供了背景和基础，IterPref通过引入迭代调试的概念，进一步提升了代码生成模型的性能，特别是在错误纠正和复杂任务处理方面。</p>
-<h2>解决方案</h2>
-<p>论文通过提出IterPref框架来解决现有偏好学习方法在代码生成中的局限性问题，具体方法如下：</p>
-<h3>1. 模拟人类迭代调试过程</h3>
-<p>IterPref框架模拟人类开发者在调试代码时的行为，即先定位产生错误的代码模块，然后专注于修复该部分。通过这种方式，IterPref能够明确地识别出代码中的错误区域，并对这些区域进行针对性的优化。</p>
-<h3>2. 构建CodeFlow数据集</h3>
-<p>为了生成高质量的偏好对，论文构建了一个新的函数级数据集CodeFlow。在这个数据集中，每个样本都通过迭代调试过程逐步改进，直到通过所有单元测试。通过记录调试过程中的代码修改历史，CodeFlow数据集能够自然地捕捉到错误纠正的关键变化，为偏好学习提供了丰富的训练信号。</p>
-<h3>3. 提出改进的DPO算法</h3>
-<p>IterPref对传统的DPO算法进行了改进，以实现更细粒度的对齐。具体来说，IterPref在优化过程中明确地标记出需要优化的错误特定标记（tokens），并对这些标记进行惩罚，而对正确的标记则保持不变。这种针对性的策略减少了优化过程中的噪声，使模型能够更专注于学习错误模式。</p>
-<h3>4. 明确识别关键错误标记</h3>
-<p>IterPref通过对比修正后的代码和之前的迭代版本，明确地识别出导致功能差异的关键标记。通过这种方式，IterPref能够引导模型学习到更有效的错误纠正模式，从而提高代码生成的准确性和鲁棒性。</p>
-<h3>5. 实验验证</h3>
-<p>通过在多个基准测试集上进行广泛的实验，IterPref展示了其在代码生成任务中的显著性能提升。这些实验结果表明，IterPref不仅提高了基本编码任务的性能，还在更具挑战性的任务（如BigCodeBench）上取得了优异的成绩。</p>
-<h3>6. 深入分析</h3>
-<p>论文还对IterPref的性能提升进行了深入分析，揭示了其在减少错误发生频率方面的优势。此外，IterPref还提供了一种高效的偏好对标注路径，通过减少外部LLM调用和执行时间，提高了偏好对的生成效率。</p>
-<p>通过上述方法，IterPref有效地解决了现有偏好学习方法在代码生成中的局限性，为代码生成领域提供了一种新的、更有效的解决方案。</p>
-<h2>实验验证</h2>
-<p>论文进行了广泛的实验来验证IterPref框架的有效性，具体实验设置和结果如下：</p>
-<h3>实验设置</h3>
-<ul>
-<li><strong>模型选择</strong>：实验涵盖了多种基础和指令微调的代码生成模型，包括DeepSeek-Coder-7B-Instruct、CodeQwen1.5-7BChat、Qwen2.5-Coder-7B和StarCoder2-15B。</li>
-<li><strong>基准测试集</strong>：使用了五个基准测试集来评估模型性能，包括HumanEval、MBPP、LiveCodeBench（LCB）和BigCodeBench（BCB）。其中，BCB包括完整的代码生成任务和仅指令的任务，以及难度较高的子集。</li>
-<li><strong>训练细节</strong>：对于指令微调的模型，训练了2个周期；对于基础模型，训练了5个周期。使用了全参数微调，并根据验证损失选择最佳模型进行评估。IterPref的超参数设置为学习率1e-5（7B模型）和5e-6（14B模型），全局批量大小为128，采用余弦调度器和热身策略。最大序列长度设置为2048个标记。DPO算法中的β设置为0.1，RPO中的α设置为1.0。</li>
-</ul>
-<h3>实验结果</h3>
-<p>实验结果表明，IterPref在多个基准测试集上显著提升了代码生成模型的性能，具体如下：</p>
-<ul>
-<li><strong>HumanEval</strong>：IterPref-DPO在DeepSeek-Coder-7B-Instruct上达到了76.2%的通过率，比DPO高出6.7个百分点；IterPref-RPO在CodeQwen1.5-7BChat上达到了89.6%的通过率，比RPO高出10.3个百分点。</li>
-<li><strong>MBPP</strong>：IterPref-DPO在DeepSeek-Coder-7B-Instruct上达到了72.0%的通过率，比DPO高出6.8个百分点；IterPref-RPO在CodeQwen1.5-7BChat上达到了86.0%的通过率，比RPO高出12.8个百分点。</li>
-<li><strong>BigCodeBench</strong>：IterPref在完整任务和仅指令任务上均取得了显著的性能提升。例如，在BCB-Full的指令任务上，IterPref-RPO在Qwen2.5-Coder-7B上达到了83.3%的通过率，比RPO高出12.4个百分点；在BCB-Hard的完整任务上，IterPref-RPO在Qwen2.5-Coder-7B上达到了69.6%的通过率，比RPO高出16.7个百分点。</li>
-</ul>
-<h3>性能提升分析</h3>
-<ul>
-<li><strong>细粒度对齐</strong>：IterPref通过明确标记错误特定的标记并对其进行惩罚，减少了优化过程中的噪声，使模型能够更专注于学习错误模式。这种细粒度的对齐方式显著提高了模型在代码生成任务中的性能。</li>
-<li><strong>错误减少</strong>：IterPref在减少错误发生频率方面表现出色。例如，在BigCodeBench的完整任务上，IterPref-RPO在Qwen2.5-Coder-7B上将错误发生频率降低了约30%。</li>
-<li><strong>偏好对标注效率</strong>：IterPref提供了一种高效的偏好对标注路径。与现有的基于采样的方法相比，IterPref通过迭代调试过程生成偏好对，显著减少了外部LLM调用和执行时间。</li>
-</ul>
-<h3>消融研究</h3>
-<p>论文还进行了消融研究，探索了不同训练策略对IterPref性能的影响，包括：</p>
-<ul>
-<li><strong>SFT（监督微调）</strong>：仅使用偏好对中的正样本进行监督微调，虽然也能取得一定的性能提升，但不如IterPref全面。</li>
-<li><strong>Hybrid Training（混合训练）</strong>：将IterPref方法与传统的DPO方法结合，结果表明IterPref方法更为有效。</li>
-<li><strong>Diff-Augmentation（差异增强）</strong>：在不优选样本中加入更多上下文标记，但实验结果表明，这可能会使模型混淆，降低性能。</li>
-<li><strong>Symmetric Masking Strategy（对称掩码策略）</strong>：仅从D+和D-中学习，而不使用完整的正样本，结果表明，这会导致模型无法保留基本的代码生成能力。</li>
-</ul>
-<p>综上所述，IterPref通过模拟人类迭代调试过程，明确识别错误区域，并通过改进的DPO算法进行细粒度对齐，显著提升了代码生成模型的性能，并在多个基准测试集上取得了优异的成绩。</p>
-<h2>未来工作</h2>
-<p>尽管IterPref在代码生成领域取得了显著的性能提升，但仍有一些可以进一步探索的点，以进一步优化和扩展该框架的应用。以下是一些潜在的研究方向：</p>
-<h3>1. <strong>数据集扩展</strong></h3>
-<ul>
-<li><strong>扩大数据集规模</strong>：当前的CodeFlow数据集包含59k个样本，进一步扩展数据集的规模可能会进一步提升模型的泛化能力和性能。</li>
-<li><strong>多样化数据集</strong>：增加更多类型的代码任务和更复杂的错误模式，以提高模型在不同场景下的适应性。</li>
-</ul>
-<h3>2. <strong>测试用例质量提升</strong></h3>
-<ul>
-<li><strong>高质量测试用例生成</strong>：IterPref依赖于生成的测试用例来验证代码的正确性。进一步提升测试用例的质量和覆盖范围，可以更有效地捕捉代码中的错误。</li>
-<li><strong>动态测试用例生成</strong>：探索动态生成测试用例的方法，以适应代码的逐步改进过程，从而更真实地模拟人类调试过程。</li>
-</ul>
-<h3>3. <strong>错误定位和修复的自动化</strong></h3>
-<ul>
-<li><strong>自动错误定位</strong>：目前IterPref依赖于Longest Common Subsequence（LCS）算法来提取关键差异。研究更先进的自动错误定位技术，如基于深度学习的方法，可能会进一步提高错误定位的准确性。</li>
-<li><strong>自动修复建议</strong>：结合自动修复技术，如代码补丁生成，为模型提供更具体的修复建议，从而进一步提升模型的修复能力。</li>
-</ul>
-<h3>4. <strong>多语言支持</strong></h3>
-<ul>
-<li><strong>跨语言代码生成</strong>：目前IterPref主要关注Python语言的代码生成。扩展到其他编程语言，如Java、C++等，可以进一步验证IterPref的普适性和有效性。</li>
-<li><strong>多语言数据集构建</strong>：构建多语言的CodeFlow数据集，以支持跨语言的代码生成和调试。</li>
-</ul>
-<h3>5. <strong>模型架构改进</strong></h3>
-<ul>
-<li><strong>结合预训练模型</strong>：探索将IterPref与更先进的预训练模型结合，如GPT-4、LLaMA等，以进一步提升模型的性能。</li>
-<li><strong>多任务学习</strong>：将IterPref与其他代码生成任务（如代码补全、代码注释生成等）结合，形成多任务学习框架，以提高模型的综合性能。</li>
-</ul>
-<h3>6. <strong>性能评估和指标</strong></h3>
-<ul>
-<li><strong>更全面的评估指标</strong>：除了通过率（pass@1）之外，引入更多评估指标，如代码质量、可读性、执行效率等，以更全面地评估模型的性能。</li>
-<li><strong>长期性能评估</strong>：进行长期性能评估，观察模型在持续迭代和优化过程中的表现，以确保模型的稳定性和持续改进能力。</li>
-</ul>
-<h3>7. <strong>用户交互和反馈</strong></h3>
-<ul>
-<li><strong>用户反馈集成</strong>：将用户反馈纳入模型训练过程，使模型能够更好地适应用户的需求和偏好。</li>
-<li><strong>交互式代码生成</strong>：开发交互式代码生成系统，允许用户在生成过程中提供反馈，从而进一步优化生成的代码。</li>
-</ul>
-<h3>8. <strong>理论分析和解释</strong></h3>
-<ul>
-<li><strong>理论分析</strong>：对IterPref的理论性能进行深入分析，探讨其在不同条件下的收敛性和稳定性。</li>
-<li><strong>模型解释性</strong>：研究IterPref的决策过程和学习机制，提高模型的可解释性，以便更好地理解其工作原理。</li>
-</ul>
-<h3>9. <strong>实际应用和部署</strong></h3>
-<ul>
-<li><strong>工业级应用</strong>：将IterPref应用于实际的软件开发环境中，评估其在工业级项目中的有效性和实用性。</li>
-<li><strong>持续集成和持续部署（CI/CD）</strong>：探索IterPref在CI/CD流程中的应用，以实现自动化的代码生成和调试。</li>
-</ul>
-<p>通过进一步探索这些方向，IterPref有望在代码生成领域取得更大的突破，为开发更高效、更准确的代码生成模型提供新的思路和方法。</p>
-<h2>总结</h2>
-<p>当然，以下是论文的主要内容总结：</p>
-<h3>论文标题</h3>
-<p>IterPref: Focal Preference Learning for Code Generation via Iterative Debugging</p>
-<h3>作者</h3>
-<p>Jie Wu, Haoling Li, Xin Zhang, Jianwen Luo, Yangyu Huang, Ruihang Chu, Yujiu Yang, Scarlett Li, Tsinghua University, Microsoft Research, CASIA</p>
-<h3>摘要</h3>
-<p>IterPref是一个新的偏好对齐框架，通过模拟人类迭代调试过程来优化代码生成模型（Code LLMs）。现有方法主要依赖于测试用例的通过率来构建偏好对，但这种方法无法精确识别代码中的错误区域，导致模型无法学习到更有效的错误纠正模式。IterPref通过明确识别错误区域并对相应的标记进行对齐优化，克服了现有方法的不足。IterPref还引入了CodeFlow数据集，其中的样本通过迭代调试逐步改进，直到通过所有单元测试。广泛的实验表明，IterPref在代码生成任务中取得了显著的性能提升，特别是在复杂的编码任务（如BigCodeBench）上表现出色。IterPref的代码和数据将近期公开。</p>
-<h3>1. 引言</h3>
-<p>偏好学习是提升代码生成模型性能的有力补充，尤其是在高质量偏好数据稀缺的情况下。现有方法主要依赖于测试用例的通过率来构建偏好对，但这种方法存在局限性，因为它无法精确识别代码中的错误区域。IterPref通过模拟人类调试代码的方式，明确识别错误区域并对相应的标记进行对齐优化，从而提升模型的错误纠正能力。</p>
-<h3>2. 相关工作</h3>
-<ul>
-<li><strong>代码语言模型</strong>：介绍了Qwen2.5-Coder、DeepSeekCoder、StarCoder、Magicoder和EpiCoder等强大的代码生成模型。</li>
-<li><strong>强化学习在代码生成中的应用</strong>：讨论了DPO、RPO和KTO等方法在代码生成中的应用。</li>
-<li><strong>代码偏好对的构建</strong>：介绍了PLUM、Code-Optimise、CodeDPO、AceCoder和DSTC等方法。</li>
-</ul>
-<h3>3. IterPref框架</h3>
-<p>IterPref框架通过以下两个步骤来优化代码生成模型：</p>
-<ol>
-<li><strong>生成偏好代码片段</strong>：通过迭代调试过程生成偏好对，明确识别错误区域。</li>
-<li><strong>细粒度对齐</strong>：通过改进的DPO算法，对错误特定的标记进行惩罚，减少优化过程中的噪声。</li>
-</ol>
-<h4>3.1 生成偏好代码片段</h4>
-<ul>
-<li><strong>生成原始代码片段和测试用例</strong>：使用EpiCoder的提示模板和GPT-4o生成高质量的代码和测试用例。</li>
-<li><strong>通过验证进行迭代改进</strong>：对生成的代码进行单元测试验证，逐步改进代码直到通过测试。</li>
-<li><strong>提取关键差异</strong>：使用最长公共子序列（LCS）算法提取关键差异，明确识别错误区域。</li>
-<li><strong>偏好对质量控制</strong>：通过规则过滤和LLM-as-a-judge方法确保偏好对的质量。</li>
-</ul>
-<h4>3.2 细粒度对齐</h4>
-<ul>
-<li><strong>改进的DPO算法</strong>：通过明确标记错误特定的标记并对其进行惩罚，减少优化过程中的噪声。</li>
-<li><strong>优化目标</strong>：通过对比关键标记，引导模型学习更有效的错误纠正模式。</li>
-</ul>
-<h3>4. 实验</h3>
-<ul>
-<li><strong>实验设置</strong>：使用多种基础和指令微调的代码生成模型，评估了HumanEval、MBPP、LiveCodeBench和BigCodeBench等基准测试集。</li>
-<li><strong>主要结果</strong>：IterPref在多个基准测试集上取得了显著的性能提升，特别是在复杂的编码任务上表现出色。</li>
-<li><strong>错误减少</strong>：IterPref显著减少了错误发生频率，提高了代码生成的准确性。</li>
-<li><strong>偏好对标注效率</strong>：IterPref通过迭代调试过程生成偏好对，显著减少了外部LLM调用和执行时间。</li>
-</ul>
-<h3>5. 分析</h3>
-<ul>
-<li><strong>错误类型分析</strong>：IterPref显著减少了常见错误类型的频率，提高了代码生成的鲁棒性。</li>
-<li><strong>偏好对标注效率</strong>：IterPref提供了一种高效的偏好对标注路径，减少了外部LLM调用和执行时间。</li>
-</ul>
-<h3>6. 消融研究</h3>
-<ul>
-<li><strong>监督微调（SFT）</strong>：仅使用偏好对中的正样本进行监督微调，虽然也能取得一定的性能提升，但不如IterPref全面。</li>
-<li><strong>混合训练（Hybrid Training）</strong>：将IterPref方法与传统的DPO方法结合，结果表明IterPref方法更为有效。</li>
-<li><strong>差异增强（Diff-Augmentation）</strong>：在不优选样本中加入更多上下文标记，但实验结果表明，这可能会使模型混淆，降低性能。</li>
-<li><strong>对称掩码策略（Symmetric Masking Strategy）</strong>：仅从D+和D-中学习，而不使用完整的正样本，结果表明，这会导致模型无法保留基本的代码生成能力。</li>
-</ul>
-<h3>7. 结论</h3>
-<p>IterPref通过模拟人类迭代调试过程，明确识别错误区域，并通过改进的DPO算法进行细粒度对齐，显著提升了代码生成模型的性能。CodeFlow数据集的构建为偏好对的生成提供了丰富的训练信号。广泛的实验结果表明，IterPref在代码生成任务中取得了显著的性能提升，特别是在复杂的编码任务上表现出色。</p>
-<h3>8. 限制</h3>
-<ul>
-<li><strong>测试用例质量</strong>：IterPref依赖于生成的测试用例，测试用例的质量直接影响IterPref的性能。</li>
-<li><strong>数据集规模</strong>：当前的CodeFlow数据集包含59k个样本，进一步扩展数据集的规模可能会进一步提升模型的泛化能力。</li>
-</ul>
-<h3>9. 未来工作</h3>
-<ul>
-<li><strong>数据集扩展</strong>：扩大CodeFlow数据集的规模，增加更多类型的代码任务和错误模式。</li>
-<li><strong>测试用例质量提升</strong>：进一步提升测试用例的质量和覆盖范围，以更有效地捕捉代码中的错误。</li>
-<li><strong>错误定位和修复的自动化</strong>：研究更先进的自动错误定位和修复技术，以进一步提升模型的修复能力。</li>
-<li><strong>多语言支持</strong>：扩展到其他编程语言，构建多语言的CodeFlow数据集。</li>
-<li><strong>模型架构改进</strong>：结合更先进的预训练模型，形成多任务学习框架，以提高模型的综合性能。</li>
-</ul>
-<p>IterPref通过模拟人类迭代调试过程，明确识别错误区域，并通过改进的DPO算法进行细粒度对齐，显著提升了代码生成模型的性能。CodeFlow数据集的构建为偏好对的生成提供了丰富的训练信号。广泛的实验结果表明，IterPref在代码生成任务中取得了显著的性能提升，特别是在复杂的编码任务上表现出色。</p>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.4</span></span>
-                                            <span>置信度: 0.92</span>
-                                            <span>分类: RLHF</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">RLHF</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2503.02783" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2503.02783" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
             <div id="tab-Hallucination" class="tab-content ">
                 <div class="content-wrapper">
                     <div class="papers-list" id="papers-list-Hallucination">
@@ -10651,6 +10871,11 @@ HealthBench 奖励任务 <strong>68.3</strong>→ensemble <strong>72.9</strong>�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Large Language Models Hallucination: A Comprehensive Survey
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.06265"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.06265", "authors": ["Alansari", "Luqman"], "id": "2510.06265", "pdf_url": "https://arxiv.org/pdf/2510.06265", "rank": 9.071428571428573, "title": "Large Language Models Hallucination: A Comprehensive Survey"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.06265" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -10822,6 +11047,11 @@ HealthBench 奖励任务 <strong>68.3</strong>→ensemble <strong>72.9</strong>�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Distributional Semantics Tracing: A Framework for Explaining Hallucinations in Large Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.06107"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.06107", "authors": ["Bhatia", "Sripada", "Allan", "Azcona"], "id": "2510.06107", "pdf_url": "https://arxiv.org/pdf/2510.06107", "rank": 8.571428571428571, "title": "Distributional Semantics Tracing: A Framework for Explaining Hallucinations in Large Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.06107" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -11260,6 +11490,11 @@ Pearson ρ = −0.863，R² = 0.746，p &lt; 0.001</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Mining the Mind: What 100M Beliefs Reveal About Frontier LLM Knowledge
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.07024"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.07024", "authors": ["Ghosh", "Giordano", "Hu", "Nguyen", "Razniewski"], "id": "2510.07024", "pdf_url": "https://arxiv.org/pdf/2510.07024", "rank": 8.571428571428571, "title": "Mining the Mind: What 100M Beliefs Reveal About Frontier LLM Knowledge"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.07024" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -11917,6 +12152,11 @@ $$\text{cutoff}=2024\text{-}06\text{-}01$$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Enhancing LLM Reliability via Explicit Knowledge Boundary Modeling
+                                                <button class="mark-button" 
+                                                        data-paper-id="2503.02233"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2503.02233", "authors": ["Zheng", "Xu", "Liu", "Chen", "Fung", "Yu"], "id": "2503.02233", "pdf_url": "https://arxiv.org/pdf/2503.02233", "rank": 8.357142857142858, "title": "Enhancing LLM Reliability via Explicit Knowledge Boundary Modeling"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2503.02233" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -12179,6 +12419,11 @@ $$\text{cutoff}=2024\text{-}06\text{-}01$$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Hallucination Detection in LLMs with Topological Divergence on Attention Graphs
+                                                <button class="mark-button" 
+                                                        data-paper-id="2504.10063"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2504.10063", "authors": ["Bazarova", "Yugay", "Shulga", "Ermilova", "Volodichev", "Polev", "Belikova", "Parchiev", "Simakov", "Savchenko", "Savchenko", "Barannikov", "Zaytsev"], "id": "2504.10063", "pdf_url": "https://arxiv.org/pdf/2504.10063", "rank": 8.357142857142858, "title": "Hallucination Detection in LLMs with Topological Divergence on Attention Graphs"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2504.10063" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -12422,6 +12667,11 @@ $$\text{cutoff}=2024\text{-}06\text{-}01$$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Learning to Reason for Hallucination Span Detection
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.02173"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.02173", "authors": ["Su", "Hu", "Koppula", "Krishna", "Pouransari", "Hsieh", "Koc", "Cheng", "Tuzel", "Vemulapalli"], "id": "2510.02173", "pdf_url": "https://arxiv.org/pdf/2510.02173", "rank": 8.357142857142858, "title": "Learning to Reason for Hallucination Span Detection"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.02173" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -12722,6 +12972,11 @@ GRPO 的标准化使“预测无幻觉”样本优势系统性偏高，导致<st
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Truth-Aware Decoding: A Program-Logic Approach to Factual Language Generation
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.07331"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.07331", "authors": ["Alpay", "Alakkad"], "id": "2510.07331", "pdf_url": "https://arxiv.org/pdf/2510.07331", "rank": 8.357142857142858, "title": "Truth-Aware Decoding: A Program-Logic Approach to Factual Language Generation"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.07331" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -12899,6 +13154,11 @@ $$
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Revisiting Hallucination Detection with Effective Rank-based Uncertainty
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.08389"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.08389", "authors": ["Wang", "Wei", "Yue", "Sun"], "id": "2510.08389", "pdf_url": "https://arxiv.org/pdf/2510.08389", "rank": 8.357142857142858, "title": "Revisiting Hallucination Detection with Effective Rank-based Uncertainty"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.08389" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -13167,6 +13427,11 @@ $$H=-\sum_{i=1}^m p_i \ln p_i$$</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 UNCLE: Benchmarking Uncertainty Expressions in Long-Form Generation
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.16922"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.16922", "authors": ["Yang", "Zhang", "Zhang", "Huang", "Yu", "Collier", "Yang"], "id": "2505.16922", "pdf_url": "https://arxiv.org/pdf/2505.16922", "rank": 8.357142857142858, "title": "UNCLE: Benchmarking Uncertainty Expressions in Long-Form Generation"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2505.16922" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -13582,6 +13847,11 @@ OneFlow是首个支持文本与图像并发生成的非自回归多模态模型�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 SciVideoBench: Benchmarking Scientific Video Reasoning in Large Multimodal Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.08559"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.08559", "authors": ["Deng", "Yang", "Yu", "Spencer", "Bansal", "Chen", "Yeung-Levy", "Wang"], "id": "2510.08559", "pdf_url": "https://arxiv.org/pdf/2510.08559", "rank": 8.642857142857144, "title": "SciVideoBench: Benchmarking Scientific Video Reasoning in Large Multimodal Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.08559" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -14339,6 +14609,11 @@ OneFlow是首个支持文本与图像并发生成的非自回归多模态模型�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 UNIDOC-BENCH: A Unified Benchmark for Document-Centric Multimodal RAG
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.03663"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.03663", "authors": ["Peng", "Qin", "Chen", "Xu", "Xiong", "Wu"], "id": "2510.03663", "pdf_url": "https://arxiv.org/pdf/2510.03663", "rank": 8.571428571428571, "title": "UNIDOC-BENCH: A Unified Benchmark for Document-Centric Multimodal RAG"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.03663" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -14961,6 +15236,11 @@ UniDoc-Bench 仅限英文。可扩展至中日韩、阿拉伯语等<strong>复�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 NavSpace: How Navigation Agents Follow Spatial Intelligence Instructions
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.08173"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.08173", "authors": ["Yang", "Long", "Yu", "Yang", "Wang", "Xu", "Wang", "Yu", "Cai", "Kang", "Dong"], "id": "2510.08173", "pdf_url": "https://arxiv.org/pdf/2510.08173", "rank": 8.5, "title": "NavSpace: How Navigation Agents Follow Spatial Intelligence Instructions"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.08173" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -15270,6 +15550,11 @@ $$L_{\text{spatial}} = -\log \frac{\exp(\text{sim}(z_t^{\text{view}}, z_{t+k}^{\
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 OneFlow: Concurrent Mixed-Modal and Interleaved Generation with Edit Flows
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.03506"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.03506", "authors": ["Nguyen", "Havasi", "Berrada", "Zettlemoyer", "Chen"], "id": "2510.03506", "pdf_url": "https://arxiv.org/pdf/2510.03506", "rank": 8.357142857142858, "title": "OneFlow: Concurrent Mixed-Modal and Interleaved Generation with Edit Flows"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.03506" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -15656,6 +15941,11 @@ $$ \mathcal{L} = \mathbb{E}[\mathcal{L}<em>{\text{text}}(λ,Q) + \mathcal{L}</em
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 SaFeR-VLM: Toward Safety-aware Fine-grained Reasoning in Multimodal Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.06871"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.06871", "authors": ["Yi", "Wang", "Li", "Yu", "Lin", "Xi", "Wu", "Hu", "Li", "Liu"], "id": "2510.06871", "pdf_url": "https://arxiv.org/pdf/2510.06871", "rank": 8.357142857142858, "title": "SaFeR-VLM: Toward Safety-aware Fine-grained Reasoning in Multimodal Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.06871" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -15854,6 +16144,11 @@ $$ \mathcal{L} = \mathbb{E}[\mathcal{L}<em>{\text{text}}(λ,Q) + \mathcal{L}</em
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 PiCo: Jailbreaking Multimodal Large Language Models via Pictorial Code Contextualization
+                                                <button class="mark-button" 
+                                                        data-paper-id="2504.01444"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2504.01444", "authors": ["Liu", "Tang", "Pan", "Yin", "Wang", "Yang"], "id": "2504.01444", "pdf_url": "https://arxiv.org/pdf/2504.01444", "rank": 8.357142857142858, "title": "PiCo: Jailbreaking Multimodal Large Language Models via Pictorial Code Contextualization"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2504.01444" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -16161,6 +16456,11 @@ $$ \mathcal{L} = \mathbb{E}[\mathcal{L}<em>{\text{text}}(λ,Q) + \mathcal{L}</em
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Modality-Balancing Preference Optimization of Large Multimodal Models by Adversarial Negative Mining
+                                                <button class="mark-button" 
+                                                        data-paper-id="2506.08022"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2506.08022", "authors": ["Liu", "Xiong", "Chen", "Chen", "Wu", "Guo", "Zhou", "Huang"], "id": "2506.08022", "pdf_url": "https://arxiv.org/pdf/2506.08022", "rank": 8.357142857142858, "title": "Modality-Balancing Preference Optimization of Large Multimodal Models by Adversarial Negative Mining"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2506.08022" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -16329,6 +16629,11 @@ $$ \mathcal{L} = \mathbb{E}[\mathcal{L}<em>{\text{text}}(λ,Q) + \mathcal{L}</em
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 WebRenderBench: Enhancing Web Interface Generation through Layout-Style Consistency and Reinforcement Learning
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.04097"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.04097", "authors": ["Lai", "Zhuang", "Zhang", "Xiong", "Wang", "Xu", "Chen", "Wang", "Cui"], "id": "2510.04097", "pdf_url": "https://arxiv.org/pdf/2510.04097", "rank": 8.357142857142858, "title": "WebRenderBench: Enhancing Web Interface Generation through Layout-Style Consistency and Reinforcement Learning"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.04097" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -16542,6 +16847,11 @@ $$ \mathcal{L} = \mathbb{E}[\mathcal{L}<em>{\text{text}}(λ,Q) + \mathcal{L}</em
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 TIGeR: Tool-Integrated Geometric Reasoning in Vision-Language Models for Robotics
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.07181"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.07181", "authors": ["Han", "Chi", "Zhou", "Rong", "An", "Wang", "Wang", "Sheng", "Zhang"], "id": "2510.07181", "pdf_url": "https://arxiv.org/pdf/2510.07181", "rank": 8.357142857142858, "title": "TIGeR: Tool-Integrated Geometric Reasoning in Vision-Language Models for Robotics"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.07181" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -17188,6 +17498,11 @@ $$ \mathcal{L} = \mathbb{E}[\mathcal{L}<em>{\text{text}}(λ,Q) + \mathcal{L}</em
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MLLM4TS: Leveraging Vision and Multimodal Language Models for General Time-Series Analysis
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.07513"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.07513", "authors": ["Liu", "Heshmati", "Mai", "Abraham", "Paparrizos", "Ren"], "id": "2510.07513", "pdf_url": "https://arxiv.org/pdf/2510.07513", "rank": 8.357142857142858, "title": "MLLM4TS: Leveraging Vision and Multimodal Language Models for General Time-Series Analysis"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.07513" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -17560,6 +17875,11 @@ $$ \mathcal{L} = \mathbb{E}[\mathcal{L}<em>{\text{text}}(λ,Q) + \mathcal{L}</em
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 TRAVL: A Recipe for Making Video-Language Models Better Judges of Physics Implausibility
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.07550"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.07550", "authors": ["Motamed", "Chen", "Van Gool", "Laina"], "id": "2510.07550", "pdf_url": "https://arxiv.org/pdf/2510.07550", "rank": 8.357142857142858, "title": "TRAVL: A Recipe for Making Video-Language Models Better Judges of Physics Implausibility"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.07550" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -18019,6 +18339,11 @@ TRAVL 依赖外部 CoTracker，存在遮挡-漂移-计算开销。可：</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 To Sink or Not to Sink: Visual Information Pathways in Large Vision-Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.08510"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.08510", "authors": ["Luo", "Fan", "Wang", "He", "Rahman", "Abolmaesumi", "Sigal"], "id": "2510.08510", "pdf_url": "https://arxiv.org/pdf/2510.08510", "rank": 8.357142857142858, "title": "To Sink or Not to Sink: Visual Information Pathways in Large Vision-Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.08510" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -18593,6 +18918,11 @@ $$ [w_{\text{sink}}, w_{\text{non-sink}}]=R(q), \quad w\ge 0, ; w_{\text{sink}}+
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Dream to Recall: Imagination-Guided Experience Retrieval for Memory-Persistent Vision-and-Language Navigation
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.08553"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.08553", "authors": ["Xu", "Pan", "Liu"], "id": "2510.08553", "pdf_url": "https://arxiv.org/pdf/2510.08553", "rank": 8.357142857142858, "title": "Dream to Recall: Imagination-Guided Experience Retrieval for Memory-Persistent Vision-and-Language Navigation"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.08553" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -19339,6 +19669,11 @@ $$s_j = \sigma_f s^{(f')}_j + \sigma_c s^{(c)}_j + \sigma_h s^{(h')}_j$$</li>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Beyond Single Frames: Can LMMs Comprehend Temporal and Contextual Narratives in Image Sequences?
+                                                <button class="mark-button" 
+                                                        data-paper-id="2502.13925"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2502.13925", "authors": ["Wang", "Xia", "Song", "Guan", "Yang", "Dong", "Luo", "Pu", "Wang", "Meng", "Li", "Sui"], "id": "2502.13925", "pdf_url": "https://arxiv.org/pdf/2502.13925", "rank": 8.357142857142858, "title": "Beyond Single Frames: Can LMMs Comprehend Temporal and Contextual Narratives in Image Sequences?"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2502.13925" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -19817,7 +20152,7 @@ $$s_j = \sigma_f s^{(f')}_j + \sigma_c s^{(c)}_j + \sigma_h s^{(h')}_j$$</li>
         <!-- Footer with filter info -->
         
         <div class="footer">
-            主题筛选: SFT, Multimodal, Hallucination, Finance, Agent, RLHF | 状态: 已启用
+            主题筛选: Pretraining, SFT, Multimodal, Finance, Agent, RLHF, Hallucination | 状态: 已启用
         </div>
         
         </div>
@@ -19827,7 +20162,10 @@ $$s_j = \sigma_f s^{(f')}_j + \sigma_c s^{(c)}_j + \sigma_h s^{(h')}_j$$</li>
     <div class="detail-panel" id="detailPanel">
         <div class="detail-panel-header">
             <span class="detail-panel-title">论文详情</span>
-            <button class="detail-panel-close" onclick="closeDetailPanel()">✕</button>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="mark-button" id="detailPanelMarkButton" onclick="handleDetailPanelMark(event);" title="标记这篇论文">☆</button>
+                <button class="detail-panel-close" onclick="closeDetailPanel()">✕</button>
+            </div>
         </div>
         <div class="detail-panel-content" id="detailPanelContent">
             <!-- 动态加载论文详情 -->
@@ -19839,7 +20177,10 @@ $$s_j = \sigma_f s^{(f')}_j + \sigma_c s^{(c)}_j + \sigma_h s^{(h')}_j$$</li>
         <div class="mobile-modal-content" onclick="event.stopPropagation()">
             <div class="mobile-modal-header">
                 <span class="detail-panel-title">论文详情</span>
-                <button class="mobile-modal-close" onclick="closeMobileModal()">✕</button>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="mark-button" id="mobileModalMarkButton" onclick="handleMobileModalMark(event);" title="标记这篇论文">☆</button>
+                    <button class="mobile-modal-close" onclick="closeMobileModal()">✕</button>
+                </div>
             </div>
             <div class="mobile-modal-body" id="mobileModalContent">
                 <!-- 动态加载论文详情 -->
@@ -19849,6 +20190,243 @@ $$s_j = \sigma_f s^{(f')}_j + \sigma_c s^{(c)}_j + \sigma_h s^{(h')}_j$$</li>
 
     <script>
         let currentPaperId = null;
+        let currentPaperData = null;
+
+        // ========== 标记功能 ==========
+        
+        // 获取所有标记的论文
+        function getMarkedPapers() {
+            try {
+                const stored = localStorage.getItem('markedPapers');
+                return stored ? JSON.parse(stored) : [];
+            } catch (e) {
+                console.error('读取标记论文失败:', e);
+                return [];
+            }
+        }
+        
+        // 保存标记的论文
+        function saveMarkedPapers(papers) {
+            try {
+                localStorage.setItem('markedPapers', JSON.stringify(papers));
+            } catch (e) {
+                console.error('保存标记论文失败:', e);
+            }
+        }
+        
+        // 检查论文是否已标记
+        function isMarked(paperId) {
+            const markedPapers = getMarkedPapers();
+            return markedPapers.some(p => p.id === paperId);
+        }
+        
+        // 获取论文的完整信息（从页面中提取）
+        function getPaperData(paperId, basicData) {
+            // 从subtitle中提取日期
+            const subtitle = document.querySelector('.header p');
+            let date = '未知';
+            if (subtitle) {
+                const dateMatch = subtitle.textContent.match(/(\d{4}-\d{2}-\d{2})/);
+                if (dateMatch) {
+                    date = dateMatch[1];
+                }
+            }
+            
+            // 获取报告路径（相对路径）
+            // 如果路径包含web/reports，提取web/reports之后的部分
+            // 否则使用完整路径
+            let reportPath = window.location.pathname.replace(/^\/+/, '');
+            const webReportsMatch = reportPath.match(/web\/reports\/(.+)$/);
+            if (webReportsMatch) {
+                reportPath = webReportsMatch[1];
+            } else {
+                // 尝试提取reports之后的部分
+                const reportsMatch = reportPath.match(/reports\/(.+)$/);
+                if (reportsMatch) {
+                    reportPath = reportsMatch[1];
+                }
+            }
+            
+            return {
+                id: paperId,
+                title: basicData.title || '',
+                authors: basicData.authors || [],
+                arxiv_url: basicData.arxiv_url || '',
+                pdf_url: basicData.pdf_url || '',
+                rank: basicData.rank || null,
+                date: date,
+                reportPath: reportPath,
+                markedAt: new Date().toISOString()
+            };
+        }
+        
+        // 切换标记状态
+        function toggleMark(paperId, paperData) {
+            const markedPapers = getMarkedPapers();
+            const isCurrentlyMarked = isMarked(paperId);
+            
+            if (isCurrentlyMarked) {
+                // 取消标记
+                const filtered = markedPapers.filter(p => p.id !== paperId);
+                saveMarkedPapers(filtered);
+                updateMarkButtonState(paperId, false);
+            } else {
+                // 添加标记
+                const fullPaperData = getPaperData(paperId, paperData);
+                markedPapers.push(fullPaperData);
+                saveMarkedPapers(markedPapers);
+                updateMarkButtonState(paperId, true);
+            }
+        }
+        
+        // 更新标记按钮状态
+        function updateMarkButtonState(paperId, isMarked) {
+            // 更新列表中的按钮
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            if (listButton) {
+                listButton.textContent = isMarked ? '⭐' : '☆';
+                listButton.classList.toggle('marked', isMarked);
+            }
+            
+            // 更新详情面板中的按钮
+            if (currentPaperId === paperId) {
+                const detailButton = document.getElementById('detailPanelMarkButton');
+                const mobileButton = document.getElementById('mobileModalMarkButton');
+                
+                if (detailButton) {
+                    detailButton.textContent = isMarked ? '⭐' : '☆';
+                    detailButton.classList.toggle('marked', isMarked);
+                }
+                if (mobileButton) {
+                    mobileButton.textContent = isMarked ? '⭐' : '☆';
+                    mobileButton.classList.toggle('marked', isMarked);
+                }
+            }
+        }
+        
+        // 处理列表中的标记点击（从按钮元素获取数据）
+        function handleMarkClickFromButton(button) {
+            const paperId = button.getAttribute('data-paper-id');
+            const paperDataStr = button.getAttribute('data-paper-data');
+            try {
+                const paperData = JSON.parse(paperDataStr);
+                toggleMark(paperId, paperData);
+            } catch (e) {
+                console.error('解析论文数据失败:', e);
+            }
+        }
+        
+        // 处理详情面板中的标记点击
+        function handleDetailPanelMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 处理移动端弹窗中的标记点击
+        function handleMobileModalMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 初始化标记状态（页面加载时）
+        function initMarkStates() {
+            const markedPapers = getMarkedPapers();
+            const markedIds = new Set(markedPapers.map(p => p.id));
+            
+            // 更新所有标记按钮的状态
+            document.querySelectorAll('.mark-button[data-paper-id]').forEach(button => {
+                const paperId = button.getAttribute('data-paper-id');
+                if (markedIds.has(paperId)) {
+                    button.textContent = '⭐';
+                    button.classList.add('marked');
+                } else {
+                    button.textContent = '☆';
+                    button.classList.remove('marked');
+                }
+            });
+        }
 
         // 切换标签页
         function showTab(tabId, event) {
@@ -19875,6 +20453,49 @@ $$s_j = \sigma_f s^{(f')}_j + \sigma_c s^{(c)}_j + \sigma_h s^{(h')}_j$$</li>
             }
         }
 
+        // 从DOM元素中提取论文数据
+        function extractPaperDataFromDOM(paperItem, paperId) {
+            if (!paperItem) return null;
+            
+            const paperTitleEl = paperItem.querySelector('.paper-title');
+            const paperAuthorsEl = paperItem.querySelector('.paper-authors');
+            const paperScoreEl = paperItem.querySelector('.paper-score');
+            const arxivLinkEl = paperItem.querySelector('.arxiv-link');
+            
+            // 提取标题，去除标记按钮和链接
+            let title = '';
+            if (paperTitleEl) {
+                title = paperTitleEl.cloneNode(true);
+                // 移除按钮和链接
+                title.querySelectorAll('.mark-button, .arxiv-link, .ai-links').forEach(el => el.remove());
+                title = title.textContent.trim();
+            }
+            
+            return {
+                id: paperId,
+                title: title || '',
+                authors: paperAuthorsEl ? paperAuthorsEl.textContent.split(',').map(a => a.trim()) : [],
+                arxiv_url: arxivLinkEl ? arxivLinkEl.href : '',
+                pdf_url: arxivLinkEl ? arxivLinkEl.href.replace('/abs/', '/pdf/') : '',
+                rank: paperScoreEl && paperScoreEl.textContent !== 'N/A' ? parseFloat(paperScoreEl.textContent) : null
+            };
+        }
+
+        // 渲染元素中的数学公式
+        function renderMathInElementLocal(element) {
+            if (typeof renderMathInElement !== 'undefined' && element) {
+                renderMathInElement(element, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
         // 显示论文详情
         function showPaperDetail(paperId, topicId) {
             const detailsContent = document.getElementById('details-' + paperId);
@@ -19891,6 +20512,43 @@ $$s_j = \sigma_f s^{(f')}_j + \sigma_c s^{(c)}_j + \sigma_h s^{(h')}_j$$</li>
             
             currentPaperId = paperId;
             
+            // 从列表项中提取论文数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            
+            // 优先从列表按钮的data属性获取数据
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        currentPaperData = JSON.parse(paperDataStr);
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                        // 如果解析失败，从页面元素提取
+                        currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                    }
+                } else {
+                    // 如果没有data属性，从页面元素提取
+                    currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                }
+            } else {
+                // 如果找不到列表按钮，从页面元素提取
+                currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+            }
+            
+            // 更新详情面板中的标记按钮状态
+            const isCurrentlyMarked = isMarked(paperId);
+            const detailButton = document.getElementById('detailPanelMarkButton');
+            const mobileButton = document.getElementById('mobileModalMarkButton');
+            
+            if (detailButton) {
+                detailButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                detailButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            if (mobileButton) {
+                mobileButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                mobileButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            
             // 检测设备类型
             const isMobile = window.innerWidth <= 1024;
             
@@ -19898,12 +20556,16 @@ $$s_j = \sigma_f s^{(f')}_j + \sigma_c s^{(c)}_j + \sigma_h s^{(h')}_j$$</li>
                 // 移动端：显示弹窗
                 const modalContent = document.getElementById('mobileModalContent');
                 modalContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(modalContent);
                 document.getElementById('mobileModal').classList.add('active');
                 document.body.style.overflow = 'hidden'; // 禁止背景滚动
             } else {
                 // 宽屏：显示右侧面板
                 const panelContent = document.getElementById('detailPanelContent');
                 panelContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(panelContent);
                 document.getElementById('detailPanel').classList.add('active');
                 
                 // 调整论文列表宽度
@@ -19965,6 +20627,7 @@ $$s_j = \sigma_f s^{(f')}_j + \sigma_c s^{(c)}_j + \sigma_h s^{(h')}_j$$</li>
                     if (detailsContent) {
                         const modalContent = document.getElementById('mobileModalContent');
                         modalContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(modalContent);
                         mobileModal.classList.add('active');
                         document.body.style.overflow = 'hidden';
                     }
@@ -19976,6 +20639,7 @@ $$s_j = \sigma_f s^{(f')}_j + \sigma_c s^{(c)}_j + \sigma_h s^{(h')}_j$$</li>
                     if (detailsContent) {
                         const panelContent = document.getElementById('detailPanelContent');
                         panelContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(panelContent);
                         detailPanel.classList.add('active');
                     }
                 }
@@ -19987,6 +20651,45 @@ $$s_j = \sigma_f s^{(f')}_j + \sigma_c s^{(c)}_j + \sigma_h s^{(h')}_j$$</li>
             const firstNavItem = document.querySelector('.nav-item');
             if (firstNavItem) {
                 firstNavItem.classList.add('active');
+            }
+            
+            // 初始化标记状态
+            initMarkStates();
+            
+            // 检查URL hash，如果包含paper-item-xxx，自动打开该论文详情
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#paper-item-')) {
+                const paperId = hash.replace('#paper-item-', '');
+                // 查找该论文所在的topic
+                const paperItem = document.getElementById('paper-item-' + paperId);
+                if (paperItem) {
+                    // 找到论文所在的tab
+                    const tabContent = paperItem.closest('.tab-content');
+                    if (tabContent) {
+                        const tabId = tabContent.id.replace('tab-', '');
+                        // 切换到对应的tab
+                        showTab(tabId, null);
+                        // 延迟一下，确保tab切换完成后再显示详情
+                        setTimeout(() => {
+                            showPaperDetail(paperId, tabId);
+                            // 滚动到论文位置
+                            paperItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
+                    }
+                }
+            }
+            
+            // 初始化KaTeX自动渲染数学公式
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
             }
         });
 

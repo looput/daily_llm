@@ -1096,8 +1096,88 @@
             .detail-panel {
                 display: none !important;
             }
+            
+            /* 移动端优化领域汇总显示，去掉双层嵌套效果 */
+            .domain-summary-display {
+                background: white;
+                border: 1px solid #e8e8e8;
+                padding: 12px 16px;
+                margin-bottom: 20px;
+            }
+            
+            .domain-summary-display .summary-section,
+            .domain-summary-display .insights-section,
+            .domain-summary-display .trends-section {
+                background: transparent;
+                border: none;
+                border-radius: 0;
+                padding: 0;
+                margin: 0;
+            }
+        }
+        
+        /* KaTeX数学公式样式 */
+        .katex {
+            font-size: 1.1em;
+        }
+        
+        .katex-display {
+            margin: 1em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        
+        .katex-display > .katex {
+            white-space: nowrap;
+        }
+        
+        /* 标记按钮样式 */
+        .mark-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            color: #999;
+            transition: all 0.2s;
+            border-radius: 4px;
+            padding: 0;
+            margin-left: 8px;
+            flex-shrink: 0;
+            vertical-align: middle;
+        }
+        
+        .mark-button:hover {
+            background: #f5f5f5;
+            color: #ffa500;
+            transform: scale(1.1);
+        }
+        
+        .mark-button.marked {
+            color: #ffa500;
+        }
+        
+        .mark-button.marked:hover {
+            color: #ff8c00;
+        }
+        
+        .paper-title .mark-button {
+            margin-left: 8px;
+        }
+        
+        .detail-panel-header .mark-button,
+        .mobile-modal-header .mark-button {
+            margin-right: 8px;
         }
     </style>
+    <!-- KaTeX数学公式渲染库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
 </head>
 <body>
     <!-- 移动端菜单按钮 -->
@@ -1122,12 +1202,6 @@
                 </a>
                 
                 <a class="nav-item " 
-                   onclick="showTab('Agent', event)">
-                    智能体（Agent）
-                    <span class="nav-item-count">16</span>
-                </a>
-                
-                <a class="nav-item " 
                    onclick="showTab('SFT', event)">
                     指令微调（SFT）
                     <span class="nav-item-count">1</span>
@@ -1137,6 +1211,12 @@
                    onclick="showTab('RLHF', event)">
                     强化学习对齐（RLHF）
                     <span class="nav-item-count">3</span>
+                </a>
+                
+                <a class="nav-item " 
+                   onclick="showTab('Agent', event)">
+                    智能体（Agent）
+                    <span class="nav-item-count">16</span>
                 </a>
                 
                 <a class="nav-item " 
@@ -1158,7 +1238,7 @@
         <div class="container">
             <div class="header">
                 <h1>大模型论文速读（31/570）</h1>
-                <p>生成时间: 2025-11-04</p>
+                <p>日报: 2025-10-03 | 生成时间: 2025-11-05</p>
             </div>
             
             <!-- Tab Contents -->
@@ -1200,6 +1280,11 @@
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Deriving Strategic Market Insights with Large Language Models: A Benchmark for Forward Counterfactual Generation
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.19430"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.19430", "authors": ["Ong", "Mao", "Varshney", "Liang", "Cambria", "Mengaldo"], "id": "2505.19430", "pdf_url": "https://arxiv.org/pdf/2505.19430", "rank": 8.357142857142858, "title": "Deriving Strategic Market Insights with Large Language Models: A Benchmark for Forward Counterfactual Generation"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2505.19430" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -1432,6 +1517,1087 @@
                 </div>
             </div>
             
+            <div id="tab-SFT" class="tab-content ">
+                <div class="content-wrapper">
+                    <div class="papers-list" id="papers-list-SFT">
+                        <!-- 领域汇总分析 -->
+                        
+                        <div class="domain-summary-display">
+                <!-- <h3>📊 领域汇总分析</h3> -->
+                
+                        <!-- 完整汇总内容（单一文本） -->
+                        
+                <div class="summary-section">
+                    <div class="analysis-content"><h3>研究全貌</h3>
+<p>本批次SFT领域共收录1篇论文，研究方向聚焦于<strong>持续学习（Continual Learning, CL）中的计算效率与模型可塑性平衡问题</strong>。该工作挑战了传统CL中“最小化示例内存”的核心假设，转而关注在<strong>内存充足但GPU计算资源受限</strong>的现实场景下如何高效进行模型更新。当前热点问题是如何在避免灾难性遗忘的同时，保持模型对新任务的快速学习能力（即“可塑性”），而不依赖昂贵的全量重训练。整体研究趋势正从“节省内存”转向“节省计算成本”，强调在真实系统瓶颈（如GPU时间）约束下的实用化方案设计，推动持续学习向大规模语言模型的高效微调场景落地。</p>
+<h3>重点方法深度解析</h3>
+<p>本批次最具启发性的工作是：</p>
+<p><strong>《Forget Forgetting: Continual Learning in a World of Abundant Memory》</strong> <a href="https://arxiv.org/abs/2502.07274" target="_blank" rel="noopener noreferrer">URL</a></p>
+<p>该论文指出，在现代系统中，GPU训练成本远高于存储成本，因此传统以“减少存储”为目标的持续学习方法已不再适用。相反，当允许保留大量历史数据（即“充足记忆”）时，模型的主要问题不再是“遗忘”，而是“难以学习新任务”——即<strong>可塑性下降</strong>，模型对旧任务产生偏差。</p>
+<p>为解决这一新范式下的稳定性-可塑性困境，作者提出<strong>Weight Space Consolidation (WSC)</strong>，一种轻量级、低计算成本的权重空间操作方法。其核心技术包含两点：<br />
+1）<strong>基于秩的参数重置（Rank-based Parameter Reset）</strong>：识别出在先前任务中变化较小的低秩参数，将其重置为初始值，从而释放模型容量，恢复对新任务的学习能力（提升可塑性）；<br />
+2）<strong>权重平均（Weight Averaging）</strong>：对历史任务的模型权重进行指数移动平均，增强对旧任务的保留能力（提升稳定性）。</p>
+<p>该方法无需复杂架构或大量超参数调优，仅通过简单的权重操作即可实现高效持续学习。实验在<strong>类增量图像分类</strong>（CIFAR-100, ImageNet-Subset）和<strong>大语言模型的持续指令微调</strong>（如Llama系列）上验证，结果显示WSC在性能上显著优于现有SOTA方法（如EWC、iCaRL、DER等），同时计算成本与简单回放（replay）基线相当，远低于全量重训练（仅需10-20%的GPU时间）。</p>
+<p>WSC特别适用于<strong>大模型在线微调、产品迭代中频繁加入新功能或新指令</strong>的场景，尤其在已有充足存储保存历史数据的前提下，可作为低成本、高性能的持续学习标准流程。</p>
+<h3>实践启示</h3>
+<p>该研究对大模型应用开发具有重要借鉴意义：在SFT场景中，应优先考虑<strong>计算效率而非存储压缩</strong>，尤其是在部署环境具备足够存储能力时。建议在持续微调系统中采用类似WSC的轻量级权重操作方法，替代复杂的正则化或回放缓冲区管理。具体落地时，可结合模型参数的梯度变化或Hessian信息实现自动化参数重置，并引入EMA机制稳定历史性能。关键注意事项包括：合理设定重置比例（避免过度重置导致旧任务崩溃）、确保新任务数据质量以防止偏差累积，以及在任务切换时进行小规模验证集评估以监控稳定性。该方法为构建“低GPU成本、高更新频率”的大模型服务系统提供了可行路径。</p>
+</div>
+                </div>
+                
+                
+            </div>
+            
+                        
+                        <div class="topic-content">
+                            
+                                
+                                <div class="paper-item-compact" id="paper-item-2502.07274">
+                                    <div class="paper-header" onclick="showPaperDetail('2502.07274', 'SFT')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Forget Forgetting: Continual Learning in a World of Abundant Memory
+                                                <button class="mark-button" 
+                                                        data-paper-id="2502.07274"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2502.07274", "authors": ["Cho", "Moon", "Chunara", "Cho", "Cha"], "id": "2502.07274", "pdf_url": "https://arxiv.org/pdf/2502.07274", "rank": 8.357142857142858, "title": "Forget Forgetting: Continual Learning in a World of Abundant Memory"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2502.07274" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AForget%20Forgetting%3A%20Continual%20Learning%20in%20a%20World%20of%20Abundant%20Memory%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2502.07274&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AForget%20Forgetting%3A%20Continual%20Learning%20in%20a%20World%20of%20Abundant%20Memory%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2502.07274%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Cho, Moon, Chunara, Cho, Cha</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文提出了一种在充足示例内存条件下进行高效持续学习的新方法，通过权重空间操作（权重重置与平均）显著降低计算成本，同时取得优于现有方法的性能。研究挑战了传统持续学习中强调内存效率的假设，转而关注GPU计算成本这一更现实的瓶颈，实验设计充分，结果具有说服力，为实际应用提供了高效可行的基线方案。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">8.4</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2502.07274" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Forget Forgetting: Continual Learning in a World of Abundant Memory</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <h1>《Forget Forgetting: Continual Learning in a World of Abundant Memory》深度分析</h1>
+<h2>问题定义</h2>
+<p>论文试图解决的核心问题是：<strong>在持续学习（Continual Learning, CL）中，传统方法普遍假设示例内存（exemplar memory）资源高度受限，但这一假设在当前计算环境下是否仍然成立？</strong> 特别是在大模型时代，存储成本远低于GPU计算成本的背景下，是否应重新权衡内存与计算资源的优先级？</p>
+<p>具体而言，作者聚焦于<strong>类增量学习（class-incremental learning, class-IL）</strong> 场景，挑战了“必须严格限制示例内存大小”的传统范式。他们提出，在<strong>示例内存充足（sufficient exemplar memory）</strong> 的新设定下，许多现有CL算法因复杂机制带来的高计算开销变得不再必要，甚至不如简单的重放（Replay）基线。因此，论文的核心问题是：<strong>如何设计一种在充足内存条件下既高效又高性能的持续学习方法，以最小化计算成本（尤其是GPU训练时间），同时保持甚至超越现有方法的准确性？</strong></p>
+<h2>相关工作</h2>
+<p>论文从两个维度梳理了相关工作：<strong>持续学习方法分类</strong>与<strong>权重空间操作技术</strong>。</p>
+<p>在持续学习方面，作者将现有方法分为三类：</p>
+<ol>
+<li><strong>正则化方法</strong>：通过约束重要参数的变化来缓解灾难性遗忘（如EWC、SI）；</li>
+<li><strong>回放/重放方法（rehearsal-based）</strong>：存储少量历史样本并在训练新任务时回放（如iCaRL、BiC、DER）；</li>
+<li><strong>扩展方法</strong>：动态增加模型容量以适应新任务（如DER、FOSTER）。</li>
+</ol>
+<p>这些方法大多在严格内存限制（如每类20个样本）下设计和评估。然而，作者引用Prabhu et al. (2023) 和 Chavan et al. (2023) 的研究指出，<strong>GPU计算成本已远超存储成本</strong>，这动摇了“节省内存优先”的设计哲学。</p>
+<p>在权重空间操作方面，作者借鉴了近期在多任务学习和模型融合中的技术：</p>
+<ul>
+<li><strong>权重平均（weight averaging）</strong>：用于提升泛化性和收敛速度（如SWA）；</li>
+<li><strong>权重重置（weight reset）</strong>：用于增强模型可塑性，防止参数僵化。</li>
+</ul>
+<p>本文的创新在于将这些权重空间操作引入<strong>充足内存下的持续学习场景</strong>，构建了一种低计算开销的新范式，与传统回放方法形成互补而非替代。</p>
+<h2>解决方案</h2>
+<p>论文提出了一种名为<strong>权重空间整合（Weight Space Consolidation, WSC）</strong> 的新方法，其核心思想是：<strong>在示例内存充足的前提下，模型能够有效保留对过往任务的最优解；因此，可在权重空间中直接操作，通过重置与平均策略平衡稳定性与可塑性，从而大幅降低训练成本。</strong></p>
+<p>具体方法包含两个关键步骤：</p>
+<ol>
+<li><p><strong>基于排名的权重重置（Rank-based Weight Resetting）</strong><br />
+在每个新任务训练的前 $n_{\text{warm}}$ 轮后，计算当前参数 $\theta$ 与前一任务最优参数 $\theta_{\text{prev}}$ 的差异 $|\theta[l] - \theta_{\text{prev}}[l]|$，识别“休眠”参数（即变化小、未被激活的参数）。随后对变化最小的80%参数进行线性重置：
+$$
+\theta[l] = \alpha \cdot \theta_{\text{prev}}[l] + (1 - \alpha) \cdot \theta[l], \quad \alpha = 0.5
+$$
+这一操作强制模型回归到前任务解的邻域，增强稳定性。</p>
+</li>
+<li><p><strong>周期性权重平均（Periodic Weight Averaging）</strong><br />
+在训练过程中定期对模型权重进行滑动平均，借鉴SWA思想，聚合不同训练阶段的解，提升泛化能力与收敛速度，尤其在数据方差大的充足内存场景下更为有效。</p>
+</li>
+</ol>
+<p>该方法无需复杂的记忆管理、知识蒸馏或模型扩展，直接在权重空间操作，显著减少了前向/反向传播次数和内存访问开销，从而实现<strong>计算成本的大幅降低</strong>。</p>
+<h2>实验验证</h2>
+<h3>实验设置</h3>
+<ul>
+<li><strong>数据集</strong>：CIFAR-100 和 ImageNet-100，均划分为10个增量任务（每任务10类）。</li>
+<li><strong>基线方法</strong>：iCaRL、BiC、WA、DER、FOSTER 和最简基线 Replay。</li>
+<li><strong>模型架构</strong>：CIFAR-100 使用 ResNet-32，ImageNet-100 使用 ResNet-18。</li>
+<li><strong>评估指标</strong>：最终任务完成后所有类的平均准确率，训练时间（作为计算成本代理）。</li>
+<li><strong>内存设置</strong>：测试不同每类示例数（20、50、100），重点分析“充足内存”（100/类）场景。</li>
+</ul>
+<h3>主要结果</h3>
+<ol>
+<li><p><strong>内存充足时，简单Replay性能接近SOTA</strong><br />
+图1(a)显示，当每类存储100个样本时，Replay的准确率与iCaRL、BiC等方法相当，表明<strong>充足内存本身即可有效缓解遗忘</strong>。</p>
+</li>
+<li><p><strong>现有方法计算成本显著更高</strong><br />
+图1(b)和图2(a)表明，DER、FOSTER等扩展方法训练时间是Replay的2–3倍，而其性能优势在充足内存下不再明显。</p>
+</li>
+<li><p><strong>WSC方法实现性能与效率双优</strong></p>
+<ul>
+<li>在CIFAR-100和ImageNet-100上，WSC<strong>超越所有基线</strong>，达到SOTA准确率。</li>
+<li>其训练时间<strong>仅为DER/FOSTER的1/4到1/3</strong>，与Replay相当。</li>
+<li>消融实验（图2(b)）证明：权重重置与平均均贡献显著，联合使用效果最佳。</li>
+</ul>
+</li>
+</ol>
+<p>实验充分验证了论文主张：<strong>在充足内存下，复杂算法不再必要，而基于权重空间的轻量方法可实现更优性价比。</strong></p>
+<h2>未来工作</h2>
+<h3>可进一步探索的方向</h3>
+<ol>
+<li><strong>动态内存分配策略</strong>：当前假设内存“充足”，但可研究如何在有限但较大的内存下动态分配样本，结合WSC提升效率。</li>
+<li><strong>权重操作的理论分析</strong>：缺乏对“为何权重重置+平均”在CL中有效的理论解释，未来可从优化轨迹、损失面平坦性等角度建模。</li>
+<li><strong>扩展至其他CL场景</strong>：本文聚焦class-IL，可探索在任务增量、域增量等场景下的适用性。</li>
+<li><strong>与模型压缩结合</strong>：在训练后引入剪枝或量化，进一步降低部署成本，形成“高内存训练 + 低内存部署” pipeline。</li>
+<li><strong>在线/流式设置</strong>：当前为任务级增量，未来可适配更贴近现实的流式数据场景。</li>
+</ol>
+<h3>局限性</h3>
+<ol>
+<li><strong>依赖充足内存</strong>：方法在小内存场景下可能失效，不适用于边缘设备等资源严格受限环境。</li>
+<li><strong>任务边界假设</strong>：仍需明确任务边界，未解决完全无任务标识的纯在线学习问题。</li>
+<li><strong>重置比例固定</strong>：80%重置比例为经验设定，缺乏自适应机制，可能影响不同架构或数据集的泛化性。</li>
+<li><strong>未考虑存储-计算联合优化</strong>：虽强调计算成本，但未提供存储与计算的联合优化框架。</li>
+</ol>
+<h2>总结</h2>
+<p>本文的核心贡献在于<strong>重新定义了持续学习中的成本权衡范式</strong>，从“节省内存”转向“节省计算”，提出在<strong>示例内存充足的新现实条件下，简单方法可媲美复杂算法，而基于权重空间的操作能进一步实现性能与效率的双重突破</strong>。</p>
+<p>主要价值体现在：</p>
+<ol>
+<li><strong>挑战传统假设</strong>：通过实验证明，在充足内存下，Replay等简单方法性能不输SOTA，质疑了长期存在的“内存必须受限”前提。</li>
+<li><strong>提出高效新方法</strong>：WSC通过权重重置与平均，在几乎不增加训练时间的前提下超越现有算法，计算成本仅为1/4–1/3。</li>
+<li><strong>提供实用基准</strong>：为工业界部署CL系统提供了高性价比方案，尤其适用于云环境（存储便宜、GPU昂贵）。</li>
+<li><strong>开辟新研究方向</strong>：推动CL研究从“如何省内存”转向“如何省算力”，为大模型时代的持续学习提供了新思路。</li>
+</ol>
+<p>总之，该工作不仅提出了一个高性能、低成本的算法，更重要的是<strong>引发对持续学习基本假设的反思</strong>，具有重要的理论与实践意义。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.4</span></span>
+                                            <span>置信度: 0.90</span>
+                                            <span>分类: SFT</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">SFT</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2502.07274" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2502.07274" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tab-RLHF" class="tab-content ">
+                <div class="content-wrapper">
+                    <div class="papers-list" id="papers-list-RLHF">
+                        <!-- 领域汇总分析 -->
+                        
+                        <div class="domain-summary-display">
+                <!-- <h3>📊 领域汇总分析</h3> -->
+                
+                        <!-- 完整汇总内容（单一文本） -->
+                        
+                <div class="summary-section">
+                    <div class="analysis-content"><h3>研究全貌</h3>
+<p>本批次RLHF领域共收录3篇论文，研究方向主要集中在<strong>奖励模型设计</strong>、<strong>偏好优化算法改进</strong>与<strong>理论机制解析</strong>三大方向。其中，奖励模型研究聚焦于多领域场景下的有效性评估，挑战了细粒度过程监督的普遍优越性；偏好优化方向则探索训练过程中的动态样本调度机制，提升数据利用效率；理论工作则从贝叶斯与信息论视角重新诠释DPO的内在逻辑。当前热点问题是如何在多样化任务中实现<strong>高效、稳健且可解释的对齐学习</strong>。整体趋势显示，研究正从“模型结构创新”转向“训练机制优化”与“理论基础构建”，强调方法的通用性、鲁棒性与可解释性。</p>
+<h3>重点方法深度解析</h3>
+<p>本批次中，以下两篇论文最具启发性：</p>
+<p><strong>《Rethinking Reward Models for Multi-Domain Test-Time Scaling》</strong> <a href="https://arxiv.org/abs/2510.00492" target="_blank" rel="noopener noreferrer">URL</a><br />
+该论文系统性地挑战了“过程奖励模型（PRM）优于结果奖励模型（ORM）”的主流认知。作者提出四种奖励模型统一评测框架：判别式ORM/PRM（DisORM/DisPRM）与生成式ORM/PRM（GenORM/GenPRM），并在14个跨领域任务中进行实证。关键技术在于构建多领域推理数据集，并引入理论分析揭示PRM的误差累积问题——每步打分的噪声在长链条推理中被聚合放大，尤其影响自修正类逻辑。实验表明，GenORM不仅在所有领域均取得稳定增益，且显著优于GenPRM和DisPRM。其核心优势在于避免中间标注噪声，直接通过生成式验证结果正确性。该方法特别适用于多领域、长推理、标签噪声高的实际部署场景。</p>
+<p><strong>《Differential Information Distribution: A Bayesian Perspective on Direct Preference Optimization》</strong> <a href="https://arxiv.org/abs/2505.23761" target="_blank" rel="noopener noreferrer">URL</a><br />
+本文为DPO提供了全新的理论基础——差异信息分布（DID），将偏好学习视为从参考策略到目标策略的信息更新过程。创新性地证明：当偏好数据承载了策略间所需的“差异信息”时，DPO的对数比率形式是唯一最优奖励函数。技术上，作者引入DID的熵作为衡量学习不确定性的指标，并发现高熵DID（信息分布广泛）有利于开放生成任务（如指令遵循），而低熵DID（信息集中）更利于知识密集型问答。这一理论解释了DPO训练中日志似然位移（LLD）等现象，并为数据构造提供指导：应根据下游任务类型设计偏好数据的信息分布结构。适用于需要理论指导数据筛选与任务适配的高级对齐系统。</p>
+<p>两篇工作形成互补：前者从实证角度打破PRM神话，后者从理论层面揭示DPO本质。相比之下，Huang等人提出的SamS样本调度方法虽有效，但创新深度略逊，属于工程优化范畴。</p>
+<h3>实践启示</h3>
+<p>这些研究对大模型对齐实践具有重要指导意义。对于多领域通用系统开发，应优先考虑<strong>生成式结果验证（GenORM）</strong>，避免依赖易受噪声影响的中间步骤标注。在偏好数据构建时，可根据任务类型调控“信息密度”：开放任务采用多样化偏好样本（高熵DID），知识任务聚焦关键判别样本（低熵DID）。建议在DPO训练中集成轻量级样本调度机制（如SamS），以提升数据效率。实现时需注意：GenORM依赖强验证能力，需确保验证模型足够可靠；理论指导需结合实际数据分布校准，避免过度理想化。整体而言，应从“盲目堆叠标注”转向“有原则的数据与训练设计”。</p>
+</div>
+                </div>
+                
+                
+            </div>
+            
+                        
+                        <div class="topic-content">
+                            
+                                
+                                <div class="paper-item-compact" id="paper-item-2510.00492">
+                                    <div class="paper-header" onclick="showPaperDetail('2510.00492', 'RLHF')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Rethinking Reward Models for Multi-Domain Test-Time Scaling
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.00492"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.00492", "authors": ["Lee", "Lee", "Park", "Kang", "Baek", "Kim", "Wagner", "Jin", "Lee", "Bocklet", "Wang", "Fu", "Hwang", "Bian", "Song"], "id": "2510.00492", "pdf_url": "https://arxiv.org/pdf/2510.00492", "rank": 8.714285714285714, "title": "Rethinking Reward Models for Multi-Domain Test-Time Scaling"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2510.00492" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ARethinking%20Reward%20Models%20for%20Multi-Domain%20Test-Time%20Scaling%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2510.00492&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ARethinking%20Reward%20Models%20for%20Multi-Domain%20Test-Time%20Scaling%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2510.00492%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Lee, Lee, Park, Kang, Baek, Kim, Wagner, Jin, Lee, Bocklet, Wang, Fu, Hwang, Bian, Song</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文对多领域测试时扩展中的奖励模型进行了系统性重新评估，提出了四种奖励模型变体的统一比较框架。研究发现，在多领域场景下，传统的细粒度过程奖励模型（PRM）优势不再，生成式结果奖励模型（gORM）表现最稳健。论文结合理论分析与大规模实证，挑战了现有共识，并开源了代码、数据和模型，具有重要实践指导意义。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">8.7</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2510.00492" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Rethinking Reward Models for Multi-Domain Test-Time Scaling</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 2 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>论文针对“测试时扩展（test-time scaling, TTS）”场景下如何可靠地评估大模型推理链（chain-of-thought, CoT）这一核心问题，提出并系统验证了四种奖励模型变体：</p>
+<ul>
+<li>判别式结果奖励模型 dORM</li>
+<li>判别式过程奖励模型 dPRM</li>
+<li>生成式结果奖励模型 gORM</li>
+<li>生成式过程奖励模型 gPRM</li>
+</ul>
+<p>传统观念认为，基于逐步打分的 PRM 优于只看最终答案的 ORM，但既有证据几乎全都来自数学或数学相邻领域。本文首次在 14 个跨领域任务上统一比较四种变体，发现：</p>
+<ol>
+<li>在数学域内，dPRM 确实优于 dORM，且生成式模型（gORM/gPRM）进一步提升效果；</li>
+<li>在跨领域场景下，dORM 与 dPRM 表现相当，gPRM 反而失效，而 gORM 在所有领域均取得稳定且显著的提升。</li>
+</ol>
+<p>为解释这一“反转”，论文给出两条理论-实证结合的分析：</p>
+<ul>
+<li>PRM 的逐步打分机制会随着推理链长度增加而累积误差，且难以奖励“中途纠错”的 aha 时刻；</li>
+<li>多领域数据依赖 LLM 自动标注过程标签，噪声大，加上共识过滤导致训练-测试的链长分布漂移，进一步放大了 gPRM 的劣势。</li>
+</ul>
+<p>最终，论文挑战了“细粒度监督一定更好”的默认假设，主张在多领域部署时优先采用生成式结果验证（gORM），并公开了代码、数据与模型检查点以支持后续研究。</p>
+<h2>相关工作</h2>
+<p>以下研究被论文直接或间接关联，可划分为六个主题。为便于查阅，按主题给出代表性文献（括号内为正文或参考文献编号）：</p>
+<ul>
+<li><p><strong>Test-time Scaling 与 Best-of-N 采样</strong></p>
+<ul>
+<li>Snell et al. (2025)</li>
+<li>Wu et al. (2024)</li>
+</ul>
+</li>
+<li><p><strong>判别式结果奖励模型（dORM）</strong></p>
+<ul>
+<li>Cobbe et al. (2021)</li>
+<li>Uesato et al. (2022)</li>
+<li>Yu et al. (2024)</li>
+</ul>
+</li>
+<li><p><strong>判别式过程奖励模型（dPRM）</strong></p>
+<ul>
+<li>Lightman et al. (2024)</li>
+<li>Wang et al. (2024a)</li>
+<li>Setlur et al. (2025)</li>
+<li>Zheng et al. (2024)</li>
+<li>Zeng et al. (2025)</li>
+</ul>
+</li>
+<li><p><strong>LLM-as-a-Judge 与生成式验证</strong></p>
+<ul>
+<li>Wang et al. (2023)</li>
+<li>Liu et al. (2023)</li>
+<li>Zheng et al. (2023)</li>
+</ul>
+</li>
+<li><p><strong>生成式结果奖励模型（gORM）</strong></p>
+<ul>
+<li>Zhang et al. (2025a)</li>
+</ul>
+</li>
+<li><p><strong>生成式过程奖励模型（gPRM）</strong></p>
+<ul>
+<li>Khalifa et al. (2025)</li>
+<li>Zhao et al. (2025)</li>
+</ul>
+</li>
+</ul>
+<p>这些工作共同构成了本文对比的四类奖励模型（dORM / dPRM / gORM / gPRM）的算法与实验基础。</p>
+<h2>解决方案</h2>
+<p>论文采用“统一评估 + 理论分析 + 实证诊断”三段式路线，系统回答“多领域 TTS 场景下该用哪种奖励模型”这一问题。</p>
+<ol>
+<li><p>统一评估</p>
+<ul>
+<li>构建覆盖 14 个领域的 MMLU-Pro 测试台，并复用数学域 PRM800K / ProcessBench，保证跨域可比性。</li>
+<li>在相同骨干模型（R1-Distill 系列）与相同训练预算下，并行训练四种变体：dORM、dPRM、gORM、gPRM。</li>
+<li>采用 Best-of-N 与 outcome-verification 两种指标，控制 prompt、采样数、随机种子等混杂因素，得到“数学域 vs 多领域”双向结果。</li>
+</ul>
+</li>
+<li><p>理论分析</p>
+<ul>
+<li>建立 log-error 界：证明 dPRM / gPRM 的误差下界随推理步数 T 线性增长，而 ORM 类误差与 T 无关。</li>
+<li>引入 Jensen-gap 解释 gPRM 的额外方差项，说明即使单步噪声很小，长链乘积也会导致整体偏差累积。</li>
+</ul>
+</li>
+<li><p>实证诊断</p>
+<ul>
+<li><strong>“aha” 实验</strong>：人工筛选“中间有错但最终正确”的 CoT，验证 PRM 因“首错即停”偏见而系统性失效。</li>
+<li><strong>标签噪声实验</strong>：在 PRM800K 上人工注入步级翻转噪声，发现 dPRM 性能骤降，gPRM 因正则效应略稳健，但仍受长度漂移拖累。</li>
+<li><strong>长度分布漂移</strong>：用 Wasserstein 距离量化共识过滤前后 CoT 长度变化，发现 gPRM 训练集与测试集漂移最大，直接关联其 BoN 提升率下降（r = −0.625）。</li>
+</ul>
+</li>
+</ol>
+<p>综合三段结果，论文给出可操作的选型指南：</p>
+<ul>
+<li>链短、标签干净、延迟敏感 → dPRM；</li>
+<li>链长或存在“纠错” → 计算充足选 gORM，否则 dORM；</li>
+<li>领域漂移大或标注噪声高 → 优先 ORM 类（gORM &gt; dORM）；</li>
+<li>训练数据极少 → 生成式模型样本效率更高。</li>
+</ul>
+<p>通过公开代码、数据与 14B/8B 检查点，论文将多领域奖励模型选型从“经验法则”转化为“可验证、可扩展”的研究协议。</p>
+<h2>实验验证</h2>
+<p>实验按“数学域 → 多领域 → 诊断分析”三级展开，全部在统一 backbone 与超参下完成，确保横向可比。</p>
+<ol>
+<li><p>数学域实验（复现经典设定）<br />
+1.1 结果验证</p>
+<ul>
+<li>数据集：PRM800K 训练 / ProcessBench 测试（GSM8K、MATH、Omni-Math、OlympiadBench 四子集）</li>
+<li>指标：F1@0.5 阈值，M=16 采样</li>
+<li>变量：1.5B vs 7B backbone<br />
+→ 确认 dPRM &gt; dORM，gORM ≈ gPRM 且均优于判别式。</li>
+</ul>
+<p>1.2 Best-of-N 缩放</p>
+<ul>
+<li>生成模型：Qwen2.5-7B-Instruct，N=1→16</li>
+<li>指标：任务准确率<br />
+→ 再次验证 PRM 优势，gORM 略胜 gPRM。</li>
+</ul>
+</li>
+<li><p>多领域实验（核心贡献）<br />
+2.1 结果验证</p>
+<ul>
+<li>数据集：MMLU-Pro 14 领域，R1-Distill-Qwen-14B 奖励 backbone</li>
+<li>指标：F1@0.5<br />
+→ 反转数学域结论：dORM ≈ dPRM，gPRM 显著落后，gORM 全场最佳。</li>
+</ul>
+<p>2.2 Best-of-N 缩放</p>
+<ul>
+<li>生成模型：Llama-3.1-8B-Instruct，N=1→16</li>
+<li>额外变量：SmolLM3-3B、Qwen2.5-7B、gemma-2-9b、Llama-3.1-70B 四组 CoT 来源<br />
+→ gORM 在所有 pLLM 上稳定领先，gPRM 普遍垫底。</li>
+</ul>
+<p>2.3 单领域 vs 全领域训练对比</p>
+<ul>
+<li>控制：同一领域训练→同一领域测试</li>
+<li>指标：BoN 提升差值<br />
+→ dORM/dPRM 掉分 6–14 %，gORM/gPRM 掉分 ≤2 %，验证生成式样本效率更高。</li>
+</ul>
+</li>
+<li><p>诊断分析（解释反转原因）<br />
+3.1 “aha” CoT 实验</p>
+<ul>
+<li>筛选标准：至少一步错误但最终答案正确（ProcessBench 15.3 %）</li>
+<li>指标：F1<br />
+→ PRM 类 F1 骤降 20–40 %，且 7B 比 1.5B 更差，证实“首错即停”偏见。</li>
+</ul>
+<p>3.2 随机洗牌实验</p>
+<ul>
+<li>方法：保留最终答案，中间步骤随机替换</li>
+<li>指标：F1 下降幅度<br />
+→ ORM 性能显著下跌，排除“纯答案记忆”质疑。</li>
+</ul>
+<p>3.3 链长敏感性实验</p>
+<ul>
+<li>按 CoT 步数 T 分桶，统计 outcome-verification F1 与 BoN 提升<br />
+→ dPRM/gPRM 随 T 增加而下降，相关系数 −0.058 / −0.608；dORM/gORM 保持平稳或略升。</li>
+</ul>
+<p>3.4 标签噪声实验</p>
+<ul>
+<li>在 PRM800K 上注入两类噪声：<br />
+– process-noise 比率：单步翻转概率 10 %–50 %<br />
+– data-noise 比率：受扰动样本占比 10 %–50 %<br />
+→ dPRM 掉分 14 %，gPRM 基本不变，说明生成式对随机噪声更鲁棒，但仍受长度漂移影响。</li>
+</ul>
+<p>3.5 长度分布漂移量化</p>
+<ul>
+<li>指标：Wasserstein 距离（训练集→测试集）</li>
+<li>结果：<br />
+– 数学域 gPRM 距离最小（1.60），表现尚可；<br />
+– 多领域 gPRM 距离最大（3.08），与 BoN 提升呈 −0.625 强负相关，直接解释其失效。</li>
+</ul>
+</li>
+</ol>
+<p>通过上述实验，论文既验证了“多领域场景下 gORM 最优”这一核心结论，也从“链长累积误差 + 标签噪声 + 分布漂移”三方面给出了可量化的失效机制。</p>
+<h2>未来工作</h2>
+<p>后续研究可从以下六个方向展开，均围绕“更真实、更开放、更可控”的奖励模型评估与训练需求：</p>
+<ol>
+<li><p>开放生成场景</p>
+<ul>
+<li>当前仅验证可客观判定的多选或数学答案。对开放式问答、创意写作、代码生成等无唯一标准答案的任务，需设计可扩展的“生成-再验证”协议，并引入人工或工具辅助的细粒度评价。</li>
+</ul>
+</li>
+<li><p>工具增强验证</p>
+<ul>
+<li>引入检索器、计算器、定理证明器或领域 API，让奖励模型在验证阶段主动调用外部工具，减少自动标注噪声，缓解长链累积误差。需系统比较“工具内嵌”与“纯文本”两种范式在成本-性能前沿的权衡。</li>
+</ul>
+</li>
+<li><p>强化学习训练范式</p>
+<ul>
+<li>本文仅做监督微调。可将生成式奖励模型视为策略，用其 rollout  verdict 与真实标签的匹配度作为稀疏奖励，通过 RL（如 PPO、DPO）直接优化验证能力，观察能否突破监督数据的天花板。</li>
+</ul>
+</li>
+<li><p>在线分布漂移检测与修正</p>
+<ul>
+<li>对部署后遇到的领域或长度漂移，设计无需人工标注的在线自适应机制：<br />
+– 利用 moment-matching 或 importance-weighting 动态调整训练分布；<br />
+– 通过不确定性估计触发“主动标注”，仅对高不确定样本请求人工或工具复核。</li>
+</ul>
+</li>
+<li><p>多模态与跨语言扩展</p>
+<ul>
+<li>将奖励模型扩展到图文、视频或跨语言推理链，验证“逐步验证”与“结果验证”在模态信息不一致时的鲁棒性，并研究不同文化语境下“aha 时刻”的语义表现是否影响标签一致性。</li>
+</ul>
+</li>
+<li><p>高效推理与端侧部署</p>
+<ul>
+<li>生成式奖励模型需多次采样，延迟与成本高于判别式。可探索：<br />
+– 投机解码、早期退出、共享前缀缓存等推理加速；<br />
+– 知识蒸馏将 gORM 压缩为小型判别模型，在端侧或高并发场景保持精度-延迟平衡。</li>
+</ul>
+</li>
+</ol>
+<p>这些方向既可直接继承本文发布的统一基准与 checkpoints，也能在真实应用层面推动奖励模型从“实验室数学任务”走向“开放世界、高 stakes 系统”。</p>
+<h2>总结</h2>
+<ul>
+<li><p><strong>问题</strong>：测试时扩展（TTS）依赖奖励模型挑选高质量推理链，传统认为“逐步打分”的 PRM 优于“只看答案”的 ORM，但证据仅限数学域，尚无可跨领域的系统比较。</p>
+</li>
+<li><p><strong>方法</strong>：在 14 领域 MMLU-Pro 与数学基准上，首次统一训练并对比四种变体——判别式 ORM/PRM（dORM/dPRM）、生成式 ORM/PRM（gORM/gPRM），控制 backbone、数据、采样完全一致。</p>
+</li>
+<li><p><strong>结果</strong><br />
+– 数学域：dPRM &gt; dORM，生成式更佳，与文献一致。<br />
+– 多领域：dORM ≈ dPRM，gPRM 失效，gORM 全场稳定领先。</p>
+</li>
+<li><p><strong>原因</strong><br />
+① 逐步乘积打分使误差随链长线性累积，且无法奖励“中途纠错”的 aha 时刻；<br />
+② 多领域自动标注噪声大，共识过滤导致 gPRM 训练-测试链长分布漂移最严重（Wasserstein 距离 3.08）。</p>
+</li>
+<li><p><strong>贡献</strong><br />
+– 提供跨领域奖励模型选型指南：长链/漂移/高噪声场景优先 gORM，短链+干净标签可用 dPRM。<br />
+– 发布统一代码、数据与 1.5B–14B 检查点，推动多领域 TTS 研究标准化。</p>
+</li>
+</ul>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.7</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: RLHF</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">RLHF</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2510.00492" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2510.00492" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2506.17252">
+                                    <div class="paper-header" onclick="showPaperDetail('2506.17252', 'RLHF')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Adaptive Batch-Wise Sample Scheduling for Direct Preference Optimization
+                                                <button class="mark-button" 
+                                                        data-paper-id="2506.17252"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2506.17252", "authors": ["Huang", "Ban", "Fu", "Li", "Dai", "Li", "Wang"], "id": "2506.17252", "pdf_url": "https://arxiv.org/pdf/2506.17252", "rank": 8.5, "title": "Adaptive Batch-Wise Sample Scheduling for Direct Preference Optimization"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2506.17252" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AAdaptive%20Batch-Wise%20Sample%20Scheduling%20for%20Direct%20Preference%20Optimization%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2506.17252&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AAdaptive%20Batch-Wise%20Sample%20Scheduling%20for%20Direct%20Preference%20Optimization%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2506.17252%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Huang, Ban, Fu, Li, Dai, Li, Wang</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文提出了一种针对直接偏好优化（DPO）的自适应样本调度新问题——Sample Scheduling for DPO，并设计了高效算法SamS，通过建模为上下文_bandit_问题，利用模型演化状态动态选择训练样本。实验表明，SamS在不修改DPO核心算法的前提下，显著提升了模型在AlpacaEval 2和MT-Bench等基准上的表现，增强了对标签噪声的鲁棒性，且计算开销极低。方法创新性强，实验充分，代码已开源，具有良好的通用性和实用价值。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">8.5</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2506.17252" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Adaptive Batch-Wise Sample Scheduling for Direct Preference Optimization</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <h1>Adaptive Sample Scheduling for Direct Preference Optimization 论文深度分析</h1>
+<h2>问题定义</h2>
+<p>论文提出了一种新的问题：<strong>DPO中的样本调度（Sample Scheduling for DPO）</strong>，旨在解决当前直接偏好优化（Direct Preference Optimization, DPO）方法在固定偏好数据集下性能受限的问题。尽管DPO因其无需显式奖励模型、训练稳定而广受关注，但其性能高度依赖于人类偏好数据的质量。现有研究主要集中在三类方向：主动查询、响应对选择和数据预筛选。然而，这些方法普遍存在两个关键缺陷：</p>
+<ol>
+<li><strong>忽略模型状态的动态演化</strong>：大多数方法在训练前静态选择或过滤样本，未考虑语言模型在训练过程中内部状态的变化，导致某些样本在不同训练阶段可能从“易学”变为“难学”或反之。</li>
+<li><strong>对噪声标签敏感</strong>：真实偏好数据常包含错误或不一致的标注，传统DPO容易受此类噪声干扰，导致训练不稳定甚至性能下降。</li>
+</ol>
+<p>因此，本文提出应根据模型在训练过程中的<strong>实时学习反馈</strong>，动态调整每批次中参与训练的样本，从而最大化泛化性能。这一问题的核心是：如何在不修改DPO主算法的前提下，实现<strong>自适应、批级别的样本调度</strong>，以提升对固定数据集的利用效率和鲁棒性。</p>
+<h2>相关工作</h2>
+<p>论文将现有工作划分为三类，并明确指出了其局限性：</p>
+<ol>
+<li><strong>主动查询（Active Querying）</strong>：如 [das2024active] 等工作通过选择信息量大的样本进行人工标注，但聚焦于在线反馈收集，无法应用于已有固定数据集的离线训练场景。</li>
+<li><strong>响应对选择（Response Pair Selection）</strong>：如 [mehta2023sample] 在给定查询下选择最优响应对进行标注，仍属于数据采集阶段的优化，不涉及训练过程中的动态调度。</li>
+<li><strong>数据预筛选（Data Pre-selection）</strong>：如 [shen2024towards] 在训练前过滤低质量样本，虽能提升数据质量，但采用静态策略，忽略了模型学习进程的变化。</li>
+</ol>
+<p>与上述工作相比，本文的创新在于<strong>将样本选择从“训练前”转移到“训练中”</strong>，并引入<strong>基于模型状态的动态调度机制</strong>。此外，论文还与强化学习中的上下文老虎机（Contextual Bandit）框架建立联系，将样本调度建模为一个序列决策问题，借鉴了探索-利用权衡的思想，这在偏好优化领域尚属首次系统应用。</p>
+<h2>解决方案</h2>
+<p>论文提出 <strong>SamS（Sample Scheduling for DPO）</strong> 算法，其核心思想是将样本调度建模为一个<strong>上下文老虎机问题</strong>，通过一个轻量级调度器（Scheduler）动态选择每批次中最有利于当前模型状态学习的样本子集。</p>
+<h3>核心方法</h3>
+<ol>
+<li><p><strong>问题建模</strong>：</p>
+<ul>
+<li><strong>臂（Arm）</strong>：每个训练样本视为一个臂。</li>
+<li><strong>上下文（Context）</strong>：使用语言模型在各Transformer层的隐藏状态，经池化和拼接后形成固定维度的上下文向量 $\bar{x}_{t,i}$，捕捉样本与模型状态的交互信息。</li>
+<li><strong>奖励函数（Reward）</strong>：设计了<strong>双层级奖励机制</strong>：<ul>
+<li><strong>批级奖励 $r^B$</strong>：衡量使用选定子集训练后，模型在下一批数据上的损失下降程度，反映整体性能提升。</li>
+<li><strong>样本级奖励 $r^S$</strong>：结合<strong>偏好边际</strong>（大边际样本更可靠）和<strong>模型不确定性</strong>（高不确定性样本更具探索价值），鼓励选择信息丰富的样本。</li>
+<li>最终样本奖励为两者的加权和（公式8）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>调度器架构</strong>：</p>
+<ul>
+<li><strong>编码器</strong>：将上下文向量编码为固定表示。</li>
+<li><strong>利用网络 $f^S$</strong>：预测每个样本的奖励，通过MSE损失训练。</li>
+<li><strong>探索网络 $f^{S'}$</strong>：估计利用网络预测的不确定性，提供探索奖励，实现探索-利用平衡。</li>
+<li>总奖励估计为：$f(\bar{x}<em>{t,i}) = f^S(\bar{x}</em>{t,i}) + \lambda f^{S'}(h^S_{t,i})$。</li>
+</ul>
+</li>
+<li><p><strong>训练策略</strong>：</p>
+<ul>
+<li><strong>滞后更新（Lagged Training）</strong>：调度器在第 $t+1$ 轮使用第 $t$ 轮的训练结果（损失变化）来更新自身，避免额外前向计算，保持低开销。</li>
+<li><strong>Top-K选择</strong>：每轮根据预测奖励选择Top-K个样本用于DPO训练。</li>
+</ul>
+</li>
+</ol>
+<p>该设计实现了<strong>无需修改DPO主算法</strong>的即插即用式增强，同时保持了极低的计算和内存开销。</p>
+<h2>实验验证</h2>
+<p>实验设计全面，验证了SamS在性能、泛化性和鲁棒性方面的优势。</p>
+<h3>主要结果</h3>
+<ol>
+<li><p><strong>性能提升</strong>（表1）：</p>
+<ul>
+<li>在AlpacaEval 2和MT-Bench上，DPO+SamS显著优于包括RRHF、IPO、KTO、ORPO等在内的多种SOTA方法。</li>
+<li>相比基线，AlpacaEval 2胜率提升 <strong>3.0%–12.4%</strong>，长度控制胜率提升 <strong>5.5%–8.4%</strong>，MT-Bench得分提升0.1–0.2。</li>
+</ul>
+</li>
+<li><p><strong>样本效率验证</strong>：</p>
+<ul>
+<li>与随机选择50%样本的DPO(50%)相比，SamS在仅用一半数据的情况下仍实现显著提升，证明其能有效识别高质量样本。</li>
+</ul>
+</li>
+<li><p><strong>泛化能力</strong>：</p>
+<ul>
+<li>SamS可无缝集成至KTO等其他偏好优化算法，均带来一致性能增益（表2）。</li>
+<li>在Pythia-2.8B上，平均测试准确率提升2.65%，首选响应奖励提升19.9%，显示其通用性。</li>
+</ul>
+</li>
+<li><p><strong>噪声鲁棒性</strong>（图3）：</p>
+<ul>
+<li>在20%标签翻转的噪声数据下，DPO性能下降6%（HH数据集），而DPO+SamS仅下降3%，且最终性能仍高出约6%，证明其能有效过滤噪声样本。</li>
+</ul>
+</li>
+<li><p><strong>计算效率</strong>（图4）：</p>
+<ul>
+<li>由于反向传播样本减少，DPO+SamS<strong>GPU内存占用降低18%</strong>，运行时间相近，实现性能与效率双赢。</li>
+</ul>
+</li>
+</ol>
+<h2>未来工作</h2>
+<h3>可进一步探索的点</h3>
+<ol>
+<li><strong>调度策略优化</strong>：当前采用Top-K贪婪选择，未来可探索更复杂的组合调度策略（如考虑样本多样性）或引入强化学习策略梯度方法。</li>
+<li><strong>多粒度调度</strong>：当前调度基于完整样本，未来可探索对响应中的token级调度，实现更细粒度控制。</li>
+<li><strong>跨任务迁移调度器</strong>：当前调度器需随模型训练，未来可研究预训练通用调度器，实现跨任务迁移。</li>
+<li><strong>理论分析</strong>：缺乏对SamS收敛性、样本复杂度的理论保证，未来可建立其与课程学习、主动学习的理论联系。</li>
+</ol>
+<h3>局限性</h3>
+<ol>
+<li><strong>依赖模型隐藏状态</strong>：需提取多层隐藏状态作为上下文，对某些无法访问内部表示的黑盒模型不适用。</li>
+<li><strong>超参数敏感性</strong>：奖励权重 $\gamma$、探索强度 $\lambda$ 等需调优，可能影响稳定性。</li>
+<li><strong>批内调度限制</strong>：仅在批内选择，未考虑跨批调度或全局数据分布优化。</li>
+<li><strong>评估指标依赖</strong>：奖励设计依赖DPO损失变化，可能在某些复杂任务上与真实人类偏好存在偏差。</li>
+</ol>
+<h2>总结</h2>
+<p>本文提出了<strong>样本调度（Sample Scheduling）</strong> 这一新问题，填补了DPO在动态数据利用方面的空白。其主要贡献包括：</p>
+<ol>
+<li><strong>问题创新</strong>：首次系统提出DPO训练过程中的动态样本调度问题，强调模型状态演化的重要性。</li>
+<li><strong>方法高效</strong>：提出SamS算法，将调度建模为上下文老虎机问题，结合批级与样本级奖励，实现探索-利用平衡。</li>
+<li><strong>即插即用</strong>：无需修改DPO核心算法，集成简单，计算开销低，内存占用反而降低18%。</li>
+<li><strong>实证有效</strong>：在多个基准上显著提升DPO性能（+3%~12.4%），并展现出强噪声鲁棒性和跨算法泛化能力。</li>
+</ol>
+<p>该工作为提升大模型对固定偏好数据的利用效率提供了新范式，具有重要的实践价值和研究启发意义。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.5</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: RLHF</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">RLHF</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2506.17252" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2506.17252" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2505.23761">
+                                    <div class="paper-header" onclick="showPaperDetail('2505.23761', 'RLHF')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Differential Information Distribution: A Bayesian Perspective on Direct Preference Optimization
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.23761"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.23761", "authors": ["Won", "Lee", "Hwang", "Seo"], "id": "2505.23761", "pdf_url": "https://arxiv.org/pdf/2505.23761", "rank": 8.357142857142858, "title": "Differential Information Distribution: A Bayesian Perspective on Direct Preference Optimization"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2505.23761" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ADifferential%20Information%20Distribution%3A%20A%20Bayesian%20Perspective%20on%20Direct%20Preference%20Optimization%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2505.23761&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ADifferential%20Information%20Distribution%3A%20A%20Bayesian%20Perspective%20on%20Direct%20Preference%20Optimization%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2505.23761%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Won, Lee, Hwang, Seo</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文从信息论角度提出“差异信息分布”（DID）的概念，为直接偏好优化（DPO）提供了新的理论解释。作者证明了当偏好数据编码了从参考策略到目标策略的差异信息时，DPO的对数比率奖励形式是唯一最优的，并揭示了其与策略间对数间隔排序之间的内在联系。此外，通过分析DID的熵，论文解释了日志似然位移（LLD）现象，并实证表明高熵DID有助于通用指令遵循，低熵DID则利于知识密集型问答。整体上，该工作理论深刻、实验充分，为偏好学习提供了统一视角。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">8.4</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2505.23761" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Differential Information Distribution: A Bayesian Perspective on Direct Preference Optimization</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 8 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>这篇论文试图解决的问题是如何从理论角度更好地理解直接偏好优化（Direct Preference Optimization, DPO）中对数比率奖励（log-ratio reward）的有效性和适用条件。尽管DPO在实践中取得了成功，但其背后的理论基础并不完整，特别是对于其特定的奖励形式为何有效以及在何种条件下最优，尚未有充分的解释。</p>
+<p>具体来说，论文的主要目标包括以下几点：</p>
+<ol>
+<li><strong>解释DPO奖励形式的理论基础</strong>：DPO使用对数比率奖励 ( r = \beta \log(\pi/\pi_{\text{ref}}) ) 来优化策略，但这种奖励形式为何有效，以及在何种条件下是最优的，目前缺乏完整的理论解释。</li>
+<li><strong>探索偏好数据如何编码差异信息</strong>：论文提出了“差异信息分布”（Differential Information Distribution, DID）的概念，试图解释偏好数据如何编码从参考策略 ( \pi_{\text{ref}} ) 到目标策略 ( \pi^* ) 所需的差异信息。</li>
+<li><strong>分析DID的特性及其对策略更新的影响</strong>：通过分析DID的熵（entropy），论文探讨了学习低熵差异信息如何强化策略分布，而学习高熵差异信息如何诱导平滑效应，从而解释了常见的对数似然位移（log-likelihood displacement, LLD）现象。</li>
+<li><strong>验证理论发现并扩展到实际数据集</strong>：论文通过合成实验和真实世界的数据集（如指令遵循数据集）来验证其理论发现，并探讨这些发现对实际应用的启示。</li>
+</ol>
+<h2>相关工作</h2>
+<p>这篇论文与多个领域的相关研究紧密相连，主要包括以下几个方面：</p>
+<h3>直接偏好优化（Direct Preference Optimization, DPO）</h3>
+<ul>
+<li><strong>DPO的原始工作</strong>：Rafailov等人[3]首次提出了DPO，展示了其在对齐语言模型与人类偏好方面的有效性。他们使用了基于KL正则化的RL目标导出的Bradley-Terry奖励。</li>
+<li><strong>DPO的变体和扩展</strong>：包括ORPO[10]、SimPO[12]、Cal-DPO[29]等，这些工作探索了不同的奖励参数化方法和优化策略，以提高DPO的性能和稳定性。</li>
+<li><strong>理论分析</strong>：一些研究关注于DPO与分布匹配之间的联系[19, 11, 20]，以及优化动态[21, 22]。这些工作为理解DPO的行为提供了理论基础。</li>
+</ul>
+<h3>偏好学习与人类反馈</h3>
+<ul>
+<li><strong>偏好学习</strong>：偏好学习是一个广泛的研究领域，涉及从人类反馈中学习模型的行为。DPO是偏好学习在语言模型对齐中的一个具体应用。</li>
+<li><strong>人类反馈的数据集</strong>：如Ultra-Feedback[31]和Magpie-Pro[25]等数据集，为研究如何从人类偏好中学习提供了丰富的资源。</li>
+</ul>
+<h3>信息论与策略优化</h3>
+<ul>
+<li><strong>信息论视角</strong>：论文引入了“差异信息分布”（DID）的概念，这与信息论中的概念紧密相关。信息论在策略优化中的应用，如通过信息增益来理解策略更新，是一个新兴的研究方向。</li>
+<li><strong>策略优化与分布匹配</strong>：DPO的目标是通过偏好优化来匹配目标分布。这与分布匹配的目标一致，相关工作包括如何通过优化策略来最小化与目标分布之间的KL散度[19, 20]。</li>
+</ul>
+<h3>对数似然位移（Log-Likelihood Displacement, LLD）</h3>
+<ul>
+<li><strong>LLD现象</strong>：在DPO训练过程中，尽管模型对齐性能提高，但首选响应的对数似然却可能下降。这一现象被称为对数似然位移，已有研究试图从样本相似性[35, 33]和梯度动态[21, 22]的角度解释这一现象。</li>
+<li><strong>信息论解释</strong>：本论文提出了一个基于信息论的解释，将LLD与学习高熵差异信息联系起来，为理解这一现象提供了新的视角。</li>
+</ul>
+<h3>实际应用与评估</h3>
+<ul>
+<li><strong>指令遵循和问答任务</strong>：论文通过在指令遵循数据集和知识密集型问答任务上的实验，验证了其理论发现。这些任务是评估语言模型对齐效果的重要场景。</li>
+<li><strong>模型评估基准</strong>：如Arena-Hard[37]、WildBench[44]等基准测试，为评估模型在实际应用中的性能提供了标准。</li>
+</ul>
+<p>这些相关研究为论文提供了理论和实践基础，同时也为论文提出的观点和方法提供了对比和验证的背景。</p>
+<h2>解决方案</h2>
+<p>论文通过引入“差异信息分布”（Differential Information Distribution, DID）的概念，从信息论的角度来解决直接偏好优化（DPO）中对数比率奖励形式的理论基础问题。以下是论文的主要解决步骤和方法：</p>
+<h3>1. 定义差异信息分布（DID）</h3>
+<p>论文首先定义了差异信息分布（DID），这是一个描述从参考策略 ( \pi_{\text{ref}} ) 到目标策略 ( \pi^* ) 所需信息增益的分布。具体来说，DID ( q_{\pi/\pi_{\text{ref}}} ) 表示在更新策略时所获得的信息，可以形式化为：
+[ q_{\pi/\pi_{\text{ref}}}(y) = \frac{\pi(y)}{\pi_{\text{ref}}(y)} \bigg/ \sum_{y' \in Y} \frac{\pi(y')}{\pi_{\text{ref}}(y')} ]</p>
+<h3>2. 建立偏好数据与DID的联系</h3>
+<p>论文证明了当偏好数据编码了从 ( \pi_{\text{ref}} ) 到 ( \pi^* ) 所需的差异信息时，DPO中的对数比率奖励形式是唯一最优的。具体来说，如果偏好数据满足以下条件：
+[ q_{\pi_{\text{ref}}/\pi_l}(y) \propto q_{\pi^<em>/\pi_{\text{ref}}}(y)^\beta ]
+那么偏好概率可以表示为：
+[ p^</em>(y_w \succ y_l) = \sigma \left( \beta \log q_{\pi^<em>/\pi_{\text{ref}}}(y_w) - \beta \log q_{\pi^</em>/\pi_{\text{ref}}}(y_l) \right) ]
+这表明偏好数据确实编码了差异信息。</p>
+<h3>3. 证明对数比率奖励的最优性</h3>
+<p>论文进一步证明了在上述条件下，使用对数比率奖励 ( r(y) = \beta \log \frac{\pi(y)}{\pi_{\text{ref}}(y)} ) 进行偏好优化可以唯一地恢复目标策略 ( \pi^* )。具体来说：
+[ \arg \max_\pi \mathbb{E}<em>{(y_w, y_l) \sim D} [\log p(y_w \succ y_l | r)] = \arg \min</em>\pi D_{\text{KL}}[\pi^*(y) \parallel \pi(y)] ]
+这表明对数比率奖励形式不仅是有效的，而且在偏好数据编码差异信息时是最优的。</p>
+<h3>4. 分析DID的熵与策略更新</h3>
+<p>论文分析了DID的熵（entropy）与策略更新之间的关系。具体来说：</p>
+<ul>
+<li><strong>低熵DID</strong>：如果DID的熵较低，学习过程会强化策略分布，即集中概率质量。</li>
+<li><strong>高熵DID</strong>：如果DID的熵较高，学习过程会平滑策略分布，即分散概率质量。
+这种分析提供了一个新的视角来理解对数似然位移（LLD）现象，即在学习高熵DID时，首选响应的对数似然可能会下降。</li>
+</ul>
+<h3>5. 实验验证</h3>
+<p>论文通过合成实验和真实世界的数据集（如指令遵循数据集）来验证其理论发现。实验结果表明：</p>
+<ul>
+<li>在合成数据上，使用对数比率奖励的DPO能够有效地学习目标策略。</li>
+<li>在真实数据集上，偏好数据通常编码了高熵DID，这解释了为什么在DPO训练中会观察到对数似然位移现象。</li>
+<li>学习高熵DID对于一般指令遵循任务至关重要，而学习低熵DID则有助于知识密集型问答任务。</li>
+</ul>
+<h3>6. 提出理想的拒绝响应分布</h3>
+<p>论文还提出了在DPO框架中生成拒绝响应 ( y_l ) 的理想分布：
+[ \pi_l(y) \propto \pi_{\text{ref}}(y) \left( \frac{\pi_{\text{ref}}(y)}{\pi^*(y)} \right)^\beta ]
+这一分布能够准确反映策略之间的差异信息，从而提高DPO训练的效果。</p>
+<p>通过这些步骤，论文不仅从理论上解释了DPO中对数比率奖励的有效性和适用条件，还通过实验验证了其理论发现，并提出了改进DPO训练的具体方法。</p>
+<h2>实验验证</h2>
+<p>论文中进行了多种实验，旨在验证其理论发现，并探索差异信息分布（DID）的特性及其对策略更新的影响。以下是论文中进行的主要实验：</p>
+<h3>合成实验</h3>
+<ul>
+<li><strong>实验目的</strong>：验证当偏好数据编码差异信息时，DPO的对数比率奖励形式是否能够有效地学习目标策略。</li>
+<li><strong>实验设置</strong>：使用能量基模型（Energy-Based Models, EBMs）生成合成数据。定义了参考策略 ( \pi_{\text{ref}} ) 和目标策略 ( \pi^* )，并构造了偏好数据集，其中偏好数据满足 ( q_{\pi_{\text{ref}}/\pi_l}(y) \propto q_{\pi^*/\pi_{\text{ref}}}(y)^\beta )。</li>
+<li><strong>实验结果</strong>：通过优化策略 ( \pi ) 使用奖励 ( r = \log \pi )，实验结果表明策略能够收敛到DID ( q_{\pi^<em>/\pi_{\text{ref}}} )，验证了偏好数据确实编码了差异信息。此外，使用对数比率奖励 ( r = \beta \log(\pi/\pi_{\text{ref}}) ) 的DPO能够有效地学习目标策略 ( \pi^</em> )，而其他目标函数（如SLiC、ORPO、SimPO、Cal-DPO）则无法达到同样的效果。</li>
+</ul>
+<h3>真实世界数据集实验</h3>
+<ul>
+<li><strong>实验目的</strong>：验证真实世界指令遵循数据集中的偏好数据是否编码差异信息，并探索DID的熵与策略更新之间的关系。</li>
+<li><strong>实验设置</strong>：使用了两个高质量的指令遵循数据集：Ultra-Feedback[31]和Magpie-Pro[25]。在这些数据集上，分别使用标准DPO（( r = \beta \log(\pi/\pi_{\text{ref}}) )）和变体DPO-PG（一种旨在增加首选响应的对数似然同时减少拒绝响应的对数似然的方法）进行训练。</li>
+<li><strong>实验结果</strong>：<ul>
+<li><strong>偏好数据编码差异信息</strong>：通过比较使用 ( r = \beta \log \pi ) 和 ( r = \beta \log(\pi/\pi_{\text{ref}}) ) 的DPO训练结果，发现后者在奖励模型上的表现更好，表明真实世界数据集中的偏好数据更倾向于编码差异信息，而不是直接编码目标策略。</li>
+<li><strong>DID熵与策略更新</strong>：通过估计DID的熵，发现指令遵循数据集中的偏好数据通常编码高熵DID，这解释了为什么在DPO训练中会观察到对数似然位移现象。此外，实验还表明学习高熵DID对于一般指令遵循任务至关重要，而学习低熵DID则有助于知识密集型问答任务。</li>
+</ul>
+</li>
+</ul>
+<h3>对数似然位移（LLD）实验</h3>
+<ul>
+<li><strong>实验目的</strong>：验证高熵DID是否会导致对数似然位移现象。</li>
+<li><strong>实验设置</strong>：在Ultra-Feedback和Magpie-Pro数据集上使用标准DPO进行训练，跟踪首选响应 ( y_w ) 的对数似然 ( \log \pi(y_w) )。</li>
+<li><strong>实验结果</strong>：实验结果表明，在DPO训练过程中，首选响应的对数似然确实会下降，这支持了论文中关于高熵DID导致对数似然位移的假设。</li>
+</ul>
+<h3>策略强化与平滑实验</h3>
+<ul>
+<li><strong>实验目的</strong>：验证DID的熵与策略强化和平滑之间的关系。</li>
+<li><strong>实验设置</strong>：设计了DPO-PG方法，通过投影梯度下降来增加首选响应的对数似然，同时减少或保持拒绝响应的对数似然。</li>
+<li><strong>实验结果</strong>：<ul>
+<li><strong>策略强化</strong>：DPO-PG在知识密集型问答任务上表现更好，表明这些任务主要与学习低熵DID相关。</li>
+<li><strong>策略平滑</strong>：标准DPO在一般指令遵循任务上表现更好，表明这些任务主要与学习高熵DID相关。</li>
+</ul>
+</li>
+</ul>
+<p>通过这些实验，论文不仅验证了其理论发现，还展示了DID的熵与策略更新之间的关系，为理解DPO的行为提供了新的视角。</p>
+<h2>未来工作</h2>
+<p>尽管论文在理论和实验方面都取得了显著的进展，但仍有一些可以进一步探索的点，以深化对直接偏好优化（DPO）和差异信息分布（DID）的理解。以下是一些潜在的研究方向：</p>
+<h3>1. <strong>DID熵的精确估计</strong></h3>
+<ul>
+<li><strong>问题</strong>：当前的DID熵估计方法可能存在偏差或不稳定，尤其是在处理大规模数据集时。</li>
+<li><strong>探索方向</strong>：<ul>
+<li><strong>改进估计方法</strong>：开发更精确、更稳定的DID熵估计方法，例如使用更复杂的采样技术或结合变分推断。</li>
+<li><strong>理论分析</strong>：进一步分析DID熵估计的理论性质，如收敛速度和偏差-方差权衡。</li>
+</ul>
+</li>
+</ul>
+<h3>2. <strong>DID与人类偏好的关系</strong></h3>
+<ul>
+<li><strong>问题</strong>：虽然论文展示了偏好数据可以编码DID，但人类偏好数据的生成过程和内在结构仍不完全清楚。</li>
+<li><strong>探索方向</strong>：<ul>
+<li><strong>偏好数据生成机制</strong>：研究人类偏好数据的生成机制，例如通过用户研究或心理学实验，了解人类如何形成和表达偏好。</li>
+<li><strong>偏好数据的多样性</strong>：探索不同类型的偏好数据（如多模态偏好、多用户偏好）对DID的影响。</li>
+</ul>
+</li>
+</ul>
+<h3>3. <strong>DPO的优化动态</strong></h3>
+<ul>
+<li><strong>问题</strong>：尽管论文提供了DPO优化动态的一些理论分析，但实际训练过程中的动态行为仍需进一步研究。</li>
+<li><strong>探索方向</strong>：<ul>
+<li><strong>优化算法的影响</strong>：研究不同的优化算法（如Adam、RMSprop、SGD）对DPO训练动态的影响。</li>
+<li><strong>长期训练行为</strong>：分析DPO在长期训练中的行为，包括收敛速度、过拟合现象等。</li>
+</ul>
+</li>
+</ul>
+<h3>4. <strong>DID在其他任务中的应用</strong></h3>
+<ul>
+<li><strong>问题</strong>：DID的概念是否可以扩展到其他任务，如强化学习、多智能体系统等。</li>
+<li><strong>探索方向</strong>：<ul>
+<li><strong>强化学习中的DID</strong>：研究DID在强化学习中的应用，例如如何利用DID来优化策略网络。</li>
+<li><strong>多智能体系统</strong>：探索DID在多智能体系统中的应用，例如如何通过DID来协调多个智能体的行为。</li>
+</ul>
+</li>
+</ul>
+<h3>5. <strong>DID的可视化和解释</strong></h3>
+<ul>
+<li><strong>问题</strong>：DID的可视化和解释对于理解和应用DID至关重要，但目前这方面的研究还相对较少。</li>
+<li><strong>探索方向</strong>：<ul>
+<li><strong>可视化方法</strong>：开发新的可视化方法，如t-SNE、UMAP等，来直观展示DID的分布。</li>
+<li><strong>解释方法</strong>：研究如何解释DID中的关键信息，例如通过特征重要性分析或因果推断。</li>
+</ul>
+</li>
+</ul>
+<h3>6. <strong>DID与模型架构的关系</strong></h3>
+<ul>
+<li><strong>问题</strong>：不同的模型架构（如Transformer、LSTM）对DID的编码和学习能力可能不同。</li>
+<li><strong>探索方向</strong>：<ul>
+<li><strong>架构比较</strong>：比较不同模型架构在学习DID时的性能，了解哪些架构更适合捕捉高熵或低熵DID。</li>
+<li><strong>架构设计</strong>：设计新的模型架构，专门针对DID的学习进行优化。</li>
+</ul>
+</li>
+</ul>
+<h3>7. <strong>DID在多语言和跨文化背景下的应用</strong></h3>
+<ul>
+<li><strong>问题</strong>：DID的概念是否可以应用于多语言和跨文化背景，以及如何处理不同语言和文化之间的差异。</li>
+<li><strong>探索方向</strong>：<ul>
+<li><strong>多语言数据集</strong>：构建和分析多语言偏好数据集，研究DID在不同语言中的特性。</li>
+<li><strong>跨文化研究</strong>：通过跨文化研究，了解不同文化背景下的偏好数据如何影响DID的编码和学习。</li>
+</ul>
+</li>
+</ul>
+<h3>8. <strong>DID在对抗攻击中的应用</strong></h3>
+<ul>
+<li><strong>问题</strong>：DID是否可以用于提高模型的鲁棒性，特别是在对抗攻击的背景下。</li>
+<li><strong>探索方向</strong>：<ul>
+<li><strong>对抗训练</strong>：研究如何利用DID来设计对抗训练方法，提高模型在对抗环境下的鲁棒性。</li>
+<li><strong>攻击检测</strong>：探索DID在检测和防御对抗攻击中的应用。</li>
+</ul>
+</li>
+</ul>
+<h3>9. <strong>DID的理论扩展</strong></h3>
+<ul>
+<li><strong>问题</strong>：DID的理论基础可以进一步扩展，以涵盖更广泛的场景和假设。</li>
+<li><strong>探索方向</strong>：<ul>
+<li><strong>非线性DID</strong>：研究非线性DID的性质和应用，例如通过核方法或深度学习模型来建模非线性DID。</li>
+<li><strong>动态DID</strong>：考虑DID在动态环境中的变化，例如在在线学习或持续学习场景中。</li>
+</ul>
+</li>
+</ul>
+<h3>10. <strong>DID在实际应用中的优化</strong></h3>
+<ul>
+<li><strong>问题</strong>：如何在实际应用中有效地利用DID来优化模型性能。</li>
+<li><strong>探索方向</strong>：<ul>
+<li><strong>应用案例</strong>：在实际应用中（如医疗、金融、教育）测试DID的有效性，探索其在特定领域的优化方法。</li>
+<li><strong>工程实现</strong>：开发高效的工程实现方法，例如通过分布式计算和并行处理来加速DID的计算。</li>
+</ul>
+</li>
+</ul>
+<p>这些方向不仅有助于进一步理解DPO和DID的理论基础，还可以为实际应用提供新的思路和方法。</p>
+<h2>总结</h2>
+<p>这篇论文《Differential Information: An Information-Theoretic Perspective on Preference Optimization》从信息论的角度深入探讨了直接偏好优化（DPO）的理论基础，特别是其对数比率奖励形式的有效性和适用条件。论文的主要内容可以总结如下：</p>
+<h3>研究背景</h3>
+<ul>
+<li><strong>DPO的重要性</strong>：DPO作为一种对齐语言模型与人类偏好的标准技术，因其鲁棒性能、训练稳定性和计算效率而受到关注。然而，其对数比率奖励参数化的理论基础尚不完整。</li>
+<li><strong>研究动机</strong>：论文旨在填补这一理论空白，通过引入“差异信息分布”（Differential Information Distribution, DID）的概念，提供一个信息论的视角来理解偏好优化。</li>
+</ul>
+<h3>差异信息分布（DID）</h3>
+<ul>
+<li><strong>定义</strong>：DID是一个描述从参考策略 ( \pi_{\text{ref}} ) 到目标策略 ( \pi^* ) 所需信息增益的分布。形式化为：
+[
+q_{\pi/\pi_{\text{ref}}}(y) = \frac{\pi(y)}{\pi_{\text{ref}}(y)} \bigg/ \sum_{y' \in Y} \frac{\pi(y')}{\pi_{\text{ref}}(y')}
+]</li>
+<li><strong>理论贡献</strong>：论文证明了当偏好数据编码了从 ( \pi_{\text{ref}} ) 到 ( \pi^* ) 所需的差异信息时，DPO中的对数比率奖励形式是唯一最优的。</li>
+</ul>
+<h3>偏好数据与DID的联系</h3>
+<ul>
+<li><strong>偏好数据的条件</strong>：论文提出了一个条件，即偏好数据应满足：
+[
+q_{\pi_{\text{ref}}/\pi_l}(y) \propto q_{\pi^<em>/\pi_{\text{ref}}}(y)^\beta
+]
+在此条件下，偏好概率可以表示为：
+[
+p^</em>(y_w \succ y_l) = \sigma \left( \beta \log q_{\pi^<em>/\pi_{\text{ref}}}(y_w) - \beta \log q_{\pi^</em>/\pi_{\text{ref}}}(y_l) \right)
+]</li>
+<li><strong>对数比率奖励的最优性</strong>：论文进一步证明了在上述条件下，使用对数比率奖励 ( r(y) = \beta \log \frac{\pi(y)}{\pi_{\text{ref}}(y)} ) 进行偏好优化可以唯一地恢复目标策略 ( \pi^* )。</li>
+</ul>
+<h3>DID的熵与策略更新</h3>
+<ul>
+<li><strong>熵的分析</strong>：论文分析了DID的熵（entropy）与策略更新之间的关系。低熵DID会导致策略强化，而高熵DID会导致策略平滑。</li>
+<li><strong>对数似然位移（LLD）</strong>：论文提出了一个信息论的视角来解释对数似然位移现象，即在学习高熵DID时，首选响应的对数似然可能会下降。</li>
+</ul>
+<h3>实验验证</h3>
+<ul>
+<li><strong>合成实验</strong>：通过能量基模型（EBMs）生成合成数据，验证了当偏好数据编码差异信息时，DPO的对数比率奖励形式能够有效地学习目标策略。</li>
+<li><strong>真实世界数据集实验</strong>：在Ultra-Feedback和Magpie-Pro数据集上，验证了偏好数据通常编码高熵DID，这解释了为什么在DPO训练中会观察到对数似然位移现象。此外，实验还表明学习高熵DID对于一般指令遵循任务至关重要，而学习低熵DID则有助于知识密集型问答任务。</li>
+</ul>
+<h3>理想的拒绝响应分布</h3>
+<ul>
+<li><strong>理想分布</strong>：论文提出了在DPO框架中生成拒绝响应 ( y_l ) 的理想分布：
+[
+\pi_l(y) \propto \pi_{\text{ref}}(y) \left( \frac{\pi_{\text{ref}}(y)}{\pi^*(y)} \right)^\beta
+]
+这一分布能够准确反映策略之间的差异信息，从而提高DPO训练的效果。</li>
+</ul>
+<h3>结论</h3>
+<p>论文通过引入DID的概念，不仅从理论上解释了DPO中对数比率奖励的有效性和适用条件，还通过实验验证了其理论发现。论文还提出了改进DPO训练的具体方法，为理解和优化DPO提供了新的视角。</p>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.4</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: RLHF</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">RLHF</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2505.23761" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2505.23761" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div id="tab-Agent" class="tab-content ">
                 <div class="content-wrapper">
                     <div class="papers-list" id="papers-list-Agent">
@@ -1470,6 +2636,11 @@ WALT将网站功能（如搜索、过滤、发布）逆向工程为可调用工�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Automated Extraction of Material Properties using LLM-based AI Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.01235"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.01235", "authors": ["Ghosh", "Tewari"], "id": "2510.01235", "pdf_url": "https://arxiv.org/pdf/2510.01235", "rank": 8.714285714285714, "title": "Automated Extraction of Material Properties using LLM-based AI Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.01235" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -1625,6 +2796,11 @@ WALT将网站功能（如搜索、过滤、发布）逆向工程为可调用工�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Information Seeking for Robust Decision Making under Partial Observability
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.01531"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.01531", "authors": ["Fang", "Ke"], "id": "2510.01531", "pdf_url": "https://arxiv.org/pdf/2510.01531", "rank": 8.571428571428571, "title": "Information Seeking for Robust Decision Making under Partial Observability"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.01531" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -1765,6 +2941,11 @@ WALT将网站功能（如搜索、过滤、发布）逆向工程为可调用工�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 EMR-AGENT: Automating Cohort and Feature Extraction from EMR Databases
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.00549"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.00549", "authors": ["Lee", "Hong", "Park", "Lim", "Choi", "Yoon", "Yang"], "id": "2510.00549", "pdf_url": "https://arxiv.org/pdf/2510.00549", "rank": 8.5, "title": "EMR-AGENT: Automating Cohort and Feature Extraction from EMR Databases"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.00549" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -1927,6 +3108,11 @@ WALT将网站功能（如搜索、过滤、发布）逆向工程为可调用工�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Modeling Others' Minds as Code
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.01272"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.01272", "authors": ["Jha", "Huang", "Ye", "Jaques", "Kleiman-Weiner"], "id": "2510.01272", "pdf_url": "https://arxiv.org/pdf/2510.01272", "rank": 8.5, "title": "Modeling Others\u0027 Minds as Code"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.01272" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -2374,6 +3560,11 @@ LLM 先验可能隐含文化偏见（如“家务由女性执行”）。建立<
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 TUMIX: Multi-Agent Test-Time Scaling with Tool-Use Mixture
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.01279"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.01279", "authors": ["Chen", "Chen", "Meng", "Yin", "Li", "Fan", "Wang", "Pfister", "Yoon"], "id": "2510.01279", "pdf_url": "https://arxiv.org/pdf/2510.01279", "rank": 8.5, "title": "TUMIX: Multi-Agent Test-Time Scaling with Tool-Use Mixture"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.01279" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -2610,6 +3801,11 @@ LLM-as-Judge 虽简单，但缺乏长期回报估计。可将终止决策建模�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 WALT: Web Agents that Learn Tools
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.01524"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.01524", "authors": ["Prabhu", "Dai", "Fernandez", "Gu", "Ramakrishnan", "Luo", "Savarese", "Xiong", "Li", "Chen", "Xu"], "id": "2510.01524", "pdf_url": "https://arxiv.org/pdf/2510.01524", "rank": 8.5, "title": "WALT: Web Agents that Learn Tools"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.01524" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3022,6 +4218,11 @@ $$</li>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 The Unreasonable Effectiveness of Scaling Agents for Computer Use
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.02250"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.02250", "authors": ["Gonzalez-Pumariega", "Tu", "Lee", "Yang", "Li", "Wang"], "id": "2510.02250", "pdf_url": "https://arxiv.org/pdf/2510.02250", "rank": 8.5, "title": "The Unreasonable Effectiveness of Scaling Agents for Computer Use"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.02250" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3308,6 +4509,11 @@ OSWorld 361 任务，100 步设置：</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 DS-STAR: Data Science Agent via Iterative Planning and Verification
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.21825"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.21825", "authors": ["Nam", "Yoon", "Chen", "Pfister"], "id": "2509.21825", "pdf_url": "https://arxiv.org/pdf/2509.21825", "rank": 8.357142857142858, "title": "DS-STAR: Data Science Agent via Iterative Planning and Verification"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.21825" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3565,6 +4771,11 @@ KramaBench 实验显示召回阶段仍有 8 % 上升空间。可探索：</p>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 GSM-Agent: Understanding Agentic Reasoning Using Controllable Environments
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.21998"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.21998", "authors": ["Zhu", "Guo", "Mei", "Russell", "Ghosh", "Bietti", "Jiao"], "id": "2509.21998", "pdf_url": "https://arxiv.org/pdf/2509.21998", "rank": 8.357142857142858, "title": "GSM-Agent: Understanding Agentic Reasoning Using Controllable Environments"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.21998" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -3969,6 +5180,11 @@ Full → Medium → Small（↓1/4→↓1/16），所有模型 Accuracy 单调�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Planner-R1: Reward Shaping Enables Efficient Agentic RL with Smaller LLMs
+                                                <button class="mark-button" 
+                                                        data-paper-id="2509.25779"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2509.25779", "authors": ["Zhu", "Jiang", "Sang", "Tang", "Song", "He", "Jain", "Wang", "Geramifard"], "id": "2509.25779", "pdf_url": "https://arxiv.org/pdf/2509.25779", "rank": 8.357142857142858, "title": "Planner-R1: Reward Shaping Enables Efficient Agentic RL with Smaller LLMs"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2509.25779" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -4588,6 +5804,11 @@ Final-Pass、可训练参数量、峰值显存、推理吞吐。</li>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Automating Data-Driven Modeling and Analysis for Engineering Applications using Large Language Model Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.01398"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.01398", "authors": ["Liu", "Abulawi", "Garimidi", "Lim"], "id": "2510.01398", "pdf_url": "https://arxiv.org/pdf/2510.01398", "rank": 8.357142857142858, "title": "Automating Data-Driven Modeling and Analysis for Engineering Applications using Large Language Model Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.01398" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -4792,6 +6013,11 @@ Final-Pass、可训练参数量、峰值显存、推理吞吐。</li>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 OntoLogX: Ontology-Guided Knowledge Graph Extraction from Cybersecurity Logs with Large Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.01409"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.01409", "authors": ["Cotti", "Drago", "Rula", "Bianchini", "Cerutti"], "id": "2510.01409", "pdf_url": "https://arxiv.org/pdf/2510.01409", "rank": 8.357142857142858, "title": "OntoLogX: Ontology-Guided Knowledge Graph Extraction from Cybersecurity Logs with Large Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.01409" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -4976,6 +6202,11 @@ Final-Pass、可训练参数量、峰值显存、推理吞吐。</li>
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 BioinfoMCP: A Unified Platform Enabling MCP Interfaces in Agentic Bioinformatics
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.02139"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.02139", "authors": ["Widjaja", "Chen", "Zhou"], "id": "2510.02139", "pdf_url": "https://arxiv.org/pdf/2510.02139", "rank": 8.357142857142858, "title": "BioinfoMCP: A Unified Platform Enabling MCP Interfaces in Agentic Bioinformatics"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.02139" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5427,6 +6658,11 @@ $$<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 GRACE: A Language Model Framework for Explainable Inverse Reinforcement Learning
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.02180"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.02180", "authors": ["Sapora", "Hjelm", "Toshev", "Attia", "Mazoure"], "id": "2510.02180", "pdf_url": "https://arxiv.org/pdf/2510.02180", "rank": 8.357142857142858, "title": "GRACE: A Language Model Framework for Explainable Inverse Reinforcement Learning"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.02180" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5601,6 +6837,11 @@ GRACE在所有任务上达到<strong>1.0适应度</strong>（完美区分目标�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 When Disagreements Elicit Robustness: Investigating Self-Repair Capabilities under LLM Multi-Agent Disagreements
+                                                <button class="mark-button" 
+                                                        data-paper-id="2502.15153"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2502.15153", "authors": ["Ju", "Wang", "Fei", "Lee", "Hsu", "Li", "Wang", "Cheng", "Wu", "Zhao", "Zhang", "Liu"], "id": "2502.15153", "pdf_url": "https://arxiv.org/pdf/2502.15153", "rank": 8.357142857142858, "title": "When Disagreements Elicit Robustness: Investigating Self-Repair Capabilities under LLM Multi-Agent Disagreements"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2502.15153" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -5872,6 +7113,11 @@ GRACE在所有任务上达到<strong>1.0适应度</strong>（完美区分目标�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Stream RAG: Instant and Accurate Spoken Dialogue Systems with Streaming Tool Usage
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.02044"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.02044", "authors": ["Arora", "Khan", "Sun", "Dong", "Choudhary", "Moon", "Zhang", "Sagar", "Appini", "Patnaik", "Sharma", "Watanabe", "Kumar", "Aly", "Liu", "Metze", "Lin"], "id": "2510.02044", "pdf_url": "https://arxiv.org/pdf/2510.02044", "rank": 8.357142857142858, "title": "Stream RAG: Instant and Accurate Spoken Dialogue Systems with Streaming Tool Usage"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.02044" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -6158,1067 +7404,6 @@ Streaming RAG 首次证明：端到端语音模型也能<strong>实时、准确�
                 </div>
             </div>
             
-            <div id="tab-SFT" class="tab-content ">
-                <div class="content-wrapper">
-                    <div class="papers-list" id="papers-list-SFT">
-                        <!-- 领域汇总分析 -->
-                        
-                        <div class="domain-summary-display">
-                <!-- <h3>📊 领域汇总分析</h3> -->
-                
-                        <!-- 完整汇总内容（单一文本） -->
-                        
-                <div class="summary-section">
-                    <div class="analysis-content"><h3>研究全貌</h3>
-<p>本批次SFT领域共收录1篇论文，研究方向聚焦于<strong>持续学习（Continual Learning, CL）中的计算效率与模型可塑性平衡问题</strong>。该工作挑战了传统CL中“最小化示例内存”的核心假设，转而关注在<strong>内存充足但GPU计算资源受限</strong>的现实场景下如何高效进行模型更新。当前热点问题是如何在避免灾难性遗忘的同时，保持模型对新任务的快速学习能力（即“可塑性”），而不依赖昂贵的全量重训练。整体研究趋势正从“节省内存”转向“节省计算成本”，强调在真实系统瓶颈（如GPU时间）约束下的实用化方案设计，推动持续学习向大规模语言模型的高效微调场景落地。</p>
-<h3>重点方法深度解析</h3>
-<p>本批次最具启发性的工作是：</p>
-<p><strong>《Forget Forgetting: Continual Learning in a World of Abundant Memory》</strong> <a href="https://arxiv.org/abs/2502.07274" target="_blank" rel="noopener noreferrer">URL</a></p>
-<p>该论文指出，在现代系统中，GPU训练成本远高于存储成本，因此传统以“减少存储”为目标的持续学习方法已不再适用。相反，当允许保留大量历史数据（即“充足记忆”）时，模型的主要问题不再是“遗忘”，而是“难以学习新任务”——即<strong>可塑性下降</strong>，模型对旧任务产生偏差。</p>
-<p>为解决这一新范式下的稳定性-可塑性困境，作者提出<strong>Weight Space Consolidation (WSC)</strong>，一种轻量级、低计算成本的权重空间操作方法。其核心技术包含两点：<br />
-1）<strong>基于秩的参数重置（Rank-based Parameter Reset）</strong>：识别出在先前任务中变化较小的低秩参数，将其重置为初始值，从而释放模型容量，恢复对新任务的学习能力（提升可塑性）；<br />
-2）<strong>权重平均（Weight Averaging）</strong>：对历史任务的模型权重进行指数移动平均，增强对旧任务的保留能力（提升稳定性）。</p>
-<p>该方法无需复杂架构或大量超参数调优，仅通过简单的权重操作即可实现高效持续学习。实验在<strong>类增量图像分类</strong>（CIFAR-100, ImageNet-Subset）和<strong>大语言模型的持续指令微调</strong>（如Llama系列）上验证，结果显示WSC在性能上显著优于现有SOTA方法（如EWC、iCaRL、DER等），同时计算成本与简单回放（replay）基线相当，远低于全量重训练（仅需10-20%的GPU时间）。</p>
-<p>WSC特别适用于<strong>大模型在线微调、产品迭代中频繁加入新功能或新指令</strong>的场景，尤其在已有充足存储保存历史数据的前提下，可作为低成本、高性能的持续学习标准流程。</p>
-<h3>实践启示</h3>
-<p>该研究对大模型应用开发具有重要借鉴意义：在SFT场景中，应优先考虑<strong>计算效率而非存储压缩</strong>，尤其是在部署环境具备足够存储能力时。建议在持续微调系统中采用类似WSC的轻量级权重操作方法，替代复杂的正则化或回放缓冲区管理。具体落地时，可结合模型参数的梯度变化或Hessian信息实现自动化参数重置，并引入EMA机制稳定历史性能。关键注意事项包括：合理设定重置比例（避免过度重置导致旧任务崩溃）、确保新任务数据质量以防止偏差累积，以及在任务切换时进行小规模验证集评估以监控稳定性。该方法为构建“低GPU成本、高更新频率”的大模型服务系统提供了可行路径。</p>
-</div>
-                </div>
-                
-                
-            </div>
-            
-                        
-                        <div class="topic-content">
-                            
-                                
-                                <div class="paper-item-compact" id="paper-item-2502.07274">
-                                    <div class="paper-header" onclick="showPaperDetail('2502.07274', 'SFT')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Forget Forgetting: Continual Learning in a World of Abundant Memory
-                                                <a href="https://arxiv.org/abs/2502.07274" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AForget%20Forgetting%3A%20Continual%20Learning%20in%20a%20World%20of%20Abundant%20Memory%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2502.07274&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AForget%20Forgetting%3A%20Continual%20Learning%20in%20a%20World%20of%20Abundant%20Memory%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2502.07274%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Cho, Moon, Chunara, Cho, Cha</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文提出了一种在充足示例内存条件下进行高效持续学习的新方法，通过权重空间操作（权重重置与平均）显著降低计算成本，同时取得优于现有方法的性能。研究挑战了传统持续学习中强调内存效率的假设，转而关注GPU计算成本这一更现实的瓶颈，实验设计充分，结果具有说服力，为实际应用提供了高效可行的基线方案。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.4</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2502.07274" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Forget Forgetting: Continual Learning in a World of Abundant Memory</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <h1>《Forget Forgetting: Continual Learning in a World of Abundant Memory》深度分析</h1>
-<h2>问题定义</h2>
-<p>论文试图解决的核心问题是：<strong>在持续学习（Continual Learning, CL）中，传统方法普遍假设示例内存（exemplar memory）资源高度受限，但这一假设在当前计算环境下是否仍然成立？</strong> 特别是在大模型时代，存储成本远低于GPU计算成本的背景下，是否应重新权衡内存与计算资源的优先级？</p>
-<p>具体而言，作者聚焦于<strong>类增量学习（class-incremental learning, class-IL）</strong> 场景，挑战了“必须严格限制示例内存大小”的传统范式。他们提出，在<strong>示例内存充足（sufficient exemplar memory）</strong> 的新设定下，许多现有CL算法因复杂机制带来的高计算开销变得不再必要，甚至不如简单的重放（Replay）基线。因此，论文的核心问题是：<strong>如何设计一种在充足内存条件下既高效又高性能的持续学习方法，以最小化计算成本（尤其是GPU训练时间），同时保持甚至超越现有方法的准确性？</strong></p>
-<h2>相关工作</h2>
-<p>论文从两个维度梳理了相关工作：<strong>持续学习方法分类</strong>与<strong>权重空间操作技术</strong>。</p>
-<p>在持续学习方面，作者将现有方法分为三类：</p>
-<ol>
-<li><strong>正则化方法</strong>：通过约束重要参数的变化来缓解灾难性遗忘（如EWC、SI）；</li>
-<li><strong>回放/重放方法（rehearsal-based）</strong>：存储少量历史样本并在训练新任务时回放（如iCaRL、BiC、DER）；</li>
-<li><strong>扩展方法</strong>：动态增加模型容量以适应新任务（如DER、FOSTER）。</li>
-</ol>
-<p>这些方法大多在严格内存限制（如每类20个样本）下设计和评估。然而，作者引用Prabhu et al. (2023) 和 Chavan et al. (2023) 的研究指出，<strong>GPU计算成本已远超存储成本</strong>，这动摇了“节省内存优先”的设计哲学。</p>
-<p>在权重空间操作方面，作者借鉴了近期在多任务学习和模型融合中的技术：</p>
-<ul>
-<li><strong>权重平均（weight averaging）</strong>：用于提升泛化性和收敛速度（如SWA）；</li>
-<li><strong>权重重置（weight reset）</strong>：用于增强模型可塑性，防止参数僵化。</li>
-</ul>
-<p>本文的创新在于将这些权重空间操作引入<strong>充足内存下的持续学习场景</strong>，构建了一种低计算开销的新范式，与传统回放方法形成互补而非替代。</p>
-<h2>解决方案</h2>
-<p>论文提出了一种名为<strong>权重空间整合（Weight Space Consolidation, WSC）</strong> 的新方法，其核心思想是：<strong>在示例内存充足的前提下，模型能够有效保留对过往任务的最优解；因此，可在权重空间中直接操作，通过重置与平均策略平衡稳定性与可塑性，从而大幅降低训练成本。</strong></p>
-<p>具体方法包含两个关键步骤：</p>
-<ol>
-<li><p><strong>基于排名的权重重置（Rank-based Weight Resetting）</strong><br />
-在每个新任务训练的前 $n_{\text{warm}}$ 轮后，计算当前参数 $\theta$ 与前一任务最优参数 $\theta_{\text{prev}}$ 的差异 $|\theta[l] - \theta_{\text{prev}}[l]|$，识别“休眠”参数（即变化小、未被激活的参数）。随后对变化最小的80%参数进行线性重置：
-$$
-\theta[l] = \alpha \cdot \theta_{\text{prev}}[l] + (1 - \alpha) \cdot \theta[l], \quad \alpha = 0.5
-$$
-这一操作强制模型回归到前任务解的邻域，增强稳定性。</p>
-</li>
-<li><p><strong>周期性权重平均（Periodic Weight Averaging）</strong><br />
-在训练过程中定期对模型权重进行滑动平均，借鉴SWA思想，聚合不同训练阶段的解，提升泛化能力与收敛速度，尤其在数据方差大的充足内存场景下更为有效。</p>
-</li>
-</ol>
-<p>该方法无需复杂的记忆管理、知识蒸馏或模型扩展，直接在权重空间操作，显著减少了前向/反向传播次数和内存访问开销，从而实现<strong>计算成本的大幅降低</strong>。</p>
-<h2>实验验证</h2>
-<h3>实验设置</h3>
-<ul>
-<li><strong>数据集</strong>：CIFAR-100 和 ImageNet-100，均划分为10个增量任务（每任务10类）。</li>
-<li><strong>基线方法</strong>：iCaRL、BiC、WA、DER、FOSTER 和最简基线 Replay。</li>
-<li><strong>模型架构</strong>：CIFAR-100 使用 ResNet-32，ImageNet-100 使用 ResNet-18。</li>
-<li><strong>评估指标</strong>：最终任务完成后所有类的平均准确率，训练时间（作为计算成本代理）。</li>
-<li><strong>内存设置</strong>：测试不同每类示例数（20、50、100），重点分析“充足内存”（100/类）场景。</li>
-</ul>
-<h3>主要结果</h3>
-<ol>
-<li><p><strong>内存充足时，简单Replay性能接近SOTA</strong><br />
-图1(a)显示，当每类存储100个样本时，Replay的准确率与iCaRL、BiC等方法相当，表明<strong>充足内存本身即可有效缓解遗忘</strong>。</p>
-</li>
-<li><p><strong>现有方法计算成本显著更高</strong><br />
-图1(b)和图2(a)表明，DER、FOSTER等扩展方法训练时间是Replay的2–3倍，而其性能优势在充足内存下不再明显。</p>
-</li>
-<li><p><strong>WSC方法实现性能与效率双优</strong></p>
-<ul>
-<li>在CIFAR-100和ImageNet-100上，WSC<strong>超越所有基线</strong>，达到SOTA准确率。</li>
-<li>其训练时间<strong>仅为DER/FOSTER的1/4到1/3</strong>，与Replay相当。</li>
-<li>消融实验（图2(b)）证明：权重重置与平均均贡献显著，联合使用效果最佳。</li>
-</ul>
-</li>
-</ol>
-<p>实验充分验证了论文主张：<strong>在充足内存下，复杂算法不再必要，而基于权重空间的轻量方法可实现更优性价比。</strong></p>
-<h2>未来工作</h2>
-<h3>可进一步探索的方向</h3>
-<ol>
-<li><strong>动态内存分配策略</strong>：当前假设内存“充足”，但可研究如何在有限但较大的内存下动态分配样本，结合WSC提升效率。</li>
-<li><strong>权重操作的理论分析</strong>：缺乏对“为何权重重置+平均”在CL中有效的理论解释，未来可从优化轨迹、损失面平坦性等角度建模。</li>
-<li><strong>扩展至其他CL场景</strong>：本文聚焦class-IL，可探索在任务增量、域增量等场景下的适用性。</li>
-<li><strong>与模型压缩结合</strong>：在训练后引入剪枝或量化，进一步降低部署成本，形成“高内存训练 + 低内存部署” pipeline。</li>
-<li><strong>在线/流式设置</strong>：当前为任务级增量，未来可适配更贴近现实的流式数据场景。</li>
-</ol>
-<h3>局限性</h3>
-<ol>
-<li><strong>依赖充足内存</strong>：方法在小内存场景下可能失效，不适用于边缘设备等资源严格受限环境。</li>
-<li><strong>任务边界假设</strong>：仍需明确任务边界，未解决完全无任务标识的纯在线学习问题。</li>
-<li><strong>重置比例固定</strong>：80%重置比例为经验设定，缺乏自适应机制，可能影响不同架构或数据集的泛化性。</li>
-<li><strong>未考虑存储-计算联合优化</strong>：虽强调计算成本，但未提供存储与计算的联合优化框架。</li>
-</ol>
-<h2>总结</h2>
-<p>本文的核心贡献在于<strong>重新定义了持续学习中的成本权衡范式</strong>，从“节省内存”转向“节省计算”，提出在<strong>示例内存充足的新现实条件下，简单方法可媲美复杂算法，而基于权重空间的操作能进一步实现性能与效率的双重突破</strong>。</p>
-<p>主要价值体现在：</p>
-<ol>
-<li><strong>挑战传统假设</strong>：通过实验证明，在充足内存下，Replay等简单方法性能不输SOTA，质疑了长期存在的“内存必须受限”前提。</li>
-<li><strong>提出高效新方法</strong>：WSC通过权重重置与平均，在几乎不增加训练时间的前提下超越现有算法，计算成本仅为1/4–1/3。</li>
-<li><strong>提供实用基准</strong>：为工业界部署CL系统提供了高性价比方案，尤其适用于云环境（存储便宜、GPU昂贵）。</li>
-<li><strong>开辟新研究方向</strong>：推动CL研究从“如何省内存”转向“如何省算力”，为大模型时代的持续学习提供了新思路。</li>
-</ol>
-<p>总之，该工作不仅提出了一个高性能、低成本的算法，更重要的是<strong>引发对持续学习基本假设的反思</strong>，具有重要的理论与实践意义。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.4</span></span>
-                                            <span>置信度: 0.90</span>
-                                            <span>分类: SFT</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">SFT</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2502.07274" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2502.07274" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="tab-RLHF" class="tab-content ">
-                <div class="content-wrapper">
-                    <div class="papers-list" id="papers-list-RLHF">
-                        <!-- 领域汇总分析 -->
-                        
-                        <div class="domain-summary-display">
-                <!-- <h3>📊 领域汇总分析</h3> -->
-                
-                        <!-- 完整汇总内容（单一文本） -->
-                        
-                <div class="summary-section">
-                    <div class="analysis-content"><h3>研究全貌</h3>
-<p>本批次RLHF领域共收录3篇论文，研究方向主要集中在<strong>奖励模型设计</strong>、<strong>偏好优化算法改进</strong>与<strong>理论机制解析</strong>三大方向。其中，奖励模型研究聚焦于多领域场景下的有效性评估，挑战了细粒度过程监督的普遍优越性；偏好优化方向则探索训练过程中的动态样本调度机制，提升数据利用效率；理论工作则从贝叶斯与信息论视角重新诠释DPO的内在逻辑。当前热点问题是如何在多样化任务中实现<strong>高效、稳健且可解释的对齐学习</strong>。整体趋势显示，研究正从“模型结构创新”转向“训练机制优化”与“理论基础构建”，强调方法的通用性、鲁棒性与可解释性。</p>
-<h3>重点方法深度解析</h3>
-<p>本批次中，以下两篇论文最具启发性：</p>
-<p><strong>《Rethinking Reward Models for Multi-Domain Test-Time Scaling》</strong> <a href="https://arxiv.org/abs/2510.00492" target="_blank" rel="noopener noreferrer">URL</a><br />
-该论文系统性地挑战了“过程奖励模型（PRM）优于结果奖励模型（ORM）”的主流认知。作者提出四种奖励模型统一评测框架：判别式ORM/PRM（DisORM/DisPRM）与生成式ORM/PRM（GenORM/GenPRM），并在14个跨领域任务中进行实证。关键技术在于构建多领域推理数据集，并引入理论分析揭示PRM的误差累积问题——每步打分的噪声在长链条推理中被聚合放大，尤其影响自修正类逻辑。实验表明，GenORM不仅在所有领域均取得稳定增益，且显著优于GenPRM和DisPRM。其核心优势在于避免中间标注噪声，直接通过生成式验证结果正确性。该方法特别适用于多领域、长推理、标签噪声高的实际部署场景。</p>
-<p><strong>《Differential Information Distribution: A Bayesian Perspective on Direct Preference Optimization》</strong> <a href="https://arxiv.org/abs/2505.23761" target="_blank" rel="noopener noreferrer">URL</a><br />
-本文为DPO提供了全新的理论基础——差异信息分布（DID），将偏好学习视为从参考策略到目标策略的信息更新过程。创新性地证明：当偏好数据承载了策略间所需的“差异信息”时，DPO的对数比率形式是唯一最优奖励函数。技术上，作者引入DID的熵作为衡量学习不确定性的指标，并发现高熵DID（信息分布广泛）有利于开放生成任务（如指令遵循），而低熵DID（信息集中）更利于知识密集型问答。这一理论解释了DPO训练中日志似然位移（LLD）等现象，并为数据构造提供指导：应根据下游任务类型设计偏好数据的信息分布结构。适用于需要理论指导数据筛选与任务适配的高级对齐系统。</p>
-<p>两篇工作形成互补：前者从实证角度打破PRM神话，后者从理论层面揭示DPO本质。相比之下，Huang等人提出的SamS样本调度方法虽有效，但创新深度略逊，属于工程优化范畴。</p>
-<h3>实践启示</h3>
-<p>这些研究对大模型对齐实践具有重要指导意义。对于多领域通用系统开发，应优先考虑<strong>生成式结果验证（GenORM）</strong>，避免依赖易受噪声影响的中间步骤标注。在偏好数据构建时，可根据任务类型调控“信息密度”：开放任务采用多样化偏好样本（高熵DID），知识任务聚焦关键判别样本（低熵DID）。建议在DPO训练中集成轻量级样本调度机制（如SamS），以提升数据效率。实现时需注意：GenORM依赖强验证能力，需确保验证模型足够可靠；理论指导需结合实际数据分布校准，避免过度理想化。整体而言，应从“盲目堆叠标注”转向“有原则的数据与训练设计”。</p>
-</div>
-                </div>
-                
-                
-            </div>
-            
-                        
-                        <div class="topic-content">
-                            
-                                
-                                <div class="paper-item-compact" id="paper-item-2510.00492">
-                                    <div class="paper-header" onclick="showPaperDetail('2510.00492', 'RLHF')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Rethinking Reward Models for Multi-Domain Test-Time Scaling
-                                                <a href="https://arxiv.org/abs/2510.00492" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ARethinking%20Reward%20Models%20for%20Multi-Domain%20Test-Time%20Scaling%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2510.00492&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ARethinking%20Reward%20Models%20for%20Multi-Domain%20Test-Time%20Scaling%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2510.00492%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Lee, Lee, Park, Kang, Baek, Kim, Wagner, Jin, Lee, Bocklet, Wang, Fu, Hwang, Bian, Song</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文对多领域测试时扩展中的奖励模型进行了系统性重新评估，提出了四种奖励模型变体的统一比较框架。研究发现，在多领域场景下，传统的细粒度过程奖励模型（PRM）优势不再，生成式结果奖励模型（gORM）表现最稳健。论文结合理论分析与大规模实证，挑战了现有共识，并开源了代码、数据和模型，具有重要实践指导意义。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.7</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2510.00492" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Rethinking Reward Models for Multi-Domain Test-Time Scaling</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 2 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>论文针对“测试时扩展（test-time scaling, TTS）”场景下如何可靠地评估大模型推理链（chain-of-thought, CoT）这一核心问题，提出并系统验证了四种奖励模型变体：</p>
-<ul>
-<li>判别式结果奖励模型 dORM</li>
-<li>判别式过程奖励模型 dPRM</li>
-<li>生成式结果奖励模型 gORM</li>
-<li>生成式过程奖励模型 gPRM</li>
-</ul>
-<p>传统观念认为，基于逐步打分的 PRM 优于只看最终答案的 ORM，但既有证据几乎全都来自数学或数学相邻领域。本文首次在 14 个跨领域任务上统一比较四种变体，发现：</p>
-<ol>
-<li>在数学域内，dPRM 确实优于 dORM，且生成式模型（gORM/gPRM）进一步提升效果；</li>
-<li>在跨领域场景下，dORM 与 dPRM 表现相当，gPRM 反而失效，而 gORM 在所有领域均取得稳定且显著的提升。</li>
-</ol>
-<p>为解释这一“反转”，论文给出两条理论-实证结合的分析：</p>
-<ul>
-<li>PRM 的逐步打分机制会随着推理链长度增加而累积误差，且难以奖励“中途纠错”的 aha 时刻；</li>
-<li>多领域数据依赖 LLM 自动标注过程标签，噪声大，加上共识过滤导致训练-测试的链长分布漂移，进一步放大了 gPRM 的劣势。</li>
-</ul>
-<p>最终，论文挑战了“细粒度监督一定更好”的默认假设，主张在多领域部署时优先采用生成式结果验证（gORM），并公开了代码、数据与模型检查点以支持后续研究。</p>
-<h2>相关工作</h2>
-<p>以下研究被论文直接或间接关联，可划分为六个主题。为便于查阅，按主题给出代表性文献（括号内为正文或参考文献编号）：</p>
-<ul>
-<li><p><strong>Test-time Scaling 与 Best-of-N 采样</strong></p>
-<ul>
-<li>Snell et al. (2025)</li>
-<li>Wu et al. (2024)</li>
-</ul>
-</li>
-<li><p><strong>判别式结果奖励模型（dORM）</strong></p>
-<ul>
-<li>Cobbe et al. (2021)</li>
-<li>Uesato et al. (2022)</li>
-<li>Yu et al. (2024)</li>
-</ul>
-</li>
-<li><p><strong>判别式过程奖励模型（dPRM）</strong></p>
-<ul>
-<li>Lightman et al. (2024)</li>
-<li>Wang et al. (2024a)</li>
-<li>Setlur et al. (2025)</li>
-<li>Zheng et al. (2024)</li>
-<li>Zeng et al. (2025)</li>
-</ul>
-</li>
-<li><p><strong>LLM-as-a-Judge 与生成式验证</strong></p>
-<ul>
-<li>Wang et al. (2023)</li>
-<li>Liu et al. (2023)</li>
-<li>Zheng et al. (2023)</li>
-</ul>
-</li>
-<li><p><strong>生成式结果奖励模型（gORM）</strong></p>
-<ul>
-<li>Zhang et al. (2025a)</li>
-</ul>
-</li>
-<li><p><strong>生成式过程奖励模型（gPRM）</strong></p>
-<ul>
-<li>Khalifa et al. (2025)</li>
-<li>Zhao et al. (2025)</li>
-</ul>
-</li>
-</ul>
-<p>这些工作共同构成了本文对比的四类奖励模型（dORM / dPRM / gORM / gPRM）的算法与实验基础。</p>
-<h2>解决方案</h2>
-<p>论文采用“统一评估 + 理论分析 + 实证诊断”三段式路线，系统回答“多领域 TTS 场景下该用哪种奖励模型”这一问题。</p>
-<ol>
-<li><p>统一评估</p>
-<ul>
-<li>构建覆盖 14 个领域的 MMLU-Pro 测试台，并复用数学域 PRM800K / ProcessBench，保证跨域可比性。</li>
-<li>在相同骨干模型（R1-Distill 系列）与相同训练预算下，并行训练四种变体：dORM、dPRM、gORM、gPRM。</li>
-<li>采用 Best-of-N 与 outcome-verification 两种指标，控制 prompt、采样数、随机种子等混杂因素，得到“数学域 vs 多领域”双向结果。</li>
-</ul>
-</li>
-<li><p>理论分析</p>
-<ul>
-<li>建立 log-error 界：证明 dPRM / gPRM 的误差下界随推理步数 T 线性增长，而 ORM 类误差与 T 无关。</li>
-<li>引入 Jensen-gap 解释 gPRM 的额外方差项，说明即使单步噪声很小，长链乘积也会导致整体偏差累积。</li>
-</ul>
-</li>
-<li><p>实证诊断</p>
-<ul>
-<li><strong>“aha” 实验</strong>：人工筛选“中间有错但最终正确”的 CoT，验证 PRM 因“首错即停”偏见而系统性失效。</li>
-<li><strong>标签噪声实验</strong>：在 PRM800K 上人工注入步级翻转噪声，发现 dPRM 性能骤降，gPRM 因正则效应略稳健，但仍受长度漂移拖累。</li>
-<li><strong>长度分布漂移</strong>：用 Wasserstein 距离量化共识过滤前后 CoT 长度变化，发现 gPRM 训练集与测试集漂移最大，直接关联其 BoN 提升率下降（r = −0.625）。</li>
-</ul>
-</li>
-</ol>
-<p>综合三段结果，论文给出可操作的选型指南：</p>
-<ul>
-<li>链短、标签干净、延迟敏感 → dPRM；</li>
-<li>链长或存在“纠错” → 计算充足选 gORM，否则 dORM；</li>
-<li>领域漂移大或标注噪声高 → 优先 ORM 类（gORM &gt; dORM）；</li>
-<li>训练数据极少 → 生成式模型样本效率更高。</li>
-</ul>
-<p>通过公开代码、数据与 14B/8B 检查点，论文将多领域奖励模型选型从“经验法则”转化为“可验证、可扩展”的研究协议。</p>
-<h2>实验验证</h2>
-<p>实验按“数学域 → 多领域 → 诊断分析”三级展开，全部在统一 backbone 与超参下完成，确保横向可比。</p>
-<ol>
-<li><p>数学域实验（复现经典设定）<br />
-1.1 结果验证</p>
-<ul>
-<li>数据集：PRM800K 训练 / ProcessBench 测试（GSM8K、MATH、Omni-Math、OlympiadBench 四子集）</li>
-<li>指标：F1@0.5 阈值，M=16 采样</li>
-<li>变量：1.5B vs 7B backbone<br />
-→ 确认 dPRM &gt; dORM，gORM ≈ gPRM 且均优于判别式。</li>
-</ul>
-<p>1.2 Best-of-N 缩放</p>
-<ul>
-<li>生成模型：Qwen2.5-7B-Instruct，N=1→16</li>
-<li>指标：任务准确率<br />
-→ 再次验证 PRM 优势，gORM 略胜 gPRM。</li>
-</ul>
-</li>
-<li><p>多领域实验（核心贡献）<br />
-2.1 结果验证</p>
-<ul>
-<li>数据集：MMLU-Pro 14 领域，R1-Distill-Qwen-14B 奖励 backbone</li>
-<li>指标：F1@0.5<br />
-→ 反转数学域结论：dORM ≈ dPRM，gPRM 显著落后，gORM 全场最佳。</li>
-</ul>
-<p>2.2 Best-of-N 缩放</p>
-<ul>
-<li>生成模型：Llama-3.1-8B-Instruct，N=1→16</li>
-<li>额外变量：SmolLM3-3B、Qwen2.5-7B、gemma-2-9b、Llama-3.1-70B 四组 CoT 来源<br />
-→ gORM 在所有 pLLM 上稳定领先，gPRM 普遍垫底。</li>
-</ul>
-<p>2.3 单领域 vs 全领域训练对比</p>
-<ul>
-<li>控制：同一领域训练→同一领域测试</li>
-<li>指标：BoN 提升差值<br />
-→ dORM/dPRM 掉分 6–14 %，gORM/gPRM 掉分 ≤2 %，验证生成式样本效率更高。</li>
-</ul>
-</li>
-<li><p>诊断分析（解释反转原因）<br />
-3.1 “aha” CoT 实验</p>
-<ul>
-<li>筛选标准：至少一步错误但最终答案正确（ProcessBench 15.3 %）</li>
-<li>指标：F1<br />
-→ PRM 类 F1 骤降 20–40 %，且 7B 比 1.5B 更差，证实“首错即停”偏见。</li>
-</ul>
-<p>3.2 随机洗牌实验</p>
-<ul>
-<li>方法：保留最终答案，中间步骤随机替换</li>
-<li>指标：F1 下降幅度<br />
-→ ORM 性能显著下跌，排除“纯答案记忆”质疑。</li>
-</ul>
-<p>3.3 链长敏感性实验</p>
-<ul>
-<li>按 CoT 步数 T 分桶，统计 outcome-verification F1 与 BoN 提升<br />
-→ dPRM/gPRM 随 T 增加而下降，相关系数 −0.058 / −0.608；dORM/gORM 保持平稳或略升。</li>
-</ul>
-<p>3.4 标签噪声实验</p>
-<ul>
-<li>在 PRM800K 上注入两类噪声：<br />
-– process-noise 比率：单步翻转概率 10 %–50 %<br />
-– data-noise 比率：受扰动样本占比 10 %–50 %<br />
-→ dPRM 掉分 14 %，gPRM 基本不变，说明生成式对随机噪声更鲁棒，但仍受长度漂移影响。</li>
-</ul>
-<p>3.5 长度分布漂移量化</p>
-<ul>
-<li>指标：Wasserstein 距离（训练集→测试集）</li>
-<li>结果：<br />
-– 数学域 gPRM 距离最小（1.60），表现尚可；<br />
-– 多领域 gPRM 距离最大（3.08），与 BoN 提升呈 −0.625 强负相关，直接解释其失效。</li>
-</ul>
-</li>
-</ol>
-<p>通过上述实验，论文既验证了“多领域场景下 gORM 最优”这一核心结论，也从“链长累积误差 + 标签噪声 + 分布漂移”三方面给出了可量化的失效机制。</p>
-<h2>未来工作</h2>
-<p>后续研究可从以下六个方向展开，均围绕“更真实、更开放、更可控”的奖励模型评估与训练需求：</p>
-<ol>
-<li><p>开放生成场景</p>
-<ul>
-<li>当前仅验证可客观判定的多选或数学答案。对开放式问答、创意写作、代码生成等无唯一标准答案的任务，需设计可扩展的“生成-再验证”协议，并引入人工或工具辅助的细粒度评价。</li>
-</ul>
-</li>
-<li><p>工具增强验证</p>
-<ul>
-<li>引入检索器、计算器、定理证明器或领域 API，让奖励模型在验证阶段主动调用外部工具，减少自动标注噪声，缓解长链累积误差。需系统比较“工具内嵌”与“纯文本”两种范式在成本-性能前沿的权衡。</li>
-</ul>
-</li>
-<li><p>强化学习训练范式</p>
-<ul>
-<li>本文仅做监督微调。可将生成式奖励模型视为策略，用其 rollout  verdict 与真实标签的匹配度作为稀疏奖励，通过 RL（如 PPO、DPO）直接优化验证能力，观察能否突破监督数据的天花板。</li>
-</ul>
-</li>
-<li><p>在线分布漂移检测与修正</p>
-<ul>
-<li>对部署后遇到的领域或长度漂移，设计无需人工标注的在线自适应机制：<br />
-– 利用 moment-matching 或 importance-weighting 动态调整训练分布；<br />
-– 通过不确定性估计触发“主动标注”，仅对高不确定样本请求人工或工具复核。</li>
-</ul>
-</li>
-<li><p>多模态与跨语言扩展</p>
-<ul>
-<li>将奖励模型扩展到图文、视频或跨语言推理链，验证“逐步验证”与“结果验证”在模态信息不一致时的鲁棒性，并研究不同文化语境下“aha 时刻”的语义表现是否影响标签一致性。</li>
-</ul>
-</li>
-<li><p>高效推理与端侧部署</p>
-<ul>
-<li>生成式奖励模型需多次采样，延迟与成本高于判别式。可探索：<br />
-– 投机解码、早期退出、共享前缀缓存等推理加速；<br />
-– 知识蒸馏将 gORM 压缩为小型判别模型，在端侧或高并发场景保持精度-延迟平衡。</li>
-</ul>
-</li>
-</ol>
-<p>这些方向既可直接继承本文发布的统一基准与 checkpoints，也能在真实应用层面推动奖励模型从“实验室数学任务”走向“开放世界、高 stakes 系统”。</p>
-<h2>总结</h2>
-<ul>
-<li><p><strong>问题</strong>：测试时扩展（TTS）依赖奖励模型挑选高质量推理链，传统认为“逐步打分”的 PRM 优于“只看答案”的 ORM，但证据仅限数学域，尚无可跨领域的系统比较。</p>
-</li>
-<li><p><strong>方法</strong>：在 14 领域 MMLU-Pro 与数学基准上，首次统一训练并对比四种变体——判别式 ORM/PRM（dORM/dPRM）、生成式 ORM/PRM（gORM/gPRM），控制 backbone、数据、采样完全一致。</p>
-</li>
-<li><p><strong>结果</strong><br />
-– 数学域：dPRM &gt; dORM，生成式更佳，与文献一致。<br />
-– 多领域：dORM ≈ dPRM，gPRM 失效，gORM 全场稳定领先。</p>
-</li>
-<li><p><strong>原因</strong><br />
-① 逐步乘积打分使误差随链长线性累积，且无法奖励“中途纠错”的 aha 时刻；<br />
-② 多领域自动标注噪声大，共识过滤导致 gPRM 训练-测试链长分布漂移最严重（Wasserstein 距离 3.08）。</p>
-</li>
-<li><p><strong>贡献</strong><br />
-– 提供跨领域奖励模型选型指南：长链/漂移/高噪声场景优先 gORM，短链+干净标签可用 dPRM。<br />
-– 发布统一代码、数据与 1.5B–14B 检查点，推动多领域 TTS 研究标准化。</p>
-</li>
-</ul>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.7</span></span>
-                                            <span>置信度: 0.95</span>
-                                            <span>分类: RLHF</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">RLHF</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2510.00492" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2510.00492" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="paper-item-compact" id="paper-item-2506.17252">
-                                    <div class="paper-header" onclick="showPaperDetail('2506.17252', 'RLHF')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Adaptive Batch-Wise Sample Scheduling for Direct Preference Optimization
-                                                <a href="https://arxiv.org/abs/2506.17252" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AAdaptive%20Batch-Wise%20Sample%20Scheduling%20for%20Direct%20Preference%20Optimization%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2506.17252&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AAdaptive%20Batch-Wise%20Sample%20Scheduling%20for%20Direct%20Preference%20Optimization%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2506.17252%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Huang, Ban, Fu, Li, Dai, Li, Wang</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文提出了一种针对直接偏好优化（DPO）的自适应样本调度新问题——Sample Scheduling for DPO，并设计了高效算法SamS，通过建模为上下文_bandit_问题，利用模型演化状态动态选择训练样本。实验表明，SamS在不修改DPO核心算法的前提下，显著提升了模型在AlpacaEval 2和MT-Bench等基准上的表现，增强了对标签噪声的鲁棒性，且计算开销极低。方法创新性强，实验充分，代码已开源，具有良好的通用性和实用价值。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.5</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2506.17252" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Adaptive Batch-Wise Sample Scheduling for Direct Preference Optimization</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <h1>Adaptive Sample Scheduling for Direct Preference Optimization 论文深度分析</h1>
-<h2>问题定义</h2>
-<p>论文提出了一种新的问题：<strong>DPO中的样本调度（Sample Scheduling for DPO）</strong>，旨在解决当前直接偏好优化（Direct Preference Optimization, DPO）方法在固定偏好数据集下性能受限的问题。尽管DPO因其无需显式奖励模型、训练稳定而广受关注，但其性能高度依赖于人类偏好数据的质量。现有研究主要集中在三类方向：主动查询、响应对选择和数据预筛选。然而，这些方法普遍存在两个关键缺陷：</p>
-<ol>
-<li><strong>忽略模型状态的动态演化</strong>：大多数方法在训练前静态选择或过滤样本，未考虑语言模型在训练过程中内部状态的变化，导致某些样本在不同训练阶段可能从“易学”变为“难学”或反之。</li>
-<li><strong>对噪声标签敏感</strong>：真实偏好数据常包含错误或不一致的标注，传统DPO容易受此类噪声干扰，导致训练不稳定甚至性能下降。</li>
-</ol>
-<p>因此，本文提出应根据模型在训练过程中的<strong>实时学习反馈</strong>，动态调整每批次中参与训练的样本，从而最大化泛化性能。这一问题的核心是：如何在不修改DPO主算法的前提下，实现<strong>自适应、批级别的样本调度</strong>，以提升对固定数据集的利用效率和鲁棒性。</p>
-<h2>相关工作</h2>
-<p>论文将现有工作划分为三类，并明确指出了其局限性：</p>
-<ol>
-<li><strong>主动查询（Active Querying）</strong>：如 [das2024active] 等工作通过选择信息量大的样本进行人工标注，但聚焦于在线反馈收集，无法应用于已有固定数据集的离线训练场景。</li>
-<li><strong>响应对选择（Response Pair Selection）</strong>：如 [mehta2023sample] 在给定查询下选择最优响应对进行标注，仍属于数据采集阶段的优化，不涉及训练过程中的动态调度。</li>
-<li><strong>数据预筛选（Data Pre-selection）</strong>：如 [shen2024towards] 在训练前过滤低质量样本，虽能提升数据质量，但采用静态策略，忽略了模型学习进程的变化。</li>
-</ol>
-<p>与上述工作相比，本文的创新在于<strong>将样本选择从“训练前”转移到“训练中”</strong>，并引入<strong>基于模型状态的动态调度机制</strong>。此外，论文还与强化学习中的上下文老虎机（Contextual Bandit）框架建立联系，将样本调度建模为一个序列决策问题，借鉴了探索-利用权衡的思想，这在偏好优化领域尚属首次系统应用。</p>
-<h2>解决方案</h2>
-<p>论文提出 <strong>SamS（Sample Scheduling for DPO）</strong> 算法，其核心思想是将样本调度建模为一个<strong>上下文老虎机问题</strong>，通过一个轻量级调度器（Scheduler）动态选择每批次中最有利于当前模型状态学习的样本子集。</p>
-<h3>核心方法</h3>
-<ol>
-<li><p><strong>问题建模</strong>：</p>
-<ul>
-<li><strong>臂（Arm）</strong>：每个训练样本视为一个臂。</li>
-<li><strong>上下文（Context）</strong>：使用语言模型在各Transformer层的隐藏状态，经池化和拼接后形成固定维度的上下文向量 $\bar{x}_{t,i}$，捕捉样本与模型状态的交互信息。</li>
-<li><strong>奖励函数（Reward）</strong>：设计了<strong>双层级奖励机制</strong>：<ul>
-<li><strong>批级奖励 $r^B$</strong>：衡量使用选定子集训练后，模型在下一批数据上的损失下降程度，反映整体性能提升。</li>
-<li><strong>样本级奖励 $r^S$</strong>：结合<strong>偏好边际</strong>（大边际样本更可靠）和<strong>模型不确定性</strong>（高不确定性样本更具探索价值），鼓励选择信息丰富的样本。</li>
-<li>最终样本奖励为两者的加权和（公式8）。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>调度器架构</strong>：</p>
-<ul>
-<li><strong>编码器</strong>：将上下文向量编码为固定表示。</li>
-<li><strong>利用网络 $f^S$</strong>：预测每个样本的奖励，通过MSE损失训练。</li>
-<li><strong>探索网络 $f^{S'}$</strong>：估计利用网络预测的不确定性，提供探索奖励，实现探索-利用平衡。</li>
-<li>总奖励估计为：$f(\bar{x}<em>{t,i}) = f^S(\bar{x}</em>{t,i}) + \lambda f^{S'}(h^S_{t,i})$。</li>
-</ul>
-</li>
-<li><p><strong>训练策略</strong>：</p>
-<ul>
-<li><strong>滞后更新（Lagged Training）</strong>：调度器在第 $t+1$ 轮使用第 $t$ 轮的训练结果（损失变化）来更新自身，避免额外前向计算，保持低开销。</li>
-<li><strong>Top-K选择</strong>：每轮根据预测奖励选择Top-K个样本用于DPO训练。</li>
-</ul>
-</li>
-</ol>
-<p>该设计实现了<strong>无需修改DPO主算法</strong>的即插即用式增强，同时保持了极低的计算和内存开销。</p>
-<h2>实验验证</h2>
-<p>实验设计全面，验证了SamS在性能、泛化性和鲁棒性方面的优势。</p>
-<h3>主要结果</h3>
-<ol>
-<li><p><strong>性能提升</strong>（表1）：</p>
-<ul>
-<li>在AlpacaEval 2和MT-Bench上，DPO+SamS显著优于包括RRHF、IPO、KTO、ORPO等在内的多种SOTA方法。</li>
-<li>相比基线，AlpacaEval 2胜率提升 <strong>3.0%–12.4%</strong>，长度控制胜率提升 <strong>5.5%–8.4%</strong>，MT-Bench得分提升0.1–0.2。</li>
-</ul>
-</li>
-<li><p><strong>样本效率验证</strong>：</p>
-<ul>
-<li>与随机选择50%样本的DPO(50%)相比，SamS在仅用一半数据的情况下仍实现显著提升，证明其能有效识别高质量样本。</li>
-</ul>
-</li>
-<li><p><strong>泛化能力</strong>：</p>
-<ul>
-<li>SamS可无缝集成至KTO等其他偏好优化算法，均带来一致性能增益（表2）。</li>
-<li>在Pythia-2.8B上，平均测试准确率提升2.65%，首选响应奖励提升19.9%，显示其通用性。</li>
-</ul>
-</li>
-<li><p><strong>噪声鲁棒性</strong>（图3）：</p>
-<ul>
-<li>在20%标签翻转的噪声数据下，DPO性能下降6%（HH数据集），而DPO+SamS仅下降3%，且最终性能仍高出约6%，证明其能有效过滤噪声样本。</li>
-</ul>
-</li>
-<li><p><strong>计算效率</strong>（图4）：</p>
-<ul>
-<li>由于反向传播样本减少，DPO+SamS<strong>GPU内存占用降低18%</strong>，运行时间相近，实现性能与效率双赢。</li>
-</ul>
-</li>
-</ol>
-<h2>未来工作</h2>
-<h3>可进一步探索的点</h3>
-<ol>
-<li><strong>调度策略优化</strong>：当前采用Top-K贪婪选择，未来可探索更复杂的组合调度策略（如考虑样本多样性）或引入强化学习策略梯度方法。</li>
-<li><strong>多粒度调度</strong>：当前调度基于完整样本，未来可探索对响应中的token级调度，实现更细粒度控制。</li>
-<li><strong>跨任务迁移调度器</strong>：当前调度器需随模型训练，未来可研究预训练通用调度器，实现跨任务迁移。</li>
-<li><strong>理论分析</strong>：缺乏对SamS收敛性、样本复杂度的理论保证，未来可建立其与课程学习、主动学习的理论联系。</li>
-</ol>
-<h3>局限性</h3>
-<ol>
-<li><strong>依赖模型隐藏状态</strong>：需提取多层隐藏状态作为上下文，对某些无法访问内部表示的黑盒模型不适用。</li>
-<li><strong>超参数敏感性</strong>：奖励权重 $\gamma$、探索强度 $\lambda$ 等需调优，可能影响稳定性。</li>
-<li><strong>批内调度限制</strong>：仅在批内选择，未考虑跨批调度或全局数据分布优化。</li>
-<li><strong>评估指标依赖</strong>：奖励设计依赖DPO损失变化，可能在某些复杂任务上与真实人类偏好存在偏差。</li>
-</ol>
-<h2>总结</h2>
-<p>本文提出了<strong>样本调度（Sample Scheduling）</strong> 这一新问题，填补了DPO在动态数据利用方面的空白。其主要贡献包括：</p>
-<ol>
-<li><strong>问题创新</strong>：首次系统提出DPO训练过程中的动态样本调度问题，强调模型状态演化的重要性。</li>
-<li><strong>方法高效</strong>：提出SamS算法，将调度建模为上下文老虎机问题，结合批级与样本级奖励，实现探索-利用平衡。</li>
-<li><strong>即插即用</strong>：无需修改DPO核心算法，集成简单，计算开销低，内存占用反而降低18%。</li>
-<li><strong>实证有效</strong>：在多个基准上显著提升DPO性能（+3%~12.4%），并展现出强噪声鲁棒性和跨算法泛化能力。</li>
-</ol>
-<p>该工作为提升大模型对固定偏好数据的利用效率提供了新范式，具有重要的实践价值和研究启发意义。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.5</span></span>
-                                            <span>置信度: 0.95</span>
-                                            <span>分类: RLHF</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">RLHF</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2506.17252" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2506.17252" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="paper-item-compact" id="paper-item-2505.23761">
-                                    <div class="paper-header" onclick="showPaperDetail('2505.23761', 'RLHF')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Differential Information Distribution: A Bayesian Perspective on Direct Preference Optimization
-                                                <a href="https://arxiv.org/abs/2505.23761" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ADifferential%20Information%20Distribution%3A%20A%20Bayesian%20Perspective%20on%20Direct%20Preference%20Optimization%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2505.23761&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ADifferential%20Information%20Distribution%3A%20A%20Bayesian%20Perspective%20on%20Direct%20Preference%20Optimization%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2505.23761%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Won, Lee, Hwang, Seo</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文从信息论角度提出“差异信息分布”（DID）的概念，为直接偏好优化（DPO）提供了新的理论解释。作者证明了当偏好数据编码了从参考策略到目标策略的差异信息时，DPO的对数比率奖励形式是唯一最优的，并揭示了其与策略间对数间隔排序之间的内在联系。此外，通过分析DID的熵，论文解释了日志似然位移（LLD）现象，并实证表明高熵DID有助于通用指令遵循，低熵DID则利于知识密集型问答。整体上，该工作理论深刻、实验充分，为偏好学习提供了统一视角。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.4</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2505.23761" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Differential Information Distribution: A Bayesian Perspective on Direct Preference Optimization</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 8 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>这篇论文试图解决的问题是如何从理论角度更好地理解直接偏好优化（Direct Preference Optimization, DPO）中对数比率奖励（log-ratio reward）的有效性和适用条件。尽管DPO在实践中取得了成功，但其背后的理论基础并不完整，特别是对于其特定的奖励形式为何有效以及在何种条件下最优，尚未有充分的解释。</p>
-<p>具体来说，论文的主要目标包括以下几点：</p>
-<ol>
-<li><strong>解释DPO奖励形式的理论基础</strong>：DPO使用对数比率奖励 ( r = \beta \log(\pi/\pi_{\text{ref}}) ) 来优化策略，但这种奖励形式为何有效，以及在何种条件下是最优的，目前缺乏完整的理论解释。</li>
-<li><strong>探索偏好数据如何编码差异信息</strong>：论文提出了“差异信息分布”（Differential Information Distribution, DID）的概念，试图解释偏好数据如何编码从参考策略 ( \pi_{\text{ref}} ) 到目标策略 ( \pi^* ) 所需的差异信息。</li>
-<li><strong>分析DID的特性及其对策略更新的影响</strong>：通过分析DID的熵（entropy），论文探讨了学习低熵差异信息如何强化策略分布，而学习高熵差异信息如何诱导平滑效应，从而解释了常见的对数似然位移（log-likelihood displacement, LLD）现象。</li>
-<li><strong>验证理论发现并扩展到实际数据集</strong>：论文通过合成实验和真实世界的数据集（如指令遵循数据集）来验证其理论发现，并探讨这些发现对实际应用的启示。</li>
-</ol>
-<h2>相关工作</h2>
-<p>这篇论文与多个领域的相关研究紧密相连，主要包括以下几个方面：</p>
-<h3>直接偏好优化（Direct Preference Optimization, DPO）</h3>
-<ul>
-<li><strong>DPO的原始工作</strong>：Rafailov等人[3]首次提出了DPO，展示了其在对齐语言模型与人类偏好方面的有效性。他们使用了基于KL正则化的RL目标导出的Bradley-Terry奖励。</li>
-<li><strong>DPO的变体和扩展</strong>：包括ORPO[10]、SimPO[12]、Cal-DPO[29]等，这些工作探索了不同的奖励参数化方法和优化策略，以提高DPO的性能和稳定性。</li>
-<li><strong>理论分析</strong>：一些研究关注于DPO与分布匹配之间的联系[19, 11, 20]，以及优化动态[21, 22]。这些工作为理解DPO的行为提供了理论基础。</li>
-</ul>
-<h3>偏好学习与人类反馈</h3>
-<ul>
-<li><strong>偏好学习</strong>：偏好学习是一个广泛的研究领域，涉及从人类反馈中学习模型的行为。DPO是偏好学习在语言模型对齐中的一个具体应用。</li>
-<li><strong>人类反馈的数据集</strong>：如Ultra-Feedback[31]和Magpie-Pro[25]等数据集，为研究如何从人类偏好中学习提供了丰富的资源。</li>
-</ul>
-<h3>信息论与策略优化</h3>
-<ul>
-<li><strong>信息论视角</strong>：论文引入了“差异信息分布”（DID）的概念，这与信息论中的概念紧密相关。信息论在策略优化中的应用，如通过信息增益来理解策略更新，是一个新兴的研究方向。</li>
-<li><strong>策略优化与分布匹配</strong>：DPO的目标是通过偏好优化来匹配目标分布。这与分布匹配的目标一致，相关工作包括如何通过优化策略来最小化与目标分布之间的KL散度[19, 20]。</li>
-</ul>
-<h3>对数似然位移（Log-Likelihood Displacement, LLD）</h3>
-<ul>
-<li><strong>LLD现象</strong>：在DPO训练过程中，尽管模型对齐性能提高，但首选响应的对数似然却可能下降。这一现象被称为对数似然位移，已有研究试图从样本相似性[35, 33]和梯度动态[21, 22]的角度解释这一现象。</li>
-<li><strong>信息论解释</strong>：本论文提出了一个基于信息论的解释，将LLD与学习高熵差异信息联系起来，为理解这一现象提供了新的视角。</li>
-</ul>
-<h3>实际应用与评估</h3>
-<ul>
-<li><strong>指令遵循和问答任务</strong>：论文通过在指令遵循数据集和知识密集型问答任务上的实验，验证了其理论发现。这些任务是评估语言模型对齐效果的重要场景。</li>
-<li><strong>模型评估基准</strong>：如Arena-Hard[37]、WildBench[44]等基准测试，为评估模型在实际应用中的性能提供了标准。</li>
-</ul>
-<p>这些相关研究为论文提供了理论和实践基础，同时也为论文提出的观点和方法提供了对比和验证的背景。</p>
-<h2>解决方案</h2>
-<p>论文通过引入“差异信息分布”（Differential Information Distribution, DID）的概念，从信息论的角度来解决直接偏好优化（DPO）中对数比率奖励形式的理论基础问题。以下是论文的主要解决步骤和方法：</p>
-<h3>1. 定义差异信息分布（DID）</h3>
-<p>论文首先定义了差异信息分布（DID），这是一个描述从参考策略 ( \pi_{\text{ref}} ) 到目标策略 ( \pi^* ) 所需信息增益的分布。具体来说，DID ( q_{\pi/\pi_{\text{ref}}} ) 表示在更新策略时所获得的信息，可以形式化为：
-[ q_{\pi/\pi_{\text{ref}}}(y) = \frac{\pi(y)}{\pi_{\text{ref}}(y)} \bigg/ \sum_{y' \in Y} \frac{\pi(y')}{\pi_{\text{ref}}(y')} ]</p>
-<h3>2. 建立偏好数据与DID的联系</h3>
-<p>论文证明了当偏好数据编码了从 ( \pi_{\text{ref}} ) 到 ( \pi^* ) 所需的差异信息时，DPO中的对数比率奖励形式是唯一最优的。具体来说，如果偏好数据满足以下条件：
-[ q_{\pi_{\text{ref}}/\pi_l}(y) \propto q_{\pi^<em>/\pi_{\text{ref}}}(y)^\beta ]
-那么偏好概率可以表示为：
-[ p^</em>(y_w \succ y_l) = \sigma \left( \beta \log q_{\pi^<em>/\pi_{\text{ref}}}(y_w) - \beta \log q_{\pi^</em>/\pi_{\text{ref}}}(y_l) \right) ]
-这表明偏好数据确实编码了差异信息。</p>
-<h3>3. 证明对数比率奖励的最优性</h3>
-<p>论文进一步证明了在上述条件下，使用对数比率奖励 ( r(y) = \beta \log \frac{\pi(y)}{\pi_{\text{ref}}(y)} ) 进行偏好优化可以唯一地恢复目标策略 ( \pi^* )。具体来说：
-[ \arg \max_\pi \mathbb{E}<em>{(y_w, y_l) \sim D} [\log p(y_w \succ y_l | r)] = \arg \min</em>\pi D_{\text{KL}}[\pi^*(y) \parallel \pi(y)] ]
-这表明对数比率奖励形式不仅是有效的，而且在偏好数据编码差异信息时是最优的。</p>
-<h3>4. 分析DID的熵与策略更新</h3>
-<p>论文分析了DID的熵（entropy）与策略更新之间的关系。具体来说：</p>
-<ul>
-<li><strong>低熵DID</strong>：如果DID的熵较低，学习过程会强化策略分布，即集中概率质量。</li>
-<li><strong>高熵DID</strong>：如果DID的熵较高，学习过程会平滑策略分布，即分散概率质量。
-这种分析提供了一个新的视角来理解对数似然位移（LLD）现象，即在学习高熵DID时，首选响应的对数似然可能会下降。</li>
-</ul>
-<h3>5. 实验验证</h3>
-<p>论文通过合成实验和真实世界的数据集（如指令遵循数据集）来验证其理论发现。实验结果表明：</p>
-<ul>
-<li>在合成数据上，使用对数比率奖励的DPO能够有效地学习目标策略。</li>
-<li>在真实数据集上，偏好数据通常编码了高熵DID，这解释了为什么在DPO训练中会观察到对数似然位移现象。</li>
-<li>学习高熵DID对于一般指令遵循任务至关重要，而学习低熵DID则有助于知识密集型问答任务。</li>
-</ul>
-<h3>6. 提出理想的拒绝响应分布</h3>
-<p>论文还提出了在DPO框架中生成拒绝响应 ( y_l ) 的理想分布：
-[ \pi_l(y) \propto \pi_{\text{ref}}(y) \left( \frac{\pi_{\text{ref}}(y)}{\pi^*(y)} \right)^\beta ]
-这一分布能够准确反映策略之间的差异信息，从而提高DPO训练的效果。</p>
-<p>通过这些步骤，论文不仅从理论上解释了DPO中对数比率奖励的有效性和适用条件，还通过实验验证了其理论发现，并提出了改进DPO训练的具体方法。</p>
-<h2>实验验证</h2>
-<p>论文中进行了多种实验，旨在验证其理论发现，并探索差异信息分布（DID）的特性及其对策略更新的影响。以下是论文中进行的主要实验：</p>
-<h3>合成实验</h3>
-<ul>
-<li><strong>实验目的</strong>：验证当偏好数据编码差异信息时，DPO的对数比率奖励形式是否能够有效地学习目标策略。</li>
-<li><strong>实验设置</strong>：使用能量基模型（Energy-Based Models, EBMs）生成合成数据。定义了参考策略 ( \pi_{\text{ref}} ) 和目标策略 ( \pi^* )，并构造了偏好数据集，其中偏好数据满足 ( q_{\pi_{\text{ref}}/\pi_l}(y) \propto q_{\pi^*/\pi_{\text{ref}}}(y)^\beta )。</li>
-<li><strong>实验结果</strong>：通过优化策略 ( \pi ) 使用奖励 ( r = \log \pi )，实验结果表明策略能够收敛到DID ( q_{\pi^<em>/\pi_{\text{ref}}} )，验证了偏好数据确实编码了差异信息。此外，使用对数比率奖励 ( r = \beta \log(\pi/\pi_{\text{ref}}) ) 的DPO能够有效地学习目标策略 ( \pi^</em> )，而其他目标函数（如SLiC、ORPO、SimPO、Cal-DPO）则无法达到同样的效果。</li>
-</ul>
-<h3>真实世界数据集实验</h3>
-<ul>
-<li><strong>实验目的</strong>：验证真实世界指令遵循数据集中的偏好数据是否编码差异信息，并探索DID的熵与策略更新之间的关系。</li>
-<li><strong>实验设置</strong>：使用了两个高质量的指令遵循数据集：Ultra-Feedback[31]和Magpie-Pro[25]。在这些数据集上，分别使用标准DPO（( r = \beta \log(\pi/\pi_{\text{ref}}) )）和变体DPO-PG（一种旨在增加首选响应的对数似然同时减少拒绝响应的对数似然的方法）进行训练。</li>
-<li><strong>实验结果</strong>：<ul>
-<li><strong>偏好数据编码差异信息</strong>：通过比较使用 ( r = \beta \log \pi ) 和 ( r = \beta \log(\pi/\pi_{\text{ref}}) ) 的DPO训练结果，发现后者在奖励模型上的表现更好，表明真实世界数据集中的偏好数据更倾向于编码差异信息，而不是直接编码目标策略。</li>
-<li><strong>DID熵与策略更新</strong>：通过估计DID的熵，发现指令遵循数据集中的偏好数据通常编码高熵DID，这解释了为什么在DPO训练中会观察到对数似然位移现象。此外，实验还表明学习高熵DID对于一般指令遵循任务至关重要，而学习低熵DID则有助于知识密集型问答任务。</li>
-</ul>
-</li>
-</ul>
-<h3>对数似然位移（LLD）实验</h3>
-<ul>
-<li><strong>实验目的</strong>：验证高熵DID是否会导致对数似然位移现象。</li>
-<li><strong>实验设置</strong>：在Ultra-Feedback和Magpie-Pro数据集上使用标准DPO进行训练，跟踪首选响应 ( y_w ) 的对数似然 ( \log \pi(y_w) )。</li>
-<li><strong>实验结果</strong>：实验结果表明，在DPO训练过程中，首选响应的对数似然确实会下降，这支持了论文中关于高熵DID导致对数似然位移的假设。</li>
-</ul>
-<h3>策略强化与平滑实验</h3>
-<ul>
-<li><strong>实验目的</strong>：验证DID的熵与策略强化和平滑之间的关系。</li>
-<li><strong>实验设置</strong>：设计了DPO-PG方法，通过投影梯度下降来增加首选响应的对数似然，同时减少或保持拒绝响应的对数似然。</li>
-<li><strong>实验结果</strong>：<ul>
-<li><strong>策略强化</strong>：DPO-PG在知识密集型问答任务上表现更好，表明这些任务主要与学习低熵DID相关。</li>
-<li><strong>策略平滑</strong>：标准DPO在一般指令遵循任务上表现更好，表明这些任务主要与学习高熵DID相关。</li>
-</ul>
-</li>
-</ul>
-<p>通过这些实验，论文不仅验证了其理论发现，还展示了DID的熵与策略更新之间的关系，为理解DPO的行为提供了新的视角。</p>
-<h2>未来工作</h2>
-<p>尽管论文在理论和实验方面都取得了显著的进展，但仍有一些可以进一步探索的点，以深化对直接偏好优化（DPO）和差异信息分布（DID）的理解。以下是一些潜在的研究方向：</p>
-<h3>1. <strong>DID熵的精确估计</strong></h3>
-<ul>
-<li><strong>问题</strong>：当前的DID熵估计方法可能存在偏差或不稳定，尤其是在处理大规模数据集时。</li>
-<li><strong>探索方向</strong>：<ul>
-<li><strong>改进估计方法</strong>：开发更精确、更稳定的DID熵估计方法，例如使用更复杂的采样技术或结合变分推断。</li>
-<li><strong>理论分析</strong>：进一步分析DID熵估计的理论性质，如收敛速度和偏差-方差权衡。</li>
-</ul>
-</li>
-</ul>
-<h3>2. <strong>DID与人类偏好的关系</strong></h3>
-<ul>
-<li><strong>问题</strong>：虽然论文展示了偏好数据可以编码DID，但人类偏好数据的生成过程和内在结构仍不完全清楚。</li>
-<li><strong>探索方向</strong>：<ul>
-<li><strong>偏好数据生成机制</strong>：研究人类偏好数据的生成机制，例如通过用户研究或心理学实验，了解人类如何形成和表达偏好。</li>
-<li><strong>偏好数据的多样性</strong>：探索不同类型的偏好数据（如多模态偏好、多用户偏好）对DID的影响。</li>
-</ul>
-</li>
-</ul>
-<h3>3. <strong>DPO的优化动态</strong></h3>
-<ul>
-<li><strong>问题</strong>：尽管论文提供了DPO优化动态的一些理论分析，但实际训练过程中的动态行为仍需进一步研究。</li>
-<li><strong>探索方向</strong>：<ul>
-<li><strong>优化算法的影响</strong>：研究不同的优化算法（如Adam、RMSprop、SGD）对DPO训练动态的影响。</li>
-<li><strong>长期训练行为</strong>：分析DPO在长期训练中的行为，包括收敛速度、过拟合现象等。</li>
-</ul>
-</li>
-</ul>
-<h3>4. <strong>DID在其他任务中的应用</strong></h3>
-<ul>
-<li><strong>问题</strong>：DID的概念是否可以扩展到其他任务，如强化学习、多智能体系统等。</li>
-<li><strong>探索方向</strong>：<ul>
-<li><strong>强化学习中的DID</strong>：研究DID在强化学习中的应用，例如如何利用DID来优化策略网络。</li>
-<li><strong>多智能体系统</strong>：探索DID在多智能体系统中的应用，例如如何通过DID来协调多个智能体的行为。</li>
-</ul>
-</li>
-</ul>
-<h3>5. <strong>DID的可视化和解释</strong></h3>
-<ul>
-<li><strong>问题</strong>：DID的可视化和解释对于理解和应用DID至关重要，但目前这方面的研究还相对较少。</li>
-<li><strong>探索方向</strong>：<ul>
-<li><strong>可视化方法</strong>：开发新的可视化方法，如t-SNE、UMAP等，来直观展示DID的分布。</li>
-<li><strong>解释方法</strong>：研究如何解释DID中的关键信息，例如通过特征重要性分析或因果推断。</li>
-</ul>
-</li>
-</ul>
-<h3>6. <strong>DID与模型架构的关系</strong></h3>
-<ul>
-<li><strong>问题</strong>：不同的模型架构（如Transformer、LSTM）对DID的编码和学习能力可能不同。</li>
-<li><strong>探索方向</strong>：<ul>
-<li><strong>架构比较</strong>：比较不同模型架构在学习DID时的性能，了解哪些架构更适合捕捉高熵或低熵DID。</li>
-<li><strong>架构设计</strong>：设计新的模型架构，专门针对DID的学习进行优化。</li>
-</ul>
-</li>
-</ul>
-<h3>7. <strong>DID在多语言和跨文化背景下的应用</strong></h3>
-<ul>
-<li><strong>问题</strong>：DID的概念是否可以应用于多语言和跨文化背景，以及如何处理不同语言和文化之间的差异。</li>
-<li><strong>探索方向</strong>：<ul>
-<li><strong>多语言数据集</strong>：构建和分析多语言偏好数据集，研究DID在不同语言中的特性。</li>
-<li><strong>跨文化研究</strong>：通过跨文化研究，了解不同文化背景下的偏好数据如何影响DID的编码和学习。</li>
-</ul>
-</li>
-</ul>
-<h3>8. <strong>DID在对抗攻击中的应用</strong></h3>
-<ul>
-<li><strong>问题</strong>：DID是否可以用于提高模型的鲁棒性，特别是在对抗攻击的背景下。</li>
-<li><strong>探索方向</strong>：<ul>
-<li><strong>对抗训练</strong>：研究如何利用DID来设计对抗训练方法，提高模型在对抗环境下的鲁棒性。</li>
-<li><strong>攻击检测</strong>：探索DID在检测和防御对抗攻击中的应用。</li>
-</ul>
-</li>
-</ul>
-<h3>9. <strong>DID的理论扩展</strong></h3>
-<ul>
-<li><strong>问题</strong>：DID的理论基础可以进一步扩展，以涵盖更广泛的场景和假设。</li>
-<li><strong>探索方向</strong>：<ul>
-<li><strong>非线性DID</strong>：研究非线性DID的性质和应用，例如通过核方法或深度学习模型来建模非线性DID。</li>
-<li><strong>动态DID</strong>：考虑DID在动态环境中的变化，例如在在线学习或持续学习场景中。</li>
-</ul>
-</li>
-</ul>
-<h3>10. <strong>DID在实际应用中的优化</strong></h3>
-<ul>
-<li><strong>问题</strong>：如何在实际应用中有效地利用DID来优化模型性能。</li>
-<li><strong>探索方向</strong>：<ul>
-<li><strong>应用案例</strong>：在实际应用中（如医疗、金融、教育）测试DID的有效性，探索其在特定领域的优化方法。</li>
-<li><strong>工程实现</strong>：开发高效的工程实现方法，例如通过分布式计算和并行处理来加速DID的计算。</li>
-</ul>
-</li>
-</ul>
-<p>这些方向不仅有助于进一步理解DPO和DID的理论基础，还可以为实际应用提供新的思路和方法。</p>
-<h2>总结</h2>
-<p>这篇论文《Differential Information: An Information-Theoretic Perspective on Preference Optimization》从信息论的角度深入探讨了直接偏好优化（DPO）的理论基础，特别是其对数比率奖励形式的有效性和适用条件。论文的主要内容可以总结如下：</p>
-<h3>研究背景</h3>
-<ul>
-<li><strong>DPO的重要性</strong>：DPO作为一种对齐语言模型与人类偏好的标准技术，因其鲁棒性能、训练稳定性和计算效率而受到关注。然而，其对数比率奖励参数化的理论基础尚不完整。</li>
-<li><strong>研究动机</strong>：论文旨在填补这一理论空白，通过引入“差异信息分布”（Differential Information Distribution, DID）的概念，提供一个信息论的视角来理解偏好优化。</li>
-</ul>
-<h3>差异信息分布（DID）</h3>
-<ul>
-<li><strong>定义</strong>：DID是一个描述从参考策略 ( \pi_{\text{ref}} ) 到目标策略 ( \pi^* ) 所需信息增益的分布。形式化为：
-[
-q_{\pi/\pi_{\text{ref}}}(y) = \frac{\pi(y)}{\pi_{\text{ref}}(y)} \bigg/ \sum_{y' \in Y} \frac{\pi(y')}{\pi_{\text{ref}}(y')}
-]</li>
-<li><strong>理论贡献</strong>：论文证明了当偏好数据编码了从 ( \pi_{\text{ref}} ) 到 ( \pi^* ) 所需的差异信息时，DPO中的对数比率奖励形式是唯一最优的。</li>
-</ul>
-<h3>偏好数据与DID的联系</h3>
-<ul>
-<li><strong>偏好数据的条件</strong>：论文提出了一个条件，即偏好数据应满足：
-[
-q_{\pi_{\text{ref}}/\pi_l}(y) \propto q_{\pi^<em>/\pi_{\text{ref}}}(y)^\beta
-]
-在此条件下，偏好概率可以表示为：
-[
-p^</em>(y_w \succ y_l) = \sigma \left( \beta \log q_{\pi^<em>/\pi_{\text{ref}}}(y_w) - \beta \log q_{\pi^</em>/\pi_{\text{ref}}}(y_l) \right)
-]</li>
-<li><strong>对数比率奖励的最优性</strong>：论文进一步证明了在上述条件下，使用对数比率奖励 ( r(y) = \beta \log \frac{\pi(y)}{\pi_{\text{ref}}(y)} ) 进行偏好优化可以唯一地恢复目标策略 ( \pi^* )。</li>
-</ul>
-<h3>DID的熵与策略更新</h3>
-<ul>
-<li><strong>熵的分析</strong>：论文分析了DID的熵（entropy）与策略更新之间的关系。低熵DID会导致策略强化，而高熵DID会导致策略平滑。</li>
-<li><strong>对数似然位移（LLD）</strong>：论文提出了一个信息论的视角来解释对数似然位移现象，即在学习高熵DID时，首选响应的对数似然可能会下降。</li>
-</ul>
-<h3>实验验证</h3>
-<ul>
-<li><strong>合成实验</strong>：通过能量基模型（EBMs）生成合成数据，验证了当偏好数据编码差异信息时，DPO的对数比率奖励形式能够有效地学习目标策略。</li>
-<li><strong>真实世界数据集实验</strong>：在Ultra-Feedback和Magpie-Pro数据集上，验证了偏好数据通常编码高熵DID，这解释了为什么在DPO训练中会观察到对数似然位移现象。此外，实验还表明学习高熵DID对于一般指令遵循任务至关重要，而学习低熵DID则有助于知识密集型问答任务。</li>
-</ul>
-<h3>理想的拒绝响应分布</h3>
-<ul>
-<li><strong>理想分布</strong>：论文提出了在DPO框架中生成拒绝响应 ( y_l ) 的理想分布：
-[
-\pi_l(y) \propto \pi_{\text{ref}}(y) \left( \frac{\pi_{\text{ref}}(y)}{\pi^*(y)} \right)^\beta
-]
-这一分布能够准确反映策略之间的差异信息，从而提高DPO训练的效果。</li>
-</ul>
-<h3>结论</h3>
-<p>论文通过引入DID的概念，不仅从理论上解释了DPO中对数比率奖励的有效性和适用条件，还通过实验验证了其理论发现。论文还提出了改进DPO训练的具体方法，为理解和优化DPO提供了新的视角。</p>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.4</span></span>
-                                            <span>置信度: 0.95</span>
-                                            <span>分类: RLHF</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">RLHF</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2505.23761" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2505.23761" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
             <div id="tab-Hallucination" class="tab-content ">
                 <div class="content-wrapper">
                     <div class="papers-list" id="papers-list-Hallucination">
@@ -7257,6 +7442,11 @@ TraceDet首次针对扩散式LLM（D-LLMs）设计幻觉检测框架。不同于
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MetaFaith: Faithful Natural Language Uncertainty Expression in LLMs
+                                                <button class="mark-button" 
+                                                        data-paper-id="2505.24858"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2505.24858", "authors": ["Liu", "Yona", "Caciularu", "Szpektor", "Rudner", "Cohan"], "id": "2505.24858", "pdf_url": "https://arxiv.org/pdf/2505.24858", "rank": 8.714285714285714, "title": "MetaFaith: Faithful Natural Language Uncertainty Expression in LLMs"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2505.24858" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -7604,6 +7794,11 @@ TraceDet首次针对扩散式LLM（D-LLMs）设计幻觉检测框架。不同于
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 ClaimCheck: Real-Time Fact-Checking with Small Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.01226"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.01226", "authors": ["Putta", "Devasier", "Li"], "id": "2510.01226", "pdf_url": "https://arxiv.org/pdf/2510.01226", "rank": 8.357142857142858, "title": "ClaimCheck: Real-Time Fact-Checking with Small Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.01226" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -7761,6 +7956,11 @@ TraceDet首次针对扩散式LLM（D-LLMs）设计幻觉检测框架。不同于
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 TraceDet: Hallucination Detection from the Decoding Trace of Diffusion Large Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.01274"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.01274", "authors": ["Chang", "Yu", "Wang", "Chen", "Yu", "Torr", "Gu"], "id": "2510.01274", "pdf_url": "https://arxiv.org/pdf/2510.01274", "rank": 8.357142857142858, "title": "TraceDet: Hallucination Detection from the Decoding Trace of Diffusion Large Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.01274" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -7991,6 +8191,11 @@ $A={a_0,a_1,\dots,a_{T-1}}$。<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Data Selection for Fine-tuning Vision Language Models via Cross Modal Alignment Trajectories
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.01454"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.01454", "authors": ["Naharas", "Nguyen", "Bulut", "Bateni", "Mirrokni", "Mirzasoleiman"], "id": "2510.01454", "pdf_url": "https://arxiv.org/pdf/2510.01454", "rank": 8.642857142857144, "title": "Data Selection for Fine-tuning Vision Language Models via Cross Modal Alignment Trajectories"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.01454" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -8210,6 +8415,11 @@ $A={a_0,a_1,\dots,a_{T-1}}$。<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 VideoNSA: Native Sparse Attention Scales Video Understanding
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.02295"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.02295", "authors": ["Song", "Chai", "Yang", "Armand", "Shan", "Xu", "Xie", "Tu"], "id": "2510.02295", "pdf_url": "https://arxiv.org/pdf/2510.02295", "rank": 8.5, "title": "VideoNSA: Native Sparse Attention Scales Video Understanding"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.02295" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -8924,6 +9134,11 @@ $$o_V = \sum_{c\in{cmp,slc,win}} g_c \cdot \mathrm{Attn}(q,\tilde K_c,\tilde V_c
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 MOSS-Speech: Towards True Speech-to-Speech Models Without Text Guidance
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.00499"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.00499", "authors": ["Zhao", "Xu", "Cheng", "Fei", "Jin", "Wang", "Chen", "Jiang", "Gao", "Chen", "Li", "Chen", "Wang", "Zhang", "Zhang", "Yu", "Gao", "Yang", "Gong", "Xu", "Zhou", "Huang", "Qiu"], "id": "2510.00499", "pdf_url": "https://arxiv.org/pdf/2510.00499", "rank": 8.357142857142858, "title": "MOSS-Speech: Towards True Speech-to-Speech Models Without Text Guidance"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.00499" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9321,6 +9536,11 @@ MOSS-Speech 首次在开放领域实现<strong>与文本引导系统性能接近
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 BioVERSE: Representation Alignment of Biomedical Modalities to LLMs for Multi-Modal Reasoning
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.01428"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.01428", "authors": ["Tsou", "Ozery-Flato", "Barkan", "Mahajan", "Shapira"], "id": "2510.01428", "pdf_url": "https://arxiv.org/pdf/2510.01428", "rank": 8.357142857142858, "title": "BioVERSE: Representation Alignment of Biomedical Modalities to LLMs for Multi-Modal Reasoning"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.01428" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9484,6 +9704,11 @@ MOSS-Speech 首次在开放领域实现<strong>与文本引导系统性能接近
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Look Less, Reason More: Rollout-Guided Adaptive Pixel-Space Reasoning
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.01681"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.01681", "authors": ["Li", "Li", "Gao", "Pi", "Hu", "Zhang"], "id": "2510.01681", "pdf_url": "https://arxiv.org/pdf/2510.01681", "rank": 8.357142857142858, "title": "Look Less, Reason More: Rollout-Guided Adaptive Pixel-Space Reasoning"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.01681" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -9700,6 +9925,11 @@ Pixel Reasoner 存在冗余裁剪或漏检，本文方法精准定位关键区�
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Growing Visual Generative Capacity for Pre-Trained MLLMs
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.01546"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.01546", "authors": ["Wang", "Han", "Yang", "Zhao", "Lin", "Yue", "Shrivastava", "Yang", "Chen"], "id": "2510.01546", "pdf_url": "https://arxiv.org/pdf/2510.01546", "rank": 8.357142857142858, "title": "Growing Visual Generative Capacity for Pre-Trained MLLMs"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2510.01546" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -10407,6 +10637,11 @@ Bridge 首次证明：<br />
                                         <div style="flex: 1;">
                                             <div class="paper-title">
                                                 Efficient Whole Slide Pathology VQA via Token Compression
+                                                <button class="mark-button" 
+                                                        data-paper-id="2507.14497"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2507.14497", "authors": ["Lyu", "Hu", "Qi", "Shi", "Huang", "Gupta", "Chen"], "id": "2507.14497", "pdf_url": "https://arxiv.org/pdf/2507.14497", "rank": 8.357142857142858, "title": "Efficient Whole Slide Pathology VQA via Token Compression"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
                                                 <a href="https://arxiv.org/abs/2507.14497" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
@@ -10646,7 +10881,7 @@ Bridge 首次证明：<br />
         <!-- Footer with filter info -->
         
         <div class="footer">
-            主题筛选: Agent, SFT, Multimodal, Finance, Hallucination, RLHF | 状态: 已启用
+            主题筛选: Pretraining, Agent, SFT, Multimodal, Hallucination, RLHF, Finance | 状态: 已启用
         </div>
         
         </div>
@@ -10656,7 +10891,10 @@ Bridge 首次证明：<br />
     <div class="detail-panel" id="detailPanel">
         <div class="detail-panel-header">
             <span class="detail-panel-title">论文详情</span>
-            <button class="detail-panel-close" onclick="closeDetailPanel()">✕</button>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="mark-button" id="detailPanelMarkButton" onclick="handleDetailPanelMark(event);" title="标记这篇论文">☆</button>
+                <button class="detail-panel-close" onclick="closeDetailPanel()">✕</button>
+            </div>
         </div>
         <div class="detail-panel-content" id="detailPanelContent">
             <!-- 动态加载论文详情 -->
@@ -10668,7 +10906,10 @@ Bridge 首次证明：<br />
         <div class="mobile-modal-content" onclick="event.stopPropagation()">
             <div class="mobile-modal-header">
                 <span class="detail-panel-title">论文详情</span>
-                <button class="mobile-modal-close" onclick="closeMobileModal()">✕</button>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="mark-button" id="mobileModalMarkButton" onclick="handleMobileModalMark(event);" title="标记这篇论文">☆</button>
+                    <button class="mobile-modal-close" onclick="closeMobileModal()">✕</button>
+                </div>
             </div>
             <div class="mobile-modal-body" id="mobileModalContent">
                 <!-- 动态加载论文详情 -->
@@ -10678,6 +10919,243 @@ Bridge 首次证明：<br />
 
     <script>
         let currentPaperId = null;
+        let currentPaperData = null;
+
+        // ========== 标记功能 ==========
+        
+        // 获取所有标记的论文
+        function getMarkedPapers() {
+            try {
+                const stored = localStorage.getItem('markedPapers');
+                return stored ? JSON.parse(stored) : [];
+            } catch (e) {
+                console.error('读取标记论文失败:', e);
+                return [];
+            }
+        }
+        
+        // 保存标记的论文
+        function saveMarkedPapers(papers) {
+            try {
+                localStorage.setItem('markedPapers', JSON.stringify(papers));
+            } catch (e) {
+                console.error('保存标记论文失败:', e);
+            }
+        }
+        
+        // 检查论文是否已标记
+        function isMarked(paperId) {
+            const markedPapers = getMarkedPapers();
+            return markedPapers.some(p => p.id === paperId);
+        }
+        
+        // 获取论文的完整信息（从页面中提取）
+        function getPaperData(paperId, basicData) {
+            // 从subtitle中提取日期
+            const subtitle = document.querySelector('.header p');
+            let date = '未知';
+            if (subtitle) {
+                const dateMatch = subtitle.textContent.match(/(\d{4}-\d{2}-\d{2})/);
+                if (dateMatch) {
+                    date = dateMatch[1];
+                }
+            }
+            
+            // 获取报告路径（相对路径）
+            // 如果路径包含web/reports，提取web/reports之后的部分
+            // 否则使用完整路径
+            let reportPath = window.location.pathname.replace(/^\/+/, '');
+            const webReportsMatch = reportPath.match(/web\/reports\/(.+)$/);
+            if (webReportsMatch) {
+                reportPath = webReportsMatch[1];
+            } else {
+                // 尝试提取reports之后的部分
+                const reportsMatch = reportPath.match(/reports\/(.+)$/);
+                if (reportsMatch) {
+                    reportPath = reportsMatch[1];
+                }
+            }
+            
+            return {
+                id: paperId,
+                title: basicData.title || '',
+                authors: basicData.authors || [],
+                arxiv_url: basicData.arxiv_url || '',
+                pdf_url: basicData.pdf_url || '',
+                rank: basicData.rank || null,
+                date: date,
+                reportPath: reportPath,
+                markedAt: new Date().toISOString()
+            };
+        }
+        
+        // 切换标记状态
+        function toggleMark(paperId, paperData) {
+            const markedPapers = getMarkedPapers();
+            const isCurrentlyMarked = isMarked(paperId);
+            
+            if (isCurrentlyMarked) {
+                // 取消标记
+                const filtered = markedPapers.filter(p => p.id !== paperId);
+                saveMarkedPapers(filtered);
+                updateMarkButtonState(paperId, false);
+            } else {
+                // 添加标记
+                const fullPaperData = getPaperData(paperId, paperData);
+                markedPapers.push(fullPaperData);
+                saveMarkedPapers(markedPapers);
+                updateMarkButtonState(paperId, true);
+            }
+        }
+        
+        // 更新标记按钮状态
+        function updateMarkButtonState(paperId, isMarked) {
+            // 更新列表中的按钮
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            if (listButton) {
+                listButton.textContent = isMarked ? '⭐' : '☆';
+                listButton.classList.toggle('marked', isMarked);
+            }
+            
+            // 更新详情面板中的按钮
+            if (currentPaperId === paperId) {
+                const detailButton = document.getElementById('detailPanelMarkButton');
+                const mobileButton = document.getElementById('mobileModalMarkButton');
+                
+                if (detailButton) {
+                    detailButton.textContent = isMarked ? '⭐' : '☆';
+                    detailButton.classList.toggle('marked', isMarked);
+                }
+                if (mobileButton) {
+                    mobileButton.textContent = isMarked ? '⭐' : '☆';
+                    mobileButton.classList.toggle('marked', isMarked);
+                }
+            }
+        }
+        
+        // 处理列表中的标记点击（从按钮元素获取数据）
+        function handleMarkClickFromButton(button) {
+            const paperId = button.getAttribute('data-paper-id');
+            const paperDataStr = button.getAttribute('data-paper-data');
+            try {
+                const paperData = JSON.parse(paperDataStr);
+                toggleMark(paperId, paperData);
+            } catch (e) {
+                console.error('解析论文数据失败:', e);
+            }
+        }
+        
+        // 处理详情面板中的标记点击
+        function handleDetailPanelMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 处理移动端弹窗中的标记点击
+        function handleMobileModalMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 初始化标记状态（页面加载时）
+        function initMarkStates() {
+            const markedPapers = getMarkedPapers();
+            const markedIds = new Set(markedPapers.map(p => p.id));
+            
+            // 更新所有标记按钮的状态
+            document.querySelectorAll('.mark-button[data-paper-id]').forEach(button => {
+                const paperId = button.getAttribute('data-paper-id');
+                if (markedIds.has(paperId)) {
+                    button.textContent = '⭐';
+                    button.classList.add('marked');
+                } else {
+                    button.textContent = '☆';
+                    button.classList.remove('marked');
+                }
+            });
+        }
 
         // 切换标签页
         function showTab(tabId, event) {
@@ -10704,6 +11182,49 @@ Bridge 首次证明：<br />
             }
         }
 
+        // 从DOM元素中提取论文数据
+        function extractPaperDataFromDOM(paperItem, paperId) {
+            if (!paperItem) return null;
+            
+            const paperTitleEl = paperItem.querySelector('.paper-title');
+            const paperAuthorsEl = paperItem.querySelector('.paper-authors');
+            const paperScoreEl = paperItem.querySelector('.paper-score');
+            const arxivLinkEl = paperItem.querySelector('.arxiv-link');
+            
+            // 提取标题，去除标记按钮和链接
+            let title = '';
+            if (paperTitleEl) {
+                title = paperTitleEl.cloneNode(true);
+                // 移除按钮和链接
+                title.querySelectorAll('.mark-button, .arxiv-link, .ai-links').forEach(el => el.remove());
+                title = title.textContent.trim();
+            }
+            
+            return {
+                id: paperId,
+                title: title || '',
+                authors: paperAuthorsEl ? paperAuthorsEl.textContent.split(',').map(a => a.trim()) : [],
+                arxiv_url: arxivLinkEl ? arxivLinkEl.href : '',
+                pdf_url: arxivLinkEl ? arxivLinkEl.href.replace('/abs/', '/pdf/') : '',
+                rank: paperScoreEl && paperScoreEl.textContent !== 'N/A' ? parseFloat(paperScoreEl.textContent) : null
+            };
+        }
+
+        // 渲染元素中的数学公式
+        function renderMathInElementLocal(element) {
+            if (typeof renderMathInElement !== 'undefined' && element) {
+                renderMathInElement(element, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
         // 显示论文详情
         function showPaperDetail(paperId, topicId) {
             const detailsContent = document.getElementById('details-' + paperId);
@@ -10720,6 +11241,43 @@ Bridge 首次证明：<br />
             
             currentPaperId = paperId;
             
+            // 从列表项中提取论文数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            
+            // 优先从列表按钮的data属性获取数据
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        currentPaperData = JSON.parse(paperDataStr);
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                        // 如果解析失败，从页面元素提取
+                        currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                    }
+                } else {
+                    // 如果没有data属性，从页面元素提取
+                    currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                }
+            } else {
+                // 如果找不到列表按钮，从页面元素提取
+                currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+            }
+            
+            // 更新详情面板中的标记按钮状态
+            const isCurrentlyMarked = isMarked(paperId);
+            const detailButton = document.getElementById('detailPanelMarkButton');
+            const mobileButton = document.getElementById('mobileModalMarkButton');
+            
+            if (detailButton) {
+                detailButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                detailButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            if (mobileButton) {
+                mobileButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                mobileButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            
             // 检测设备类型
             const isMobile = window.innerWidth <= 1024;
             
@@ -10727,12 +11285,16 @@ Bridge 首次证明：<br />
                 // 移动端：显示弹窗
                 const modalContent = document.getElementById('mobileModalContent');
                 modalContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(modalContent);
                 document.getElementById('mobileModal').classList.add('active');
                 document.body.style.overflow = 'hidden'; // 禁止背景滚动
             } else {
                 // 宽屏：显示右侧面板
                 const panelContent = document.getElementById('detailPanelContent');
                 panelContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(panelContent);
                 document.getElementById('detailPanel').classList.add('active');
                 
                 // 调整论文列表宽度
@@ -10794,6 +11356,7 @@ Bridge 首次证明：<br />
                     if (detailsContent) {
                         const modalContent = document.getElementById('mobileModalContent');
                         modalContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(modalContent);
                         mobileModal.classList.add('active');
                         document.body.style.overflow = 'hidden';
                     }
@@ -10805,6 +11368,7 @@ Bridge 首次证明：<br />
                     if (detailsContent) {
                         const panelContent = document.getElementById('detailPanelContent');
                         panelContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(panelContent);
                         detailPanel.classList.add('active');
                     }
                 }
@@ -10816,6 +11380,45 @@ Bridge 首次证明：<br />
             const firstNavItem = document.querySelector('.nav-item');
             if (firstNavItem) {
                 firstNavItem.classList.add('active');
+            }
+            
+            // 初始化标记状态
+            initMarkStates();
+            
+            // 检查URL hash，如果包含paper-item-xxx，自动打开该论文详情
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#paper-item-')) {
+                const paperId = hash.replace('#paper-item-', '');
+                // 查找该论文所在的topic
+                const paperItem = document.getElementById('paper-item-' + paperId);
+                if (paperItem) {
+                    // 找到论文所在的tab
+                    const tabContent = paperItem.closest('.tab-content');
+                    if (tabContent) {
+                        const tabId = tabContent.id.replace('tab-', '');
+                        // 切换到对应的tab
+                        showTab(tabId, null);
+                        // 延迟一下，确保tab切换完成后再显示详情
+                        setTimeout(() => {
+                            showPaperDetail(paperId, tabId);
+                            // 滚动到论文位置
+                            paperItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
+                    }
+                }
+            }
+            
+            // 初始化KaTeX自动渲染数学公式
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
             }
         });
 

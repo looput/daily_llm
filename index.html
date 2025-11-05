@@ -408,6 +408,156 @@
             transform: translateY(-1px);
         }
 
+        /* 已标记论文区域样式 */
+        .marked-papers-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .marked-papers-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0f0f0;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .marked-papers-header:hover {
+            opacity: 0.8;
+        }
+
+        .marked-papers-toggle {
+            font-size: 14px;
+            color: #999;
+            transition: transform 0.2s;
+        }
+
+        .marked-papers-section.collapsed .marked-papers-toggle {
+            transform: rotate(-90deg);
+        }
+
+        .marked-papers-section.collapsed .marked-papers-list {
+            display: none;
+        }
+
+        .marked-papers-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .marked-papers-count {
+            font-size: 14px;
+            color: #666;
+            background: #f5f5f5;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+
+        .marked-papers-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .marked-paper-item {
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.2s;
+        }
+
+        .marked-paper-item:hover {
+            background: #f5f5f5;
+            border-color: #d0d0d0;
+        }
+
+        .marked-paper-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .marked-paper-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            flex: 1;
+            margin-right: 12px;
+            line-height: 1.4;
+        }
+
+        .marked-paper-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .marked-paper-unmark {
+            background: #f5f5f5;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .marked-paper-unmark:hover {
+            background: #ffe5e5;
+            border-color: #ff9999;
+            color: #cc0000;
+        }
+
+        .marked-paper-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .marked-paper-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .marked-paper-source {
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .marked-papers-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .marked-papers-empty-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
         .footer {
             margin-top: 40px;
             padding: 20px;
@@ -456,7 +606,7 @@
             <div class="header-top">
                 <div>
                     <h1>大模型论文跟踪</h1>
-                    <p>生成时间: 2025-11-04</p>
+                    <p>生成时间: 2025-11-05</p>
                 </div>
                 <div class="header-stats">
                     <div class="header-stats-item">
@@ -476,6 +626,23 @@
                         <span class="header-stats-value">2084</span>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- 已标记论文区域 -->
+        <div class="marked-papers-section" id="markedPapersSection">
+            <div class="marked-papers-header" onclick="toggleMarkedPapersSection()">
+                <div class="marked-papers-title">
+                    <span>⭐</span>
+                    <span>已标记论文</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="marked-papers-count" id="markedPapersCount">0 篇</div>
+                    <span class="marked-papers-toggle">▼</span>
+                </div>
+            </div>
+            <div class="marked-papers-list" id="markedPapersList">
+                <!-- 动态加载已标记论文 -->
             </div>
         </div>
 
@@ -1686,7 +1853,7 @@
         </div>
 
         <div class="footer">
-            <p>生成时间: 2025-11-04</p>
+            <p>生成时间: 2025-11-05</p>
         </div>
     </div>
 
@@ -1724,6 +1891,207 @@
 
         let dailyReportsCollapsed = false;
         let weekDailyStates = {}; // 记录每个周的日报折叠状态
+
+        // ========== 已标记论文功能 ==========
+        
+        // 获取所有标记的论文
+        function getMarkedPapers() {
+            try {
+                const stored = localStorage.getItem('markedPapers');
+                return stored ? JSON.parse(stored) : [];
+            } catch (e) {
+                console.error('读取标记论文失败:', e);
+                return [];
+            }
+        }
+        
+        // 保存标记的论文
+        function saveMarkedPapers(papers) {
+            try {
+                localStorage.setItem('markedPapers', JSON.stringify(papers));
+            } catch (e) {
+                console.error('保存标记论文失败:', e);
+            }
+        }
+        
+        // 移除标记
+        function removeMark(paperId) {
+            const markedPapers = getMarkedPapers();
+            const filtered = markedPapers.filter(p => p.id !== paperId);
+            saveMarkedPapers(filtered);
+            displayMarkedPapers();
+        }
+        
+        // 跳转到原报告并定位到论文
+        function jumpToPaper(paperId) {
+            const markedPapers = getMarkedPapers();
+            const paper = markedPapers.find(p => p.id === paperId);
+            if (!paper) {
+                console.warn('找不到论文:', paperId);
+                return;
+            }
+            
+            if (paper.reportPath) {
+                // 构建完整URL
+                const baseUrl = window.location.origin;
+                const currentPath = window.location.pathname;
+                
+                // 处理路径：如果reportPath已经包含web/reports，直接使用
+                // 否则，根据当前页面位置构建路径
+                let reportUrl = '';
+                
+                if (paper.reportPath.startsWith('http://') || paper.reportPath.startsWith('https://')) {
+                    // 已经是完整URL
+                    reportUrl = paper.reportPath;
+                } else if (paper.reportPath.startsWith('/')) {
+                    // 绝对路径
+                    reportUrl = baseUrl + paper.reportPath;
+                } else {
+                    // 相对路径，需要根据当前页面位置构建
+                    let reportsBase = '';
+                    
+                    // 如果当前在index.html
+                    if (currentPath.includes('/web/') || currentPath.endsWith('index.html') || currentPath.endsWith('/')) {
+                        // 在web目录下
+                        if (currentPath.includes('/web/')) {
+                            // 从 /web/index.html 或 /web/ 构建
+                            reportsBase = currentPath.replace(/\/index\.html$/, '').replace(/\/$/, '') + '/reports/';
+                        } else {
+                            // 从根目录的index.html构建
+                            reportsBase = '/web/reports/';
+                        }
+                    } else {
+                        // 在其他位置，尝试找到reports目录
+                        const reportsMatch = currentPath.match(/^(.*\/reports\/)/);
+                        if (reportsMatch) {
+                            reportsBase = reportsMatch[1];
+                        } else {
+                            // 默认使用web/reports
+                            reportsBase = '/web/reports/';
+                        }
+                    }
+                    
+                    // 确保reportPath不以/开头
+                    const cleanReportPath = paper.reportPath.replace(/^\//, '');
+                    reportUrl = baseUrl + reportsBase + cleanReportPath;
+                }
+                
+                // 添加hash定位到论文
+                reportUrl += '#paper-item-' + paper.id;
+                
+                console.log('跳转到:', reportUrl);
+                window.open(reportUrl, '_blank');
+            } else if (paper.arxiv_url) {
+                // 如果没有报告路径，至少打开arXiv链接
+                window.open(paper.arxiv_url, '_blank');
+            } else {
+                console.warn('论文没有报告路径和arXiv链接:', paper);
+            }
+        }
+        
+        // 格式化日期显示
+        function formatDate(dateStr) {
+            if (!dateStr || dateStr === '未知') return '未知';
+            try {
+                const date = new Date(dateStr);
+                if (isNaN(date.getTime())) {
+                    // 尝试解析 YYYY-MM-DD 格式
+                    const parts = dateStr.split('-');
+                    if (parts.length === 3) {
+                        return `${parts[0]}年${parseInt(parts[1])}月${parseInt(parts[2])}日`;
+                    }
+                    return dateStr;
+                }
+                return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+            } catch (e) {
+                return dateStr;
+            }
+        }
+        
+        // 显示已标记论文
+        function displayMarkedPapers() {
+            const markedPapers = getMarkedPapers();
+            const listContainer = document.getElementById('markedPapersList');
+            const countElement = document.getElementById('markedPapersCount');
+            
+            if (!listContainer || !countElement) return;
+            
+            // 更新计数
+            countElement.textContent = `${markedPapers.length} 篇`;
+            
+            // 如果没有标记论文，显示空状态
+            if (markedPapers.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="marked-papers-empty">
+                        <div class="marked-papers-empty-icon">⭐</div>
+                        <div>还没有标记任何论文</div>
+                        <div style="margin-top: 8px; font-size: 12px; color: #999;">在论文详情页面点击星标按钮即可标记</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 按标记时间倒序排列（最新的在前）
+            const sortedPapers = markedPapers.sort((a, b) => {
+                const timeA = new Date(a.markedAt || 0).getTime();
+                const timeB = new Date(b.markedAt || 0).getTime();
+                return timeB - timeA;
+            });
+            
+            // 生成论文列表HTML
+            listContainer.innerHTML = sortedPapers.map(paper => {
+                const authors = Array.isArray(paper.authors) ? paper.authors.join(', ') : (paper.authors || '未知作者');
+                const rank = paper.rank ? paper.rank.toFixed(1) : 'N/A';
+                const date = formatDate(paper.date);
+                const reportName = paper.reportPath ? paper.reportPath.split('/').pop() : '未知报告';
+                
+                return `
+                    <div class="marked-paper-item">
+                        <div class="marked-paper-header">
+                            <div class="marked-paper-title" onclick="jumpToPaper('${paper.id}');" style="cursor: pointer;">${escapeHtml(paper.title || '未知标题')}</div>
+                            <div class="marked-paper-actions" onclick="event.stopPropagation();">
+                                <button class="marked-paper-unmark" onclick="removeMark('${paper.id}');">取消标记</button>
+                            </div>
+                        </div>
+                        <div class="marked-paper-meta" onclick="jumpToPaper('${paper.id}');" style="cursor: pointer;">
+                            <span>👥 ${escapeHtml(authors)}</span>
+                            <span>⭐ ${rank}</span>
+                            <span>📅 ${date}</span>
+                        </div>
+                        <div class="marked-paper-source" onclick="jumpToPaper('${paper.id}');" style="cursor: pointer;">
+                            来源: ${escapeHtml(reportName)}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // HTML转义函数
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // 切换已标记论文区域的折叠状态
+        function toggleMarkedPapersSection() {
+            const section = document.getElementById('markedPapersSection');
+            if (section) {
+                section.classList.toggle('collapsed');
+            }
+        }
+
+        // 初始化已标记论文显示
+        function initMarkedPapers() {
+            displayMarkedPapers();
+            
+            // 监听storage事件，当其他标签页修改标记时同步更新
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'markedPapers') {
+                    displayMarkedPapers();
+                }
+            });
+        }
 
         function scrollToWeek(week) {
             const elementId = 'week-' + week.replace(/\s+/g, '-').toLowerCase();
@@ -1968,6 +2336,19 @@
                 }
             }
         });
+
+        // 页面加载时初始化已标记论文
+        document.addEventListener('DOMContentLoaded', function() {
+            initMarkedPapers();
+        });
+        
+        // 如果DOM已经加载完成，立即执行
+        if (document.readyState === 'loading') {
+            // DOM尚未加载完成，等待DOMContentLoaded
+        } else {
+            // DOM已经加载完成，立即执行
+            initMarkedPapers();
+        }
     </script>
 </body>
 </html>
