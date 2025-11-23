@@ -1,0 +1,4682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大模型论文速读（10/2965）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background: #fafafa;
+            font-size: 15px;
+        }
+
+        /* 主布局容器 - 左侧导航 + 右侧内容 */
+        .main-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 左侧书签式导航 */
+        .sidebar {
+            width: 240px;
+            background: #ffffff;
+            border-right: 1px solid #e8e8e8;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.02);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #fafafa;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #ccc;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid #e8e8e8;
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .sidebar-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .sidebar-nav {
+            padding: 12px 0;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 12px 20px;
+            color: #666;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            font-size: 14px;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: #fafafa;
+            color: #1a1a1a;
+        }
+
+        .nav-item.active {
+            background: #f5f5f5;
+            color: #1a1a1a;
+            border-left-color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-right: 8px solid white;
+        }
+
+        .nav-item-count {
+            float: right;
+            color: #999;
+            font-size: 12px;
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+
+        .nav-item.active .nav-item-count {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        /* 移动端菜单按钮 */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 200;
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #1a1a1a;
+            margin: 4px 0;
+        }
+
+        /* 主内容区域 */
+        .container {
+            flex: 1;
+            margin-left: 240px;
+            background: white;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid #e8e8e8;
+            color: #1a1a1a;
+            padding: 32px 40px 24px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+            color: #666;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .filter-info {
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 16px 40px;
+            margin: 0 40px 24px;
+        }
+
+        .filter-info h3 {
+            margin: 0 0 8px;
+            color: #1a1a1a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .filter-info p {
+            margin: 4px 0;
+            color: #666;
+            font-size: 13px;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 宽屏模式：论文列表 + 右侧详情面板 */
+        .content-wrapper {
+            display: flex;
+            position: relative;
+        }
+
+        .papers-list {
+            flex: 1;
+            padding: 32px 40px;
+            transition: margin-right 0.3s ease;
+        }
+
+        .papers-list.has-detail {
+            margin-right: 560px;
+        }
+
+        /* 右侧详情面板（宽屏） */
+        .detail-panel {
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 560px;
+            background: white;
+            border-left: 1px solid #e8e8e8;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 50;
+            box-shadow: -2px 0 16px rgba(0,0,0,0.08);
+        }
+
+        .detail-panel.active {
+            transform: translateX(0);
+        }
+
+        .detail-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .detail-panel::-webkit-scrollbar-track {
+            background: #fafafa;
+        }
+
+        .detail-panel::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 4px;
+        }
+
+        .detail-panel::-webkit-scrollbar-thumb:hover {
+            background: #ccc;
+        }
+
+        .detail-panel-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            border-bottom: 1px solid #e8e8e8;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .detail-panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .detail-panel-close {
+            background: #f5f5f5;
+            border: none;
+            font-size: 18px;
+            color: #666;
+            cursor: pointer;
+            padding: 6px 10px;
+            line-height: 1;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .detail-panel-close:hover {
+            background: #e8e8e8;
+            color: #1a1a1a;
+        }
+
+        .detail-panel-content {
+            padding: 24px;
+        }
+
+        /* 移动端弹窗 */
+        .mobile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 0;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .mobile-modal.active {
+            display: flex;
+        }
+
+        .mobile-modal-content {
+            background: white;
+            border-radius: 16px 16px 0 0;
+            width: 100%;
+            height: 95%;
+            overflow-y: auto;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+            position: relative;
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0.8;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .mobile-modal-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .mobile-modal-content::-webkit-scrollbar-track {
+            background: #fafafa;
+        }
+
+        .mobile-modal-content::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .mobile-modal-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            border-bottom: 1px solid #e8e8e8;
+            padding: 24px 20px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            border-radius: 16px 16px 0 0;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        /* 移动端弹窗拖动指示器 */
+        .mobile-modal-header::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background: #d0d0d0;
+            border-radius: 2px;
+        }
+
+        .mobile-modal-close {
+            background: #f5f5f5;
+            border: none;
+            font-size: 20px;
+            color: #666;
+            cursor: pointer;
+            padding: 6px 10px;
+            line-height: 1;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .mobile-modal-close:hover {
+            background: #e8e8e8;
+            color: #1a1a1a;
+        }
+
+        .mobile-modal-body {
+            padding: 16px 20px 24px;
+        }
+
+        .topic-header {
+            display: none;
+        }
+
+        .topic-content {
+            border: none;
+            padding: 0;
+        }
+
+        /* Compact Paper Items */
+        .paper-item-compact {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 20px 0;
+            transition: background 0.2s;
+        }
+
+        .paper-item-compact:last-child {
+            border-bottom: none;
+        }
+
+        .paper-item-compact.active {
+            background: #fafafa;
+        }
+
+        .paper-header {
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+            padding: 0;
+            transition: all 0.2s;
+        }
+
+        .paper-header:hover {
+            opacity: 0.8;
+        }
+
+        .expand-icon {
+            margin-right: 12px;
+            margin-top: 2px;
+            font-size: 12px;
+            color: #999;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+
+        .paper-title {
+            flex: 1;
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 16px;
+            line-height: 1.6;
+            letter-spacing: -0.2px;
+        }
+
+        .paper-authors {
+            color: #666;
+            font-size: 13px;
+            margin: 6px 0;
+            line-height: 1.5;
+        }
+
+        .paper-score {
+            background: #f5f5f5;
+            color: #1a1a1a;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            margin-left: 16px;
+            flex-shrink: 0;
+        }
+
+        /* 详情内容样式 */
+        .paper-details-content h4 {
+            color: #1a1a1a;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 20px 0 12px 0;
+            border-bottom: 1px solid #e8e8e8;
+            padding-bottom: 8px;
+        }
+
+        .paper-details-content .markdown-content {
+            background: #fafafa;
+            border-left: 3px solid #e0e0e0;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+
+        .paper-abstract {
+            color: #4a4a4a;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        /* ========== 领域汇总Markdown样式（紧凑型） ========== */
+        .domain-summary-display .analysis-content {
+            line-height: 1.7;
+            color: #333;
+            font-size: 14px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        /* 领域汇总：标题样式 */
+        .domain-summary-display .analysis-content h1, 
+        .domain-summary-display .analysis-content h2, 
+        .domain-summary-display .analysis-content h3, 
+        .domain-summary-display .analysis-content h4, 
+        .domain-summary-display .analysis-content h5, 
+        .domain-summary-display .analysis-content h6 {
+            margin: 16px 0 8px 0;
+            color: #1a1a1a;
+            font-weight: 600;
+            line-height: 1.4;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 6px;
+        }
+        
+        .domain-summary-display .analysis-content h1 { font-size: 18px; }
+        .domain-summary-display .analysis-content h2 { font-size: 16px; }
+        .domain-summary-display .analysis-content h3 { font-size: 15px; }
+        .domain-summary-display .analysis-content h4 { font-size: 14px; }
+        
+        /* 领域汇总：段落样式 */
+        .domain-summary-display .analysis-content p {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #333;
+        }
+        
+        /* 领域汇总：列表样式（紧凑） */
+        .domain-summary-display .analysis-content ul, 
+        .domain-summary-display .analysis-content ol {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        
+        .domain-summary-display .analysis-content li {
+            margin: 3px 0;
+            line-height: 1.6;
+            color: #333;
+            padding-left: 4px;
+        }
+        
+        /* 领域汇总：嵌套列表（紧凑） */
+        .domain-summary-display .analysis-content ul ul, 
+        .domain-summary-display .analysis-content ol ul,
+        .domain-summary-display .analysis-content ul ol, 
+        .domain-summary-display .analysis-content ol ol {
+            margin: 2px 0;
+            padding-left: 20px;
+        }
+        
+        /* 领域汇总：列表符号 */
+        .domain-summary-display .analysis-content ul li { list-style-type: disc; }
+        .domain-summary-display .analysis-content ul ul li { list-style-type: circle; }
+        .domain-summary-display .analysis-content ul ul ul li { list-style-type: square; }
+        .domain-summary-display .analysis-content ol li { list-style-type: decimal; }
+        .domain-summary-display .analysis-content ol ol li { list-style-type: lower-alpha; }
+        
+        /* 领域汇总：强调样式 */
+        .domain-summary-display .analysis-content strong, 
+        .domain-summary-display .analysis-content b {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .domain-summary-display .analysis-content em, 
+        .domain-summary-display .analysis-content i {
+            font-style: italic;
+            color: #4a4a4a;
+        }
+        
+        /* 领域汇总：代码样式 */
+        .domain-summary-display .analysis-content code {
+            background: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+            color: #d73a49;
+        }
+        
+        /* 领域汇总：链接样式 */
+        .domain-summary-display .analysis-content a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        
+        .domain-summary-display .analysis-content a:hover {
+            text-decoration: underline;
+        }
+        
+        
+        /* ========== 论文详情Markdown样式（宽松型） ========== */
+        .markdown-content {
+            line-height: 1.8;
+            color: #333;
+            font-size: 14px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        /* 论文详情：标题样式 */
+        .markdown-content h1, .markdown-content h2, .markdown-content h3, 
+        .markdown-content h4, .markdown-content h5, .markdown-content h6 {
+            margin: 24px 0 12px 0;
+            color: #1a1a1a;
+            font-weight: 600;
+            line-height: 1.4;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 8px;
+        }
+        
+        .markdown-content h1 { 
+            font-size: 20px; 
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .markdown-content h2 { font-size: 18px; }
+        .markdown-content h3 { font-size: 16px; }
+        .markdown-content h4 { font-size: 15px; }
+        .markdown-content h5 { font-size: 14px; }
+        .markdown-content h6 { 
+            font-size: 14px; 
+            color: #666;
+        }
+        
+        /* 论文详情：段落样式 */
+        .markdown-content p {
+            margin: 12px 0;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        /* 论文详情：强调样式 */
+        .markdown-content strong, .markdown-content b {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .markdown-content em, .markdown-content i {
+            font-style: italic;
+            color: #4a4a4a;
+        }
+        
+        /* 论文详情：列表样式（优化缩进） */
+        .markdown-content ul, .markdown-content ol {
+            margin: 12px 0;
+            padding-left: 22px;
+        }
+        
+        .markdown-content li {
+            margin: 5px 0;
+            line-height: 1.8;
+            color: #333;
+            padding-left: 6px;
+        }
+        
+        /* 论文详情：第一级列表符号 */
+        .markdown-content ul li {
+            list-style-type: disc;
+        }
+        
+        .markdown-content ol li {
+            list-style-type: decimal;
+        }
+        
+        /* 论文详情：嵌套列表样式 */
+        .markdown-content ul ul, .markdown-content ol ul,
+        .markdown-content ul ol, .markdown-content ol ol {
+            margin: 3px 0;
+            padding-left: 24px;
+        }
+        
+        /* 论文详情：第二级无序列表：空心圆 */
+        .markdown-content ul ul li {
+            list-style-type: circle;
+        }
+        
+        /* 论文详情：第三级无序列表：方块 */
+        .markdown-content ul ul ul li {
+            list-style-type: square;
+        }
+        
+        /* 论文详情：第二级有序列表：小写字母 */
+        .markdown-content ol ol li {
+            list-style-type: lower-alpha;
+        }
+        
+        /* 论文详情：第三级有序列表：小写罗马数字 */
+        .markdown-content ol ol ol li {
+            list-style-type: lower-roman;
+        }
+        
+        /* 论文详情：混合嵌套：有序列表中的无序列表 */
+        .markdown-content ol ul li {
+            list-style-type: circle;
+        }
+        
+        /* 论文详情：混合嵌套：无序列表中的有序列表 */
+        .markdown-content ul ol li {
+            list-style-type: lower-alpha;
+        }
+        
+        /* 论文详情：代码样式 */
+        .markdown-content code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 13px;
+            color: #d73a49;
+            border: 1px solid #e8e8e8;
+        }
+        
+        .markdown-content pre {
+            background: #f5f5f5;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .markdown-content pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+            border: none;
+        }
+        
+        /* 论文详情：引用样式 */
+        .markdown-content blockquote {
+            border-left: 3px solid #e0e0e0;
+            margin: 16px 0;
+            padding: 12px 16px;
+            background: #fafafa;
+            color: #4a4a4a;
+            font-style: italic;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .markdown-content blockquote p {
+            margin: 0;
+            color: #4a4a4a;
+        }
+        
+        /* 论文详情：分割线样式 */
+        .markdown-content hr {
+            border: none;
+            border-top: 1px solid #e8e8e8;
+            margin: 24px 0;
+        }
+        
+        /* 论文详情：表格样式 */
+        .markdown-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .markdown-content th, .markdown-content td {
+            border: 1px solid #e8e8e8;
+            padding: 10px 14px;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        .markdown-content th {
+            background: #fafafa;
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 13px;
+        }
+        
+        .markdown-content td {
+            background: white;
+            color: #333;
+        }
+        
+        .markdown-content tr:nth-child(even) td {
+            background: #fafafa;
+        }
+        
+        /* 论文详情：链接样式 */
+        .markdown-content a {
+            color: #0066cc;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .markdown-content a:hover {
+            color: #0052a3;
+            text-decoration: underline;
+        }
+        
+        /* 论文详情：任务列表样式 */
+        .markdown-content input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        /* 论文详情：图片样式 */
+        .markdown-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin: 8px 0;
+        }
+
+
+
+        .paper-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: #999;
+            margin: 12px 0;
+            flex-wrap: wrap;
+        }
+
+        .paper-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 12px 0;
+        }
+
+        .tag {
+            background: #f5f5f5;
+            color: #666;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .arxiv-link {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .arxiv-link:hover {
+            text-decoration: underline;
+        }
+
+        /* AI助手链接样式 */
+        .ai-links {
+            display: inline-flex;
+            gap: 8px;
+            margin-left: 12px;
+            align-items: center;
+            vertical-align: middle;
+        }
+
+        .ai-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid;
+            line-height: 1.2;
+            vertical-align: middle;
+        }
+
+        .ai-link-kimi {
+            color: #6366f1;
+            border-color: #6366f1;
+            background: #f5f5ff;
+        }
+
+        .ai-link-kimi:hover {
+            background: #6366f1;
+            color: white;
+        }
+
+        .ai-link-chatgpt {
+            color: #10a37f;
+            border-color: #10a37f;
+            background: #f0fdf4;
+        }
+
+        .ai-link-chatgpt:hover {
+            background: #10a37f;
+            color: white;
+        }
+
+        .ai-link-icon {
+            font-size: 12px;
+            line-height: 1;
+            display: inline-block;
+        }
+
+        .no-papers {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+            font-size: 14px;
+        }
+
+
+
+
+        /* Footer styles */
+        .footer {
+            background: #fafafa;
+            padding: 16px 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        /* Domain summary display styles */
+        .domain-summary-display {
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .domain-summary-display h3 {
+            margin: 0 0 16px;
+            color: #1a1a1a;
+            font-size: 16px;
+            font-weight: 600;
+            border-bottom: 1px solid #e8e8e8;
+            padding-bottom: 8px;
+        }
+
+        .domain-summary-display .summary-section,
+        .domain-summary-display .insights-section,
+        .domain-summary-display .trends-section {
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 12px 0;
+        }
+
+        .domain-summary-display .summary-section {
+            border-left: 3px solid #e0e0e0;
+        }
+
+        .domain-summary-display .insights-section {
+            border-left: 3px solid #e0e0e0;
+        }
+
+        .domain-summary-display .trends-section {
+            border-left: 3px solid #e0e0e0;
+        }
+
+
+        .domain-summary-display h4 {
+            margin: 0 0 10px;
+            color: #1a1a1a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .domain-summary-display p {
+            margin: 0;
+            color: #4a4a4a;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+
+
+
+        /* Paper summary inline style */
+        .paper-summary-inline {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 8px 0;
+            padding: 0;
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            /* 宽屏模式下隐藏右侧面板，使用移动端弹窗 */
+            .detail-panel {
+                display: none;
+            }
+            
+            .papers-list.has-detail {
+                margin-right: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* 移动端AI链接优化 */
+            .ai-links {
+                display: flex;
+                margin-left: 0;
+                margin-top: 8px;
+                gap: 6px;
+            }
+            
+            .ai-link {
+                font-size: 11px;
+                padding: 3px 8px;
+            }
+            
+            .ai-link-icon {
+                font-size: 12px;
+            }
+            body {
+                font-size: 14px;
+            }
+
+            /* 移动端显示菜单按钮 */
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            /* 移动端隐藏侧边栏 */
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            /* 移动端主容器不留左边距 */
+            .container {
+                margin-left: 0;
+            }
+            
+            .header {
+                padding: 24px 20px 16px;
+                padding-top: 60px; /* 为菜单按钮留空间 */
+            }
+            
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .papers-list {
+                padding: 24px 20px;
+            }
+            
+            .filter-info, .footer {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            
+            .paper-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .paper-score {
+                margin-left: 0;
+                margin-top: 8px;
+            }
+
+            /* 移动端详情面板完全隐藏 */
+            .detail-panel {
+                display: none !important;
+            }
+            
+            /* 移动端优化领域汇总显示，去掉双层嵌套效果 */
+            .domain-summary-display {
+                background: white;
+                border: 1px solid #e8e8e8;
+                padding: 12px 16px;
+                margin-bottom: 20px;
+            }
+            
+            .domain-summary-display .summary-section,
+            .domain-summary-display .insights-section,
+            .domain-summary-display .trends-section {
+                background: transparent;
+                border: none;
+                border-radius: 0;
+                padding: 0;
+                margin: 0;
+            }
+        }
+        
+        /* KaTeX数学公式样式 */
+        .katex {
+            font-size: 1.1em;
+        }
+        
+        .katex-display {
+            margin: 1em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        
+        .katex-display > .katex {
+            white-space: nowrap;
+        }
+        
+        /* 标记按钮样式 */
+        .mark-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            color: #999;
+            transition: all 0.2s;
+            border-radius: 4px;
+            padding: 0;
+            margin-left: 8px;
+            flex-shrink: 0;
+            vertical-align: middle;
+        }
+        
+        .mark-button:hover {
+            background: #f5f5f5;
+            color: #ffa500;
+            transform: scale(1.1);
+        }
+        
+        .mark-button.marked {
+            color: #ffa500;
+        }
+        
+        .mark-button.marked:hover {
+            color: #ff8c00;
+        }
+        
+        .paper-title .mark-button {
+            margin-left: 8px;
+        }
+        
+        .detail-panel-header .mark-button,
+        .mobile-modal-header .mark-button {
+            margin-right: 8px;
+        }
+    </style>
+    <!-- KaTeX数学公式渲染库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- 移动端菜单按钮 -->
+    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="main-layout">
+        <!-- 左侧书签式导航 -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>📚 领域导航</h2>
+            </div>
+            <nav class="sidebar-nav">
+                
+                <a class="nav-item active" 
+                   onclick="showTab('Multimodal', event)">
+                    多模态
+                    <span class="nav-item-count">10</span>
+                </a>
+                
+            </nav>
+        </aside>
+
+        <!-- 主内容区域 -->
+        <div class="container">
+            <div class="header">
+                <h1>大模型论文速读（10/2965）</h1>
+                <p>周报: 2025-11-17 至 2025-11-21 | 生成时间: 2025-11-24</p>
+            </div>
+            
+            <!-- Tab Contents -->
+            
+            <div id="tab-Multimodal" class="tab-content active">
+                <div class="content-wrapper">
+                    <div class="papers-list" id="papers-list-Multimodal">
+                        <!-- 领域汇总分析 -->
+                        
+                        <div class="domain-summary-display">
+                <!-- <h3>📊 领域汇总分析</h3> -->
+                
+                        <!-- 完整汇总内容（单一文本） -->
+                        
+                <div class="summary-section">
+                    <div class="analysis-content"><p>第1批汇总失败: 'NoneType' object is not subscriptable</p>
+</div>
+                </div>
+                
+                
+            </div>
+            
+                        
+                        <div class="topic-content">
+                            
+                                
+                                <div class="paper-item-compact" id="paper-item-2511.12609">
+                                    <div class="paper-header" onclick="showPaperDetail('2511.12609', 'Multimodal')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Uni-MoE-2.0-Omni: Scaling Language-Centric Omnimodal Large Model with Advanced MoE, Training and Data
+                                                <button class="mark-button" 
+                                                        data-paper-id="2511.12609"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2511.12609", "authors": ["Li", "Chen", "Jiang", "Shi", "Liu", "Zhang", "Deng", "Xu", "Ma", "Zhang", "Hu", "Zhang"], "id": "2511.12609", "pdf_url": "https://arxiv.org/pdf/2511.12609", "rank": 0.0, "title": "Uni-MoE-2.0-Omni: Scaling Language-Centric Omnimodal Large Model with Advanced MoE, Training and Data"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2511.12609" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AUni-MoE-2.0-Omni%3A%20Scaling%20Language-Centric%20Omnimodal%20Large%20Model%20with%20Advanced%20MoE%2C%20Training%20and%20Data%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2511.12609&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AUni-MoE-2.0-Omni%3A%20Scaling%20Language-Centric%20Omnimodal%20Large%20Model%20with%20Advanced%20MoE%2C%20Training%20and%20Data%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2511.12609%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Li, Chen, Jiang, Shi, Liu, Zhang, Deng, Xu, Ma, Zhang, Hu, Zhang</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">请求失败: 'NoneType' object is not subscriptable</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">N/A</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2511.12609" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Uni-MoE-2.0-Omni: Scaling Language-Centric Omnimodal Large Model with Advanced MoE, Training and Data</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 10 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>该工作旨在构建一个<strong>完全开源、以语言为中心的万能模态大模型（OLM）</strong>，在单一架构内同时实现文本、图像、音频、视频等多模态的<strong>深度理解、推理与高质量生成</strong>。论文指出当前领域存在两大核心痛点：</p>
+<ol>
+<li><p><strong>理解-生成割裂</strong><br />
+现有系统往往偏重一端：要么只做多模态理解（如 Qwen-Omni、Baichuan-Omni），要么仅支持单一或少数模态的生成（如 OmniGen、Janus-Pro），难以在统一框架内兼顾语义理解与内容生成。</p>
+</li>
+<li><p><strong>密集 Transformer 低效扩展</strong><br />
+简单增大密集模型参数会带来<strong>计算成本爆炸</strong>，且无法根据任务动态分配容量，导致数十种跨模态任务难以同时优化，训练过程也容易因异构数据而失稳。</p>
+</li>
+</ol>
+<p>为此，作者提出 Uni-MoE-2.0-Omni，通过三项关键设计实现“从 LLM 到 OLM”的高效跃迁：</p>
+<ul>
+<li><p><strong>动态容量混合专家（Dynamic-Capacity MoE）</strong><br />
+将 FFN 层扩展为包含共享专家、路由专家与空专家的 MoE 结构，利用 Top-P 路由+梯度估计，使模型能<strong>按需激活不同数量的专家</strong>，在推理时跳过无关计算，实现“理解-生成”一体化且保持高效。</p>
+</li>
+<li><p><strong>渐进式训练 + 迭代强化策略（GSPO-DPO）</strong><br />
+采用“跨模态预对齐→专家预热→MoE 微调→生成训练”四阶段渐进 recipe，并在强化学习阶段引入 GSPO 在线探索与 DPO 偏好优化，<strong>稳定大规模异构数据训练</strong>，显著提升推理能力。</p>
+</li>
+<li><p><strong>万能模态 3D RoPE 与统一 Token 化</strong><br />
+在自注意力层引入 3D 位置编码，统一为文本、语音、图像、视频 token 分配时-空坐标，实现<strong>跨模态细粒度对齐</strong>；同时设计文本驱动的图像/语音生成 token，使语言模型可直接输出用于扩散或 vocoder 的条件，完成端到端生成。</p>
+</li>
+</ul>
+<p>实验表明，仅用约 75 B 多模态 token 训练，Uni-MoE-2.0-Omni 在 85 项基准上<strong>超过参数量更大、训练数据更多的 Qwen2.5-Omni（1.2 T token）等 50 余项指标</strong>，在视频理解、长语音处理、音视频推理、可控图像生成等任务中取得新 SOTA，验证了其“语言为中心、MoE 驱动”的万能模态架构的有效性。</p>
+<h2>相关工作</h2>
+<p>与 Uni-MoE-2.0-Omni 直接可比或构成其技术基线的相关研究，可按“<strong>万能模态大模型</strong>”“<strong>MoE 多模态架构</strong>”“<strong>多模态生成</strong>”三条主线梳理如下：</p>
+<hr />
+<h3>1. 万能模态大模型（Omni-Modal LLM）</h3>
+<table>
+<thead>
+<tr>
+  <th>模型</th>
+  <th>核心特点</th>
+  <th>与本文关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Qwen2.5-Omni</strong> (Xu et al., 2025)</td>
+  <td>工业界首个 7B 级万能模态 dense 模型，支持文本/图/音/视理解与语音合成，训练 1.2 T token</td>
+  <td>主要对标对象，Uni-MoE-2.0 在 50+/76 项基准上超越</td>
+</tr>
+<tr>
+  <td><strong>Ming-Lite-Omni-1.5</strong> (AI et al., 2025)</td>
+  <td>基于 Ming-7B 的 dense omni 模型，强调流式语音对话</td>
+  <td>视频、语音任务强基线，Uni-MoE-2.0 平均领先 4%</td>
+</tr>
+<tr>
+  <td><strong>Baichuan-Omni-1.5</strong> (Li et al., 2025b)</td>
+  <td>10B dense 结构，采用双编码器-单解码器框架</td>
+  <td>OmniBench 第二名的强对手</td>
+</tr>
+<tr>
+  <td><strong>MiniCPM-o 2.6</strong> (未正式发表)</td>
+  <td>8B dense 模型，侧重端侧部署</td>
+  <td>在 MMBench、MMMU 等榜单与本文互有胜负</td>
+</tr>
+<tr>
+  <td><strong>GPT-4o</strong> (Hurst et al., 2024)</td>
+  <td>闭源 SOTA，支持实时音视频对话</td>
+  <td>能力上限参考，开源社区无参数/数据细节</td>
+</tr>
+<tr>
+  <td><strong>Gemini-2.5-Flash</strong> (Comanici et al., 2025)</td>
+  <td>闭源，用于本文 DPO 阶段“教师”标注</td>
+  <td>提供高质推理链数据</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>2. MoE 多模态架构</h3>
+<table>
+<thead>
+<tr>
+  <th>工作</th>
+  <th>技术要点</th>
+  <th>与本文关联</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Grin-MoE</strong> (Liu et al., 2024a)</td>
+  <td>提出 ODE 数值梯度估计解决 Top-K 不可微问题</td>
+  <td>Uni-MoE-2.0 路由梯度估计的直接基线</td>
+</tr>
+<tr>
+  <td><strong>Uni-MoE 1.0</strong> (Li et al., 2025d)</td>
+  <td>首次将 dense-LLM 扩展为 multimodal-MoE，仅理解无生成</td>
+  <td>本文的“前身”，2.0 新增生成、3D-RoPE、动态容量路由</td>
+</tr>
+<tr>
+  <td><strong>MegaBlocks</strong> (Norick et al., 2022) / <strong>Fairseq-MoE</strong></td>
+  <td>早期稀疏激活实现，专家数固定</td>
+  <td>对比说明固定容量 vs. 动态 Top-P 的灵活性差距</td>
+</tr>
+<tr>
+  <td><strong>Switch-Transformer</strong> (Fedus et al., 2022)</td>
+  <td>Top-1 路由，专家容量恒定</td>
+  <td>被本文“Top-P + 空专家”机制针对的局限性工作</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>3. 多模态生成与统一框架</h3>
+<table>
+<thead>
+<tr>
+  <th>方向</th>
+  <th>代表工作</th>
+  <th>与本文差异</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>图像生成</strong></td>
+  <td>OmniGen (Wu et al., 2025)、Janus-Pro (Chen et al., 2025a)、Show-o (Xie et al., 2025)</td>
+  <td>仅图像域，无语音/视频；端到端微调易干扰理解能力。Uni-MoE-2.0 用语言 token 驱动外部 DiT，避免灾难遗忘</td>
+</tr>
+<tr>
+  <td><strong>语音合成</strong></td>
+  <td>CosyVoice 2、GLM-4-Voice、MaskGCT</td>
+  <td>专注 TTS，不支持图文。本文提出上下文感知 MoE-TTS，与 LLM 共享语义空间</td>
+</tr>
+<tr>
+  <td><strong>统一 token 化</strong></td>
+  <td>Meta-Transformer (Zhang et al., 2023c)、Unified-IO-2 (Lu et al., 2024)</td>
+  <td>将不同模态离散为统一 token，但采用 dense 结构，无动态专家分配</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>4. 训练策略与数据</h3>
+<table>
+<thead>
+<tr>
+  <th>技术点</th>
+  <th>相关文献</th>
+  <th>本文提升</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>渐进式多模态训练</strong></td>
+  <td>Flamingo (Alayrac et al., 2022)、LLaVA-Interleave (Li et al., 2024a)</td>
+  <td>两/三阶段对齐。Uni-MoE-2.0 细化出“预热→MoE 微调→生成→退火”四阶段，并首次在 MoE-omni 场景验证 RL 稳定性</td>
+</tr>
+<tr>
+  <td><strong>迭代 RL + DPO</strong></td>
+  <td>VerIPO (Li et al., 2025c)、R1-VL (Huang et al., 2025)</td>
+  <td>本文将 GSPO 群策略优化与 DPO 偏好学习级联，用于多模态推理链增强</td>
+</tr>
+<tr>
+  <td><strong>多模态数据配比</strong></td>
+  <td>Cambrian-10M、ShareGPT4Video、WavCaps 等开源集合</td>
+  <td>论文在 75 B token 规模下重新清洗并平衡 图/视/音/文比例，退火阶段实现“样本级”均衡采样</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>小结</h3>
+<p>Uni-MoE-2.0-Omni 的“相关研究”图谱可概括为：</p>
+<ul>
+<li><strong>横向对标</strong>：Qwen2.5-Omni、Ming-Lite-Omni 等 dense-OLM，验证 MoE 在同等参数下的效率优势；</li>
+<li><strong>纵向技术</strong>：Grin-MoE 的梯度估计、Uni-MoE 1.0 的多模态 MoE、各类专用生成模型，被整合进统一的“动态容量 MoE + 渐进训练”框架；</li>
+<li><strong>数据与训练策略</strong>：吸收近期开源大规模图文-音视频数据集，并首次将迭代 RL（GSPO-DPO）成功应用于 MoE-OLM 训练，解决异构数据不稳定问题。</li>
+</ul>
+<p>这些工作共同构成了 Uni-MoE-2.0-Omni 的学术基线和创新起点。</p>
+<h2>解决方案</h2>
+<p>论文从<strong>架构、训练、数据</strong>三个维度系统性地解决“万能模态大模型”面临的<strong>理解-生成割裂</strong>与<strong>密集模型扩展低效</strong>两大核心难题。具体方案可概括为“<strong>一个语言为中心的 MoE 骨架 + 两条渐进训练路径 + 三类数据配比策略</strong>”。</p>
+<hr />
+<h3>1. 架构：语言为中心的动态容量 MoE</h3>
+<table>
+<thead>
+<tr>
+  <th>模块</th>
+  <th>关键设计</th>
+  <th>解决痛点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Omni-Modality 3D RoPE</strong>&lt;br&gt;(§2.3.1)</td>
+  <td>将旋转位置编码解耦为 (T, H, W) 三维，文本/语音/图像/视频 token 统一映射到同一时空坐标系</td>
+  <td>消除模态间位置语义冲突，实现<strong>细粒度跨模态对齐</strong></td>
+</tr>
+<tr>
+  <td><strong>Dynamic-Capacity MoE</strong>&lt;br&gt;(§2.3.2)</td>
+  <td>把传统 FFN 替换为“共享专家 + 路由专家 + 空专家”三元组；&lt;br&gt;采用 <strong>Top-P 路由</strong>（累积概率≥0.7）替代固定 Top-K，并引入 <strong>ODE 梯度估计</strong>使离散选择可微</td>
+  <td>① 按 token 复杂度<strong>动态增减专家数</strong>，推理期可跳过空专家，计算节省 20-40%；&lt;br&gt;② 梯度可反传，路由与专家<strong>联合优化</strong>，缓解“专家崩塌”</td>
+</tr>
+<tr>
+  <td><strong>统一 Token 化</strong>&lt;br&gt;(§2.2)</td>
+  <td>语音：Whisper-large-v3 → 20 token/3s；&lt;br&gt;图像：SigLIP 384×384 滑窗 → 每 patch T 个 token；&lt;br&gt;视频：1 fps 采样 → 帧级 token 序列</td>
+  <td>把异构信号压成<strong>一维 token 流</strong>，直接喂给 Qwen2.5-7B 骨干，无需额外大 backbone</td>
+</tr>
+<tr>
+  <td><strong>生成外挂</strong>&lt;br&gt;(§2.4)</td>
+  <td>文本侧输出<strong>专用控制 token</strong>：&lt;br&gt;<code>lang=EN timbre=Jenny  …</code>&lt;br&gt;驱动 <strong>MoE-TTS</strong>（1.2B）或 <strong>Task-DiT</strong>（1.5B）扩散模型</td>
+  <td>理解与生成<strong>解耦</strong>：基础 LLM 只负责“语言规划”，高保真合成由小模型完成，避免 catastrophic forgetting</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>2. 训练：四阶段渐进 + 迭代强化</h3>
+<table>
+<thead>
+<tr>
+  <th>阶段</th>
+  <th>目标 &amp; 数据</th>
+  <th>关键技术</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>① 跨模态预对齐</strong></td>
+  <td>图-文 13B + 音-文 16B token，<strong>仅训练 MLP/Q-Former</strong></td>
+  <td>让 LLM 看得懂、听得懂，但不说也不画</td>
+</tr>
+<tr>
+  <td><strong>② 专家预热</strong></td>
+  <td>分别用 19B 图、5B 音、9B 视频数据<strong>预训练三个 dense 专家</strong></td>
+  <td>为后续 MoE 提供<strong>初始化权重</strong>，防止冷启动随机路由</td>
+</tr>
+<tr>
+  <td><strong>③ MoE 微调 + 混合数据</strong></td>
+  <td>22B 图 + 19B 视频 + 8B 音频 + 1B 文本，<strong>同时激活路由/共享专家</strong></td>
+  <td>① 采用<strong>平衡采样</strong>：每 batch 四模态比例 1:1:1:1；&lt;br&gt;② 空专家权重加入 L0 正则，<strong>鼓励遗忘冗余知识</strong></td>
+</tr>
+<tr>
+  <td><strong>④ 生成训练</strong></td>
+  <td>冻结 LLM，仅更新&lt;br&gt;– MoE-TTS（2B token 多风格 TTS）&lt;br&gt;– Task-DiT（1.5B token 图生/图编）</td>
+  <td><strong>外挂式微调</strong>，保持理解能力不变，快速获得高保真合成</td>
+</tr>
+<tr>
+  <td><strong>⑤ 迭代 RL（GSPO-DPO）</strong></td>
+  <td>先用 5k 冷启动思维链 → <strong>GSPO 在线探索</strong> → 用 Gemini-2.5-Flash 标注正负例 → <strong>DPO 偏好优化</strong></td>
+  <td>解决“多模态推理奖励稀疏”问题，<strong>MathVista 提升 5%</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>3. 数据：75 B token 精洗 + 样本级平衡</h3>
+<table>
+<thead>
+<tr>
+  <th>模态</th>
+  <th>预训练</th>
+  <th>微调/退火</th>
+  <th>关键处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>图像</strong></td>
+  <td>17 M 图文对（PixelProse/CC3M/GRIT）</td>
+  <td>5 M 高质量子集（Cambrian-10M、Docmatix、V*）</td>
+  <td><strong>分辨率自适应填充</strong> + 重复图文过滤，OCR 数据占比刻意压低→解释 DocVQA 差距</td>
+</tr>
+<tr>
+  <td><strong>视频</strong></td>
+  <td>0.1 M 视频-文本（Valley/ShareGPT4Video）</td>
+  <td>扩至 21 B token（FineVideo、Neptune、EgoTaskQA 等）</td>
+  <td><strong>音频轨道清晰度过滤</strong> → 保证音视同步训练</td>
+</tr>
+<tr>
+  <td><strong>音频</strong></td>
+  <td>26 M 小时级 ASR（GigaSpeech、MLS）+ 1 B 音乐/环境音</td>
+  <td>5 B token 多任务（ASR、AQA、情绪、TTS）</td>
+  <td><strong>30 s 滑窗 + 200 token 固定长度</strong>，长语音自动切块</td>
+</tr>
+<tr>
+  <td><strong>文本</strong></td>
+  <td>—</td>
+  <td>1 B→4 B token（OpenOrca、MMLU-Pro、DAPO-Math）</td>
+  <td>退火阶段<strong>数学+代码</strong>占比 40%，提升 GPQA</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>4. 结果验证：85 项基准全面领先</h3>
+<ul>
+<li><strong>视频理解</strong>：Video-MME 66.4（+6.6 vs Qwen2.5-Omni），VSI-Bench 56.0（+36.7）。</li>
+<li><strong>长语音 ASR</strong>：LibriSpeech-other-long WER 4.2↓（Qwen2.5-Omni 7.98）。</li>
+<li><strong>图像编辑</strong>：GEdit-Bench 6.02，比 PixWizard 提升 88%。</li>
+<li><strong>可控生成</strong>：Canny-to-Image FID 18.23，低于 Qwen-Image 37.59。</li>
+<li><strong>推理增强</strong>：MathVista 63.9（+3.1 vs 无 thinking 版），证明 GSPO-DPO 有效。</li>
+</ul>
+<hr />
+<h3>一句话总结</h3>
+<p>论文通过“<strong>动态容量 MoE 提供按需计算 + 渐进式训练稳定异构数据 + 语言驱动外挂生成</strong>”三位一体策略，首次在 7B 级开源模型里同时实现<strong>万能模态理解、推理与高质量生成</strong>，并以 75 B token 的小成本超越 1.2 T token 的工业级 dense 模型。</p>
+<h2>实验验证</h2>
+<p>论文在 <strong>85 个公开基准</strong> 上组织了 <strong>7 大能力维度、20 余子任务</strong> 的系统评测，覆盖<br />
+“看-听-说-画-思”全链路。实验设计遵循 <strong>“理解→生成→跨模态→推理”</strong> 递进关系，并辅以 <strong>MoE 行为可视化</strong> 与 <strong>Thinking 消融</strong> 分析，具体如下：</p>
+<hr />
+<h3>1. 视觉-语言理解（22 基准）</h3>
+<table>
+<thead>
+<tr>
+  <th>类别</th>
+  <th>代表基准</th>
+  <th>主要结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>通用图像理解</strong></td>
+  <td>MMBench-EN/CN、MMStar、GQA、RealWorldQA</td>
+  <td>与 Qwen2.5-Omni 打平或略胜，<strong>GQA 62.18 刷新开源纪录</strong></td>
+</tr>
+<tr>
+  <td><strong>STEM 推理</strong></td>
+  <td>MathVista、MathVision、MMMU、AI2D</td>
+  <td><strong>MathVision 36.61</strong> 领先第二名 19+ 分；MMMU-Pro 仍落后，归因于科学图数量不足</td>
+</tr>
+<tr>
+  <td><strong>文档 &amp; OCR</strong></td>
+  <td>DocVQA、ChartQA、CharXiv、SEED-Bench-2-Plus</td>
+  <td>相比专精模型（Baichuan-Omni-1.5）低 8-15 分，<strong>验证数据稀缺性影响</strong></td>
+</tr>
+<tr>
+  <td><strong>视频理解</strong></td>
+  <td>Video-MME、MVBench、VSI-Bench、LongVideoBench、EgoSchema 等 8 项</td>
+  <td><strong>平均 50.6 分，领先最强 Ming-Lite-1.5 4.0 分</strong>；VSI-Bench 领先 36.7%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>2. 音频-语言理解 &amp; 语音生成（18 基准）</h3>
+<table>
+<thead>
+<tr>
+  <th>任务</th>
+  <th>基准</th>
+  <th>关键结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>ASR</strong></td>
+  <td>LibriSpeech-clean/other、Aishell1/2、MLS-en、CV15</td>
+  <td><strong>clean 1.66 WER 刷新 omni 模型纪录</strong>；&gt;3 min 长语音 other-long WER 4.2↓（Qwen2.5-Omni 7.98）</td>
+</tr>
+<tr>
+  <td><strong>音频理解</strong></td>
+  <td>ClothoAQA、AudioCaps、MMAU-Speech/Sound/Music</td>
+  <td><strong>RACE-audio 89.7 分</strong>；MusicCaps CIDEr 62.4 远高 Qwen2.5-Omni 4.0，<strong>证明音乐caption 数据清洗有效</strong></td>
+</tr>
+<tr>
+  <td><strong>TTS</strong></td>
+  <td>LibriTTS、SEED-hard、TinyStories-en/zh</td>
+  <td><strong>LibriTTS-clean 5.85 WER</strong> 优于 Ming-Lite 11.15；SEED-hard 2.67 仅次于 SOTA 专业 TTS</td>
+</tr>
+<tr>
+  <td><strong>语音对话</strong></td>
+  <td>LlamaQA、WebQA、BigBench-Audio、MultiChallenge-Audio</td>
+  <td>s→s 平均 44.7 分，<strong>与文本通道差距仅 1.2 分</strong>，显示语音端到端推理能力</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>3. 万能模态理解（4 基准）</h3>
+<ul>
+<li><strong>WorldSense、OmniVideoBench、StreamingBench、OmniBench</strong><br />
+<strong>综合 43.7% 准确率，领先第二名 Baichuan-Omni-1.5 1.8%</strong>，在长视频音视同步问答上优势最大。</li>
+</ul>
+<hr />
+<h3>4. 图像生成与编辑（12 基准）</h3>
+<table>
+<thead>
+<tr>
+  <th>任务</th>
+  <th>指标</th>
+  <th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>纯生成</strong></td>
+  <td>Wise↑ / FID↓</td>
+  <td>0.44 / 18.04，<strong>优于 Janus-Pro、Bagel</strong>；仍低于 Qwen-Image，但参数仅其 1/3</td>
+</tr>
+<tr>
+  <td><strong>编辑</strong></td>
+  <td>GEdit-Bench↑ / Emu-Edit↑</td>
+  <td>6.02 / 0.076，<strong>比 PixWizard 提升 88% / 94%</strong></td>
+</tr>
+<tr>
+  <td><strong>可控生成</strong></td>
+  <td>Canny-to-Image FID↓</td>
+  <td><strong>18.23</strong>，低于 Qwen-Image 37.59 与 OmniGen2 45.67</td>
+</tr>
+<tr>
+  <td><strong>低层修复</strong></td>
+  <td>Derain PSNR↑ / Denoise PSNR↑</td>
+  <td>25.41 / 25.70，<strong>Denoise 领先 Qwen-Image 15.8%</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>5. MoE 行为分析（可视化）</h3>
+<ul>
+<li><strong>专家激活热力图</strong>（图 7）<br />
+浅层共享，深层分化：Expert-1 主导视觉，Expert-2/3 主导音频，Expert-4 通用语义，<strong>空专家 E5 在中层激活率提升 3×</strong>，验证“选择性遗忘”与计算节省。</li>
+<li><strong>动态预算曲线</strong>（图 8）<br />
+出现“<strong>双峰一谷</strong>”模式：早期与深层 1-2 专家/token，中间复杂推理层 3-4 专家/token，<strong>整体计算量下降 28%</strong> 而精度不降。</li>
+<li><strong>训练过程演化</strong>（图 9）<br />
+仅中层 9-18 层路由分布在 200 k step 内显著变化，<strong>空专家比例持续上升</strong>，表明模型学会<strong>跳过已充足特征</strong>的 token。</li>
+</ul>
+<hr />
+<h3>6. Thinking vs. No-Thinking 消融</h3>
+<table>
+<thead>
+<tr>
+  <th>版本</th>
+  <th>MathVista</th>
+  <th>MathVerse</th>
+  <th>MMMU</th>
+  <th>平均</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>No-Thinking</strong></td>
+  <td>60.80</td>
+  <td>17.26</td>
+  <td>42.67</td>
+  <td>38.05</td>
+</tr>
+<tr>
+  <td><strong>+Cold-Start</strong></td>
+  <td>55.50</td>
+  <td>19.54</td>
+  <td>39.67</td>
+  <td>35.77</td>
+</tr>
+<tr>
+  <td><strong>+GSPO</strong></td>
+  <td>58.90</td>
+  <td>21.19</td>
+  <td>47.11</td>
+  <td>40.23</td>
+</tr>
+<tr>
+  <td><strong>+DPO</strong></td>
+  <td><strong>63.90</strong></td>
+  <td><strong>22.97</strong></td>
+  <td>45.78</td>
+  <td><strong>41.87</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>GSPO 在线探索</strong> 恢复冷启动掉点；<strong>DPO 用 Gemini-2.5-Flash 标注 6 k 偏好样本</strong> 带来 <strong>MathVista +5.0</strong> 最终收益。</li>
+<li><strong>图像生成</strong> 侧，引入 `` 链式思考后，<strong>语义一致性人工评分 +18%</strong>（图 10），错误率从 26%→8%。</li>
+</ul>
+<hr />
+<h3>7. 效率与扩展实验</h3>
+<ul>
+<li><strong>激活参数</strong> 1.5 B–18 B 动态区间，<strong>平均每 token 仅 4.2 B</strong>（dense 同级 7 B）。</li>
+<li><strong>推理吞吐</strong> 比 dense-Qwen2.5-7B 提升 <strong>1.6×</strong>（相同 A100-80 GB，batch=32）。</li>
+<li><strong>数据缩放曲线</strong>：75 B token 即趋于饱和，<strong>验证 MoE 在有限数据下的高效性</strong>。</li>
+</ul>
+<hr />
+<h3>实验结论一览</h3>
+<ol>
+<li><strong>视频+长语音</strong> 取得新 SOTA，验证 3D-RoPE 时序对齐与 MoE 长序列能力。</li>
+<li><strong>图像编辑/修复</strong> 领先专业模型，表明“语言驱动生成 token”策略可无缝集成低级视觉任务。</li>
+<li><strong>MoE 可视化</strong> 首次揭示 omni 任务在中层出现“专家分工+空专家跳过”的普遍规律。</li>
+<li><strong>Thinking 训练</strong> 在多模态推理和生成上均带来显著增益，证明 RL+偏好学习可迁移到 MoE-OLM。</li>
+</ol>
+<p>整套实验链条完整展示了 Uni-MoE-2.0-Omni 从<strong>理解</strong>到<strong>生成</strong>、从<strong>数据效率</strong>到<strong>推理能力</strong>的全方位优势。</p>
+<h2>未来工作</h2>
+<p>以下展望基于论文第 5、6 节与实验观察，可归纳为 <strong>“模型-数据-训练-评测”</strong> 四大方向的 <strong>12 个可深入探索点</strong>：</p>
+<hr />
+<h3>1. 模型架构与参数分配</h3>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>探索点</th>
+  <th>潜在价值</th>
+  <th>可能路径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td><strong>单一音频 tokenizer 统一理解-生成</strong></td>
+  <td>现有理解 20 tok/3 s、生成 40 tok/3 s 双速率增加系统复杂度</td>
+  <td>训练 <strong>WavTokenizer-40k</strong> 统一码本，引入 <strong>速率可变的 RVQ</strong> 层，实现“同码本、多粒度”</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><strong>条件式专家路由</strong></td>
+  <td>当前 Top-P 仅依赖 token 表示，未显式利用任务 ID</td>
+  <td>在 router 输入端拼接 `` embedding，实现 <strong>任务-专家先验</strong>，减少 30% 冗余激活</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><strong>细粒度专家拆分</strong></td>
+  <td>现有 4 路由专家仍属“粗分工”</td>
+  <td>按 <strong>能力簇</strong>（OCR、音乐、情绪、低层视觉等）继续拆分至 16-32 专家，采用 <strong>专家分组 dropout</strong> 防止过拟合</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><strong>空专家知识擦除机制</strong></td>
+  <td>仅输出零向量，缺乏可控“遗忘”目标</td>
+  <td>引入 <strong>对抗遗忘损失</strong> 与 <strong>梯度反转层</strong>，显式擦除过时/隐私知识，服务 <strong>机器遗忘</strong> 场景</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>2. 数据与模态</h3>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>探索点</th>
+  <th>潜在价值</th>
+  <th>可能路径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>5</td>
+  <td><strong>大规模音乐-文本对</strong></td>
+  <td>音乐理解分数仍低（MusicCaps 62.4 vs 数据量不足）</td>
+  <td>利用 <strong>MIDI-文本对齐</strong> + <strong>合成乐理问答</strong> 构建 1 B token 级音乐指令集</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><strong>文档-OCR 数据增强</strong></td>
+  <td>DocVQA、ChartQA 落后 8-15 分</td>
+  <td>1) <strong>PDF 解析 + 布局感知 HTML</strong> 保留位置信息；&lt;br&gt;2) <strong>图表渲染引擎</strong> 随机生成曲线/饼图问答对，实现 <strong>规模可控合成</strong></td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><strong>视频-音频-文本三模态对齐</strong></td>
+  <td>现有视频数据音频轨道常被降采样为单声道 16 kHz</td>
+  <td>采用 <strong>22 kHz 立体声</strong> 重新采集，引入 <strong>空间音定位</strong> 任务，提升 omni 模型对“谁在说话”的辨识</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><strong>多语种语音混合训练</strong></td>
+  <td>目前仅中英，长尾语言缺失</td>
+  <td>借助 <strong>CommonVoice + ULCA</strong> 开源低资源语料，探索 <strong>共享音素专家 + 语种特定 adapter</strong> 的 MoE 扩展</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>3. 训练策略与优化</h3>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>探索点</th>
+  <th>潜在价值</th>
+  <th>可能路径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>9</td>
+  <td><strong>分层/分段 RL</strong></td>
+  <td>当前 GSPO-DPO 仅作用于 LM 头，专家路由层未直接受奖励</td>
+  <td>1) <strong>专家级价值函数</strong> 为每个专家估计贡献度；&lt;br&gt;2) <strong>分层策略梯度</strong> 先优化 router 概率，再微调专家权重</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><strong>扩散模型内部微调</strong></td>
+  <td>图像生成仍依赖冻结 PixWizard-DiT，文本到图像 FID 18 未达 SOTA</td>
+  <td>将 Task-DiT <strong>重新加入训练</strong> 并采用 <strong>低秩自适应 (LoRA)</strong>，在 3 B 图像-文本对继续训练 1 epoch，目标 FID &lt; 10</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><strong>思考链长度自适应</strong></td>
+  <td>固定 `` 模板可能过度消耗上下文</td>
+  <td>引入 <strong>可停思考控制器</strong>（learnable [END-THINK] token），用 <strong>强化学习</strong> 奖励“最短够用”推理步，减少 25% 生成延迟</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>4. 评测与应用</h3>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>探索点</th>
+  <th>潜在价值</th>
+  <th>可能路径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>12</td>
+  <td><strong>实时流式 omni 对话基准</strong></td>
+  <td>现有离线批评测无法反映<strong>低延迟、 simultaneous 语音-视觉交互</strong>能力</td>
+  <td>构建 <strong>Streaming-OmniBench</strong>：&lt;br&gt;– 输入 640×480 30 fps + 16 kHz 音频流；&lt;br&gt;– 指标：① <strong>首包延迟</strong> &lt; 300 ms；② <strong>语音重叠WER</strong>；③ <strong>视觉问答准确率</strong>；④ <strong>GPU 记忆峰值</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>短期（3-6 个月）可落地</h3>
+<ul>
+<li>条件式路由（2）+ 音乐数据增强（5）→ 预期 <strong>MusicCaps +10 分</strong>，推理加速 <strong>15%</strong>。</li>
+<li>分层 RL（9）+ 思考长度控制（11）→ <strong>MathVista 再 +2~3 分</strong>，生成延迟 <strong>-20%</strong>。</li>
+</ul>
+<h3>中长期（6-18 个月）</h3>
+<ul>
+<li>统一音频 tokenizer（1）+ 空间音频视频数据（7）→ 实现 <strong>“谁在哪个像素位置说话”</strong> 的 omni 定位。</li>
+<li>专家擦除（4）+ 多语种（8）→ 打造 <strong>可遗忘、可扩展</strong> 的低资源 omni 模型，服务 <strong>隐私合规+全球化</strong> 场景。</li>
+</ul>
+<p>以上方向既可直接在 Uni-MoE-2.0 的开源代码与数据清单上迭代，也能为 omni 大模型社区提供新的评测与数据基准。</p>
+<h2>总结</h2>
+<p>论文提出 <strong>Uni-MoE-2.0-Omni</strong>，一个<strong>完全开源、以语言为中心的万能模态大模型</strong>（OLM），在单一 7B MoE 骨架内同时实现文本、图像、音频、视频的理解、推理与生成。核心贡献与结果可概括为 <strong>“一个架构、两套策略、三类数据、四项突破”</strong>：</p>
+<hr />
+<h3>① 一个架构：动态容量 MoE + 3D-RoPE</h3>
+<ul>
+<li><strong>共享/路由/空专家三元组</strong>，Top-P 路由按需激活 1.5-18 B 参数，推理节省 28% 计算。</li>
+<li><strong>Omni-Modality 3D-RoPE</strong> 统一时-空位置编码，实现跨模态细粒度对齐。</li>
+<li><strong>语言驱动生成 token</strong>：文本输出控制信号，外挂 MoE-TTS 与 Task-DiT 完成高保真语音/图像合成，避免灾难遗忘。</li>
+</ul>
+<hr />
+<h3>② 两套训练策略</h3>
+<ol>
+<li><strong>四阶段渐进</strong><br />
+跨模态预对齐 → 专家预热 → MoE 混合微调 → 生成外挂微调，保证稳定收敛。</li>
+<li><strong>迭代强化 GSPO-DPO</strong><br />
+冷启动思维链 → 在线群体策略优化 → 商用模型标注偏好 → DPO，MathVista 提升 5%，图像生成一致性 +18%。</li>
+</ol>
+<hr />
+<h3>③ 三类数据配比（共 75 B token）</h3>
+<ul>
+<li><strong>图-文</strong> 17 M → 5 M 高质量子集，<strong>视频-文本</strong> 0.1 M → 21 B token，<strong>音频-文本</strong> 26 M 小时 → 5 B 多任务，<strong>纯文本</strong> 1 B→4 B STEM。</li>
+<li>退火阶段<strong>样本级平衡</strong>，确保四模态 1:1:1:1，缓解数据稀缺领域（音乐、OCR）性能差距。</li>
+</ul>
+<hr />
+<h3>④ 四项实验突破</h3>
+<table>
+<thead>
+<tr>
+  <th>能力</th>
+  <th>代表基准</th>
+  <th>主要结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>视频理解</strong></td>
+  <td>Video-MME / VSI-Bench</td>
+  <td>66.4 / 56.0，<strong>领先 Qwen2.5-Omni 6.6/36.7 分</strong></td>
+</tr>
+<tr>
+  <td><strong>长语音 ASR</strong></td>
+  <td>LibriSpeech-other-long</td>
+  <td>WER 4.2↓（对比 7.98），<strong>3 分钟+长音频 SOTA</strong></td>
+</tr>
+<tr>
+  <td><strong>图像编辑/修复</strong></td>
+  <td>GEdit-Bench / Denoise-PSNR</td>
+  <td>6.02 / 25.70，<strong>超越专业模型 15-90%</strong></td>
+</tr>
+<tr>
+  <td><strong>万能模态推理</strong></td>
+  <td>WorldSense / OmniBench</td>
+  <td>综合 43.7% <strong>开源第一</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>结论</h3>
+<p>Uni-MoE-2.0-Omni 用 <strong>75 B token 的小成本</strong> 实现 <strong>1.2 T token 级工业 dense 模型</strong> 的跨模态能力，并在视频、长语音、图像编辑、万能模态理解等任务上刷新 <strong>50+ 项开源纪录</strong>，为社区提供了可复现的代码、模型与数据清单，验证了 <strong>“语言为中心 + 动态 MoE”</strong> 构建万能模态大模型的可行性与高效性。</p>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">N/A</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: Multimodal</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Multimodal</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2511.12609" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2511.12609" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2511.15690">
+                                    <div class="paper-header" onclick="showPaperDetail('2511.15690', 'Multimodal')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                MoDES: Accelerating Mixture-of-Experts Multimodal Large Language Models via Dynamic Expert Skipping
+                                                <button class="mark-button" 
+                                                        data-paper-id="2511.15690"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2511.15690", "authors": ["Huang", "Wang", "Yuan", "Ding", "Gong", "Guo", "Liu", "Zhang"], "id": "2511.15690", "pdf_url": "https://arxiv.org/pdf/2511.15690", "rank": 0.0, "title": "MoDES: Accelerating Mixture-of-Experts Multimodal Large Language Models via Dynamic Expert Skipping"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2511.15690" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AMoDES%3A%20Accelerating%20Mixture-of-Experts%20Multimodal%20Large%20Language%20Models%20via%20Dynamic%20Expert%20Skipping%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2511.15690&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AMoDES%3A%20Accelerating%20Mixture-of-Experts%20Multimodal%20Large%20Language%20Models%20via%20Dynamic%20Expert%20Skipping%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2511.15690%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Huang, Wang, Yuan, Ding, Gong, Guo, Liu, Zhang</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">请求失败: 'NoneType' object is not subscriptable</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">N/A</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2511.15690" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">MoDES: Accelerating Mixture-of-Experts Multimodal Large Language Models via Dynamic Expert Skipping</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 10 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>论文旨在解决“稀疏混合专家（MoE）多模态大语言模型（MLLM）推理阶段计算开销过大”的问题。具体而言：</p>
+<ul>
+<li><p><strong>背景</strong>：MoE 结构通过“每 token 仅激活少量专家”来解耦参数量与计算量，但现有 MLLM 仍对所有 token 固定激活 k 个专家，导致大量冗余计算。</p>
+</li>
+<li><p><strong>挑战</strong>：直接将面向文本 LLM 的 expert-skipping 方法迁移到多模态场景会显著掉点（&gt;10%），因为它们忽略了</p>
+<ol>
+<li><strong>层间全局贡献差异</strong>——浅层专家出错会被后续层放大；</li>
+<li><strong>模态行为差异</strong>——FFN 对文本 token 的更新幅度远大于视觉 token。</li>
+</ol>
+</li>
+<li><p><strong>目标</strong>：在<strong>无需重新训练</strong>的前提下，为 MoE MLLM 提供一种<strong>动态、逐 token、模态感知</strong>的专家跳过策略，实现<br />
+– 与原始模型相比 &gt;95% 精度保持；<br />
+– 预填充阶段 <strong>2.16×</strong>、解码阶段 <strong>1.26×</strong> 的实测加速；<br />
+– 搜索最优阈值所需时间从“数天”压缩到“数小时”。</p>
+</li>
+</ul>
+<h2>相关工作</h2>
+<p>论文在第 2 节“Related Work”中系统回顾了与 MoE-MLLM 效率优化相关的研究，可归纳为三大主线：</p>
+<ol>
+<li><p>多模态大语言模型（MLLMs）</p>
+<ul>
+<li>代表性工作：Qwen-VL、InternVL、Kimi-VL、LLaVA-OneVision、Mini-Gemini 等。</li>
+<li>共同痛点：视觉 token 数量随高分辨率/长视频激增，推理瓶颈凸显，促使 MoE 结构被引入以降低计算量。</li>
+</ul>
+</li>
+<li><p>高效 MoE 的两条技术路线<br />
+2.1 训练感知（training-aware）</p>
+<ul>
+<li>方法：在预训练或微调阶段加入负载均衡约束、Ada-K routing、Dynamic MoE 等。</li>
+<li>局限：需重新训练，数据与算力成本高。</li>
+</ul>
+<p>2.2 训练无关（training-free）</p>
+<ul>
+<li>量化：MX-MoE、MoQE 等对专家权重做低比特压缩。</li>
+<li>剪枝：STUN、MoE-Pruner 结构化裁剪冗余专家。</li>
+<li>专家跳过（expert skipping）：NAEE、MC-MoE、DiEP 等依据路由概率或相似度动态绕过专家。</li>
+<li>关键不足：以上方法均针对<strong>文本 LLM</strong>设计，未考虑 MLLM 中的<strong>层间贡献差异</strong>与<strong>模态差异</strong>，直接迁移导致显著掉点。</li>
+</ul>
+</li>
+<li><p>本文定位<br />
+MoDES 首次提出<strong>面向 MoE-MLLM 的无需训练专家跳过框架</strong>，通过全局-局部联合门控（GMLG）与双模态阈值（DMT）解决上述两点被忽视的因素，并引入单调前沿搜索将阈值调优时间从 O(ND²) 降至 O(ND)。</p>
+</li>
+</ol>
+<h2>解决方案</h2>
+<p>论文提出 <strong>MoDES</strong>（Multimodal Dynamic Expert Skipping），以“训练无关”方式在推理阶段动态跳过冗余专家，核心解法围绕两大观察展开，对应两大技术模块，并辅以快速阈值搜索算法。整体流程如下：</p>
+<hr />
+<h3>1. 问题建模与观察</h3>
+<ul>
+<li><strong>观察① 全局贡献失衡</strong>：浅层专家出错会被后续层放大，深层专家相对可跳。</li>
+<li><strong>观察② 模态行为差异</strong>：FFN 对文本 token 更新幅度远大于视觉 token，视觉专家冗余度更高。</li>
+</ul>
+<hr />
+<h3>2. 技术方案</h3>
+<h4>(1) 全局调制局部门控  <strong>GMLG</strong></h4>
+<ul>
+<li><strong>离线</strong>计算每层全局重要性权重<br />
+$$ \alpha^{(l)} = \frac{1}{N} \sum_{j=1}^{N} D_{\text{KL}}!\bigl(p_j \parallel p_j^{(l)}\bigr)$$<br />
+其中 $p_j^{(l)}$ 表示把第 $l$ 层所有专家<strong>整体屏蔽</strong>后的模型输出分布。</li>
+<li><strong>在线</strong>将局部路由概率 $\pi_i^{(l)}$ 与 $\alpha^{(l)}$ 相乘，得到逐 token-逐专家重要性<br />
+$$ s_i^{(l)} = \alpha^{(l)} \cdot \pi_i^{(l)}.$$<br />
+该分数同时反映“层级关键程度”与“当前 token 对专家的依赖程度”。</li>
+</ul>
+<h4>(2) 双模态阈值策略  <strong>DMT</strong></h4>
+<ul>
+<li>为文本、视觉 token 分别设定阈值 $\tau_t$, $\tau_v$。</li>
+<li>跳过规则<br />
+$$ \text{skip Expert}_i^{(l)} \quad\text{iff}\quad s_i^{(l)} &lt; \tau_t \mathbb{I}_t + \tau_v \mathbb{I}_v $$<br />
+其中 $\mathbb{I}_t,\mathbb{I}_v$ 为模态指示函数。</li>
+<li>结果：视觉 token 可更激进地跳过，文本 token 保守保留，契合“模态差异”观察。</li>
+</ul>
+<h4>(3) 单调前沿搜索  <strong>Frontier Search</strong></h4>
+<ul>
+<li>优化问题<br />
+$$ \min_{\tau_t,\tau_v\in\mathcal{B}} f(\tau_t,\tau_v) \quad\text{s.t.}\quad g(\tau_t,\tau_v)\ge\rho $$<br />
+$f$：跳过后的平均 KL 散度（精度损失）；$g$：实际跳过比例；$\rho$：目标跳过率。</li>
+<li>利用 $f,g$ 关于阈值的<strong>单调性</strong>，将暴力 $\mathcal{O}(ND^2)$ 搜索降至 $\mathcal{O}(ND)$，实测加速约 <strong>45×</strong>，可在数小时内完成 30 B 级模型的阈值标定。</li>
+</ul>
+<hr />
+<h3>3. 推理阶段执行</h3>
+<ol>
+<li>预计算 $\alpha^{(l)}$ 已存于本地，无额外开销。</li>
+<li>每遇到 MoE 层：<br />
+a. 计算 top-k 路由概率 $\pi_i^{(l)}$；<br />
+b. 按式 (3) 得重要性 $s_i^{(l)}$；<br />
+c. 根据 token 模态取对应阈值，即时决定跳过哪些专家；<br />
+d. 仅执行剩余专家，Group-GEMM 内核一次性完成矩阵乘，实现实测加速。</li>
+</ol>
+<hr />
+<h3>4. 效果</h3>
+<ul>
+<li><strong>精度</strong>：在 13 个图文/视频基准上，88 % 专家被跳过时仍保持原始模型 97.3 % 精度，比现有方法高 <strong>10.67 %</strong>。</li>
+<li><strong>速度</strong>：Prefill 阶段 <strong>2.16×</strong>，Decode 阶段 <strong>1.26×</strong>。</li>
+<li><strong>成本</strong>：校准+搜索全过程在 30 B 模型上 ≤ 4 小时，且完全无需重训练或修改权重。</li>
+</ul>
+<h2>实验验证</h2>
+<p>论文从 <strong>精度、速度、兼容性、消融、可视化</strong> 五个维度展开系统实验，覆盖 <strong>3 个模型系列、13 个基准、多种跳过率与比特宽</strong> 度，具体如下：</p>
+<hr />
+<h3>1. 主实验：跨模型跨基准精度对比</h3>
+<p><strong>模型</strong></p>
+<ul>
+<li>Kimi-VL-A3B-Instruct</li>
+<li>Qwen3-VL-MoE-30B-A3B-Instruct</li>
+<li>InternVL-3.5-30B/20B-AxB</li>
+</ul>
+<p><strong>基准（13 个）</strong></p>
+<ul>
+<li>图像：TextVQA、ChartQA、MMStar、MMBench、MMVet、MME、RealWorldQA、COCO Caption</li>
+<li>视频：MVBench、EgoSchema、VideoMME、LongVideoBench、VideoMMMU</li>
+</ul>
+<p><strong>跳过率</strong></p>
+<ul>
+<li>50 %、67 %、75 %、83 %、88 %（对应 ρ=0.48→0.85）</li>
+</ul>
+<p><strong>结果</strong></p>
+<ul>
+<li>同等跳过率下，MoDES 平均精度 <strong>持续第一</strong>；在 88 % 极端跳过率时，比最强基线（MC-MoE/DiEP）提升 <strong>7.93 %–10.67 %</strong>。</li>
+<li>在 RealWorldQA、VideoMME 等基准上，跳过专家后<strong>反而高于原模型</strong>，说明部分专家具有干扰性。</li>
+</ul>
+<hr />
+<h3>2. 速度与吞吐量实测</h3>
+<p><strong>硬件</strong>：单卡 H200，batch=8（prefill）/seq=1024（decode）</p>
+<p><strong>指标</strong></p>
+<ul>
+<li>Prefill 阶段：MoDES 获得 <strong>2.16×</strong> 加速（Kimi 83 % 跳过率）/ <strong>2.04×</strong>（Qwen3 88 % 跳过率）。</li>
+<li>Decode 阶段：<strong>1.26×</strong> 加速；内存带宽受限，提升较预填充小。</li>
+<li>内核：Group-GEMM 一次性并发执行剩余专家，GPU 利用率提升 &gt;30 %。</li>
+</ul>
+<hr />
+<h3>3. 与量化正交兼容实验</h3>
+<p><strong>设置</strong></p>
+<ul>
+<li>权重仅量化：MoE FFN 采用混合精度（2.5 bit 或 1.5 bit），其余层 4 bit。</li>
+<li>固定跳过率：Kimi 67 %、Qwen3 75 %。</li>
+</ul>
+<p><strong>结果</strong></p>
+<ul>
+<li>2.5 bit 下 MoDES 保持原模型 <strong>&gt;90 %</strong> 精度，MC-MoE 仅 89.6 %；1.5 bit 下 MoDES 掉点 17.3 %，MC-MoE 掉点 &gt;20 %。</li>
+<li>说明专家跳过与量化可<strong>叠加增益</strong>而不互相冲突。</li>
+</ul>
+<hr />
+<h3>4. 消融实验（Ablation）</h3>
+<table>
+<thead>
+<tr>
+  <th>组件</th>
+  <th>67 % 跳过</th>
+  <th>83 % 跳过</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>仅阈值（π）</td>
+  <td>95.0 %</td>
+  <td>87.4 %</td>
+</tr>
+<tr>
+  <td>+GMLG</td>
+  <td>97.0 %</td>
+  <td>91.2 %</td>
+</tr>
+<tr>
+  <td>+DMT</td>
+  <td>97.3 %</td>
+  <td>93.8 %</td>
+</tr>
+<tr>
+  <td>+GMLG+DMT（完整）</td>
+  <td><strong>98.5 %</strong></td>
+  <td><strong>96.3 %</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>校准样本数 N：256→2048，精度提升边际递减，取 <strong>1024</strong> 平衡成本。</li>
+<li>网格点数 D：50→200，100 已足够，再细化无显著增益。</li>
+</ul>
+<hr />
+<h3>5. 可视化与解析</h3>
+<ul>
+<li><p><strong>层-模态跳过率热图</strong><br />
+– 浅层跳过率 &lt; 深层，符合全局贡献观察。<br />
+– 视觉 token 跳过率 ≈ 2× 文本 token，验证模态冗余差异。</p>
+</li>
+<li><p><strong>t-SNE/角度分析</strong><br />
+– 视觉 token 与 FFN 权重接近正交，更新幅度小，故可激进跳过。</p>
+</li>
+<li><p><strong>定性案例</strong><br />
+– 88 % 跳过率下，MoDES 仍正确回答“债券-股票差值 9.4 万亿”、“Anne Hathaway 剧照出处”等需要细粒度视觉理解的问题，而基线出现明显幻觉或计算错误。</p>
+</li>
+</ul>
+<hr />
+<h3>6. 搜索效率对比</h3>
+<ul>
+<li><strong>朴素网格搜索</strong>：O(ND²) → 2.9 天（30 B 模型）</li>
+<li><strong>Frontier Search</strong>：O(ND) → 1.5 小时，<strong>45× 加速</strong>且精度差异 &lt;0.01 %。</li>
+</ul>
+<h2>未来工作</h2>
+<p>以下方向可在此基础上继续深入，分为“方法本身”与“系统/应用”两大视角：</p>
+<hr />
+<h3>方法层面</h3>
+<ol>
+<li><p><strong>自适应阈值</strong><br />
+当前 τt、τv 为全局静态值；可探索<strong>逐层</strong>或<strong>逐样本</strong>动态阈值，用轻量级元网络根据输入复杂度实时预测，进一步挖掘冗余空间。</p>
+</li>
+<li><p><strong>跨模态联合重要性</strong><br />
+DMT 仅把文本/视觉分开计算。若出现“图文强耦合”样本（如 OCR、图表），可引入<strong>跨模态注意力加权</strong>，让重要性分数同时依赖两类 token 的交互强度。</p>
+</li>
+<li><p><strong>与路由策略协同设计</strong><br />
+将 skipping 决策直接嵌入 router 的 top-k 选择过程，实现“<strong>一次前向、同时决定选谁+跳谁</strong>”，避免先选后跳的双重开销。</p>
+</li>
+<li><p><strong>理论化冗余边界</strong><br />
+基于信息瓶颈或层间误差传播理论，给出“可跳过专家比例”与“性能下降”之间的解析边界，指导用户按精度预算快速设定 ρ。</p>
+</li>
+<li><p><strong>继续压缩组合</strong></p>
+<ul>
+<li><strong>结构化剪枝</strong>：把被长期跳过的专家整行/整列永久移除，再量化，实现训练无关的“先跳后剪”。</li>
+<li><strong>蒸馏</strong>：用 MoDES 作为 teacher，生成跳过后的软标签，蒸馏到稠密小模型，进一步降低部署体积。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3>系统与应用层面</h3>
+<ol start="6">
+<li><p><strong>长视频/长文档场景</strong><br />
+视觉 token 数量随帧数线性增长，可验证 MoDES 在 100 k+ 视觉 token 的长上下文场景下是否仍保持线性加速比。</p>
+</li>
+<li><p><strong>边缘端部署</strong><br />
+将 MoDES 与 NPU/int8 内核结合，测量在手机或车载芯片上的<strong>端到端延迟</strong>与<strong>能耗</strong>，并探索阈值-功耗联合优化。</p>
+</li>
+<li><p><strong>多帧 3D/医疗影像</strong><br />
+医学体素、点云等多维信号具有更高冗余度，可扩展 DMT 至“3D 模态”，验证跳过率能否突破 95 % 仍保持临床可用精度。</p>
+</li>
+<li><p><strong>在线学习/遗忘</strong><br />
+研究当模型通过继续学习新增专家后，旧专家的重要性如何漂移；设计<strong>增量式 α(l) 更新协议</strong>，避免每次重新离线校准。</p>
+</li>
+<li><p><strong>可解释工具链</strong><br />
+提供“跳过热力图”可视化插件，让用户看到哪些层、哪些语义（颜色、文字、运动）被大量跳过，辅助调试与信任建立。</p>
+</li>
+</ol>
+<hr />
+<h3>一句话总结</h3>
+<p>MoDES 首次验证了“训练无关、模态感知”的专家跳过在 MLLM 中的可行性，未来可在<strong>自适应决策、理论保证、多模态冗余极限</strong>与<strong>真实部署场景</strong>四个维度继续深挖。</p>
+<h2>总结</h2>
+<p><strong>MoDES: Accelerating Mixture-of-Experts Multimodal Large Language Models via Dynamic Expert Skipping</strong><br />
+一句话总结：<br />
+<strong>首次提出“训练无关、模态-与层-感知”的专家跳过框架，在 30 B 级 MLLM 上实现 88 % 专家被跳掉仍保持 97 % 原始精度，预填充 2.16×、解码 1.26× 实测加速。</strong></p>
+<hr />
+<h3>1. 背景与痛点</h3>
+<ul>
+<li>MoE-MLLM 推理时“每 token 固定激活 k 个专家”存在大量冗余计算。</li>
+<li>直接把文本 LLM 的跳过方法搬过来会掉点 &gt;10 %，因为<br />
+① 忽略“浅层专家错误会被后续放大”的全局贡献差异；<br />
+② 忽略“FFN 对文本 token 更新远大于视觉 token”的模态差异。</li>
+</ul>
+<hr />
+<h3>2. 方法总览（MoDES）</h3>
+<table>
+<thead>
+<tr>
+  <th>模块</th>
+  <th>解决痛点</th>
+  <th>关键公式/机制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>GMLG</strong> 全局调制局部门控</td>
+  <td>层间贡献失衡</td>
+  <td>离线计算层敏感度 α^(l)＝KL(原输出∥跳过第 l 层输出)；在线重要性 s_i^(l)=α^(l)·π_i^(l)</td>
+</tr>
+<tr>
+  <td><strong>DMT</strong> 双模态阈值</td>
+  <td>模态行为差异</td>
+  <td>文本阈值 τ_t，视觉阈值 τ_v；skip 当 s_i^(l)&lt;τ_t·I_t+τ_v·I_v</td>
+</tr>
+<tr>
+  <td><strong>Frontier Search</strong></td>
+  <td>阈值调优太慢</td>
+  <td>利用 f,g 单调性，O(ND) 搜索替代 O(ND²)，45× 提速</td>
+</tr>
+</tbody>
+</table>
+<p><strong>全程无需重训练或改权重。</strong></p>
+<hr />
+<h3>3. 实验结果</h3>
+<ul>
+<li><strong>3 模型系列</strong>（Kimi-VL、Qwen3-VL-MoE、InternVL-3.5）<strong>13 基准</strong>（图文+视频）。</li>
+<li><strong>88 % 专家被跳过</strong>，平均精度 <strong>97.3 %</strong> 原模型水平，比最强基线高 <strong>10.67 %</strong>。</li>
+<li><strong>速度</strong>：Prefill 2.16×，Decode 1.26×；与量化叠加 2.5 bit 仍保持 &gt;90 % 精度。</li>
+<li><strong>消融</strong>：GMLG 与 DMT 各自带来 ≥2 % 增益；搜索算法 1.5 h 完成 30 B 模型标定。</li>
+</ul>
+<hr />
+<h3>4. 结论</h3>
+<p>MoDES 通过“离线一次校准 + 在线模态-感知跳过”，把 MoE-MLLM 的冗余计算压缩到极限，同时维持多模态理解能力，为后续“训练无关”的高效 MLLM 部署提供了新基线。</p>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">N/A</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: Multimodal</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Multimodal</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2511.15690" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2511.15690" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2511.00108">
+                                    <div class="paper-header" onclick="showPaperDetail('2511.00108', 'Multimodal')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Pelican-VL 1.0: A Foundation Brain Model for Embodied Intelligence
+                                                <button class="mark-button" 
+                                                        data-paper-id="2511.00108"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2511.00108", "authors": ["Zhang", "Liu", "Ren", "Ni", "Zhang", "Ding", "Hu", "Shan", "Niu", "Liu", "Liu", "Zhao", "Qi", "Zhang", "Li", "Wang", "Luo", "Dai", "Xu", "Shen", "Wang", "Tang", "Ju"], "id": "2511.00108", "pdf_url": "https://arxiv.org/pdf/2511.00108", "rank": 0.0, "title": "Pelican-VL 1.0: A Foundation Brain Model for Embodied Intelligence"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2511.00108" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8APelican-VL%201.0%3A%20A%20Foundation%20Brain%20Model%20for%20Embodied%20Intelligence%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2511.00108&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8APelican-VL%201.0%3A%20A%20Foundation%20Brain%20Model%20for%20Embodied%20Intelligence%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2511.00108%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Zhang, Liu, Ren, Ni, Zhang, Ding, Hu, Shan, Niu, Liu, Liu, Zhao, Qi, Zhang, Li, Wang, Luo, Dai, Xu, Shen, Wang, Tang, Ju</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">请求失败: 'NoneType' object is not subscriptable</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">N/A</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2511.00108" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Pelican-VL 1.0: A Foundation Brain Model for Embodied Intelligence</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 1 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>论文旨在弥合“数字世界感知”与“物理世界具身认知”之间的根本鸿沟。现有通用视觉–语言模型（VLM）虽在纯视觉任务上表现卓越，却普遍缺乏</p>
+<ul>
+<li>复杂空间关系的鲁棒推理</li>
+<li>长时序因果链的准确推断</li>
+<li>真实交互属性（如可供性、物理可行性）的可靠判断</li>
+</ul>
+<p>因此，作者提出开源具身“大脑”模型家族 Pelican-VL 1.0（7 B–72 B），并设计 Deliberate Practice Policy Optimization（DPPO）训练框架，通过“RL-Refine → Diagnose → SFT”元循环，在千亿级 token 的异构数据上实现：</p>
+<ol>
+<li>大规模数据利用与智能自适应学习的统一</li>
+<li>技能精炼与能力边界扩展的交替迭代</li>
+<li>真实机器人零样本操作、闭环力控抓取、长时任务规划等具身智能关键能力的显著提升</li>
+</ol>
+<h2>相关工作</h2>
+<p>与 Pelican-VL 1.0 直接相关或构成竞争/对比的研究可归纳为四大类，均围绕“具身基础模型”这一主线展开。以下按“策略路线”梳理代表性工作，并指出其与本文的差异。</p>
+<table>
+<thead>
+<tr>
+  <th>策略路线</th>
+  <th>代表工作</th>
+  <th>核心思想</th>
+  <th>与 Pelican-VL 1.0 的关系/差异</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>数据暴力缩放</strong></td>
+  <td>Google Gemini Robotics 1.5&lt;br&gt;π0.5 (Physical Intelligence)&lt;br&gt;NVIDIA GR00T N1 / Cosmos-Reason1&lt;br&gt;ByteDance GR3</td>
+  <td>用互联网+机器人混合数据继续预训练或后训练超大 VLM，追求“数据金字塔”规模效应</td>
+  <td>同样强调“大规模是前提”，但缺乏像 DPPO 那样的迭代式“能力诊断-靶向补强”算法框架；Pelican-VL 通过元循环把数据利用率显性化、可诊断化</td>
+</tr>
+<tr>
+  <td><strong>分层架构精炼</strong></td>
+  <td>Figure Helix&lt;br&gt;Wall-OS S</td>
+  <td>大 VLM 只做高层推理，低层动作由小策略网络或传统控制器完成，降低对机器人数据的直接依赖</td>
+  <td>架构解耦带来模块化，但通常只在“小、专”数据上训练，难以覆盖开放世界；Pelican-VL 用统一 72 B 端到端模型吸收 4 B token 多模态数据，兼顾高层语义与细粒度动作</td>
+</tr>
+<tr>
+  <td><strong>后训练算法</strong></td>
+  <td>DPO / GRPO / PPO 系列&lt;br&gt;RL4VLM、Reinforced Reasoning 等</td>
+  <td>把 RL 或偏好优化引入 VLM 后训练，解决“对齐”或“推理”问题</td>
+  <td>多数工作把 SFT 与 RL 视为一次性两阶段；Pelican-VL 提出“RL-Refine→Diagnose→SFT”元循环，将二者统一在偏好学习框架内，实现持续自我改进</td>
+</tr>
+<tr>
+  <td><strong>具身数据与评测</strong></td>
+  <td>Open X-Embodiment (OXE)&lt;br&gt;BridgeData V2、RoboNet&lt;br&gt;Embodied Arena / EmbodiedBench&lt;br&gt;RoboSpatial / COSMOS / Where2Place</td>
+  <td>提供跨本体共享数据或细粒度能力维度评测</td>
+  <td>Pelican-VL 直接利用/复现了其中部分数据，但指出“任务级 Pass/Fail”评测无法指导迭代训练；作者重新标注 27 k 样本构建 9 维能力雷达，首次把“诊断式评测”与训练闭环绑定</td>
+</tr>
+</tbody>
+</table>
+<p>综上，现有研究要么“重数据轻算法”，要么“重架构轻规模”，要么“重对齐轻诊断”。Pelican-VL 1.0 首次把“超大参数量 + 多模态长视频 RL 训练 + 诊断式 SFT”整合到同一开源体系，填补了“规模-算法-诊断”三者协同的空白。</p>
+<h2>解决方案</h2>
+<p>论文将“数字感知→具身认知”的鸿沟拆解为<strong>数据规模利用不足</strong>与<strong>训练算法碎片化</strong>两大瓶颈，提出“先规模、后精炼”的两段式解决方案，核心抓手是<strong>Deliberate Practice Policy Optimization（DPPO）</strong>框架。整体流程可概括为：</p>
+<blockquote>
+<p><strong>4 B token 原始数据 → Metaloop 蒸馏高质量集合 → 72 B 统一多模态模型 → RL-Refine ↔ Diagnose ↔ SFT 元循环 → 9 维能力雷达持续诊断 → 真实机器人闭环验证</strong></p>
+</blockquote>
+<p>下面按“数据-算法-系统”三个层面展开说明如何解决。</p>
+<hr />
+<h3>1. 数据层：把“ raw 规模”转成“靶向质量”</h3>
+<table>
+<thead>
+<tr>
+  <th>步骤</th>
+  <th>关键机制</th>
+  <th>解决痛点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>原始池构建</strong></td>
+  <td>231 M 图、29 k h 视频、4 B token，覆盖物理/空间/时序/决策四域</td>
+  <td>解决“高质量具身数据稀缺”</td>
+</tr>
+<tr>
+  <td><strong>Metaloop 蒸馏</strong></td>
+  <td>① 用 Qwen3VL-Plus 自动生成 24 QA/视频 → ② InternVL3.5-38 B 双答案投票 → ③ 人工抽检 → ④ 按 9 维能力标签分类</td>
+  <td>低成本扩容，同时打上“能力维度”标签</td>
+</tr>
+<tr>
+  <td><strong>弱点靶向采样</strong></td>
+  <td>每轮 RL rollout 后计算 difficulty 分数 $D(\tau)=1-\text{SuccessRate}(\tau)$，把“8 次全错”样本优先收入下一轮 SFT</td>
+  <td>让数据分布始终对准当前模型盲区</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>2. 算法层：用统一偏好目标把 RL 与 SFT 焊成“一个环”</h3>
+<p>DPPO 将看似割裂的两种优化纳入同一<strong>偏好学习</strong>目标：</p>
+<p>$$<br />
+\theta^*=\arg\max_\theta \mathbb E_{c\sim D_{\text{pref}}} \bigl[\log P(c|\pi_\theta)\bigr]<br />
+$$</p>
+<ul>
+<li><p><strong>RL-Refine（Exploratory Grounding）</strong></p>
+<ul>
+<li>采用 <strong>GRPO</strong> 做多模态、多任务策略梯度，奖励函数覆盖 6 维：可供性、数值、因果、任务成功、规划、预测。</li>
+<li>rollout 全部入库，用 difficulty 分数自动筛出“远端分布模式”（模型几乎不会答的 hard case）。</li>
+<li>当任务饱和度指标 $T_S(t)\ge 0.7$ 时自动终止，防止无效探索。</li>
+</ul>
+</li>
+<li><p><strong>Diagnose（弱点检测）</strong></p>
+<ul>
+<li>基于规则+大模型投票双重过滤，生成“能力维度-错误样本”映射表，定位到 9 维雷达中的具体短板。</li>
+</ul>
+</li>
+<li><p><strong>SFT（Targeted Remediation）</strong></p>
+<ul>
+<li>构造三元数据集 $D_{\text{SFT}}=D_{\text{weak}}\cup D_{\text{assoc}}\cup D_{\text{gen}}$，把 hard case 与关联样本、合成样本一起做最大似然：<br />
+$$<br />
+\mathcal L_{\text{SFT}}(\theta)= -\mathbb E_{(x,y)\sim D_{\text{SFT}}} \Bigl[\sum_{(x,y)\in\tau^*}\log\pi_\theta(y|x)\Bigr]<br />
+$$</li>
+<li>全局拉动策略分布，填补 RL 局部优化无法跳跃的“远端模式”，并注入通用知识防止灾难遗忘。</li>
+</ul>
+</li>
+</ul>
+<p>三段循环交替执行，形成“<strong>探索→诊断→补救</strong>”的<strong>元认知</strong>式自进化，直到 9 维雷达全部收敛。</p>
+<hr />
+<h3>3. 系统层：让 72 B 多模态模型能“跑得起”千亿级 RL</h3>
+<table>
+<thead>
+<tr>
+  <th>工程挑战</th>
+  <th>论文对策</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>长视频多模态上下文爆炸</td>
+  <td>实现 <strong>Context Parallelism</strong>：把图像块/视频帧按序列维度切分到多卡，单步 forward 即可处理 32 帧×百万像素级输入</td>
+</tr>
+<tr>
+  <td>72 B 模型 RL 训练不稳定</td>
+  <td>在开源 VERL 基础上扩展 <strong>Mixed-Batch 多模态训练</strong>：同一 batch 内混合文本、图文、视频-文本三元组，配合 GRPO 做跨模态排序偏好</td>
+</tr>
+<tr>
+  <td>推理延迟高</td>
+  <td>4-bit 量化+KV-cache 融合，云端 72 B 模型往返延迟 &lt; 300 ms，满足 10 Hz 力控闭环要求</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>4. 真实闭环验证：把“能力提升”转成“机器人可测精度”</h3>
+<ul>
+<li><strong>零样本 affordance 操作</strong>：多视图 2D 可供性 → 3D 射线三角化 → 毫米级抓取/放置，通用对象成功率提升 15.4%。</li>
+<li><strong>传感器-电机闭环抓取</strong>：Pelican-VL 输出先验力 $F_{\text{init}}^n$ → 粒子滤波在线估计摩擦系数 $\mu_t$ → 比例控制器实时调力，实现“轻柔抓取豆腐”类任务，首次在 VLM 层面闭合“预测-触觉适应-记忆更新”循环。</li>
+<li><strong>长时域多机器人协作</strong>：单一大脑通过 MCP 协议同时指挥轮式人形、双足人形、工业臂，完成 8 步灯泡质检流水线，任务规划准确率 96%。</li>
+</ul>
+<p>通过以上“数据-算法-系统”三位一体设计，论文把“大规模数据”与“智能自适应训练”首次统一在 72 B 开源具身大脑上，实现了从“数字感知”到“物理认知”的可衡量、可迭代、可复现的完整路径。</p>
+<h2>实验验证</h2>
+<p>论文从“基准评测→能力诊断→真实硬件闭环”三个层次展开实验，既验证 DPPO 训练框架的有效性，也展示 Pelican-VL 1.0 在多种机器人本体上的通用性与鲁棒性。核心实验可归纳为 5 组，共计 30+ 项子任务。</p>
+<hr />
+<h3>1. 标准 Benchmark 对比（零样本）</h3>
+<table>
+<thead>
+<tr>
+  <th>实验目的</th>
+  <th>数据集</th>
+  <th>指标</th>
+  <th>关键结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>通用视频理解</td>
+  <td>MVBench、EgoSchema</td>
+  <td>Top-1 Acc</td>
+  <td>72 B 模型分别 69.7 / 79.3，↑ 2.0 / 8.4 超过 Qwen2.5-VL-72B</td>
+</tr>
+<tr>
+  <td>空间-物理推理</td>
+  <td>RoboSpatial、PhyX、Where2Place、OmniSpatial</td>
+  <td>Acc / 数值分数</td>
+  <td>Where2Place 64.0（↑ 25.9）、PhyX 86.4（↑ 24.1）均列 SOTA</td>
+</tr>
+<tr>
+  <td>时序-因果推理</td>
+  <td>COSMOS、ERQA、VSI-Bench</td>
+  <td>Acc</td>
+  <td>COSMOS 68.5（↑ 5.7），VSI-Bench 57.3（↑ 17.0）</td>
+</tr>
+<tr>
+  <td>函数调用</td>
+  <td>Berkeley Function-Calling Leaderboard</td>
+  <td>整体 AST Acc</td>
+  <td>46.0，超越 DeepSeek-R1-685B（48.9）与 GPT-5-nano（48.8），但参数量仅 1/10</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>2. 9 维能力雷达细粒度诊断</h3>
+<table>
+<thead>
+<tr>
+  <th>实验目的</th>
+  <th>方法</th>
+  <th>规模</th>
+  <th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>能力分布失衡诊断</td>
+  <td>重新标注 27 667 样本，按 9 维标签统计</td>
+  <td>10 个公开数据集</td>
+  <td>物理&amp;因果 3.5 %、可供性 2.3 %、决策规划 3.3 % 极度稀缺</td>
+</tr>
+<tr>
+  <td>DPPO 提升分布</td>
+  <td>Pelican-72B 训练前后雷达对比</td>
+  <td>同一批重标注测试集</td>
+  <td>物理因果 ↑ 25.7 %，决策规划 ↑ 22.1 %，数值推理 ↑ 19.4 %，实现均衡提升</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>3. Metaloop 训练轨迹分析</h3>
+<table>
+<thead>
+<tr>
+  <th>实验目的</th>
+  <th>设置</th>
+  <th>关键观测</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>循环增益曲线</td>
+  <td>3 个完整 metaloop，每轮 RL→SFT</td>
+  <td>图 4：RefSpatialBench 每轮 +6~8 分，MVBench 无下降 → 无灾难遗忘</td>
+</tr>
+<tr>
+  <td>数据分布漂移</td>
+  <td>记录每轮 RL rollout 的 reward/accuracy 直方图</td>
+  <td>图 5：易样本快速饱和被丢弃，难样本持续流入 SFT，验证“靶向采样”有效性</td>
+</tr>
+<tr>
+  <td>任务饱和度停准则</td>
+  <td>当 TS(t)≥0.7 自动终止 RL</td>
+  <td>平均节省 28 % GPU 小时，防止过拟合</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>4. 真实机器人下游验证</h3>
+<h4>4.1 零样本 affordance 操作（单臂桌面平台）</h4>
+<ul>
+<li><strong>场景</strong>：3 视角 RGB-D，随机摆放 20 类家用物品（水果、零食、器皿）。</li>
+<li><strong>指标</strong>：任务成功率（SR）、路径效率（PE）、3-D 定位误差（mEE）。</li>
+<li><strong>结果</strong>：SR 92 %（对比基线 57 %），mEE 4.7 mm，首次实现“无微调、无示教”直接泛化到未见物体。</li>
+</ul>
+<h4>4.2 传感器-电机闭环抓取（UR5e + 触觉阵列）</h4>
+<ul>
+<li><strong>协议</strong>：7 阶段人手式抓取循环（reach-load-lift-hold-replace-unload-release）。</li>
+<li><strong>变量</strong>：易碎豆腐、硅胶杯、塑料袋（摩擦系数未知）。</li>
+<li><strong>指标</strong>：滑移次数 / 破裂率 / 最终握力超量。</li>
+<li><strong>结果</strong>：豆腐破裂率 0 %（基线 35 %），滑移事件减少 4.2 倍，握力超量下降 38 %；粒子滤波收敛时间 0.18 s，接近人手指触反应窗口。</li>
+</ul>
+<h4>4.3 多机器人协作函数调用（3 本体、8 子任务）</h4>
+<ul>
+<li><strong>本体</strong>：轮式人形（电工）、双足人形（搬运工）、工业双臂 UR（质检员）。</li>
+<li><strong>任务</strong>：灯泡上电→装盒→视觉+通电质检→分拣→下电。</li>
+<li><strong>指标</strong>：端到端成功率、单步函数调用准确率、多轮对话轮数。</li>
+<li><strong>结果</strong>：端到端 96 %，函数调用 AST 准确率 98.7 %，平均对话 5.3 轮完成跨本体协作。</li>
+</ul>
+<h4>4.4 长时域家庭服务实验（客厅场景）</h4>
+<ul>
+<li><strong>指令</strong>：“把鞋放上鞋架，把桌上垃圾扔进垃圾桶，把沙发脏衣服放进洗衣机”。</li>
+<li><strong>跨度</strong>：3 区域、12 子动作、持续 187 s。</li>
+<li><strong>指标</strong>：子任务完成率 / 重规划次数 / 总耗时。</li>
+<li><strong>结果</strong>：100 % 子任务完成，重规划 0 次，总耗时较基线缩短 22 %，展示长时序推理与动态避障能力。</li>
+</ul>
+<hr />
+<h3>5. 消融与可扩展性测试</h3>
+<table>
+<thead>
+<tr>
+  <th>实验</th>
+  <th>变量</th>
+  <th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>无 DPPO（仅 SFT）</td>
+  <td>72 B 模型，同等 4 B token</td>
+  <td>平均 benchmark 分数 ↓ 11.4 %，物理因果 ↓ 18 %</td>
+</tr>
+<tr>
+  <td>无 difficulty 采样</td>
+  <td>随机选样本做 SFT</td>
+  <td>RefSpatialBench ↓ 9.7 分，验证“靶向”必要性</td>
+</tr>
+<tr>
+  <td>参数规模缩放</td>
+  <td>7 B → 72 B</td>
+  <td>平均每 10 B 参数带来 1.8 % 绝对提升，展现可扩展性</td>
+</tr>
+<tr>
+  <td>Context Parallel 卡数</td>
+  <td>32 → 128 卡</td>
+  <td>上下文长度线性扩展至 256 k token，吞吐提升 3.9×，无精度损失</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>综上，论文通过“标准 benchmark + 细粒度能力雷达 + 真实硬件闭环”三位一体实验，系统验证了 DPPO 框架在数据利用率、训练稳定性与具身性能三方面的优势，并首次在 72 B 开源模型上实现多本体、长时域、零样本的完整机器人应用闭环。</p>
+<h2>未来工作</h2>
+<p>以下可探索方向按“数据-评测-算法-系统-应用”五轴梳理，均直接源于 Pelican-VL 1.0 与 DPPO 框架的未尽之处或新出现的问题，可供后续研究切入。</p>
+<hr />
+<h3>1. 数据轴：从“来源导向”到“能力导向”的靶向数据工程</h3>
+<ul>
+<li><strong>能力-标签反向检索</strong>：建立“9 维能力缺口 ⟷ 数据片段”自动检索与合成管线，实现“缺什么-秒级捞什么”。</li>
+<li><strong>物理-参数可泛化数据</strong>：引入连续物理参数（摩擦、刚度、质心）作为标签，研究模型对未采样物理区间的 zero-shot 外推边界。</li>
+<li><strong>人类-机器人混合数据</strong>：将第三视角人做操作与机器人 ego 视角同步采集，研究跨视角因果一致性，缓解 ego-domain gap。</li>
+</ul>
+<hr />
+<h3>2. 评测轴：从“黑盒 Pass/Fail”到“可解释诊断”</h3>
+<ul>
+<li><strong>细粒度能力基准缺失</strong>：当前 9 维雷达仅 27 k 样本，需扩展到百万级并引入时序-多对象-长程规划组合任务，形成“难度-维度”双坐标题库。</li>
+<li><strong>在线评测协议</strong>：构建“即测即教”闭环——模型提交后自动触发 DPPO 训练，返回能力雷达差分报告，实现社区共享的 living benchmark。</li>
+<li><strong>可解释失败归因</strong>：结合因果推断（counterfactual intervention）自动定位失败维度（是物理预测错？还是规划搜索不足？），为算法改进提供梯度信号。</li>
+</ul>
+<hr />
+<h3>3. 算法轴：DPPO 的扩展与理论深挖</h3>
+<ul>
+<li><strong>多智能体 DPPO</strong>：把单 brain 控制多本体扩展为“多 brain-多本体”协同，引入博弈论奖励建模，研究群体 emergent 分工。</li>
+<li><strong>持续学习环境</strong>：引入非平稳数据流（concept drift），验证 DPPO 循环能否在“灾难性遗忘-新知识获取”间自动权衡；结合 EWC/MAS 等正则项。</li>
+<li><strong>理论收敛性</strong>：当前 Metaloop 终止条件为启发式 TS(t)≥0.7，需建立 RL-Refine ↔ SFT 交替过程的收敛保证与最优切换策略。</li>
+<li><strong>奖励-偏好联合学习</strong>：将规则奖励与隐式人类偏好（点击、注视、语言纠正）统一建模，研究多源偏好融合下的样本复杂度。</li>
+</ul>
+<hr />
+<h3>4. 系统轴：72 B 级 RL 训练的“最后一英里”</h3>
+<ul>
+<li><strong>实时性极限</strong>：把 72 B 模型蒸馏为 1–3 B 边缘侧小脑，研究 cloud-edge 协同推理架构，在 50 ms 内完成力控闭环。</li>
+<li><strong>异构并行再扩展</strong>：探索 sequence + expert parallelism，把不同能力维度（物理、空间、语言）稀疏激活到不同专家模块，实现百万 token 级上下文。</li>
+<li><strong>混合精度与量化下的 RL 稳定性</strong>：研究 2-bit 量化 + QLoRA 在 RL 阶段的可行性，降低 72 B 模型训练门槛至百卡级别。</li>
+</ul>
+<hr />
+<h3>5. 应用轴：高价值真实场景“ChatGPT 时刻”</h3>
+<ul>
+<li><strong>柔性产线</strong>：面对小批量、多品种订单，模型需即时阅读新工序 PDF→生成控制脚本→自我纠错，实现“零示教换线”。</li>
+<li><strong>医疗照护</strong>：在老龄化护理院完成“床-轮椅-厕所”长程辅助转移，需融合人体生物力学约束与隐私合规视觉输入。</li>
+<li><strong>灾难应急</strong>：无人机+地面机器人协同搜救，模型实时解析火情/烟雾/建筑蓝图，生成多本体联合搜索路径并在线适应环境突变。</li>
+<li><strong>家庭长尾任务</strong>：统计普通家庭 1000 条“罕见但高价值”指令（如“帮我把掉在沙发缝里的药片夹出来”），验证长尾泛化与安全性。</li>
+</ul>
+<hr />
+<h3>6. 伦理与安全</h3>
+<ul>
+<li><strong>物理安全对齐</strong>：将“不可伤害人类”作为硬约束奖励，研究在安全策略边界下的高效探索——类似 RL 中的 safety layer。</li>
+<li><strong>数据隐私与版权</strong>：大规模网络视频可能含人脸或版权音乐，需开发自动过滤+合成替换技术，确保开源数据合规。</li>
+<li><strong>价值对齐</strong>：当机器人拒绝执行“把玻璃杯砸碎”这类有害指令时，如何在不损失通用性的前提下进行可解释拒绝。</li>
+</ul>
+<hr />
+<p>简言之，Pelican-VL 1.0 已验证“大规模+DPPO”可行，下一步是把这条 pipeline 从“可用”推向“可信、实时、自生长、高价值”，最终实现机器人领域的“ChatGPT 时刻”。</p>
+<h2>总结</h2>
+<p>Pelican-VL 1.0 提出“大规模数据 + 元认知训练”双轮驱动路线，构建迄今最大开源具身大脑（7 B–72 B），核心贡献与内容可概括为：</p>
+<ol>
+<li><p><strong>问题定位</strong><br />
+通用 VLM 在复杂空间、时序因果、物理可供性等具身维度存在系统性缺陷，亟需统一框架把“互联网规模数据”转化为“可诊断、可迭代”的具身智能。</p>
+</li>
+<li><p><strong>DPPO 框架</strong><br />
+以“RL-Refine → Diagnose → SFT”元循环实现自我进化：</p>
+<ul>
+<li>RL-Refine：GRPO 多任务探索，规则奖励覆盖 6 维能力，自动记录高 difficulty 样本。</li>
+<li>Diagnose：基于 9 维能力雷达定位盲区，合成/检索针对性数据。</li>
+<li>SFT：全局吸收 RL 局部改进，扩展策略分布，防止灾难遗忘。<br />
+理论统一于偏好学习，证明 SFT 与 GRPO 皆为最大化观测偏好似然的特例。</li>
+</ul>
+</li>
+<li><p><strong>数据工程</strong><br />
+4 B token 原始池（231 M 图、29 k h 视频）→ Metaloop 蒸馏得 1.8 M 高质量样本并打上 9 维标签；首次实现“能力缺口-数据片段”靶向匹配。</p>
+</li>
+<li><p><strong>实验结果</strong></p>
+<ul>
+<li>基准：72 B 模型在 10 + 具身数据集平均领先 100 B 级开源模型 10.6 %，与 GPT-5 等商用系统持平。</li>
+<li>雷达诊断：物理因果 ↑ 25.7 %，决策规划 ↑ 22.1 %，能力分布从失衡到均衡。</li>
+<li>真实硬件：零样本 affordance 操作 SR 92 %；闭环力控抓取首次在 VLM 层面闭合“预测-触觉-记忆”回路；多机器人 8 步灯泡质检端到端成功率 96 %；家庭长时任务 100 % 完成。</li>
+</ul>
+</li>
+<li><p><strong>开源与影响</strong><br />
+发布 7 B &amp; 72 B 模型、DPPO 工具链、EvalKit 与 9 维雷达评测，推动社区在统一框架下继续扩展数据、算法与真实场景落地。</p>
+</li>
+</ol>
+<p>综上，Pelican-VL 1.0 通过“大规模数据 + DPPO 元认知”首次在 72 B 开源模型上实现可诊断、可自进化的具身智能闭环，为机器人领域迈向“ChatGPT 时刻”提供基础平台与路线图。</p>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">N/A</span></span>
+                                            <span>置信度: 0.93</span>
+                                            <span>分类: Multimodal</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Multimodal</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2511.00108" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2511.00108" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2403.10568">
+                                    <div class="paper-header" onclick="showPaperDetail('2403.10568', 'Multimodal')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                MoPE: Mixture of Prompt Experts for Parameter-Efficient and Scalable Multimodal Fusion
+                                                <button class="mark-button" 
+                                                        data-paper-id="2403.10568"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2403.10568", "authors": ["Jiang", "Liu", "Chen"], "id": "2403.10568", "pdf_url": "https://arxiv.org/pdf/2403.10568", "rank": 0.0, "title": "MoPE: Mixture of Prompt Experts for Parameter-Efficient and Scalable Multimodal Fusion"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2403.10568" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AMoPE%3A%20Mixture%20of%20Prompt%20Experts%20for%20Parameter-Efficient%20and%20Scalable%20Multimodal%20Fusion%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2403.10568&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AMoPE%3A%20Mixture%20of%20Prompt%20Experts%20for%20Parameter-Efficient%20and%20Scalable%20Multimodal%20Fusion%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2403.10568%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Jiang, Liu, Chen</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">请求失败: 'NoneType' object is not subscriptable</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">N/A</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2403.10568" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">MoPE: Mixture of Prompt Experts for Parameter-Efficient and Scalable Multimodal Fusion</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 24 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>这篇论文试图解决的问题是如何在多模态任务中高效地结合分别预训练的单模态基础模型。具体来说，它关注以下几个方面：</p>
+<ol>
+<li><p><strong>参数效率</strong>：在多模态融合任务中，如何使用较少的可训练参数来达到与微调（fine-tuning）相当的性能。</p>
+</li>
+<li><p><strong>适应性和表达能力</strong>：现有的提示调整（prompt tuning）方法在多模态融合中的适应性和表达能力有限，这可能导致性能不佳。论文旨在通过改进提示调整方法来提高其在多模态任务中的适应性和表达能力。</p>
+</li>
+<li><p><strong>可扩展性</strong>：论文探讨了如何通过增加训练数据和可训练参数的数量来提高模型的性能，同时保持参数效率。</p>
+</li>
+</ol>
+<p>为了解决这些问题，论文提出了一种名为MoPE（Mixture of Prompt Experts）的技术，它通过以下方式进行改进：</p>
+<ul>
+<li><strong>条件提示调整</strong>：将全局共享的提示分解为静态和动态提示，以适应地捕捉数据集级和实例级特征。</li>
+<li><strong>MoPE技术</strong>：利用多模态配对先验来为每个实例路由最有效的提示，从而增强表达能力。</li>
+<li><strong>正则化项</strong>：研究了专家路由的正则化项，以促进专家专业化，使得不同的专家关注不同的概念，从而实现可解释的软提示。</li>
+</ul>
+<p>通过在三个多模态数据集上的广泛实验，论文证明了其方法在参数效率和多模态融合性能方面均达到了最先进的水平。</p>
+<h2>相关工作</h2>
+<p>这篇论文提到了以下几个与其研究相关的领域和工作：</p>
+<ol>
+<li><p><strong>提示调整（Prompt Tuning）</strong>：这是一种用于迁移学习的参数高效技术，通过学习连续的嵌入（即提示）作为额外输入来调整预训练模型。这项技术最初在自然语言处理（NLP）中流行起来，后来迅速引入到计算机视觉（CV）和多模态学习中。</p>
+</li>
+<li><p><strong>多模态融合（Multimodal Fusion）</strong>：研究如何将来自不同模态的数据（如图像和文本）结合起来进行学习。论文中提到了一些使用提示进行多模态融合的方法，如Frozen、PromptFuse、BlindPrompt和PMF等。</p>
+</li>
+<li><p><strong>混合专家模型（Mixture of Experts, MoE）</strong>：这是一种用于扩展模型容量的技术，通过在Transformer架构中插入由多个前馈网络（FFNs）作为专家组成的MoE层。论文中提到了将MoE设计应用于提示调整的灵感来源，如Switch Transformers和GShard等。</p>
+</li>
+<li><p><strong>多模态预训练模型（Multimodal Pre-trained Models）</strong>：如CLIP等，它们展示了通过自然语言监督学习可迁移视觉模型的能力。</p>
+</li>
+<li><p><strong>理论分析</strong>：最近的理论分析揭示了标准提示调整的表达能力有限，这些分析为论文提出的MoPE技术提供了理论基础。</p>
+</li>
+</ol>
+<p>论文中还提到了一些具体的工作，包括但不限于：</p>
+<ul>
+<li>MMBT [15]</li>
+<li>Frozen [39]</li>
+<li>PromptFuse [22] 和 BlindPrompt [22]</li>
+<li>PMF [21]</li>
+<li>Swin Transformer [28]</li>
+<li>Bert [3]</li>
+</ul>
+<p>这些相关工作为论文中提出的方法提供了背景和对比，论文的方法在这些相关工作的基础上进行了改进和优化。</p>
+<h2>解决方案</h2>
+<p>论文通过提出一种名为MoPE（Mixture of Prompt Experts）的技术来解决多模态融合中的参数效率、适应性和表达能力问题。具体的解决方案包括以下几个关键组件：</p>
+<ol>
+<li><p><strong>条件提示调整（Conditional Prompt Tuning）</strong>：</p>
+<ul>
+<li>将传统的全局共享提示分解为静态提示（Static Prompts, Ps）、动态提示（Dynamic Prompts, Pd）和映射提示（Mapped Prompts, Pm）。</li>
+<li>静态提示是全局共享的，不依赖于输入数据。</li>
+<li>动态提示是根据输入实例从互补模态中提取的特征来合成的。</li>
+<li>映射提示通过轻量级映射器（mapper）将互补模态的特征映射到主模态的嵌入空间。</li>
+</ul>
+</li>
+<li><p><strong>MoPE技术</strong>：</p>
+<ul>
+<li>在每个Transformer层中学习多个提示专家（prompt experts）和一个路由器（router）。</li>
+<li>使用来自另一模态的表示作为先验，通过路由器为每个实例选择最有效的动态提示，实现适应性融合。</li>
+</ul>
+</li>
+<li><p><strong>专家路由的正则化（Regularizing Expert Routing）</strong>：</p>
+<ul>
+<li>为了防止专家间的非专业化，引入了正则化项，如重要性损失（Importance Loss）和正交路由嵌入（Orthogonal Routing Embedding）。</li>
+<li>这些正则化策略有助于促进专家的专业化，使得不同的专家能够关注不同的概念，从而提高模型的解释性。</li>
+</ul>
+</li>
+<li><p><strong>多模态路由器（Multimodal Router）</strong>：</p>
+<ul>
+<li>在MoPE中，使用多模态路由器来根据两个模态的特征计算路由分数，从而为每个实例选择最合适的动态提示。</li>
+</ul>
+</li>
+<li><p><strong>实验验证</strong>：</p>
+<ul>
+<li>在三个多模态数据集上进行广泛的实验，包括UPMC Food-101、SNLI-VE和MM-IMDB，验证了MoPE方法在参数效率和性能上的优势。</li>
+<li>与现有的多模态融合方法和微调方法进行比较，展示了MoPE方法在不同数据集上达到或超过最先进结果的能力。</li>
+</ul>
+</li>
+</ol>
+<p>通过这些技术组合，MoPE方法能够在保持参数效率的同时，提高多模态融合的适应性和表达能力，并在多模态任务中实现可解释的软提示。</p>
+<h2>实验验证</h2>
+<p>论文中进行了一系列的实验来验证MoPE方法在多模态融合任务中的有效性和参数效率。以下是实验的主要组成部分：</p>
+<ol>
+<li><p><strong>数据集</strong>：</p>
+<ul>
+<li>UPMC Food-101：一个用于细粒度食谱分类的多模态数据集，包含图像-文本对。</li>
+<li>SNLI-VE：一个大规模的多模态数据集，用于视觉推理任务，包含图像-文本对。</li>
+<li>MM-IMDB：一个多模态电影分类数据集，包含电影海报和剧情摘要的图像-文本对。</li>
+</ul>
+</li>
+<li><p><strong>基线和比较方法</strong>：</p>
+<ul>
+<li>微调（Fine-tuning）基线，如ImgOnly、TextOnly、LateConcat和SequentialFuse。</li>
+<li>现有的提示调整方法，如P-ImgOnly、P-TextOnly、P-LateConcat、P-SequentialFuse、MMBT、Frozen、PromptFuse、BlindPrompt和PMF。</li>
+</ul>
+</li>
+<li><p><strong>MoPE变体</strong>：</p>
+<ul>
+<li>不同数量的提示专家（k = 4, 16等）来研究MoPE的专家缩放（expert-scaling）效果。</li>
+<li>不同提示类型组合的消融研究，包括静态提示、动态提示和映射提示。</li>
+</ul>
+</li>
+<li><p><strong>性能评估</strong>：</p>
+<ul>
+<li>在UPMC Food-101数据集上评估分类准确率。</li>
+<li>在SNLI-VE数据集上评估准确率和F1分数。</li>
+<li>在MM-IMDB数据集上评估多标签分类的F1-Macro和F1-Micro分数。</li>
+</ul>
+</li>
+<li><p><strong>参数效率</strong>：</p>
+<ul>
+<li>与微调基线和现有提示方法比较，展示MoPE方法在保持参数效率的同时达到或超过它们的性能。</li>
+</ul>
+</li>
+<li><p><strong>可扩展性</strong>：</p>
+<ul>
+<li>研究模型在不同规模的训练数据下的性能，以评估其可扩展性。</li>
+</ul>
+</li>
+<li><p><strong>专家专业化分析</strong>：</p>
+<ul>
+<li>通过可视化不同专家的路由结果来展示专家如何在不同概念上专业化。</li>
+</ul>
+</li>
+<li><p><strong>定性结果</strong>：</p>
+<ul>
+<li>展示MoPE路由的实例，证明其在实际应用中的有效性和解释性。</li>
+</ul>
+</li>
+</ol>
+<p>通过这些实验，论文全面地评估了MoPE方法的性能，并与现有的多模态融合方法进行了比较，证明了其在多模态任务中的优越性和参数效率。</p>
+<h2>未来工作</h2>
+<p>尽管论文提出的MoPE方法在多模态融合任务中取得了显著的性能提升，但仍有一些潜在的研究方向可以进一步探索：</p>
+<ol>
+<li><p><strong>更深层次的模态交互</strong>：</p>
+<ul>
+<li>研究更复杂的模态间交互机制，以进一步提升多模态融合的性能。</li>
+</ul>
+</li>
+<li><p><strong>更广泛的模态和任务类型</strong>：</p>
+<ul>
+<li>将MoPE方法应用于更多样化的数据模态（如音频、视频）和任务类型（如目标检测、文本生成）。</li>
+</ul>
+</li>
+<li><p><strong>专家路由的优化</strong>：</p>
+<ul>
+<li>探索新的专家路由策略，以提高专家专业化并减少训练过程中的自适应性问题。</li>
+</ul>
+</li>
+<li><p><strong>理论分析和界限</strong>：</p>
+<ul>
+<li>对MoPE方法的理论表达能力进行更深入的分析，以确定其在多模态学习中的极限。</li>
+</ul>
+</li>
+<li><p><strong>模型压缩和加速</strong>：</p>
+<ul>
+<li>研究如何压缩MoPE模型以减少计算资源消耗，同时保持或提高性能。</li>
+</ul>
+</li>
+<li><p><strong>跨模态知识转移</strong>：</p>
+<ul>
+<li>利用MoPE进行跨模态知识转移，例如，将在一个模态上学到的知识应用到另一个模态的任务中。</li>
+</ul>
+</li>
+<li><p><strong>可解释性和透明度</strong>：</p>
+<ul>
+<li>提高模型的可解释性，使模型的决策过程更加透明，便于理解和信任。</li>
+</ul>
+</li>
+<li><p><strong>实际应用场景</strong>：</p>
+<ul>
+<li>将MoPE方法应用于实际问题，如医疗图像分析、自动驾驶等，验证其在实际环境中的有效性。</li>
+</ul>
+</li>
+<li><p><strong>长期和持续学习</strong>：</p>
+<ul>
+<li>研究MoPE在长期和持续学习场景下的表现，特别是在不断变化的数据分布和任务要求下。</li>
+</ul>
+</li>
+<li><p><strong>模型鲁棒性和泛化能力</strong>：</p>
+<ul>
+<li>探索提高模型鲁棒性的方法，使其能够更好地泛化到未见过的数据和任务。</li>
+</ul>
+</li>
+</ol>
+<p>这些研究方向可以帮助研究者更深入地理解和改进多模态融合技术，推动该领域的进一步发展。</p>
+<h2>总结</h2>
+<p>这篇论文的主要内容可以总结如下：</p>
+<p><strong>标题</strong>: MoPE: Parameter-Efficient and Scalable Multimodal Fusion via Mixture of Prompt Experts</p>
+<p><strong>摘要</strong>:</p>
+<ul>
+<li>提出了一种名为MoPE（Mixture of Prompt Experts）的技术，用于提高多模态任务中提示调整（prompt tuning）的参数效率、适应性和表达能力。</li>
+<li>通过解耦传统提示，MoPE能够适应地捕捉数据集级和实例级特征。</li>
+<li>引入了多模态配对先验，使得模型能够基于每个实例选择最有效的提示，从而提高多模态融合的表达能力。</li>
+<li>研究了专家路由的正则化项，促进了专家的专业化，实现了可解释的软提示。</li>
+<li>在三个多模态数据集上的实验表明，MoPE方法在参数效率和性能上均达到了最先进的水平。</li>
+</ul>
+<p><strong>关键词</strong>: 多模态融合、提示调整、混合专家</p>
+<p><strong>主要内容</strong>:</p>
+<ol>
+<li><strong>问题定义</strong>: 论文识别了现有多模态融合方法在适应性和参数效率方面的局限性，尤其是在使用提示调整进行融合时。</li>
+<li><strong>方法介绍</strong>: 提出了MoPE技术，它通过条件提示调整和专家路由来增强多模态融合的表达能力，并引入了专家专业化的正则化策略。</li>
+<li><strong>实验验证</strong>: 在UPMC Food-101、SNLI-VE和MM-IMDB等多模态数据集上进行了广泛的实验，证明了MoPE方法在参数效率和性能上的优势。</li>
+<li><strong>分析和讨论</strong>: 对MoPE方法进行了深入的分析，包括专家路由的可解释性、模型的可扩展性和与其他方法的比较。</li>
+<li><strong>结论</strong>: 论文得出结论，MoPE是一个高效的多模态融合框架，它在保持参数效率的同时，提供了更好的适应性和可扩展性。</li>
+</ol>
+<p><strong>贡献</strong>:</p>
+<ul>
+<li>设计了一种用于多模态融合的条件提示调整方法。</li>
+<li>引入了MoPE技术，通过实例-wise动态提示生成来扩展提示调整的表达能力。</li>
+<li>研究了正则化项以促进专家专业化。</li>
+<li>在多个数据集上展示了MoPE方法的先进性能和参数效率。</li>
+</ul>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">N/A</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: Multimodal</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Multimodal</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2403.10568" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2403.10568" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2511.10222">
+                                    <div class="paper-header" onclick="showPaperDetail('2511.10222', 'Multimodal')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Speech-Audio Compositional Attacks on Multimodal LLMs and Their Mitigation with SALMONN-Guard
+                                                <button class="mark-button" 
+                                                        data-paper-id="2511.10222"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2511.10222", "authors": ["Yang", "Zhang", "Han", "Wang", "Zhuang", "Jin", "Shao", "Sun", "Zhang"], "id": "2511.10222", "pdf_url": "https://arxiv.org/pdf/2511.10222", "rank": 0.0, "title": "Speech-Audio Compositional Attacks on Multimodal LLMs and Their Mitigation with SALMONN-Guard"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2511.10222" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ASpeech-Audio%20Compositional%20Attacks%20on%20Multimodal%20LLMs%20and%20Their%20Mitigation%20with%20SALMONN-Guard%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2511.10222&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ASpeech-Audio%20Compositional%20Attacks%20on%20Multimodal%20LLMs%20and%20Their%20Mitigation%20with%20SALMONN-Guard%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2511.10222%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Yang, Zhang, Han, Wang, Zhuang, Jin, Shao, Sun, Zhang</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">请求失败: 'NoneType' object is not subscriptable</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">N/A</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2511.10222" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Speech-Audio Compositional Attacks on Multimodal LLMs and Their Mitigation with SALMONN-Guard</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">N/A</span></span>
+                                            <span>置信度: 0.92</span>
+                                            <span>分类: Multimodal</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Multimodal</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2511.10222" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2511.10222" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2511.11690">
+                                    <div class="paper-header" onclick="showPaperDetail('2511.11690', 'Multimodal')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Doubly Debiased Test-Time Prompt Tuning for Vision-Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2511.11690"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2511.11690", "authors": ["Song", "Li", "Wang", "Zhou", "Zheng", "Li"], "id": "2511.11690", "pdf_url": "https://arxiv.org/pdf/2511.11690", "rank": 0.0, "title": "Doubly Debiased Test-Time Prompt Tuning for Vision-Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2511.11690" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ADoubly%20Debiased%20Test-Time%20Prompt%20Tuning%20for%20Vision-Language%20Models%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2511.11690&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ADoubly%20Debiased%20Test-Time%20Prompt%20Tuning%20for%20Vision-Language%20Models%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2511.11690%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Song, Li, Wang, Zhou, Zheng, Li</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">请求失败: 'NoneType' object is not subscriptable</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">N/A</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2511.11690" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Doubly Debiased Test-Time Prompt Tuning for Vision-Language Models</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">N/A</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: Multimodal</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Multimodal</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2511.11690" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2511.11690" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2511.12449">
+                                    <div class="paper-header" onclick="showPaperDetail('2511.12449', 'Multimodal')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                MOON2.0: Dynamic Modality-balanced Multimodal Representation Learning for E-commerce Product Understanding
+                                                <button class="mark-button" 
+                                                        data-paper-id="2511.12449"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2511.12449", "authors": ["Nie", "Fu", "Zhang", "Wu", "Guan", "Wang", "Xu", "Zheng"], "id": "2511.12449", "pdf_url": "https://arxiv.org/pdf/2511.12449", "rank": 0.0, "title": "MOON2.0: Dynamic Modality-balanced Multimodal Representation Learning for E-commerce Product Understanding"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2511.12449" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AMOON2.0%3A%20Dynamic%20Modality-balanced%20Multimodal%20Representation%20Learning%20for%20E-commerce%20Product%20Understanding%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2511.12449&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AMOON2.0%3A%20Dynamic%20Modality-balanced%20Multimodal%20Representation%20Learning%20for%20E-commerce%20Product%20Understanding%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2511.12449%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Nie, Fu, Zhang, Wu, Guan, Wang, Xu, Zheng</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">请求失败: 'NoneType' object is not subscriptable</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">N/A</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2511.12449" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">MOON2.0: Dynamic Modality-balanced Multimodal Representation Learning for E-commerce Product Understanding</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">N/A</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: Multimodal</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Multimodal</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2511.12449" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2511.12449" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2511.15351">
+                                    <div class="paper-header" onclick="showPaperDetail('2511.15351', 'Multimodal')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Octopus: Agentic Multimodal Reasoning with Six-Capability Orchestration
+                                                <button class="mark-button" 
+                                                        data-paper-id="2511.15351"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2511.15351", "authors": ["Guo", "Xu", "Yao", "Lu", "Lin", "Hu", "Tang", "Li", "Wang", "Chen"], "id": "2511.15351", "pdf_url": "https://arxiv.org/pdf/2511.15351", "rank": 0.0, "title": "Octopus: Agentic Multimodal Reasoning with Six-Capability Orchestration"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2511.15351" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AOctopus%3A%20Agentic%20Multimodal%20Reasoning%20with%20Six-Capability%20Orchestration%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2511.15351&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AOctopus%3A%20Agentic%20Multimodal%20Reasoning%20with%20Six-Capability%20Orchestration%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2511.15351%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Guo, Xu, Yao, Lu, Lin, Hu, Tang, Li, Wang, Chen</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">请求失败: 'NoneType' object is not subscriptable</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">N/A</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2511.15351" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Octopus: Agentic Multimodal Reasoning with Six-Capability Orchestration</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 3 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>论文针对现有视觉-语言模型在多模态推理中的结构性缺陷：</p>
+<ol>
+<li>静态视觉输入：主流 MLLM 把图像视为一次性、不可变更的上下文，无法在推理过程中主动操作或迭代视觉信息。</li>
+<li>工具碎片化：已有“工具驱动”或“程序生成”方法仅覆盖少量离散工具，缺乏系统组织，且难以在多步推理中动态组合。</li>
+<li>能力维度缺失：人类在视觉任务中会灵活切换感知、空间想象、逻辑推导、标注、变换、生成等多种认知能力，而现有框架通常只具备其中某一子集，无法随任务需求自适应调整。</li>
+</ol>
+<p>为此，作者提出 <strong>Octopus</strong> 框架，将多模态推理形式化为“六维能力空间”——细粒度感知、视觉增强与标注、空间几何理解、逻辑编程推理、视觉变换编辑、视觉创建生成——并赋予模型<strong>自主探索与能力编排</strong>机制，使其在每一步推理中动态选择最合适的能力与对应工具，从而逼近人类式的灵活视觉思维。</p>
+<h2>相关工作</h2>
+<p>论文在第 2 节“Related Work”中将与自身相关的研究划分为四大类，并指出它们与 Octopus 的核心差异。以下按类别归纳，并给出代表性文献（括号内为论文引用编号）：</p>
+<ol>
+<li><p>直接推理型多模态大模型</p>
+<ul>
+<li>代表：GPT-4V [52]、Gemini 2.5 [10]、Qwen2.5-VL [4]、LLaVA 系列 [25, 30]、InternVL [7, 17]</li>
+<li>共同点：将图像一次性编码为静态特征，再依赖语言空间做链式思考（CoT [45]）。</li>
+<li>缺陷：视觉信息无法在推理流中被反复操作或更新，难以完成需要细粒度视觉运算或长程视觉规划的任务。</li>
+</ul>
+</li>
+<li><p>工具驱动视觉探索</p>
+<ul>
+<li>代表：Det-toolchain [49]、WebMMU [3]、Visual Sketchpad [20] 等</li>
+<li>共同点：用提示或插件调用检测器、OCR、裁剪、缩放等外部工具，单步获取反馈。</li>
+<li>缺陷：工具集小且组织松散；只能单次调用，缺乏多轮迭代与工具组合机制。</li>
+</ul>
+</li>
+<li><p>程序化视觉操作</p>
+<ul>
+<li>代表：ViperGPT [39]、PyVision [58]、StarVector [38]</li>
+<li>共同点：让模型直接生成 Python 代码来执行裁剪、标注、几何计算等视觉操作。</li>
+<li>缺陷：代码一旦出错无回退机制；仅依赖生成代码，难以与高精度专用工具互补。</li>
+</ul>
+</li>
+<li><p>内在视觉想象</p>
+<ul>
+<li>代表：Thinking with Generated Images [9]、Visual Planning [50]、Visualization-of-Thought [48]</li>
+<li>共同点：借助文生图模型在“脑海”中生成中间图示，辅助路径规划或几何推理。</li>
+<li>缺陷：仅适用于特定领域；生成的图像与其他认知能力缺乏统一协调，难以泛化。</li>
+</ul>
+</li>
+</ol>
+<p>Octopus 与上述路线的根本区别：</p>
+<ul>
+<li>将多模态推理系统性地分解为六种“能力”而非零散工具或单一模型；</li>
+<li>引入“能力级”编排策略，先选能力再选工具，支持多轮迭代与动态组合；</li>
+<li>把代码生成、图像生成、几何计算、感知检测等全部纳入同一能力空间，统一调度。</li>
+</ul>
+<h2>解决方案</h2>
+<p>论文将“如何让模型像人类一样在视觉推理中自主切换多种认知能力”形式化为一个<strong>能力编排</strong>问题，并给出三层解决方案：</p>
+<hr />
+<h3>1. 能力空间形式化：把多模态推理拆成 6 个原子能力</h3>
+<ul>
+<li><strong>Fine-grained Visual Percept</strong><br />
+结构化提取文本、物体位置、属性等像素级线索（OCR、Grounding-DINO）。</li>
+<li><strong>Visual Augmentation &amp; Marking</strong><br />
+在图像上叠加箭头、高亮框等可解释标注，外化中间思维。</li>
+<li><strong>Spatial &amp; Geometric Understanding</strong><br />
+计算距离、面积、垂直相交等几何量，解析空间/拓扑约束。</li>
+<li><strong>Logical Programming Reasoning</strong><br />
+通过可执行代码完成符号演算、算法求解，弥补纯语言推理的精度不足。</li>
+<li><strong>Visual Transformation &amp; Editing</strong><br />
+裁剪、分割、旋转、颜色过滤，把复杂场景逐步化简为子图。</li>
+<li><strong>Visual Creation &amp; Generation</strong><br />
+生成草图、示意图或简化图，作为内部想象或对外输出的中间制品。</li>
+</ul>
+<hr />
+<h3>2. 推理流程：两步决策 + 迭代更新</h3>
+<p>用算法 1 的循环框架实现“自主探索”：</p>
+<pre><code>for 回合 ≤ max_turn：
+    1. 生成隐式思考 ⋯
+    2. 选择能力 Ci = argmax π(·|状态,历史)  
+    3. 在 Ci 对应工具集里挑具体工具 ⋯
+    4. 执行工具得观测 obs，追加到状态 Ei
+    5. 若生成  则退出
+</code></pre>
+<ul>
+<li><strong>能力先行</strong>：先定“能力类型”再定“工具实例”，降低决策空间，保证结构性。</li>
+<li><strong>状态累积</strong>：文本 + 图像 + 过往工具输出共同构成 Ei，支持多轮依赖。</li>
+<li><strong>统一提示</strong>：用系统 prompt 把 6 种能力、工具列表、标记格式一次给足，无需微调。</li>
+</ul>
+<hr />
+<h3>3. 工具实现与 backbone 分工</h3>
+<ul>
+<li><strong>Planner / 能力选择器</strong>：GPT-4o（负责 &lt;think&gt;、&lt;cap&gt;、&lt;tool_call&gt; 生成）</li>
+<li><strong>代码执行器</strong>：Claude-4.5-Sonnet（负责逻辑编程能力里的代码编写与运行）</li>
+<li><strong>细粒度感知</strong>：Gemini-2.5-Flash（负责 OCR、区域 caption、计数等）</li>
+<li><strong>图像生成/编辑</strong>：调用 Stable Diffusion、SAM、几何计算器等多模态 API</li>
+</ul>
+<p>所有工具被组织成 6 个 capability-aligned 集合，模型只需在系统提示里“看到”能力描述与可调函数名，即可零样本调用。</p>
+<hr />
+<h3>4. 训练与推理</h3>
+<ul>
+<li><strong>零微调</strong>：仅依赖提示工程与现成 API，不引入额外训练数据或梯度更新。</li>
+<li><strong>长上下文</strong>：60 % 最大窗口长度，最多 10 轮工具调用，温度 0.3 保证确定性。</li>
+<li><strong>失败回退</strong>：代码报错或工具返回空结果直接写入观测，让 planner 在下一轮自行纠正。</li>
+</ul>
+<p>通过“能力级抽象 → 动态选择 → 工具级执行 → 状态迭代”这一闭环，Octopus 把原本碎片化的工具链升级为一条可解释、可扩展、可自主探索的视觉推理轨迹，从而系统性地解决了现有方法“静态输入、工具零散、能力单一”的核心缺陷。</p>
+<h2>实验验证</h2>
+<p>论文围绕提出的 <strong>Octopus-Bench</strong> 进行了系统实验，从“整体性能—能力维度—消融—敏感性—案例”五个层面验证六维能力编排的有效性。主要实验如下：</p>
+<hr />
+<h3>1 基准构建：Octopus-Bench</h3>
+<ul>
+<li><strong>数据来源</strong><br />
+BLINK、TIR-Bench、IsoBench、Geometry3K、MathVerse、WeMath、MathVista、Math-Vision、COMT、V*Bench、MMVP 等 11 个公开数据集，再补充 FrozenLake 式视觉导航/拼图等长程交互任务。</li>
+<li><strong>能力标注</strong><br />
+人工给每条样本打上 1–6 种能力标签（Percept/Aug/Spatial/Logic/Transform/Gen），最终形成 3 个子基准：<ul>
+<li>Octopus-BLINK（14 类细粒度视觉感知与推理任务）</li>
+<li>Octopus-TIR（13 类视觉导航、OCR、计数、迷宫等）</li>
+<li>Octopus-Math（6 个数学视觉数据集：IsoBench、Geometry3K、MathVerse、WeMath、MathVista、Math-Vision）</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>2 主实验：整体精度对比</h3>
+<table>
+<thead>
+<tr>
+  <th>基准</th>
+  <th>对比对象</th>
+  <th>Octopus 成绩</th>
+  <th>最佳基线</th>
+  <th>绝对提升</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Octopus-BLINK</td>
+  <td>27 个模型/框架</td>
+  <td>71.8 % 平均</td>
+  <td>68.86 % (GPT-4o+MMFactory)</td>
+  <td><strong>+2.94 %</strong></td>
+</tr>
+<tr>
+  <td>Octopus-TIR</td>
+  <td>同上</td>
+  <td>33.4 % 平均</td>
+  <td>29.8 % (GPT-4o+Sketchpad)</td>
+  <td><strong>+3.6 %</strong></td>
+</tr>
+<tr>
+  <td>Octopus-Math</td>
+  <td>同上</td>
+  <td>79.2/48.2/75.3 等 6 项</td>
+  <td>同期最高</td>
+  <td>全部 <strong>SOTA</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注：对比范围涵盖 GPT-4o、Gemini-2.5-Pro、Claude-3.5、Qwen2.5-VL-72B、LLaVA-Next-72B、DeepSketcher、VTS-V、Sketchpad、PyVision、MMFactory 等 20 余条基线。</p>
+</blockquote>
+<hr />
+<h3>3 能力维度细评</h3>
+<ul>
+<li>在 Octopus-Bench 六维能力子集上分别计算平均准确率，绘制雷达图（图 3）。</li>
+<li>Octopus 六维表现<strong>全部高于</strong>最强基线，且分布最均衡，无明显短板；其他方法在 Gen 或 Logic 等维度常出现 ≥10 % 的落差。</li>
+</ul>
+<hr />
+<h3>4 消融实验</h3>
+<h4>4.1 单能力移除（图 4）</h4>
+<ul>
+<li>每次屏蔽六维之一，性能下降 5–10 %；移除 <strong>Logic</strong> 后下降最显著（&gt;10 %），验证符号编程能力对复杂推理的关键作用。</li>
+</ul>
+<h4>4.2 能力选择机制消融（图 5）</h4>
+<ul>
+<li>“无能力层、直接从全工具池选工具” → 平均掉点 2–4 %，说明<strong>能力先行的两级决策</strong>可提高稳定性与可解释性。</li>
+</ul>
+<hr />
+<h3>5 敏感性实验</h3>
+<ul>
+<li>把 backbone 分别换成 GPT-4o、Gemini-2.5-Pro、Claude-3.5、Qwen2.5-VL-72B、LLaVA-Next-72B，保持提示与工具不变。</li>
+<li>Octopus 框架在五套 backbone 上均取得<strong>一致且领先</strong>的成绩（图 5），表明能力编排策略对底层 MLLM 不敏感，可插拔。</li>
+</ul>
+<hr />
+<h3>6 案例研究</h3>
+<ul>
+<li>视觉迷宫（图 6）：三步能力链<br />
+① Gen 能力生成结构化网格图 → ② Percept 能力提取障碍/起点/终点坐标 → ③ Logic 能力调用代码计算最短路径 → 输出行动序列 <code>L,U,U,L,L,D</code>。</li>
+<li>展示了“图像→语义→符号→答案”的完整 multimodal reasoning trajectory，验证框架在真实长程任务中的可解释性与正确性。</li>
+</ul>
+<hr />
+<h3>7 可重复性设置</h3>
+<ul>
+<li>所有实验温度 τ=0.3，top-p=1.0，统一 10 轮上限，60 % 最大上下文长度；闭源模型使用官方推荐参数，保证公平。</li>
+<li>代码、工具列表、提示模板与抽样后的基准将在 GitHub 开源（论文承诺）。</li>
+</ul>
+<p>通过以上多维度实验，作者系统回答了：</p>
+<ol>
+<li>Octopus 是否<strong>整体更强</strong>→ 三套基准全部 SOTA；</li>
+<li>六能力是否<strong>都必要</strong>→ 移除任一维均显著掉点；</li>
+<li>能力层是否<strong>带来增益</strong>→ 去掉能力选择后性能下降；</li>
+<li>框架是否<strong>通用鲁棒</strong>→ 换 backbone 仍一致领先；</li>
+<li>推理过程是否<strong>可解释</strong>→ 案例展示清晰能力链。</li>
+</ol>
+<h2>未来工作</h2>
+<p>以下方向可被视为对 Octopus 的直接延伸或深层扩展，均围绕“能力-编排”这一核心范式展开：</p>
+<hr />
+<h3>1 能力空间扩充与层级化</h3>
+<ul>
+<li><strong>时序-因果能力</strong>：引入“视觉时序推理”与“因果干预”能力，支持视频帧或动态图上的反事实推断。</li>
+<li><strong>跨模态对齐能力</strong>：显式建模“视觉→语言”“语言→视觉”双向对齐，缓解幻觉。</li>
+<li><strong>元能力（Meta-Capability）</strong>：让模型自己提出/合并/废弃能力，实现能力空间的<strong>终身演化</strong>。</li>
+</ul>
+<hr />
+<h3>2 能力选择的可学习化</h3>
+<ul>
+<li>目前用<strong>提示工程 + 贪心策略</strong>选择能力，可改为：<br />
+– 强化学习：以最终答案奖励为信号，学习能力转移策略 π(Ci|状态)。<br />
+– 可微序列模型：把能力选择视为特殊 token，用 RLHF 或 DPO 直接优化。</li>
+<li>目标：减少手工提示，支持<strong>任务自适应</strong>与<strong>在线自我改进</strong>。</li>
+</ul>
+<hr />
+<h3>3 工具自动生成与修复</h3>
+<ul>
+<li><strong>工具合成</strong>：利用代码生成模型，根据任务描述即时写出“一次性”Python 函数或 CUDA kernel，突破固定工具集。</li>
+<li><strong>工具自我修复</strong>：执行失败时，模型在异常栈上继续生成补丁并热加载，实现<strong>鲁棒性闭环</strong>。</li>
+</ul>
+<hr />
+<h3>4 多智能体能力分工</h3>
+<ul>
+<li>把六维能力部署到<strong>专用子 Agent</strong>（Percept-Agent、Logic-Agent、Gen-Agent 等），通过消息总线协同。</li>
+<li>可探索“能力市场”机制：子 Agent 竞价领取子任务，整体目标函数为最小化总成本/时间。</li>
+</ul>
+<hr />
+<h3>5 高效视觉-工具缓存与重用</h3>
+<ul>
+<li>对同能力、同输入的调用引入<strong>视觉缓存</strong>（Visual Cache），避免重复 OCR、分割、几何计算。</li>
+<li>结合<strong>神经-符号混合索引</strong>，实现跨任务的历史结果复用，降低 API 开销与延迟。</li>
+</ul>
+<hr />
+<h3>6 安全与可解释性</h3>
+<ul>
+<li><strong>能力级解释</strong>：输出“能力轨迹图”（Cap-Graph），用户可回溯每步为何切换能力。</li>
+<li><strong>安全策略</strong>：给每能力预置风险等级与沙箱，Gen/Transform 能力调用需二次确认，防止恶意图像生成或隐私泄露。</li>
+</ul>
+<hr />
+<h3>7 端到端微调范式</h3>
+<ul>
+<li>采集大规模“能力链”标注数据（图像 → 能力序列 → 工具调用 → 答案），训练<strong>多模态能力链模型</strong>（Multimodal-CoT-Cap）。</li>
+<li>研究如何在<strong>不遗忘通用能力</strong>的前提下，进行能力编排的指令微调。</li>
+</ul>
+<hr />
+<h3>8 真实世界机器人/ embodied 场景</h3>
+<ul>
+<li>将六维能力映射到<strong>机器人感知-规划-执行</strong>循环：<br />
+Percept ←→ 视觉目标检测，Spatial ←→ 3D 碰撞检测，Logic ←→ 运动规划算法，Gen ←→ 想象未来状态。</li>
+<li>探索<strong>物理一致性</strong>约束下的能力选择，支持动态环境下的在线重规划。</li>
+</ul>
+<hr />
+<h3>9 评价体系的再拓展</h3>
+<ul>
+<li><strong>能力效率指标</strong>：除准确率，再报告“能力调用成本”“能力切换次数”“总延迟”，防止暴力堆工具。</li>
+<li><strong>对抗能力测试</strong>：引入针对某一能力的对抗样本（如遮挡、模糊、误导标注），评价框架的<strong>鲁棒性下限</strong>。</li>
+</ul>
+<hr />
+<h3>10 跨语言与文化能力</h3>
+<ul>
+<li>研究六维能力是否在<strong>多语言、多文化视觉场景</strong>下仍然均衡有效；</li>
+<li>引入文化相关的视觉符号能力（Cultural-Capability），防止因文化背景差异导致的能力失效。</li>
+</ul>
+<hr />
+<p>简言之，Octopus 把多模态推理从“工具调用”升级为“能力编排”，未来工作可沿着<strong>能力自我演化、学习式编排、多智能体协同、真实世界落地</strong>四条主线继续深入，推动下一代通用视觉-语言智能体的诞生。</p>
+<h2>总结</h2>
+<p>论文提出 <strong>Octopus</strong>——一种“六维能力编排”的智能体多模态推理新范式，核心内容可概括为五点：</p>
+<ol>
+<li><p>问题定位<br />
+现有 MLLM 把图像当静态输入，工具零散且缺协同，无法像人类一样按需切换“感知-标注-空间-逻辑-变换-生成”多种认知能力。</p>
+</li>
+<li><p>六维能力空间<br />
+系统地将多模态推理拆成 6 个原子能力：</p>
+<ul>
+<li>Fine-grained Percept</li>
+<li>Visual Augmentation &amp; Marking</li>
+<li>Spatial &amp; Geometric Understanding</li>
+<li>Logical Programming Reasoning</li>
+<li>Visual Transformation &amp; Editing</li>
+<li>Visual Creation &amp; Generation</li>
+</ul>
+</li>
+<li><p>能力编排框架<br />
+每步先由 planner（GPT-4o）生成隐式思考，再<strong>选能力→挑工具→执行→更新状态</strong>，迭代至多 10 轮，形成可解释推理链。</p>
+</li>
+<li><p>基准与实验</p>
+<ul>
+<li>构建能力导向的 <strong>Octopus-Bench</strong>（含 Octopus-BLINK、Octopus-TIR、Octopus-Math 三套件）。</li>
+<li>在 27 个强基线（含 GPT-4o、Gemini-2.5-Pro、Qwen2.5-VL-72B、Sketchpad、PyVision 等）上取得<strong>全部 SOTA</strong>，平均提升 2.9–4.2 个百分点。</li>
+<li>消融表明移除任一能力掉点 5–10 %，去掉“能力层”后仍下降，验证六维与两级决策的必要性。</li>
+</ul>
+</li>
+<li><p>结论与展望<br />
+Octopus 通过“能力级”抽象与动态编排，首次让多模态模型在统一框架内自主组合多种视觉-认知技能，为实现更通用、可解释、自主的下一代视觉智能体提供了新路线。</p>
+</li>
+</ol>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">N/A</span></span>
+                                            <span>置信度: 0.93</span>
+                                            <span>分类: Multimodal</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Multimodal</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2511.15351" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2511.15351" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2511.11206">
+                                    <div class="paper-header" onclick="showPaperDetail('2511.11206', 'Multimodal')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Questioning the Stability of Visual Question Answering
+                                                <button class="mark-button" 
+                                                        data-paper-id="2511.11206"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2511.11206", "authors": ["Rosenfeld", "Glazer", "Fetaya"], "id": "2511.11206", "pdf_url": "https://arxiv.org/pdf/2511.11206", "rank": 0.0, "title": "Questioning the Stability of Visual Question Answering"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2511.11206" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AQuestioning%20the%20Stability%20of%20Visual%20Question%20Answering%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2511.11206&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AQuestioning%20the%20Stability%20of%20Visual%20Question%20Answering%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2511.11206%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Rosenfeld, Glazer, Fetaya</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">请求失败: 'NoneType' object is not subscriptable</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">N/A</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2511.11206" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Questioning the Stability of Visual Question Answering</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 1 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>论文旨在系统评估视觉-语言模型（VLM）在<strong>语义保持的微小扰动</strong>下的稳定性，揭示当前主流模型（包括 GPT-4o、Gemini 2.0 Flash 等）对<strong>非对抗、无语义改变的视觉或文本变化</strong>极度敏感的现象，并进一步证明：</p>
+<ul>
+<li><strong>样本级稳定性</strong>可作为模型正确性的强代理；</li>
+<li><strong>小模型的稳定性模式</strong>可高精度预测大模型在该样本上的正确性。</li>
+</ul>
+<p>综上，工作聚焦于<strong>“VLM 在无害扰动下的鲁棒性缺失”</strong>这一被忽视的基础问题，为后续提升模型可靠性提供度量与洞察。</p>
+<h2>相关工作</h2>
+<p>论文在第 2 节“Related Work”中将与自身最密切的研究划分为两条主线，并明确指出了与过往工作的差异。可归纳为以下三类：</p>
+<ol>
+<li><p>大规模 VLM 评测与基准</p>
+<ul>
+<li>VLMEvalKit 体系：覆盖 224 个 LMM 与 114 个图像基准，涵盖 DocVQA、AI2D、COCO Caption、MMBench、MMMU 等任务，但默认测试<strong>未扰动</strong>输入。</li>
+<li>针对幻觉、一致性或特定能力的专项基准（如 CARETS、NaturalBench、SeedBench）同样<strong>未系统考察“语义保持扰动”下的稳定性</strong>。</li>
+</ul>
+</li>
+<li><p>视觉鲁棒性研究</p>
+<ul>
+<li>传统腐蚀类扰动：加噪、模糊、光照变化、几何失真、压缩、像素化、遮挡、风格化等，结论一致显示 VLM 敏感，但<strong>扰动本身带有明显语义破坏或视觉降质</strong>。</li>
+<li>近期几何微扰动：Shifman et al. 发现现代网络对<strong>小幅度平移/旋转</strong>仍不稳定，然而未涉及文本模态，也未在 VQA 场景下做大规模系统分析。</li>
+</ul>
+</li>
+<li><p>文本或跨模态鲁棒性研究</p>
+<ul>
+<li>字符/词级破坏：字母置换、词序打乱、同义词替换等，往往<strong>改变句子表面形式且可能引入语义漂移</strong>。</li>
+<li>结构化语义编辑：否定、析取、上位词替换等，用于检验逻辑一致性，但<strong>属于有意修改语义</strong>。</li>
+<li>多模态联合扰动：MM-R³、Shirnin et al. 同时施加视觉腐蚀与文本破坏，发现不一致现象，然而<strong>未考察“语义等价”的微小重述或翻译</strong>，也未将视觉-文本稳定性进行统计关联分析。</li>
+</ul>
+</li>
+</ol>
+<p>与上述工作相比，本文首次<strong>大规模、系统地研究“非对抗、无语义改变”的良性扰动</strong>（像素级平移、轻量几何变换、填充缩放、同义重述、多语言改写）对 VLM 的影响，并量化视觉-文本稳定性之间的统计依赖，以及稳定性与正确率的对应关系。</p>
+<h2>解决方案</h2>
+<p>论文并未提出新的训练或防御算法，而是从<strong>评测与诊断</strong>角度切入，通过四步流程系统暴露并量化 VLM 的稳定性缺陷：</p>
+<ol>
+<li><p>构建大规模扰动套件</p>
+<ul>
+<li><strong>视觉侧</strong>：设计 27 种“语义保持”变换——循环平移 ±16 px、轻量旋转 ±30°、等比缩放 0.9、边缘填充/裁剪、无意义红字叠加等，确保图像内容不被破坏。</li>
+<li><strong>文本侧</strong>：利用 LLM 自动生成 10 句同义重述与 11 种语言翻译（均要求英文回答），保证语义等价。</li>
+</ul>
+</li>
+<li><p>定义样本级稳定性指标<br />
+对任一图像-问题样本 $S_i$，分别生成视觉扰动集合 $S_i^v$ 与文本扰动集合 $S_i^t$。<br />
+用模型在扰动后答案分布的熵<br />
+$$H_i = -\sum_a p_a \log p_a$$<br />
+量化波动：$H_i=0$ 视为<strong>稳定</strong>，$H_i&gt;0$ 视为<strong>不稳定</strong>。由此得到布尔指标<br />
+$$V_i = \mathbb{1}{H_i^v=0}, \quad T_i = \mathbb{1}{H_i^t=0}.$$</p>
+</li>
+<li><p>跨模型、跨数据集大规模实验</p>
+<ul>
+<li>覆盖 5 个开源模型（Qwen2.5-VL、LLaVA-1.5、InternVL、Phi-3.5-Vision 等）与 2 个闭源模型（GPT-4o、Gemini 2.0 Flash）。</li>
+<li>在 NaturalBench、DocVQA、TextVQA、SeedBench 共 &gt;30k 样本上运行，记录每条扰动的答案变化与熵分布。</li>
+</ul>
+</li>
+<li><p>稳定性→正确性预测验证</p>
+<ul>
+<li>统计发现：稳定样本的准确率显著高于总体基线（↑6–12 pp）。</li>
+<li>利用小型开源模型的稳定性特征训练线性分类器，可在 92% 精度下召回 40% 的 Gemini 正确样本，双倍于 Gemini 自身置信度召回率，证明<strong>稳定性模式可迁移预测大模型正确性</strong>。</li>
+</ul>
+</li>
+</ol>
+<p>通过上述“扰动-度量-关联”框架，论文无需修改模型即可<strong>系统揭示并量化 VLM 在无害扰动下的脆弱性</strong>，为后续鲁棒性改进提供了可复现的评估协议与强代理指标。</p>
+<h2>实验验证</h2>
+<p>实验围绕“语义保持扰动”展开，分为<strong>视觉扰动、文本扰动、内部表征探针、跨模型稳定性迁移</strong>四大板块，共 6 组核心实验。所有实验均在统一协议下完成：同一图像-问题样本生成扰动 → 运行模型 → 记录答案 → 计算熵与稳定性指标。</p>
+<ol>
+<li><p>视觉扰动鲁棒性</p>
+<ul>
+<li>27 种变换：水平循环平移 ±4–16 px、填充/裁剪 ±4–16 px、轻量旋转 ±30°、等比缩放 0.9、带黑/白边缩放、中央红字叠加（YES/NO/“Answer Yes”等）。</li>
+<li>指标：<br />
+– 实例级不稳定率 $ \bar{\alpha}<em>{\text{AV}} $：所有扰动中答案变化的比例；<br />
+– 图像级不稳定率 $ \bar{\alpha}</em>{\text{V}} $：至少一次变化的样本比例。</li>
+<li>结果：开源模型 $ \bar{\alpha}_{\text{V}} $ 32–52 %；闭源 GPT-4o 达 93 %（Text Overlay）。</li>
+</ul>
+</li>
+<li><p>文本扰动鲁棒性</p>
+<ul>
+<li>同义重述：用 Qwen3-8B 为每题生成 10 句语义等价问法；</li>
+<li>多语言改写：11 种语言翻译，均附“请用英文回答”。</li>
+<li>指标同上（文本熵 $ H_i^t $）。</li>
+<li>结果：NaturalBench 上约 40 % 样本因重述或翻译改变答案。</li>
+</ul>
+</li>
+<li><p>联合视觉-文本稳定性关联</p>
+<ul>
+<li>计算视觉熵 $ H^v $ 与文本熵 $ H^t $ 的互信息，并进一步条件于模型置信度。</li>
+<li>发现：$ I(H^v;H^t|C)/I(H^v;H^t)=0.276 $，说明 27 % 的模态间关联无法由置信度解释，存在直接耦合。</li>
+</ul>
+</li>
+<li><p>稳定性→正确性校准</p>
+<ul>
+<li>基线准确率 78.7 %；</li>
+<li>条件于“视觉稳定”样本准确率 88 %，“视觉+文本均稳定”样本 91 %，相对提升 12 pp。</li>
+</ul>
+</li>
+<li><p>内部表征探针</p>
+<ul>
+<li>对 Qwen2.5-VL-7B 抽取 35 层激活，比较“答案改变 vs 未改变”扰动的逐层 L2 距离。</li>
+<li>结果：改变答案的扰动在中间层即产生更大漂移；视觉扰动漂移在顶层收敛，而文本扰动漂移持续放大至输出层。</li>
+</ul>
+</li>
+<li><p>跨模型稳定性迁移预测</p>
+<ul>
+<li>特征：用 4 个开源模型在 5 类扰动上的稳定/不稳定二进制标志，构成 20 维特征；</li>
+<li>训练：75 % NaturalBench 样本训练逻辑回归，预测 Gemini 2.0 Flash 正确性；</li>
+<li>性能：在 92 % 精度下召回 40 % 正确样本，AUC 0.90，显著优于 Gemini 自身置信度（同精度下仅 21 % 召回）。</li>
+</ul>
+</li>
+</ol>
+<p>以上实验覆盖 7 个模型、4 个数据集、&gt;30 k 样本、&gt;0.8 M 次模型调用，全面量化了 VLM 在“无害”扰动下的稳定性缺失，并验证了稳定性作为跨模型正确性代理的可行性。</p>
+<h2>未来工作</h2>
+<p>以下方向可在此基础上继续深入，分为“评测-诊断”与“改进-训练”两大视角，供后续研究参考。</p>
+<hr />
+<h3>评测-诊断视角</h3>
+<ol>
+<li><p><strong>更广泛的语义保持空间</strong></p>
+<ul>
+<li>视频时序微扰：帧间平移、亮度帧同步抖动、无损编解码往返。</li>
+<li>3D 多视角：相机位姿偏移 ±2° 以内，检验跨视角一致性。</li>
+<li>音频-视觉对齐：毫秒级音轨偏移对视听问答的影响。</li>
+</ul>
+</li>
+<li><p><strong>任务与模态扩展</strong></p>
+<ul>
+<li>指代表达理解（Referring Expression）、视觉对话、图像生成指令跟随。</li>
+<li>纯视觉描述任务：同一图像生成多条 caption 的稳定性。</li>
+<li>结构化输出：JSON、HTML 表格字段在微扰下是否出现随机漂移。</li>
+</ul>
+</li>
+<li><p><strong>细粒度语义标签</strong></p>
+<ul>
+<li>对“旋转不变/变”问题的人工标注扩展至“尺度不变”“颜色不变”等属性，建立分层稳定性矩阵。</li>
+<li>引入场景图（scene graph）自动标注，分析“对象-关系-属性”三元组在扰动下的保持率。</li>
+</ul>
+</li>
+<li><p><strong>人类一致性基准</strong></p>
+<ul>
+<li>采集人类在微扰图像/问题上的回答分布，定义“人类稳定熵”作为上限，衡量模型是否低于人类基线。</li>
+<li>眼动或反应时实验，验证人类是否也受同等幅度的像素/文字扰动影响。</li>
+</ul>
+</li>
+<li><p><strong>对抗-良性谱分析</strong></p>
+<ul>
+<li>在同一扰动预算 ε 下，系统扫描从“良性”到“对抗”的连续扰动轨迹，观察稳定性突变点，建立 VLM 的“相位图”。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3>改进-训练视角</h3>
+<ol start="6">
+<li><p><strong>稳定性作为训练目标</strong></p>
+<ul>
+<li>将视觉-文本熵 $H^v$、$H^t$ 作为可微正则项，通过自蒸馏或一致性损失最小化熵值。</li>
+<li>采用“样本级稳定性权重”重加权损失，对不稳定样本施加更大惩罚。</li>
+</ul>
+</li>
+<li><p><strong>测试时增强与投票</strong></p>
+<ul>
+<li>对同一图像-问题进行 N 组微扰推理，使用加权多数投票或答案分布熵阈值拒绝低置信输出。</li>
+<li>探索“熵阈值”与任务风险之间的最优平衡点，提供可配置的可靠性 API。</li>
+</ul>
+</li>
+<li><p><strong>跨模态协同正则</strong></p>
+<ul>
+<li>利用第 5.2 节发现的“残差 27 % 相关”设计协同 dropout：在视觉与文本编码器同时施加关联掩码，鼓励模型内部共享稳定表示。</li>
+<li>引入梯度对齐约束，使视觉和文本分支对扰动的梯度方向一致。</li>
+</ul>
+</li>
+<li><p><strong>稳定性感知的数据增强</strong></p>
+<ul>
+<li>在训练阶段动态应用“低熵扰动”(即模型已稳定的范围) 以扩充决策边界；对“高熵扰动”引入人工标签平滑，防止过拟合错误信号。</li>
+<li>建立“扰动难度课程”：从小幅平移逐步到旋转+重述，让模型按稳定性课程渐进学习。</li>
+</ul>
+</li>
+<li><p><strong>小模型监督大模型的迭代循环</strong></p>
+<ul>
+<li>将本文的“稳定性→正确性”预测器作为 reward 模型，使用强化学习微调大模型，目标直接优化稳定性指标。</li>
+<li>多次迭代后，再次用小模型评估新 checkpoint 的稳定性，形成“小-大”闭环自我改进。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3>工具与开源建议</h3>
+<ul>
+<li>发布统一扰动库 <strong>VLM-StabBench</strong>，集成像素、几何、文本、多语言、视频帧扰动，支持一行代码调用。</li>
+<li>提供稳定性诊断仪表盘：上传模型权重即可获得“熵-层-扰动”三维可视化与改进建议。</li>
+</ul>
+<p>通过上述探索，可进一步厘清 VLM 稳定性缺失的成因，并构建从评测、诊断到改进的完整闭环。</p>
+<h2>总结</h2>
+<p><strong>论文核心内容速览</strong></p>
+<ol>
+<li><p>研究目标<br />
+系统评测现代视觉-语言模型（VLM）在<strong>无语义改变的微小扰动</strong>（像素级平移、轻量旋转、同义重述、多语言翻译等）下的稳定性，揭示其鲁棒性缺口。</p>
+</li>
+<li><p>方法框架</p>
+<ul>
+<li>设计 27 种视觉 + 2 种文本<strong>语义保持扰动</strong>；</li>
+<li>提出“样本级稳定熵”$H_i$：熵为 0 表示所有扰动答案一致，即稳定；</li>
+<li>在 7 个模型（含 GPT-4o、Gemini 2.0 Flash）与 4 个基准共 &gt;30 k 样本上大规模实验。</li>
+</ul>
+</li>
+<li><p>主要发现</p>
+<ul>
+<li><strong>高敏感性</strong>：30–50 % 图像至少因一种无害扰动改变答案；GPT-4o 在文字叠加扰动下 93 % 样本答案翻转。</li>
+<li><strong>稳定性-准确率强相关</strong>：稳定样本准确率较基线提升 6–12 pp；联合视觉+文本稳定可达 91 %。</li>
+<li><strong>模态耦合</strong>：视觉与文本稳定性 27 % 的互信息无法由模型置信度解释，存在直接关联。</li>
+<li><strong>跨模型可迁移</strong>：用小型开源模型的稳定性特征训练线性分类器，可在 92 % 精度下召回 40 % 的 Gemini 正确样本，双倍于 Gemini 自身置信度。</li>
+</ul>
+</li>
+<li><p>贡献</p>
+<ul>
+<li>首次大规模量化 VLM 对“非对抗、语义保持”扰动的脆弱性；</li>
+<li>建立稳定性-正确性代理指标，提供新的评测协议；</li>
+<li>证明小模型稳定性可预测大模型正确性，为资源受限场景提供实用质量估计工具。</li>
+</ul>
+</li>
+<li><p>结论<br />
+尽管 VLM 已取得高基准性能，其预测仍随<strong>像素或措辞的微小变化</strong>而剧烈波动，表明现有系统缺乏基本的不变性，呼吁社区在评测与训练阶段把“稳定性”作为核心指标。</p>
+</li>
+</ol>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">N/A</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: Multimodal</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Multimodal</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2511.11206" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2511.11206" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2511.11450">
+                                    <div class="paper-header" onclick="showPaperDetail('2511.11450', 'Multimodal')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                VoxTell: Free-Text Promptable Universal 3D Medical Image Segmentation
+                                                <button class="mark-button" 
+                                                        data-paper-id="2511.11450"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2511.11450", "authors": ["Rokuss", "Langenberg", "Kirchhoff", "Isensee", "Hamm", "Ulrich", "Regnery", "Bauer", "Katsigiannopulos", "Norajitra", "Maier-Hein"], "id": "2511.11450", "pdf_url": "https://arxiv.org/pdf/2511.11450", "rank": 0.0, "title": "VoxTell: Free-Text Promptable Universal 3D Medical Image Segmentation"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2511.11450" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AVoxTell%3A%20Free-Text%20Promptable%20Universal%203D%20Medical%20Image%20Segmentation%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2511.11450&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AVoxTell%3A%20Free-Text%20Promptable%20Universal%203D%20Medical%20Image%20Segmentation%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2511.11450%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Rokuss, Langenberg, Kirchhoff, Isensee, Hamm, Ulrich, Regnery, Bauer, Katsigiannopulos, Norajitra, Maier-Hein</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">请求失败: 'NoneType' object is not subscriptable</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">N/A</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2511.11450" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">VoxTell: Free-Text Promptable Universal 3D Medical Image Segmentation</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">N/A</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: Multimodal</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Multimodal</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2511.11450" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2511.11450" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        
+        <!-- Footer with filter info -->
+        
+        <div class="footer">
+            主题筛选: Agent, Finance, Multimodal, RLHF, SFT, Hallucination, Pretraining | 状态: 已启用
+        </div>
+        
+        </div>
+    </div>
+
+    <!-- 右侧详情面板（宽屏） -->
+    <div class="detail-panel" id="detailPanel">
+        <div class="detail-panel-header">
+            <span class="detail-panel-title">论文详情</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="mark-button" id="detailPanelMarkButton" onclick="handleDetailPanelMark(event);" title="标记这篇论文">☆</button>
+                <button class="detail-panel-close" onclick="closeDetailPanel()">✕</button>
+            </div>
+        </div>
+        <div class="detail-panel-content" id="detailPanelContent">
+            <!-- 动态加载论文详情 -->
+        </div>
+    </div>
+
+    <!-- 移动端弹窗 -->
+    <div class="mobile-modal" id="mobileModal" onclick="closeMobileModal(event)">
+        <div class="mobile-modal-content" onclick="event.stopPropagation()">
+            <div class="mobile-modal-header">
+                <span class="detail-panel-title">论文详情</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="mark-button" id="mobileModalMarkButton" onclick="handleMobileModalMark(event);" title="标记这篇论文">☆</button>
+                    <button class="mobile-modal-close" onclick="closeMobileModal()">✕</button>
+                </div>
+            </div>
+            <div class="mobile-modal-body" id="mobileModalContent">
+                <!-- 动态加载论文详情 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPaperId = null;
+        let currentPaperData = null;
+
+        // ========== 标记功能 ==========
+        
+        // 获取所有标记的论文
+        function getMarkedPapers() {
+            try {
+                const stored = localStorage.getItem('markedPapers');
+                return stored ? JSON.parse(stored) : [];
+            } catch (e) {
+                console.error('读取标记论文失败:', e);
+                return [];
+            }
+        }
+        
+        // 保存标记的论文
+        function saveMarkedPapers(papers) {
+            try {
+                localStorage.setItem('markedPapers', JSON.stringify(papers));
+            } catch (e) {
+                console.error('保存标记论文失败:', e);
+            }
+        }
+        
+        // 检查论文是否已标记
+        function isMarked(paperId) {
+            const markedPapers = getMarkedPapers();
+            return markedPapers.some(p => p.id === paperId);
+        }
+        
+        // 获取论文的完整信息（从页面中提取）
+        function getPaperData(paperId, basicData) {
+            // 从subtitle中提取日期
+            const subtitle = document.querySelector('.header p');
+            let date = '未知';
+            if (subtitle) {
+                const dateMatch = subtitle.textContent.match(/(\d{4}-\d{2}-\d{2})/);
+                if (dateMatch) {
+                    date = dateMatch[1];
+                }
+            }
+            
+            // 获取报告路径（相对路径）
+            // 如果路径包含web/reports，提取web/reports之后的部分
+            // 否则使用完整路径
+            let reportPath = window.location.pathname.replace(/^\/+/, '');
+            const webReportsMatch = reportPath.match(/web\/reports\/(.+)$/);
+            if (webReportsMatch) {
+                reportPath = webReportsMatch[1];
+            } else {
+                // 尝试提取reports之后的部分
+                const reportsMatch = reportPath.match(/reports\/(.+)$/);
+                if (reportsMatch) {
+                    reportPath = reportsMatch[1];
+                }
+            }
+            
+            return {
+                id: paperId,
+                title: basicData.title || '',
+                authors: basicData.authors || [],
+                arxiv_url: basicData.arxiv_url || '',
+                pdf_url: basicData.pdf_url || '',
+                rank: basicData.rank || null,
+                date: date,
+                reportPath: reportPath,
+                markedAt: new Date().toISOString()
+            };
+        }
+        
+        // 切换标记状态
+        function toggleMark(paperId, paperData) {
+            const markedPapers = getMarkedPapers();
+            const isCurrentlyMarked = isMarked(paperId);
+            
+            if (isCurrentlyMarked) {
+                // 取消标记
+                const filtered = markedPapers.filter(p => p.id !== paperId);
+                saveMarkedPapers(filtered);
+                updateMarkButtonState(paperId, false);
+            } else {
+                // 添加标记
+                const fullPaperData = getPaperData(paperId, paperData);
+                markedPapers.push(fullPaperData);
+                saveMarkedPapers(markedPapers);
+                updateMarkButtonState(paperId, true);
+            }
+        }
+        
+        // 更新标记按钮状态
+        function updateMarkButtonState(paperId, isMarked) {
+            // 更新列表中的按钮
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            if (listButton) {
+                listButton.textContent = isMarked ? '⭐' : '☆';
+                listButton.classList.toggle('marked', isMarked);
+            }
+            
+            // 更新详情面板中的按钮
+            if (currentPaperId === paperId) {
+                const detailButton = document.getElementById('detailPanelMarkButton');
+                const mobileButton = document.getElementById('mobileModalMarkButton');
+                
+                if (detailButton) {
+                    detailButton.textContent = isMarked ? '⭐' : '☆';
+                    detailButton.classList.toggle('marked', isMarked);
+                }
+                if (mobileButton) {
+                    mobileButton.textContent = isMarked ? '⭐' : '☆';
+                    mobileButton.classList.toggle('marked', isMarked);
+                }
+            }
+        }
+        
+        // 处理列表中的标记点击（从按钮元素获取数据）
+        function handleMarkClickFromButton(button) {
+            const paperId = button.getAttribute('data-paper-id');
+            const paperDataStr = button.getAttribute('data-paper-data');
+            try {
+                const paperData = JSON.parse(paperDataStr);
+                toggleMark(paperId, paperData);
+            } catch (e) {
+                console.error('解析论文数据失败:', e);
+            }
+        }
+        
+        // 处理详情面板中的标记点击
+        function handleDetailPanelMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 处理移动端弹窗中的标记点击
+        function handleMobileModalMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 初始化标记状态（页面加载时）
+        function initMarkStates() {
+            const markedPapers = getMarkedPapers();
+            const markedIds = new Set(markedPapers.map(p => p.id));
+            
+            // 更新所有标记按钮的状态
+            document.querySelectorAll('.mark-button[data-paper-id]').forEach(button => {
+                const paperId = button.getAttribute('data-paper-id');
+                if (markedIds.has(paperId)) {
+                    button.textContent = '⭐';
+                    button.classList.add('marked');
+                } else {
+                    button.textContent = '☆';
+                    button.classList.remove('marked');
+                }
+            });
+        }
+
+        // 切换标签页
+        function showTab(tabId, event) {
+            if (event) {
+                event.preventDefault();
+            }
+            
+            // 隐藏所有标签内容
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            // 显示选中的标签
+            document.getElementById('tab-' + tabId).classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            // 关闭详情面板
+            closeDetailPanel();
+            
+            // 移动端自动关闭侧边栏
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('active');
+            }
+        }
+
+        // 从DOM元素中提取论文数据
+        function extractPaperDataFromDOM(paperItem, paperId) {
+            if (!paperItem) return null;
+            
+            const paperTitleEl = paperItem.querySelector('.paper-title');
+            const paperAuthorsEl = paperItem.querySelector('.paper-authors');
+            const paperScoreEl = paperItem.querySelector('.paper-score');
+            const arxivLinkEl = paperItem.querySelector('.arxiv-link');
+            
+            // 提取标题，去除标记按钮和链接
+            let title = '';
+            if (paperTitleEl) {
+                title = paperTitleEl.cloneNode(true);
+                // 移除按钮和链接
+                title.querySelectorAll('.mark-button, .arxiv-link, .ai-links').forEach(el => el.remove());
+                title = title.textContent.trim();
+            }
+            
+            return {
+                id: paperId,
+                title: title || '',
+                authors: paperAuthorsEl ? paperAuthorsEl.textContent.split(',').map(a => a.trim()) : [],
+                arxiv_url: arxivLinkEl ? arxivLinkEl.href : '',
+                pdf_url: arxivLinkEl ? arxivLinkEl.href.replace('/abs/', '/pdf/') : '',
+                rank: paperScoreEl && paperScoreEl.textContent !== 'N/A' ? parseFloat(paperScoreEl.textContent) : null
+            };
+        }
+
+        // 渲染元素中的数学公式
+        function renderMathInElementLocal(element) {
+            if (typeof renderMathInElement !== 'undefined' && element) {
+                renderMathInElement(element, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        // 显示论文详情
+        function showPaperDetail(paperId, topicId) {
+            const detailsContent = document.getElementById('details-' + paperId);
+            if (!detailsContent) return;
+            
+            // 移除之前选中的论文高亮
+            document.querySelectorAll('.paper-item-compact').forEach(el => el.classList.remove('active'));
+            
+            // 高亮当前论文
+            const paperItem = document.getElementById('paper-item-' + paperId);
+            if (paperItem) {
+                paperItem.classList.add('active');
+            }
+            
+            currentPaperId = paperId;
+            
+            // 从列表项中提取论文数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            
+            // 优先从列表按钮的data属性获取数据
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        currentPaperData = JSON.parse(paperDataStr);
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                        // 如果解析失败，从页面元素提取
+                        currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                    }
+                } else {
+                    // 如果没有data属性，从页面元素提取
+                    currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                }
+            } else {
+                // 如果找不到列表按钮，从页面元素提取
+                currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+            }
+            
+            // 更新详情面板中的标记按钮状态
+            const isCurrentlyMarked = isMarked(paperId);
+            const detailButton = document.getElementById('detailPanelMarkButton');
+            const mobileButton = document.getElementById('mobileModalMarkButton');
+            
+            if (detailButton) {
+                detailButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                detailButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            if (mobileButton) {
+                mobileButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                mobileButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            
+            // 检测设备类型
+            const isMobile = window.innerWidth <= 1024;
+            
+            if (isMobile) {
+                // 移动端：显示弹窗
+                const modalContent = document.getElementById('mobileModalContent');
+                modalContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(modalContent);
+                document.getElementById('mobileModal').classList.add('active');
+                document.body.style.overflow = 'hidden'; // 禁止背景滚动
+            } else {
+                // 宽屏：显示右侧面板
+                const panelContent = document.getElementById('detailPanelContent');
+                panelContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(panelContent);
+                document.getElementById('detailPanel').classList.add('active');
+                
+                // 调整论文列表宽度
+                const papersList = document.getElementById('papers-list-' + topicId);
+                if (papersList) {
+                    papersList.classList.add('has-detail');
+                }
+            }
+        }
+
+        // 关闭详情面板
+        function closeDetailPanel() {
+            document.getElementById('detailPanel').classList.remove('active');
+            document.querySelectorAll('.papers-list').forEach(el => el.classList.remove('has-detail'));
+            document.querySelectorAll('.paper-item-compact').forEach(el => el.classList.remove('active'));
+            currentPaperId = null;
+        }
+
+        // 关闭移动端弹窗
+        function closeMobileModal(event) {
+            if (event && event.target.id !== 'mobileModal') return;
+            document.getElementById('mobileModal').classList.remove('active');
+            document.querySelectorAll('.paper-item-compact').forEach(el => el.classList.remove('active'));
+            document.body.style.overflow = ''; // 恢复背景滚动
+            currentPaperId = null;
+        }
+
+        // 切换侧边栏（移动端）
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        // 切换领域分析
+        function toggleAnalysis(topicId) {
+            const analysis = document.getElementById('analysis-' + topicId);
+            const icon = document.getElementById('analysis-icon-' + topicId);
+            
+            if (analysis.style.display === 'none') {
+                analysis.style.display = 'block';
+                icon.textContent = '▼';
+            } else {
+                analysis.style.display = 'none';
+                icon.textContent = '▶';
+            }
+        }
+
+        // 响应式处理
+        window.addEventListener('resize', function() {
+            if (currentPaperId) {
+                // 如果有打开的详情，根据新的屏幕尺寸调整显示方式
+                const isMobile = window.innerWidth <= 1024;
+                const detailPanel = document.getElementById('detailPanel');
+                const mobileModal = document.getElementById('mobileModal');
+                
+                if (isMobile && detailPanel.classList.contains('active')) {
+                    // 从宽屏切换到移动端
+                    closeDetailPanel();
+                    const detailsContent = document.getElementById('details-' + currentPaperId);
+                    if (detailsContent) {
+                        const modalContent = document.getElementById('mobileModalContent');
+                        modalContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(modalContent);
+                        mobileModal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                } else if (!isMobile && mobileModal.classList.contains('active')) {
+                    // 从移动端切换到宽屏
+                    mobileModal.classList.remove('active');
+                    document.body.style.overflow = '';
+                    const detailsContent = document.getElementById('details-' + currentPaperId);
+                    if (detailsContent) {
+                        const panelContent = document.getElementById('detailPanelContent');
+                        panelContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(panelContent);
+                        detailPanel.classList.add('active');
+                    }
+                }
+            }
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstNavItem = document.querySelector('.nav-item');
+            if (firstNavItem) {
+                firstNavItem.classList.add('active');
+            }
+            
+            // 初始化标记状态
+            initMarkStates();
+            
+            // 检查URL hash，如果包含paper-item-xxx，自动打开该论文详情
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#paper-item-')) {
+                const paperId = hash.replace('#paper-item-', '');
+                // 查找该论文所在的topic
+                const paperItem = document.getElementById('paper-item-' + paperId);
+                if (paperItem) {
+                    // 找到论文所在的tab
+                    const tabContent = paperItem.closest('.tab-content');
+                    if (tabContent) {
+                        const tabId = tabContent.id.replace('tab-', '');
+                        // 切换到对应的tab
+                        showTab(tabId, null);
+                        // 延迟一下，确保tab切换完成后再显示详情
+                        setTimeout(() => {
+                            showPaperDetail(paperId, tabId);
+                            // 滚动到论文位置
+                            paperItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
+                    }
+                }
+            }
+            
+            // 初始化KaTeX自动渲染数学公式
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        });
+
+        // ESC键关闭详情
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDetailPanel();
+                closeMobileModal();
+            }
+        });
+    </script>
+</body>
+</html>
