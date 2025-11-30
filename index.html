@@ -606,16 +606,16 @@
             <div class="header-top">
                 <div>
                     <h1>大模型论文跟踪</h1>
-                    <p>生成时间: 2025-11-30</p>
+                    <p>生成时间: 2025-12-01</p>
                 </div>
                 <div class="header-stats">
                     <div class="header-stats-item">
                         <span>总报告数:</span>
-                        <span class="header-stats-value">50</span>
+                        <span class="header-stats-value">51</span>
                     </div>
                     <div class="header-stats-item">
                         <span>周报告:</span>
-                        <span class="header-stats-value">12</span>
+                        <span class="header-stats-value">13</span>
                     </div>
                     <div class="header-stats-item">
                         <span>日报告:</span>
@@ -623,7 +623,7 @@
                     </div>
                     <div class="header-stats-item">
                         <span>总论文数:</span>
-                        <span class="header-stats-value">3052</span>
+                        <span class="header-stats-value">3171</span>
                     </div>
                 </div>
             </div>
@@ -654,6 +654,10 @@
                 <div class="week-nav">
                     <div class="week-nav-title">快速导航</div>
                     <ul class="week-nav-list">
+                        
+                        <li class="week-nav-item">
+                            <a class="week-nav-link" href="#week-2025-w48" onclick="scrollToWeek('2025-W48'); return false;">2025-W48</a>
+                        </li>
                         
                         <li class="week-nav-item">
                             <a class="week-nav-link" href="#week-2025-w47" onclick="scrollToWeek('2025-W47'); return false;">2025-W47</a>
@@ -714,6 +718,45 @@
                     </button>
                 </div>
                 <div class="reports-list" id="reportsList">
+                    
+                    <div class="report-item level-0 " 
+                         data-week="2025-w48"
+                         id="week-2025-w48"
+                         onclick="openPreview('reports/2025-W48/weekly_report_20251124.html', '2025-W48');">
+                        
+                        <div class="report-header weekly-header">
+                            <div class="weekly-title-row">
+                                <div class="weekly-title-section">
+                                    <span class="report-title">📅  2025-W48</span>
+                                    <span class="weekly-hint">点击查看汇总分析</span>
+                                </div>
+                                <span class="weekly-meta-inline">
+                                    <span class="weekly-date">2025-12-01</span>
+                                    <span class="weekly-papers">📄 119 篇论文</span>
+                                    <span class="weekly-toggle-icon" data-week="2025-w48" onclick="toggleWeekDaily('2025-w48'); event.stopPropagation();">▼</span>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="report-domains">
+                            <div class="label">领域：</div>
+                            <div class="domain-tags">
+                                
+                                <span class="domain-tag">多模态</span>
+                                
+                                <span class="domain-tag">金融应用</span>
+                                
+                                <span class="domain-tag">指令微调（SFT）</span>
+                                
+                                <span class="domain-tag">智能体（Agent）</span>
+                                
+                                <span class="domain-tag">强化学习对齐（RLHF）</span>
+                                
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
                     
                     <div class="report-item level-0 " 
                          data-week="2025-w47"
@@ -2440,7 +2483,7 @@
         </div>
 
         <div class="footer">
-            <p>生成时间: 2025-11-30</p>
+            <p>生成时间: 2025-12-01</p>
         </div>
     </div>
 
