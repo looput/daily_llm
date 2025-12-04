@@ -1,0 +1,1871 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大模型论文速读（1/918）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background: #fafafa;
+            font-size: 15px;
+        }
+
+        /* 主布局容器 - 左侧导航 + 右侧内容 */
+        .main-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 左侧书签式导航 */
+        .sidebar {
+            width: 240px;
+            background: #ffffff;
+            border-right: 1px solid #e8e8e8;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.02);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #fafafa;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #ccc;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid #e8e8e8;
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .sidebar-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .sidebar-nav {
+            padding: 12px 0;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 12px 20px;
+            color: #666;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            font-size: 14px;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: #fafafa;
+            color: #1a1a1a;
+        }
+
+        .nav-item.active {
+            background: #f5f5f5;
+            color: #1a1a1a;
+            border-left-color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-right: 8px solid white;
+        }
+
+        .nav-item-count {
+            float: right;
+            color: #999;
+            font-size: 12px;
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+
+        .nav-item.active .nav-item-count {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        /* 移动端菜单按钮 */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 200;
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #1a1a1a;
+            margin: 4px 0;
+        }
+
+        /* 主内容区域 */
+        .container {
+            flex: 1;
+            margin-left: 240px;
+            background: white;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid #e8e8e8;
+            color: #1a1a1a;
+            padding: 32px 40px 24px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+            color: #666;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .filter-info {
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 16px 40px;
+            margin: 0 40px 24px;
+        }
+
+        .filter-info h3 {
+            margin: 0 0 8px;
+            color: #1a1a1a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .filter-info p {
+            margin: 4px 0;
+            color: #666;
+            font-size: 13px;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 宽屏模式：论文列表 + 右侧详情面板 */
+        .content-wrapper {
+            display: flex;
+            position: relative;
+        }
+
+        .papers-list {
+            flex: 1;
+            padding: 32px 40px;
+            transition: margin-right 0.3s ease;
+        }
+
+        .papers-list.has-detail {
+            margin-right: 560px;
+        }
+
+        /* 右侧详情面板（宽屏） */
+        .detail-panel {
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 560px;
+            background: white;
+            border-left: 1px solid #e8e8e8;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 50;
+            box-shadow: -2px 0 16px rgba(0,0,0,0.08);
+        }
+
+        .detail-panel.active {
+            transform: translateX(0);
+        }
+
+        .detail-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .detail-panel::-webkit-scrollbar-track {
+            background: #fafafa;
+        }
+
+        .detail-panel::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 4px;
+        }
+
+        .detail-panel::-webkit-scrollbar-thumb:hover {
+            background: #ccc;
+        }
+
+        .detail-panel-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            border-bottom: 1px solid #e8e8e8;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .detail-panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .detail-panel-close {
+            background: #f5f5f5;
+            border: none;
+            font-size: 18px;
+            color: #666;
+            cursor: pointer;
+            padding: 6px 10px;
+            line-height: 1;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .detail-panel-close:hover {
+            background: #e8e8e8;
+            color: #1a1a1a;
+        }
+
+        .detail-panel-content {
+            padding: 24px;
+        }
+
+        /* 移动端弹窗 */
+        .mobile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 0;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .mobile-modal.active {
+            display: flex;
+        }
+
+        .mobile-modal-content {
+            background: white;
+            border-radius: 16px 16px 0 0;
+            width: 100%;
+            height: 95%;
+            overflow-y: auto;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+            position: relative;
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0.8;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .mobile-modal-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .mobile-modal-content::-webkit-scrollbar-track {
+            background: #fafafa;
+        }
+
+        .mobile-modal-content::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .mobile-modal-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            border-bottom: 1px solid #e8e8e8;
+            padding: 24px 20px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            border-radius: 16px 16px 0 0;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        /* 移动端弹窗拖动指示器 */
+        .mobile-modal-header::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background: #d0d0d0;
+            border-radius: 2px;
+        }
+
+        .mobile-modal-close {
+            background: #f5f5f5;
+            border: none;
+            font-size: 20px;
+            color: #666;
+            cursor: pointer;
+            padding: 6px 10px;
+            line-height: 1;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .mobile-modal-close:hover {
+            background: #e8e8e8;
+            color: #1a1a1a;
+        }
+
+        .mobile-modal-body {
+            padding: 16px 20px 24px;
+        }
+
+        .topic-header {
+            display: none;
+        }
+
+        .topic-content {
+            border: none;
+            padding: 0;
+        }
+
+        /* Compact Paper Items */
+        .paper-item-compact {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 20px 0;
+            transition: background 0.2s;
+        }
+
+        .paper-item-compact:last-child {
+            border-bottom: none;
+        }
+
+        .paper-item-compact.active {
+            background: #fafafa;
+        }
+
+        .paper-header {
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+            padding: 0;
+            transition: all 0.2s;
+        }
+
+        .paper-header:hover {
+            opacity: 0.8;
+        }
+
+        .expand-icon {
+            margin-right: 12px;
+            margin-top: 2px;
+            font-size: 12px;
+            color: #999;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+
+        .paper-title {
+            flex: 1;
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 16px;
+            line-height: 1.6;
+            letter-spacing: -0.2px;
+        }
+
+        .paper-authors {
+            color: #666;
+            font-size: 13px;
+            margin: 6px 0;
+            line-height: 1.5;
+        }
+
+        .paper-score {
+            background: #f5f5f5;
+            color: #1a1a1a;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            margin-left: 16px;
+            flex-shrink: 0;
+        }
+
+        /* 详情内容样式 */
+        .paper-details-content h4 {
+            color: #1a1a1a;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 20px 0 12px 0;
+            border-bottom: 1px solid #e8e8e8;
+            padding-bottom: 8px;
+        }
+
+        .paper-details-content .markdown-content {
+            background: #fafafa;
+            border-left: 3px solid #e0e0e0;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+
+        .paper-abstract {
+            color: #4a4a4a;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        /* ========== 领域汇总Markdown样式（紧凑型） ========== */
+        .domain-summary-display .analysis-content {
+            line-height: 1.7;
+            color: #333;
+            font-size: 14px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        /* 领域汇总：标题样式 */
+        .domain-summary-display .analysis-content h1, 
+        .domain-summary-display .analysis-content h2, 
+        .domain-summary-display .analysis-content h3, 
+        .domain-summary-display .analysis-content h4, 
+        .domain-summary-display .analysis-content h5, 
+        .domain-summary-display .analysis-content h6 {
+            margin: 16px 0 8px 0;
+            color: #1a1a1a;
+            font-weight: 600;
+            line-height: 1.4;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 6px;
+        }
+        
+        .domain-summary-display .analysis-content h1 { font-size: 18px; }
+        .domain-summary-display .analysis-content h2 { font-size: 16px; }
+        .domain-summary-display .analysis-content h3 { font-size: 15px; }
+        .domain-summary-display .analysis-content h4 { font-size: 14px; }
+        
+        /* 领域汇总：段落样式 */
+        .domain-summary-display .analysis-content p {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #333;
+        }
+        
+        /* 领域汇总：列表样式（紧凑） */
+        .domain-summary-display .analysis-content ul, 
+        .domain-summary-display .analysis-content ol {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        
+        .domain-summary-display .analysis-content li {
+            margin: 3px 0;
+            line-height: 1.6;
+            color: #333;
+            padding-left: 4px;
+        }
+        
+        /* 领域汇总：嵌套列表（紧凑） */
+        .domain-summary-display .analysis-content ul ul, 
+        .domain-summary-display .analysis-content ol ul,
+        .domain-summary-display .analysis-content ul ol, 
+        .domain-summary-display .analysis-content ol ol {
+            margin: 2px 0;
+            padding-left: 20px;
+        }
+        
+        /* 领域汇总：列表符号 */
+        .domain-summary-display .analysis-content ul li { list-style-type: disc; }
+        .domain-summary-display .analysis-content ul ul li { list-style-type: circle; }
+        .domain-summary-display .analysis-content ul ul ul li { list-style-type: square; }
+        .domain-summary-display .analysis-content ol li { list-style-type: decimal; }
+        .domain-summary-display .analysis-content ol ol li { list-style-type: lower-alpha; }
+        
+        /* 领域汇总：强调样式 */
+        .domain-summary-display .analysis-content strong, 
+        .domain-summary-display .analysis-content b {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .domain-summary-display .analysis-content em, 
+        .domain-summary-display .analysis-content i {
+            font-style: italic;
+            color: #4a4a4a;
+        }
+        
+        /* 领域汇总：代码样式 */
+        .domain-summary-display .analysis-content code {
+            background: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+            color: #d73a49;
+        }
+        
+        /* 领域汇总：链接样式 */
+        .domain-summary-display .analysis-content a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        
+        .domain-summary-display .analysis-content a:hover {
+            text-decoration: underline;
+        }
+        
+        
+        /* ========== 论文详情Markdown样式（宽松型） ========== */
+        .markdown-content {
+            line-height: 1.8;
+            color: #333;
+            font-size: 14px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        /* 论文详情：标题样式 */
+        .markdown-content h1, .markdown-content h2, .markdown-content h3, 
+        .markdown-content h4, .markdown-content h5, .markdown-content h6 {
+            margin: 24px 0 12px 0;
+            color: #1a1a1a;
+            font-weight: 600;
+            line-height: 1.4;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 8px;
+        }
+        
+        .markdown-content h1 { 
+            font-size: 20px; 
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .markdown-content h2 { font-size: 18px; }
+        .markdown-content h3 { font-size: 16px; }
+        .markdown-content h4 { font-size: 15px; }
+        .markdown-content h5 { font-size: 14px; }
+        .markdown-content h6 { 
+            font-size: 14px; 
+            color: #666;
+        }
+        
+        /* 论文详情：段落样式 */
+        .markdown-content p {
+            margin: 12px 0;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        /* 论文详情：强调样式 */
+        .markdown-content strong, .markdown-content b {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .markdown-content em, .markdown-content i {
+            font-style: italic;
+            color: #4a4a4a;
+        }
+        
+        /* 论文详情：列表样式（优化缩进） */
+        .markdown-content ul, .markdown-content ol {
+            margin: 12px 0;
+            padding-left: 22px;
+        }
+        
+        .markdown-content li {
+            margin: 5px 0;
+            line-height: 1.8;
+            color: #333;
+            padding-left: 6px;
+        }
+        
+        /* 论文详情：第一级列表符号 */
+        .markdown-content ul li {
+            list-style-type: disc;
+        }
+        
+        .markdown-content ol li {
+            list-style-type: decimal;
+        }
+        
+        /* 论文详情：嵌套列表样式 */
+        .markdown-content ul ul, .markdown-content ol ul,
+        .markdown-content ul ol, .markdown-content ol ol {
+            margin: 3px 0;
+            padding-left: 24px;
+        }
+        
+        /* 论文详情：第二级无序列表：空心圆 */
+        .markdown-content ul ul li {
+            list-style-type: circle;
+        }
+        
+        /* 论文详情：第三级无序列表：方块 */
+        .markdown-content ul ul ul li {
+            list-style-type: square;
+        }
+        
+        /* 论文详情：第二级有序列表：小写字母 */
+        .markdown-content ol ol li {
+            list-style-type: lower-alpha;
+        }
+        
+        /* 论文详情：第三级有序列表：小写罗马数字 */
+        .markdown-content ol ol ol li {
+            list-style-type: lower-roman;
+        }
+        
+        /* 论文详情：混合嵌套：有序列表中的无序列表 */
+        .markdown-content ol ul li {
+            list-style-type: circle;
+        }
+        
+        /* 论文详情：混合嵌套：无序列表中的有序列表 */
+        .markdown-content ul ol li {
+            list-style-type: lower-alpha;
+        }
+        
+        /* 论文详情：代码样式 */
+        .markdown-content code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 13px;
+            color: #d73a49;
+            border: 1px solid #e8e8e8;
+        }
+        
+        .markdown-content pre {
+            background: #f5f5f5;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .markdown-content pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+            border: none;
+        }
+        
+        /* 论文详情：引用样式 */
+        .markdown-content blockquote {
+            border-left: 3px solid #e0e0e0;
+            margin: 16px 0;
+            padding: 12px 16px;
+            background: #fafafa;
+            color: #4a4a4a;
+            font-style: italic;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .markdown-content blockquote p {
+            margin: 0;
+            color: #4a4a4a;
+        }
+        
+        /* 论文详情：分割线样式 */
+        .markdown-content hr {
+            border: none;
+            border-top: 1px solid #e8e8e8;
+            margin: 24px 0;
+        }
+        
+        /* 论文详情：表格样式 */
+        .markdown-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .markdown-content th, .markdown-content td {
+            border: 1px solid #e8e8e8;
+            padding: 10px 14px;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        .markdown-content th {
+            background: #fafafa;
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 13px;
+        }
+        
+        .markdown-content td {
+            background: white;
+            color: #333;
+        }
+        
+        .markdown-content tr:nth-child(even) td {
+            background: #fafafa;
+        }
+        
+        /* 论文详情：链接样式 */
+        .markdown-content a {
+            color: #0066cc;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .markdown-content a:hover {
+            color: #0052a3;
+            text-decoration: underline;
+        }
+        
+        /* 论文详情：任务列表样式 */
+        .markdown-content input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        /* 论文详情：图片样式 */
+        .markdown-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin: 8px 0;
+        }
+
+
+
+        .paper-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: #999;
+            margin: 12px 0;
+            flex-wrap: wrap;
+        }
+
+        .paper-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 12px 0;
+        }
+
+        .tag {
+            background: #f5f5f5;
+            color: #666;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .arxiv-link {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .arxiv-link:hover {
+            text-decoration: underline;
+        }
+
+        /* AI助手链接样式 */
+        .ai-links {
+            display: inline-flex;
+            gap: 8px;
+            margin-left: 12px;
+            align-items: center;
+            vertical-align: middle;
+        }
+
+        .ai-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid;
+            line-height: 1.2;
+            vertical-align: middle;
+        }
+
+        .ai-link-kimi {
+            color: #6366f1;
+            border-color: #6366f1;
+            background: #f5f5ff;
+        }
+
+        .ai-link-kimi:hover {
+            background: #6366f1;
+            color: white;
+        }
+
+        .ai-link-chatgpt {
+            color: #10a37f;
+            border-color: #10a37f;
+            background: #f0fdf4;
+        }
+
+        .ai-link-chatgpt:hover {
+            background: #10a37f;
+            color: white;
+        }
+
+        .ai-link-icon {
+            font-size: 12px;
+            line-height: 1;
+            display: inline-block;
+        }
+
+        .no-papers {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+            font-size: 14px;
+        }
+
+
+
+
+        /* Footer styles */
+        .footer {
+            background: #fafafa;
+            padding: 16px 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        /* Domain summary display styles */
+        .domain-summary-display {
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .domain-summary-display h3 {
+            margin: 0 0 16px;
+            color: #1a1a1a;
+            font-size: 16px;
+            font-weight: 600;
+            border-bottom: 1px solid #e8e8e8;
+            padding-bottom: 8px;
+        }
+
+        .domain-summary-display .summary-section,
+        .domain-summary-display .insights-section,
+        .domain-summary-display .trends-section {
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 12px 0;
+        }
+
+        .domain-summary-display .summary-section {
+            border-left: 3px solid #e0e0e0;
+        }
+
+        .domain-summary-display .insights-section {
+            border-left: 3px solid #e0e0e0;
+        }
+
+        .domain-summary-display .trends-section {
+            border-left: 3px solid #e0e0e0;
+        }
+
+
+        .domain-summary-display h4 {
+            margin: 0 0 10px;
+            color: #1a1a1a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .domain-summary-display p {
+            margin: 0;
+            color: #4a4a4a;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+
+
+
+        /* Paper summary inline style */
+        .paper-summary-inline {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 8px 0;
+            padding: 0;
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            /* 宽屏模式下隐藏右侧面板，使用移动端弹窗 */
+            .detail-panel {
+                display: none;
+            }
+            
+            .papers-list.has-detail {
+                margin-right: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* 移动端AI链接优化 */
+            .ai-links {
+                display: flex;
+                margin-left: 0;
+                margin-top: 8px;
+                gap: 6px;
+            }
+            
+            .ai-link {
+                font-size: 11px;
+                padding: 3px 8px;
+            }
+            
+            .ai-link-icon {
+                font-size: 12px;
+            }
+            body {
+                font-size: 14px;
+            }
+
+            /* 移动端显示菜单按钮 */
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            /* 移动端隐藏侧边栏 */
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            /* 移动端主容器不留左边距 */
+            .container {
+                margin-left: 0;
+            }
+            
+            .header {
+                padding: 24px 20px 16px;
+                padding-top: 60px; /* 为菜单按钮留空间 */
+            }
+            
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .papers-list {
+                padding: 24px 20px;
+            }
+            
+            .filter-info, .footer {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            
+            .paper-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .paper-score {
+                margin-left: 0;
+                margin-top: 8px;
+            }
+
+            /* 移动端详情面板完全隐藏 */
+            .detail-panel {
+                display: none !important;
+            }
+            
+            /* 移动端优化领域汇总显示，去掉双层嵌套效果 */
+            .domain-summary-display {
+                background: white;
+                border: 1px solid #e8e8e8;
+                padding: 12px 16px;
+                margin-bottom: 20px;
+            }
+            
+            .domain-summary-display .summary-section,
+            .domain-summary-display .insights-section,
+            .domain-summary-display .trends-section {
+                background: transparent;
+                border: none;
+                border-radius: 0;
+                padding: 0;
+                margin: 0;
+            }
+        }
+        
+        /* KaTeX数学公式样式 */
+        .katex {
+            font-size: 1.1em;
+        }
+        
+        .katex-display {
+            margin: 1em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        
+        .katex-display > .katex {
+            white-space: nowrap;
+        }
+        
+        /* 标记按钮样式 */
+        .mark-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            color: #999;
+            transition: all 0.2s;
+            border-radius: 4px;
+            padding: 0;
+            margin-left: 8px;
+            flex-shrink: 0;
+            vertical-align: middle;
+        }
+        
+        .mark-button:hover {
+            background: #f5f5f5;
+            color: #ffa500;
+            transform: scale(1.1);
+        }
+        
+        .mark-button.marked {
+            color: #ffa500;
+        }
+        
+        .mark-button.marked:hover {
+            color: #ff8c00;
+        }
+        
+        .paper-title .mark-button {
+            margin-left: 8px;
+        }
+        
+        .detail-panel-header .mark-button,
+        .mobile-modal-header .mark-button {
+            margin-right: 8px;
+        }
+    </style>
+    <!-- KaTeX数学公式渲染库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- 移动端菜单按钮 -->
+    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="main-layout">
+        <!-- 左侧书签式导航 -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>📚 领域导航</h2>
+            </div>
+            <nav class="sidebar-nav">
+                
+                <a class="nav-item active" 
+                   onclick="showTab('Agent', event)">
+                    智能体（Agent）
+                    <span class="nav-item-count">1</span>
+                </a>
+                
+            </nav>
+        </aside>
+
+        <!-- 主内容区域 -->
+        <div class="container">
+            <div class="header">
+                <h1>大模型论文速读（1/918）</h1>
+                <p>日报: 2025-12-02 | 生成时间: 2025-12-04</p>
+            </div>
+            
+            <!-- Tab Contents -->
+            
+            <div id="tab-Agent" class="tab-content active">
+                <div class="content-wrapper">
+                    <div class="papers-list" id="papers-list-Agent">
+                        <!-- 领域汇总分析 -->
+                        
+                        <div class="domain-summary-display">
+                <!-- <h3>📊 领域汇总分析</h3> -->
+                
+                        <!-- 完整汇总内容（单一文本） -->
+                        
+                <div class="summary-section">
+                    <div class="analysis-content"><p>第1批汇总失败: Error code: 400 - {'error': {'type': 'completion', 'message': 'type:business, code:1620867020, msg:error_type=2 suggest=4 msg=请求频率超出限制'}}</p>
+</div>
+                </div>
+                
+                
+            </div>
+            
+                        
+                        <div class="topic-content">
+                            
+                                
+                                <div class="paper-item-compact" id="paper-item-2512.00371">
+                                    <div class="paper-header" onclick="showPaperDetail('2512.00371', 'Agent')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Evaluating LLMs in Open-Source Games
+                                                <button class="mark-button" 
+                                                        data-paper-id="2512.00371"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2512.00371", "authors": ["Sistla", "Kleiman-Weiner"], "id": "2512.00371", "pdf_url": "https://arxiv.org/pdf/2512.00371", "rank": 0.0, "title": "Evaluating LLMs in Open-Source Games"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2512.00371" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AEvaluating%20LLMs%20in%20Open-Source%20Games%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2512.00371&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AEvaluating%20LLMs%20in%20Open-Source%20Games%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2512.00371%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Sistla, Kleiman-Weiner</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">请求失败: Error code: 400 - {'error': {'type': 'completion', 'message': 'type:business, code:1620867020, msg:error_type=2 suggest=4 msg=请求频率超出限制'}}</div>
+                                            
+                                        </div>
+                                        <span class="paper-score">N/A</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2512.00371" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Evaluating LLMs in Open-Source Games</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">N/A</span></span>
+                                            <span>置信度: 0.92</span>
+                                            <span>分类: Agent</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Agent</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2512.00371" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2512.00371" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        
+        <!-- Footer with filter info -->
+        
+        <div class="footer">
+            主题筛选: RLHF, Multimodal, Hallucination, Agent, SFT, Pretraining, Finance | 状态: 已启用
+        </div>
+        
+        </div>
+    </div>
+
+    <!-- 右侧详情面板（宽屏） -->
+    <div class="detail-panel" id="detailPanel">
+        <div class="detail-panel-header">
+            <span class="detail-panel-title">论文详情</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="mark-button" id="detailPanelMarkButton" onclick="handleDetailPanelMark(event);" title="标记这篇论文">☆</button>
+                <button class="detail-panel-close" onclick="closeDetailPanel()">✕</button>
+            </div>
+        </div>
+        <div class="detail-panel-content" id="detailPanelContent">
+            <!-- 动态加载论文详情 -->
+        </div>
+    </div>
+
+    <!-- 移动端弹窗 -->
+    <div class="mobile-modal" id="mobileModal" onclick="closeMobileModal(event)">
+        <div class="mobile-modal-content" onclick="event.stopPropagation()">
+            <div class="mobile-modal-header">
+                <span class="detail-panel-title">论文详情</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="mark-button" id="mobileModalMarkButton" onclick="handleMobileModalMark(event);" title="标记这篇论文">☆</button>
+                    <button class="mobile-modal-close" onclick="closeMobileModal()">✕</button>
+                </div>
+            </div>
+            <div class="mobile-modal-body" id="mobileModalContent">
+                <!-- 动态加载论文详情 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPaperId = null;
+        let currentPaperData = null;
+
+        // ========== 标记功能 ==========
+        
+        // 获取所有标记的论文
+        function getMarkedPapers() {
+            try {
+                const stored = localStorage.getItem('markedPapers');
+                return stored ? JSON.parse(stored) : [];
+            } catch (e) {
+                console.error('读取标记论文失败:', e);
+                return [];
+            }
+        }
+        
+        // 保存标记的论文
+        function saveMarkedPapers(papers) {
+            try {
+                localStorage.setItem('markedPapers', JSON.stringify(papers));
+            } catch (e) {
+                console.error('保存标记论文失败:', e);
+            }
+        }
+        
+        // 检查论文是否已标记
+        function isMarked(paperId) {
+            const markedPapers = getMarkedPapers();
+            return markedPapers.some(p => p.id === paperId);
+        }
+        
+        // 获取论文的完整信息（从页面中提取）
+        function getPaperData(paperId, basicData) {
+            // 从subtitle中提取日期
+            const subtitle = document.querySelector('.header p');
+            let date = '未知';
+            if (subtitle) {
+                const dateMatch = subtitle.textContent.match(/(\d{4}-\d{2}-\d{2})/);
+                if (dateMatch) {
+                    date = dateMatch[1];
+                }
+            }
+            
+            // 获取报告路径（相对路径）
+            // 如果路径包含web/reports，提取web/reports之后的部分
+            // 否则使用完整路径
+            let reportPath = window.location.pathname.replace(/^\/+/, '');
+            const webReportsMatch = reportPath.match(/web\/reports\/(.+)$/);
+            if (webReportsMatch) {
+                reportPath = webReportsMatch[1];
+            } else {
+                // 尝试提取reports之后的部分
+                const reportsMatch = reportPath.match(/reports\/(.+)$/);
+                if (reportsMatch) {
+                    reportPath = reportsMatch[1];
+                }
+            }
+            
+            return {
+                id: paperId,
+                title: basicData.title || '',
+                authors: basicData.authors || [],
+                arxiv_url: basicData.arxiv_url || '',
+                pdf_url: basicData.pdf_url || '',
+                rank: basicData.rank || null,
+                date: date,
+                reportPath: reportPath,
+                markedAt: new Date().toISOString()
+            };
+        }
+        
+        // 切换标记状态
+        function toggleMark(paperId, paperData) {
+            const markedPapers = getMarkedPapers();
+            const isCurrentlyMarked = isMarked(paperId);
+            
+            if (isCurrentlyMarked) {
+                // 取消标记
+                const filtered = markedPapers.filter(p => p.id !== paperId);
+                saveMarkedPapers(filtered);
+                updateMarkButtonState(paperId, false);
+            } else {
+                // 添加标记
+                const fullPaperData = getPaperData(paperId, paperData);
+                markedPapers.push(fullPaperData);
+                saveMarkedPapers(markedPapers);
+                updateMarkButtonState(paperId, true);
+            }
+        }
+        
+        // 更新标记按钮状态
+        function updateMarkButtonState(paperId, isMarked) {
+            // 更新列表中的按钮
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            if (listButton) {
+                listButton.textContent = isMarked ? '⭐' : '☆';
+                listButton.classList.toggle('marked', isMarked);
+            }
+            
+            // 更新详情面板中的按钮
+            if (currentPaperId === paperId) {
+                const detailButton = document.getElementById('detailPanelMarkButton');
+                const mobileButton = document.getElementById('mobileModalMarkButton');
+                
+                if (detailButton) {
+                    detailButton.textContent = isMarked ? '⭐' : '☆';
+                    detailButton.classList.toggle('marked', isMarked);
+                }
+                if (mobileButton) {
+                    mobileButton.textContent = isMarked ? '⭐' : '☆';
+                    mobileButton.classList.toggle('marked', isMarked);
+                }
+            }
+        }
+        
+        // 处理列表中的标记点击（从按钮元素获取数据）
+        function handleMarkClickFromButton(button) {
+            const paperId = button.getAttribute('data-paper-id');
+            const paperDataStr = button.getAttribute('data-paper-data');
+            try {
+                const paperData = JSON.parse(paperDataStr);
+                toggleMark(paperId, paperData);
+            } catch (e) {
+                console.error('解析论文数据失败:', e);
+            }
+        }
+        
+        // 处理详情面板中的标记点击
+        function handleDetailPanelMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 处理移动端弹窗中的标记点击
+        function handleMobileModalMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 初始化标记状态（页面加载时）
+        function initMarkStates() {
+            const markedPapers = getMarkedPapers();
+            const markedIds = new Set(markedPapers.map(p => p.id));
+            
+            // 更新所有标记按钮的状态
+            document.querySelectorAll('.mark-button[data-paper-id]').forEach(button => {
+                const paperId = button.getAttribute('data-paper-id');
+                if (markedIds.has(paperId)) {
+                    button.textContent = '⭐';
+                    button.classList.add('marked');
+                } else {
+                    button.textContent = '☆';
+                    button.classList.remove('marked');
+                }
+            });
+        }
+
+        // 切换标签页
+        function showTab(tabId, event) {
+            if (event) {
+                event.preventDefault();
+            }
+            
+            // 隐藏所有标签内容
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            // 显示选中的标签
+            document.getElementById('tab-' + tabId).classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            // 关闭详情面板
+            closeDetailPanel();
+            
+            // 移动端自动关闭侧边栏
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('active');
+            }
+        }
+
+        // 从DOM元素中提取论文数据
+        function extractPaperDataFromDOM(paperItem, paperId) {
+            if (!paperItem) return null;
+            
+            const paperTitleEl = paperItem.querySelector('.paper-title');
+            const paperAuthorsEl = paperItem.querySelector('.paper-authors');
+            const paperScoreEl = paperItem.querySelector('.paper-score');
+            const arxivLinkEl = paperItem.querySelector('.arxiv-link');
+            
+            // 提取标题，去除标记按钮和链接
+            let title = '';
+            if (paperTitleEl) {
+                title = paperTitleEl.cloneNode(true);
+                // 移除按钮和链接
+                title.querySelectorAll('.mark-button, .arxiv-link, .ai-links').forEach(el => el.remove());
+                title = title.textContent.trim();
+            }
+            
+            return {
+                id: paperId,
+                title: title || '',
+                authors: paperAuthorsEl ? paperAuthorsEl.textContent.split(',').map(a => a.trim()) : [],
+                arxiv_url: arxivLinkEl ? arxivLinkEl.href : '',
+                pdf_url: arxivLinkEl ? arxivLinkEl.href.replace('/abs/', '/pdf/') : '',
+                rank: paperScoreEl && paperScoreEl.textContent !== 'N/A' ? parseFloat(paperScoreEl.textContent) : null
+            };
+        }
+
+        // 渲染元素中的数学公式
+        function renderMathInElementLocal(element) {
+            if (typeof renderMathInElement !== 'undefined' && element) {
+                renderMathInElement(element, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        // 显示论文详情
+        function showPaperDetail(paperId, topicId) {
+            const detailsContent = document.getElementById('details-' + paperId);
+            if (!detailsContent) return;
+            
+            // 移除之前选中的论文高亮
+            document.querySelectorAll('.paper-item-compact').forEach(el => el.classList.remove('active'));
+            
+            // 高亮当前论文
+            const paperItem = document.getElementById('paper-item-' + paperId);
+            if (paperItem) {
+                paperItem.classList.add('active');
+            }
+            
+            currentPaperId = paperId;
+            
+            // 从列表项中提取论文数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            
+            // 优先从列表按钮的data属性获取数据
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        currentPaperData = JSON.parse(paperDataStr);
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                        // 如果解析失败，从页面元素提取
+                        currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                    }
+                } else {
+                    // 如果没有data属性，从页面元素提取
+                    currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                }
+            } else {
+                // 如果找不到列表按钮，从页面元素提取
+                currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+            }
+            
+            // 更新详情面板中的标记按钮状态
+            const isCurrentlyMarked = isMarked(paperId);
+            const detailButton = document.getElementById('detailPanelMarkButton');
+            const mobileButton = document.getElementById('mobileModalMarkButton');
+            
+            if (detailButton) {
+                detailButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                detailButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            if (mobileButton) {
+                mobileButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                mobileButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            
+            // 检测设备类型
+            const isMobile = window.innerWidth <= 1024;
+            
+            if (isMobile) {
+                // 移动端：显示弹窗
+                const modalContent = document.getElementById('mobileModalContent');
+                modalContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(modalContent);
+                document.getElementById('mobileModal').classList.add('active');
+                document.body.style.overflow = 'hidden'; // 禁止背景滚动
+            } else {
+                // 宽屏：显示右侧面板
+                const panelContent = document.getElementById('detailPanelContent');
+                panelContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(panelContent);
+                document.getElementById('detailPanel').classList.add('active');
+                
+                // 调整论文列表宽度
+                const papersList = document.getElementById('papers-list-' + topicId);
+                if (papersList) {
+                    papersList.classList.add('has-detail');
+                }
+            }
+        }
+
+        // 关闭详情面板
+        function closeDetailPanel() {
+            document.getElementById('detailPanel').classList.remove('active');
+            document.querySelectorAll('.papers-list').forEach(el => el.classList.remove('has-detail'));
+            document.querySelectorAll('.paper-item-compact').forEach(el => el.classList.remove('active'));
+            currentPaperId = null;
+        }
+
+        // 关闭移动端弹窗
+        function closeMobileModal(event) {
+            if (event && event.target.id !== 'mobileModal') return;
+            document.getElementById('mobileModal').classList.remove('active');
+            document.querySelectorAll('.paper-item-compact').forEach(el => el.classList.remove('active'));
+            document.body.style.overflow = ''; // 恢复背景滚动
+            currentPaperId = null;
+        }
+
+        // 切换侧边栏（移动端）
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        // 切换领域分析
+        function toggleAnalysis(topicId) {
+            const analysis = document.getElementById('analysis-' + topicId);
+            const icon = document.getElementById('analysis-icon-' + topicId);
+            
+            if (analysis.style.display === 'none') {
+                analysis.style.display = 'block';
+                icon.textContent = '▼';
+            } else {
+                analysis.style.display = 'none';
+                icon.textContent = '▶';
+            }
+        }
+
+        // 响应式处理
+        window.addEventListener('resize', function() {
+            if (currentPaperId) {
+                // 如果有打开的详情，根据新的屏幕尺寸调整显示方式
+                const isMobile = window.innerWidth <= 1024;
+                const detailPanel = document.getElementById('detailPanel');
+                const mobileModal = document.getElementById('mobileModal');
+                
+                if (isMobile && detailPanel.classList.contains('active')) {
+                    // 从宽屏切换到移动端
+                    closeDetailPanel();
+                    const detailsContent = document.getElementById('details-' + currentPaperId);
+                    if (detailsContent) {
+                        const modalContent = document.getElementById('mobileModalContent');
+                        modalContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(modalContent);
+                        mobileModal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                } else if (!isMobile && mobileModal.classList.contains('active')) {
+                    // 从移动端切换到宽屏
+                    mobileModal.classList.remove('active');
+                    document.body.style.overflow = '';
+                    const detailsContent = document.getElementById('details-' + currentPaperId);
+                    if (detailsContent) {
+                        const panelContent = document.getElementById('detailPanelContent');
+                        panelContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(panelContent);
+                        detailPanel.classList.add('active');
+                    }
+                }
+            }
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstNavItem = document.querySelector('.nav-item');
+            if (firstNavItem) {
+                firstNavItem.classList.add('active');
+            }
+            
+            // 初始化标记状态
+            initMarkStates();
+            
+            // 检查URL hash，如果包含paper-item-xxx，自动打开该论文详情
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#paper-item-')) {
+                const paperId = hash.replace('#paper-item-', '');
+                // 查找该论文所在的topic
+                const paperItem = document.getElementById('paper-item-' + paperId);
+                if (paperItem) {
+                    // 找到论文所在的tab
+                    const tabContent = paperItem.closest('.tab-content');
+                    if (tabContent) {
+                        const tabId = tabContent.id.replace('tab-', '');
+                        // 切换到对应的tab
+                        showTab(tabId, null);
+                        // 延迟一下，确保tab切换完成后再显示详情
+                        setTimeout(() => {
+                            showPaperDetail(paperId, tabId);
+                            // 滚动到论文位置
+                            paperItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
+                    }
+                }
+            }
+            
+            // 初始化KaTeX自动渲染数学公式
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        });
+
+        // ESC键关闭详情
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDetailPanel();
+                closeMobileModal();
+            }
+        });
+    </script>
+</body>
+</html>
