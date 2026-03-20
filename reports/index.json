@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-20T05:05:38Z",
+  "generated_at": "2026-03-20T05:22:40Z",
   "base_url": "/reports",
   "usage": "1. 读取本文件获取报告列表。 2. 用 markdown_url 获取轻量索引（~5KB，含论文目录和域链接）。 3. 用 domain_urls[领域名] 获取单领域分析（趋势+摘要）。 4. 从域文件内的链接获取单篇全文分析。",
   "weekly": [
@@ -39,7 +39,15 @@
         "预训练（Pretraining）",
         "多模态"
       ],
-      "markdown_url": "/reports/2026-W11/weekly_report_20260309.md"
+      "markdown_url": "/reports/2026-W11/weekly_report_20260309.md",
+      "domain_urls": {
+        "Agent": "/reports/2026-W11/weekly_report_20260309/Agent.md",
+        "Hallucination": "/reports/2026-W11/weekly_report_20260309/Hallucination.md",
+        "Multimodal": "/reports/2026-W11/weekly_report_20260309/Multimodal.md",
+        "Pretraining": "/reports/2026-W11/weekly_report_20260309/Pretraining.md",
+        "RLHF": "/reports/2026-W11/weekly_report_20260309/RLHF.md",
+        "SFT": "/reports/2026-W11/weekly_report_20260309/SFT.md"
+      }
     },
     {
       "week": "2026-W10",
@@ -54,7 +62,15 @@
         "预训练（Pretraining）",
         "多模态"
       ],
-      "markdown_url": "/reports/2026-W10/weekly_report_20260302.md"
+      "markdown_url": "/reports/2026-W10/weekly_report_20260302.md",
+      "domain_urls": {
+        "Agent": "/reports/2026-W10/weekly_report_20260302/Agent.md",
+        "Hallucination": "/reports/2026-W10/weekly_report_20260302/Hallucination.md",
+        "Multimodal": "/reports/2026-W10/weekly_report_20260302/Multimodal.md",
+        "Pretraining": "/reports/2026-W10/weekly_report_20260302/Pretraining.md",
+        "RLHF": "/reports/2026-W10/weekly_report_20260302/RLHF.md",
+        "SFT": "/reports/2026-W10/weekly_report_20260302/SFT.md"
+      }
     },
     {
       "week": "2026-W09",
