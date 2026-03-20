@@ -44,6 +44,13 @@
   Access-Control-Allow-Origin: *
   X-Content-Type-Options: nosniff
 
+# JSON 索引文件 - 报告列表，供 AI / 程序查询
+/reports/index.json
+  Cache-Control: public, max-age=3600, must-revalidate
+  Content-Type: application/json; charset=utf-8
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+
 # 默认规则
 /*
   X-Content-Type-Options: nosniff
