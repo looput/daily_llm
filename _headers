@@ -37,6 +37,13 @@
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
 
+# Markdown 文件 - AI/程序可读的纯文本，允许跨域访问
+/reports/**/*.md
+  Cache-Control: public, max-age=86400, must-revalidate
+  Content-Type: text/plain; charset=utf-8
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+
 # 默认规则
 /*
   X-Content-Type-Options: nosniff
