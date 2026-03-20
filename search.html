@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>论文搜索 · DailyPaper</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f5f5;color:#1a1a1a;min-height:100vh}
+
+/* ── 顶栏 ── */
+.topbar{background:#fff;border-bottom:1px solid #e8e8e8;padding:16px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.topbar a{color:#666;text-decoration:none;font-size:14px}
+.topbar a:hover{color:#1a1a1a}
+.topbar-title{font-size:18px;font-weight:600;white-space:nowrap}
+
+/* ── 搜索框 ── */
+.search-wrap{flex:1;position:relative;max-width:640px}
+.search-input{width:100%;padding:10px 40px 10px 16px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:15px;outline:none;transition:border-color .15s}
+.search-input:focus{border-color:#1a1a1a}
+.search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;font-size:18px;line-height:1;padding:0;display:none}
+.search-clear.show{display:block}
+
+/* ── 筛选栏 ── */
+.filter-bar{padding:12px 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#fff;border-bottom:1px solid #f0f0f0}
+.filter-label{font-size:13px;color:#888;margin-right:4px}
+.tag-btn{padding:4px 12px;border-radius:20px;border:1.5px solid #e0e0e0;background:#fff;font-size:13px;cursor:pointer;color:#555;transition:all .15s;white-space:nowrap}
+.tag-btn:hover{border-color:#888;color:#1a1a1a}
+.tag-btn.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+
+/* ── 结果区 ── */
+.main{max-width:900px;margin:0 auto;padding:20px 24px}
+.status{font-size:14px;color:#888;margin-bottom:16px;min-height:20px}
+.results{display:flex;flex-direction:column;gap:10px}
+
+/* ── 论文卡片 ── */
+.card{background:#fff;border-radius:10px;padding:16px 20px;border:1px solid #ebebeb;transition:box-shadow .15s}
+.card:hover{box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.card-top{display:flex;align-items:flex-start;gap:12px}
+.card-title{font-size:15px;font-weight:600;line-height:1.4;flex:1}
+.card-title a{color:#1a1a1a;text-decoration:none}
+.card-title a:hover{text-decoration:underline}
+.card-score{font-size:14px;font-weight:700;color:#1a1a1a;white-space:nowrap;background:#f5f5f5;padding:2px 8px;border-radius:6px;margin-top:1px}
+.card-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.card-date{font-size:12px;color:#aaa}
+.card-tag{font-size:12px;padding:2px 8px;background:#f0f0f0;border-radius:4px;color:#555}
+.highlight{background:#fff3c0;border-radius:2px;padding:0 1px}
+
+/* ── 空态 ── */
+.empty{text-align:center;padding:60px 0;color:#bbb;font-size:15px}
+
+/* ── 加载态 ── */
+.loading{text-align:center;padding:60px 0;color:#bbb}
+.spinner{display:inline-block;width:24px;height:24px;border:2px solid #e0e0e0;border-top-color:#888;border-radius:50%;animation:spin .7s linear infinite;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── 移动端 ── */
+@media(max-width:600px){
+  .topbar{flex-wrap:wrap;gap:10px}
+  .search-wrap{max-width:100%;width:100%;order:3;flex-basis:100%}
+  .main{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="/" class="topbar-title">📄 DailyPaper</a>
+  <div class="search-wrap">
+    <input class="search-input" id="q" type="search" placeholder="搜索论文标题、领域…" autocomplete="off" autofocus>
+    <button class="search-clear" id="clearBtn" title="清除">×</button>
+  </div>
+  <a href="/reports/index.json" target="_blank" style="font-size:12px;color:#bbb">API</a>
+</div>
+
+<div class="filter-bar" id="filterBar">
+  <span class="filter-label">领域：</span>
+  <button class="tag-btn active" data-tag="">全部</button>
+</div>
+
+<div class="main">
+  <div class="status" id="status"></div>
+  <div id="results" class="results">
+    <div class="loading">
+      <div class="spinner"></div><br>加载论文索引中…
+    </div>
+  </div>
+</div>
+
+<script>
+// ── 配置 ──────────────────────────────────────────────────────────────
+const SEARCH_URL = '/search.json';
+const PAGE_SIZE  = 30;    // 每次渲染条数
+const DEBOUNCE   = 150;   // ms
+
+// ── 状态 ─────────────────────────────────────────────────────────────
+let allPapers  = [];      // 原始数组
+let filtered   = [];      // 当前过滤结果
+let rendered   = 0;       // 已渲染数量
+let activeTag  = '';
+let queryTerms = [];
+
+// ── 元素 ─────────────────────────────────────────────────────────────
+const qEl      = document.getElementById('q');
+const clearBtn = document.getElementById('clearBtn');
+const statusEl = document.getElementById('status');
+const resultsEl= document.getElementById('results');
+const filterBar= document.getElementById('filterBar');
+
+// ── 加载数据 ──────────────────────────────────────────────────────────
+fetch(SEARCH_URL)
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(data => {
+    allPapers = data;
+    buildTagFilter();
+    // 读取 URL 参数自动填入
+    const params = new URLSearchParams(location.search);
+    const initQ  = params.get('q') || '';
+    const initTag= params.get('tag') || '';
+    if (initQ)  { qEl.value = initQ; clearBtn.classList.add('show'); }
+    if (initTag){ activeTag = initTag; highlightTagBtn(initTag); }
+    applyFilter();
+  })
+  .catch(() => {
+    resultsEl.innerHTML = '<div class="empty">⚠️ 索引加载失败，请稍后刷新重试</div>';
+  });
+
+// ── 构建领域标签筛选 ──────────────────────────────────────────────────
+function buildTagFilter() {
+  const tagCount = {};
+  allPapers.forEach(p => (p.g || []).forEach(t => { tagCount[t] = (tagCount[t]||0)+1; }));
+  const sorted = Object.entries(tagCount).sort((a,b) => b[1]-a[1]);
+  sorted.forEach(([tag, cnt]) => {
+    const btn = document.createElement('button');
+    btn.className = 'tag-btn';
+    btn.dataset.tag = tag;
+    btn.textContent = `${tag} ${cnt}`;
+    btn.onclick = () => toggleTag(tag);
+    filterBar.appendChild(btn);
+  });
+}
+
+function toggleTag(tag) {
+  activeTag = (activeTag === tag) ? '' : tag;
+  highlightTagBtn(activeTag);
+  pushState();
+  applyFilter();
+}
+
+function highlightTagBtn(tag) {
+  filterBar.querySelectorAll('.tag-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tag === tag);
+  });
+}
+
+// ── 搜索 ─────────────────────────────────────────────────────────────
+let debounceTimer;
+qEl.addEventListener('input', () => {
+  clearBtn.classList.toggle('show', qEl.value.length > 0);
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => { pushState(); applyFilter(); }, DEBOUNCE);
+});
+
+clearBtn.addEventListener('click', () => {
+  qEl.value = '';
+  clearBtn.classList.remove('show');
+  pushState();
+  applyFilter();
+  qEl.focus();
+});
+
+function applyFilter() {
+  const raw = qEl.value.trim().toLowerCase();
+  queryTerms = raw ? raw.split(/\s+/).filter(Boolean) : [];
+
+  filtered = allPapers.filter(p => {
+    // 领域筛选
+    if (activeTag && !(p.g || []).includes(activeTag)) return false;
+    // 关键词（所有词都要命中 title 或 tags）
+    if (queryTerms.length > 0) {
+      const haystack = (p.t + ' ' + (p.g||[]).join(' ')).toLowerCase();
+      if (!queryTerms.every(term => haystack.includes(term))) return false;
+    }
+    return true;
+  });
+
+  rendered = 0;
+  resultsEl.innerHTML = '';
+  updateStatus();
+  renderMore();
+}
+
+function updateStatus() {
+  if (allPapers.length === 0) { statusEl.textContent = ''; return; }
+  const total = allPapers.length;
+  const hit   = filtered.length;
+  if (queryTerms.length === 0 && !activeTag) {
+    statusEl.textContent = `共 ${total} 篇精选论文`;
+  } else {
+    statusEl.textContent = `找到 ${hit} 篇` + (hit === 0 ? '，换个关键词试试' : '');
+  }
+}
+
+// ── 渲染 ─────────────────────────────────────────────────────────────
+function renderMore() {
+  if (rendered >= filtered.length) {
+    if (filtered.length === 0 && (queryTerms.length > 0 || activeTag)) {
+      resultsEl.innerHTML = '<div class="empty">没有找到相关论文</div>';
+    }
+    return;
+  }
+  const frag = document.createDocumentFragment();
+  const end  = Math.min(rendered + PAGE_SIZE, filtered.length);
+  for (let i = rendered; i < end; i++) {
+    frag.appendChild(makeCard(filtered[i]));
+  }
+  resultsEl.appendChild(frag);
+  rendered = end;
+}
+
+function makeCard(p) {
+  const div    = document.createElement('div');
+  div.className = 'card';
+  const arxiv  = `https://arxiv.org/abs/${p.id}`;
+  const titleH = highlight(escHtml(p.t));
+  const tags   = (p.g||[]).map(t =>
+    `<span class="card-tag${t===activeTag?' active':''}">${escHtml(t)}</span>`
+  ).join('');
+  div.innerHTML = `
+    <div class="card-top">
+      <div class="card-title"><a href="${arxiv}" target="_blank" rel="noopener">${titleH}</a></div>
+      ${p.r != null ? `<div class="card-score">${p.r.toFixed(2)}</div>` : ''}
+    </div>
+    <div class="card-meta">
+      <span class="card-date">${p.d}</span>
+      ${tags}
+      <a href="${arxiv}" target="_blank" rel="noopener" style="font-size:12px;color:#aaa;margin-left:auto">arXiv ↗</a>
+    </div>`;
+  return div;
+}
+
+function highlight(text) {
+  if (!queryTerms.length) return text;
+  // 对每个词高亮（大小写不敏感）
+  let result = text;
+  queryTerms.forEach(term => {
+    const re = new RegExp(`(${escRe(term)})`, 'gi');
+    result = result.replace(re, '<mark class="highlight">$1</mark>');
+  });
+  return result;
+}
+
+// ── 无限滚动 ─────────────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
+    renderMore();
+  }
+}, { passive: true });
+
+// ── URL 状态同步 ───────────────────────────────────────────────────────
+function pushState() {
+  const p = new URLSearchParams();
+  if (qEl.value.trim()) p.set('q', qEl.value.trim());
+  if (activeTag)         p.set('tag', activeTag);
+  const qs = p.toString();
+  history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
+}
+
+// ── 工具 ─────────────────────────────────────────────────────────────
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function escRe(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+</script>
+</body>
+</html>
