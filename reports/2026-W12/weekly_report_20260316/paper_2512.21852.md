@@ -3,13 +3,13 @@
 **arXiv**: [2512.21852](https://arxiv.org/abs/2512.21852) · [PDF](https://arxiv.org/pdf/2512.21852)  
 **领域**: RLHF  
 **作者**: Shah, Obando-Ceron, Jain, Bartoldson, Kailkhura, Mittal, Berseth, Castro 等 13 人  
-**综合评分**: 8.79  （novelty: 9.0 · method: 9.5 · evidence: 8.5 · clarity: 8.0）
+**综合评分**: 8.57  （novelty: 9.0 · method: 9.0 · evidence: 8.5 · clarity: 8.0）
 
 ---
 
 ## 摘要
 
-> 本文由来自Meta GenAI、Google、Mila研究所（蒙特利尔大学）等知名机构的作者团队（包括Yoshua Bengio、Aaron Courville等知名学者）合作完成。论文系统性地研究了强化学习训练大语言模型时KL正则化项估计器的配置问题，揭示了梯度偏差对训练稳定性和模型性能的影响，并通过在多个主流LLM上的实验验证了理论分析。研究填补了该领域的重要空白，对RLHF实践具有重要指导意义。
+> 本文由来自Meta GenAI、Google、Mila（蒙特利尔学习算法研究所）等知名研究机构的团队合作完成，作者包括Bengio、Courville等深度学习领域的知名学者。该论文系统性地研究了强化学习训练大语言模型时KL正则化项估计器的配置问题，揭示了梯度偏差对训练稳定性和模型性能的影响，并通过实验验证了无偏梯度估计器配置的优越性。研究填补了该领域的重要空白，具有重要的理论和实践价值。
 
 ---
 

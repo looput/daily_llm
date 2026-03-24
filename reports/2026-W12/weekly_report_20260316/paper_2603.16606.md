@@ -1,7 +1,7 @@
 # Omnilingual SONAR: Cross-Lingual and Cross-Modal Sentence Embeddings Bridging Massively Multilingual Text and Speech
 
 **arXiv**: [2603.16606](https://arxiv.org/abs/2603.16606) · [PDF](https://arxiv.org/pdf/2603.16606)  
-**领域**: Pretraining  
+**领域**: Multimodal  
 **作者**: Omnilingual SONAR Team, Janeiro, Cabot, Tsiamas, Meng, Iyer, RamÃ­rez, Barrault 等 19 人  
 **综合评分**: 8.71  （novelty: 9.5 · method: 9.0 · evidence: 9.0 · clarity: 8.0）
 
@@ -9,7 +9,7 @@
 
 ## 摘要
 
-> 本文由Meta AI（原Facebook AI Research）团队提出，该团队在自然语言处理和多模态学习领域具有国际领先地位。论文提出了一种名为OmniSONAR的全新跨语言、跨模态句子嵌入模型家族，能够将文本、语音、代码和数学表达式嵌入到统一的语义空间中，并在数千种语言上实现了最先进的性能。该方法创新性地结合了渐进式训练、LLM初始化、新型对比损失和师生蒸馏框架，实验设计全面，证据充分。
+> 本文由Meta AI（原Facebook AI Research）团队提出，该团队在自然语言处理和多模态学习领域具有国际领先地位。论文提出了一种名为OmniSONAR的全新全语言、跨语言和跨模态句子嵌入模型家族，能够在单一语义空间中嵌入文本、语音、代码和数学表达式，并在数千种语言上实现了最先进的性能。该方法创新性地结合了渐进式训练、LLM初始化的编码器-解码器架构、新颖的分割softmax对比损失以及两阶段师生编码器蒸馏框架，在多个大规模基准测试中取得了显著突破。
 
 ---
 

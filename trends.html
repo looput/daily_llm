@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>研究趋势 · DailyPaper</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --text: #e2e8f0;
+    --muted: #8892a4;
+    --accent: #6c8eff;
+    --up: #4ade80;
+    --down: #f87171;
+    --tag-bg: #1e2235;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Layout ── */
+  .page { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  header h1 { font-size: 20px; font-weight: 600; }
+  header .meta { color: var(--muted); font-size: 13px; }
+  .nav-links { display: flex; gap: 16px; font-size: 13px; }
+
+  /* ── Section ── */
+  section { margin-bottom: 36px; }
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  /* ── Momentum cards ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .card:hover, .card.active { border-color: var(--accent); background: #1e2235; }
+  .card-tag { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .card-nums { display: flex; align-items: baseline; gap: 6px; }
+  .card-cur { font-size: 22px; font-weight: 700; }
+  .card-prev { font-size: 12px; color: var(--muted); }
+  .card-delta { font-size: 12px; font-weight: 600; margin-top: 4px; }
+  .up   { color: var(--up); }
+  .down { color: var(--down); }
+  .flat { color: var(--muted); }
+
+  /* ── Hotstreak badges ── */
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; }
+  .badge {
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .badge-tag { font-weight: 600; }
+  .badge-streak { color: #f59e0b; font-weight: 700; }
+  .flame { font-size: 14px; }
+
+  /* ── Chart area ── */
+  .chart-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .chart-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+  .chart-controls label { font-size: 12px; color: var(--muted); margin-right: 4px; }
+  .tag-btn {
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all .12s;
+  }
+  .tag-btn.active {
+    border-color: currentColor;
+    font-weight: 600;
+  }
+  .tag-btn:hover { background: var(--tag-bg); }
+  .chart-metric {
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--tag-bg);
+    color: var(--text);
+    font-size: 12px;
+    cursor: pointer;
+  }
+  canvas { width: 100% !important; display: block; }
+  .chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .legend-item:hover { background: var(--tag-bg); }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-item.faded { opacity: 0.35; }
+
+  /* ── Table ── */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .data-table th {
+    text-align: left;
+    padding: 8px 12px;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .data-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--tag-bg); }
+  .week-col { color: var(--muted); font-size: 12px; }
+  .num-col { font-weight: 600; text-align: right; }
+  .avg-col { color: var(--accent); text-align: right; font-size: 12px; }
+  .tag-label {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  /* loading / error */
+  #loading { text-align: center; padding: 60px; color: var(--muted); }
+  #error { color: var(--down); padding: 20px; background: var(--surface); border-radius: 8px; }
+
+  @media (max-width: 600px) {
+    .cards { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+    header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div>
+      <h1>📈 研究趋势</h1>
+      <div class="meta" id="meta-line">加载中...</div>
+    </div>
+    <div class="nav-links">
+      <a href="/">首页</a>
+      <a href="/search.html">论文搜索</a>
+      <a href="/reports/index.json">API</a>
+    </div>
+  </header>
+
+  <div id="loading">⏳ 正在加载趋势数据...</div>
+  <div id="error" style="display:none"></div>
+  <div id="main" style="display:none">
+
+    <!-- 环比涨跌 -->
+    <section>
+      <div class="section-title">📊 本周环比（vs 上周）</div>
+      <div class="cards" id="cards"></div>
+    </section>
+
+    <!-- 连续热门 -->
+    <section id="hotstreak-section" style="display:none">
+      <div class="section-title">🔥 连续热门领域</div>
+      <div class="badges" id="badges"></div>
+    </section>
+
+    <!-- 折线图 -->
+    <section>
+      <div class="section-title">📉 周度趋势折线图</div>
+      <div class="chart-wrap">
+        <div class="chart-controls">
+          <span>
+            <label>指标：</label>
+            <select class="chart-metric" id="metric-select">
+              <option value="n">论文数量</option>
+              <option value="avg">平均评分</option>
+            </select>
+          </span>
+          <span id="tag-btns"></span>
+        </div>
+        <canvas id="chart" height="320"></canvas>
+        <div class="chart-legend" id="legend"></div>
+      </div>
+    </section>
+
+    <!-- 明细表 -->
+    <section>
+      <div class="section-title">🗂 各领域各周明细</div>
+      <div style="overflow-x:auto">
+        <table class="data-table" id="detail-table">
+          <thead>
+            <tr>
+              <th>领域</th>
+              <th>周次</th>
+              <th class="num-col">论文数</th>
+              <th class="avg-col">平均评分</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </div><!-- /#main -->
+</div><!-- /.page -->
+
+<script>
+// ── Palette ───────────────────────────────────────────────────────────
+const PALETTE = [
+  "#6c8eff","#4ade80","#f59e0b","#f87171","#a78bfa",
+  "#22d3ee","#fb923c","#e879f9","#34d399","#fbbf24",
+  "#60a5fa","#f472b6","#a3e635"
+];
+
+// ── State ─────────────────────────────────────────────────────────────
+let T = null;            // raw trends data
+let activeTags = new Set();  // which tags visible in chart
+let hiddenTags = new Set();  // user toggled off in legend
+let metric = "n";        // "n" | "avg"
+
+// ── Load ──────────────────────────────────────────────────────────────
+async function load() {
+  try {
+    const resp = await fetch("/trends.json");
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    T = await resp.json();
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("main").style.display = "";
+    render();
+  } catch(e) {
+    document.getElementById("loading").style.display = "none";
+    const el = document.getElementById("error");
+    el.style.display = "";
+    el.textContent = "加载 trends.json 失败：" + e.message;
+  }
+}
+
+// ── Main render ───────────────────────────────────────────────────────
+function render() {
+  const { tags, weeks, data, momentum, hotstreak, generated } = T;
+
+  // Meta line
+  document.getElementById("meta-line").textContent =
+    `数据截至 ${generated} · 共 ${weeks.length} 周 · ${tags.length} 个领域`;
+
+  // Default: show top 6 tags in chart
+  activeTags = new Set(tags.slice(0, 6));
+
+  renderCards(momentum, tags);
+  renderHotstreak(hotstreak);
+  renderTagBtns(tags);
+  renderChart();
+  renderTable(tags, weeks, data);
+}
+
+// ── Cards ─────────────────────────────────────────────────────────────
+function renderCards(momentum, tags) {
+  const el = document.getElementById("cards");
+  // Sort: largest absolute delta first, then by cur count
+  const sorted = Object.entries(momentum)
+    .sort((a, b) => Math.abs(b[1].delta) - Math.abs(a[1].delta) || b[1].cur - a[1].cur);
+
+  el.innerHTML = sorted.map(([tag, m], i) => {
+    const color = PALETTE[tags.indexOf(tag) % PALETTE.length];
+    const sign = m.delta > 0 ? "+" : m.delta < 0 ? "" : "±";
+    const cls  = m.delta > 0 ? "up" : m.delta < 0 ? "down" : "flat";
+    const pct  = m.delta !== 0 ? ` (${sign}${m.pct}%)` : "";
+    return `
+      <div class="card" data-tag="${tag}" onclick="toggleCardTag('${tag}')">
+        <div class="card-tag" style="color:${color}">${tag}</div>
+        <div class="card-nums">
+          <span class="card-cur">${m.cur}</span>
+          <span class="card-prev">← ${m.prev}</span>
+        </div>
+        <div class="card-delta ${cls}">${sign}${m.delta}${pct}</div>
+      </div>`;
+  }).join("");
+}
+
+function toggleCardTag(tag) {
+  activeTags.has(tag) ? activeTags.delete(tag) : activeTags.add(tag);
+  // sync card active state
+  document.querySelectorAll(".card").forEach(c => {
+    c.classList.toggle("active", activeTags.has(c.dataset.tag));
+  });
+  renderChart();
+  syncLegend();
+}
+
+// ── Hotstreak ─────────────────────────────────────────────────────────
+function renderHotstreak(hotstreak) {
+  const entries = Object.entries(hotstreak);
+  if (!entries.length) return;
+  document.getElementById("hotstreak-section").style.display = "";
+  document.getElementById("badges").innerHTML = entries.map(([tag, streak]) => {
+    const color = PALETTE[T.tags.indexOf(tag) % PALETTE.length];
+    return `
+      <div class="badge">
+        <span class="flame">🔥</span>
+        <span class="badge-tag" style="color:${color}">${tag}</span>
+        <span class="badge-streak">×${streak}周</span>
+      </div>`;
+  }).join("");
+}
+
+// ── Tag buttons ───────────────────────────────────────────────────────
+function renderTagBtns(tags) {
+  const el = document.getElementById("tag-btns");
+  el.innerHTML = tags.map((tag, i) => {
+    const color = PALETTE[i % PALETTE.length];
+    const active = activeTags.has(tag);
+    return `<button class="tag-btn${active?" active":""}"
+              style="${active?`color:${color};border-color:${color}`:""}"
+              data-tag="${tag}" onclick="toggleChartTag('${tag}')">${tag}</button>`;
+  }).join(" ");
+}
+
+function toggleChartTag(tag) {
+  if (activeTags.has(tag)) {
+    activeTags.delete(tag);
+  } else {
+    activeTags.add(tag);
+  }
+  hiddenTags.delete(tag); // reset hidden when re-toggling
+  // update button styles
+  document.querySelectorAll(".tag-btn").forEach(btn => {
+    const t = btn.dataset.tag;
+    const active = activeTags.has(t);
+    const color = PALETTE[T.tags.indexOf(t) % PALETTE.length];
+    btn.classList.toggle("active", active);
+    btn.style.color = active ? color : "";
+    btn.style.borderColor = active ? color : "";
+  });
+  // sync cards
+  document.querySelectorAll(".card").forEach(c => {
+    c.classList.toggle("active", activeTags.has(c.dataset.tag));
+  });
+  renderChart();
+}
+
+// ── Chart ─────────────────────────────────────────────────────────────
+let chartCanvas, ctx;
+const DPR = window.devicePixelRatio || 1;
+
+function renderChart() {
+  chartCanvas = document.getElementById("chart");
+  ctx = chartCanvas.getContext("2d");
+
+  const wrap   = chartCanvas.parentElement;
+  const W      = wrap.clientWidth - 40; // padding
+  const H      = 320;
+  chartCanvas.style.height = H + "px";
+  chartCanvas.width  = W * DPR;
+  chartCanvas.height = H * DPR;
+  ctx.scale(DPR, DPR);
+
+  const { weeks, data } = T;
+  const visibleTags = T.tags.filter(t => activeTags.has(t) && !hiddenTags.has(t));
+
+  // Compute value range
+  let minV = Infinity, maxV = -Infinity;
+  visibleTags.forEach(tag => {
+    weeks.forEach(wk => {
+      const v = data[tag]?.[wk]?.[metric];
+      if (v != null) { minV = Math.min(minV, v); maxV = Math.max(maxV, v); }
+    });
+  });
+  if (!isFinite(minV)) { minV = 0; maxV = 10; }
+  const pad = (maxV - minV) * 0.1 || 1;
+  minV = Math.max(0, minV - pad);
+  maxV = maxV + pad;
+
+  const PAD_L = 44, PAD_R = 16, PAD_T = 16, PAD_B = 36;
+  const plotW = W - PAD_L - PAD_R;
+  const plotH = H - PAD_T - PAD_B;
+
+  const xOf = i => PAD_L + (i / Math.max(weeks.length - 1, 1)) * plotW;
+  const yOf = v => PAD_T + (1 - (v - minV) / (maxV - minV)) * plotH;
+
+  // Clear
+  ctx.clearRect(0, 0, W, H);
+
+  // Grid lines & y-axis labels
+  ctx.strokeStyle = "rgba(255,255,255,0.06)";
+  ctx.lineWidth = 1;
+  const yTicks = 5;
+  ctx.fillStyle = "#8892a4";
+  ctx.font = "11px sans-serif";
+  ctx.textAlign = "right";
+  for (let i = 0; i <= yTicks; i++) {
+    const v = minV + (maxV - minV) * (i / yTicks);
+    const y = yOf(v);
+    ctx.beginPath();
+    ctx.moveTo(PAD_L, y);
+    ctx.lineTo(W - PAD_R, y);
+    ctx.stroke();
+    ctx.fillText(metric === "avg" ? v.toFixed(1) : Math.round(v), PAD_L - 4, y + 4);
+  }
+
+  // X-axis labels (every N weeks to avoid overflow)
+  const step = Math.ceil(weeks.length / 10);
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#8892a4";
+  ctx.font = "11px sans-serif";
+  weeks.forEach((wk, i) => {
+    if (i % step !== 0 && i !== weeks.length - 1) return;
+    const label = wk.replace(/^\d{4}-/, ""); // "W08"
+    ctx.fillText(label, xOf(i), H - PAD_B + 16);
+  });
+
+  // Lines + dots
+  visibleTags.forEach(tag => {
+    const color = PALETTE[T.tags.indexOf(tag) % PALETTE.length];
+    const pts = weeks.map((wk, i) => {
+      const v = data[tag]?.[wk]?.[metric];
+      return v != null ? { x: xOf(i), y: yOf(v), v } : null;
+    });
+
+    // Line
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.lineJoin = "round";
+    let started = false;
+    pts.forEach(pt => {
+      if (!pt) { started = false; return; }
+      started ? ctx.lineTo(pt.x, pt.y) : ctx.moveTo(pt.x, pt.y);
+      started = true;
+    });
+    ctx.stroke();
+
+    // Dots
+    pts.forEach(pt => {
+      if (!pt) return;
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+    });
+  });
+
+  // Tooltip on hover
+  chartCanvas.onmousemove = e => drawTooltip(e, weeks, visibleTags, xOf, yOf);
+  chartCanvas.onmouseleave = () => {
+    renderChart(); // redraw clean
+  };
+
+  // Legend
+  renderLegend(visibleTags);
+}
+
+function drawTooltip(e, weeks, visibleTags, xOf, yOf) {
+  const rect = chartCanvas.getBoundingClientRect();
+  const mx = (e.clientX - rect.left);
+  // Find nearest week
+  let nearestI = 0, nearestDx = Infinity;
+  weeks.forEach((_, i) => {
+    const dx = Math.abs(mx - xOf(i));
+    if (dx < nearestDx) { nearestDx = dx; nearestI = i; }
+  });
+  if (nearestDx > 30) return;
+  const wk = weeks[nearestI];
+
+  renderChart(); // redraw base
+
+  const x = xOf(nearestI);
+  const { data } = T;
+
+  // Vertical line
+  const W = chartCanvas.width / DPR;
+  const H = chartCanvas.height / DPR;
+  const PAD_T = 16, PAD_B = 36;
+  ctx.strokeStyle = "rgba(255,255,255,0.2)";
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4,3]);
+  ctx.beginPath();
+  ctx.moveTo(x, PAD_T);
+  ctx.lineTo(x, H - PAD_B);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Tooltip box
+  const lines = visibleTags
+    .map(tag => ({ tag, v: data[tag]?.[wk]?.[metric] }))
+    .filter(d => d.v != null)
+    .sort((a, b) => b.v - a.v);
+
+  if (!lines.length) return;
+
+  const lh = 18, pad = 10;
+  const bw = 140, bh = (lines.length + 1) * lh + pad * 2;
+  let bx = x + 12;
+  if (bx + bw > W - 8) bx = x - bw - 12;
+  const by = PAD_T;
+
+  ctx.fillStyle = "rgba(26,29,39,0.95)";
+  ctx.strokeStyle = "#2a2d3a";
+  ctx.lineWidth = 1;
+  roundRect(ctx, bx, by, bw, bh, 6);
+
+  ctx.fillStyle = "#8892a4";
+  ctx.font = "11px sans-serif";
+  ctx.textAlign = "left";
+  ctx.fillText(wk, bx + pad, by + pad + 12);
+
+  lines.forEach(({ tag, v }, i) => {
+    const color = PALETTE[T.tags.indexOf(tag) % PALETTE.length];
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(bx + pad + 5, by + pad + (i + 2) * lh - 3, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#e2e8f0";
+    ctx.font = "12px sans-serif";
+    const label = metric === "avg" ? v.toFixed(2) : v;
+    ctx.fillText(`${tag}  ${label}`, bx + pad + 14, by + pad + (i + 2) * lh + 1);
+  });
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+}
+
+function renderLegend(visibleTags) {
+  document.getElementById("legend").innerHTML = visibleTags.map(tag => {
+    const color = PALETTE[T.tags.indexOf(tag) % PALETTE.length];
+    const faded = hiddenTags.has(tag) ? " faded" : "";
+    return `
+      <div class="legend-item${faded}" onclick="toggleHiddenTag('${tag}')">
+        <span class="legend-dot" style="background:${color}"></span>
+        <span>${tag}</span>
+      </div>`;
+  }).join("");
+}
+
+function toggleHiddenTag(tag) {
+  hiddenTags.has(tag) ? hiddenTags.delete(tag) : hiddenTags.add(tag);
+  renderChart();
+}
+
+function syncLegend() {
+  document.querySelectorAll(".legend-item").forEach(el => {
+    // legend is re-rendered in renderChart
+  });
+}
+
+// ── Metric toggle ─────────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("metric-select").addEventListener("change", e => {
+    metric = e.target.value;
+    renderChart();
+  });
+});
+
+// ── Detail Table ──────────────────────────────────────────────────────
+function renderTable(tags, weeks, data) {
+  const tbody = document.getElementById("table-body");
+  const rows = [];
+
+  tags.forEach((tag, ti) => {
+    const color = PALETTE[ti % PALETTE.length];
+    // weeks desc
+    const wksSorted = [...weeks].reverse();
+    wksSorted.forEach(wk => {
+      const d = data[tag]?.[wk];
+      if (!d) return;
+      rows.push({ tag, color, wk, n: d.n, avg: d.avg });
+    });
+  });
+
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td><span class="tag-label" style="background:${r.color}22;color:${r.color}">${r.tag}</span></td>
+      <td class="week-col">${r.wk}</td>
+      <td class="num-col">${r.n}</td>
+      <td class="avg-col">${r.avg}</td>
+    </tr>
+  `).join("");
+}
+
+// ── Resize chart ──────────────────────────────────────────────────────
+let resizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { if (T) renderChart(); }, 150);
+});
+
+// ── Boot ──────────────────────────────────────────────────────────────
+load();
+</script>
+</body>
+</html>
