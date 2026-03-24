@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大模型论文速读（14/452）</title>
+    <title>大模型论文速读（14/14）</title>
     <style>
         * {
             margin: 0;
@@ -165,6 +165,16 @@
             border-bottom: 1px solid #e8e8e8;
             color: #1a1a1a;
             padding: 32px 40px 24px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-text {
+            flex: 1;
+            min-width: 0;
         }
 
         .header h1 {
@@ -179,6 +189,43 @@
             color: #666;
             font-size: 14px;
             font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            padding-top: 4px;
+        }
+
+        .md-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+            background: #fafafa;
+            color: #555;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .md-link-btn:hover {
+            background: #f0f0f0;
+            border-color: #999;
+            color: #1a1a1a;
+        }
+
+        .md-link-btn svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
         }
 
         .filter-info {
@@ -1067,8 +1114,14 @@
             .header {
                 padding: 24px 20px 16px;
                 padding-top: 60px; /* 为菜单按钮留空间 */
+                flex-direction: column;
+                gap: 10px;
             }
-            
+
+            .header-actions {
+                align-self: flex-start;
+            }
+
             .header h1 {
                 font-size: 22px;
             }
@@ -1168,10 +1221,66 @@
         .paper-title .mark-button {
             margin-left: 8px;
         }
-        
+
         .detail-panel-header .mark-button,
         .mobile-modal-header .mark-button {
             margin-right: 8px;
+        }
+
+        /* ── 评分色阶 ── */
+        .paper-score.score-high {
+            background: #dcfce7;
+            color: #15803d;
+        }
+        .paper-score.score-mid {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        .paper-score.score-low {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        /* ── 已标记论文折叠态 ── */
+        .paper-item-compact.paper-collapsed .paper-authors,
+        .paper-item-compact.paper-collapsed .paper-summary-inline {
+            display: none;
+        }
+        .paper-item-compact.paper-collapsed {
+            border-left: 3px solid #ffa500;
+            padding-left: 14px;
+            padding-top: 11px;
+            padding-bottom: 11px;
+            opacity: 0.68;
+            transition: opacity 0.18s, border-left-color 0.18s;
+        }
+        .paper-item-compact.paper-collapsed:hover {
+            opacity: 1;
+            border-left-color: #ff8c00;
+        }
+
+        /* ── 折叠数量提示条 ── */
+        .collapsed-notice {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #999;
+            padding: 8px 0 16px;
+            user-select: none;
+        }
+        .collapsed-notice a {
+            color: #ffa500;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .collapsed-notice a:hover { text-decoration: underline; }
+        .collapsed-notice .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #ffa500;
+            flex-shrink: 0;
         }
     </style>
     <!-- KaTeX数学公式渲染库 -->
@@ -1237,8 +1346,19 @@
         <!-- 主内容区域 -->
         <div class="container">
             <div class="header">
-                <h1>大模型论文速读（14/452）</h1>
-                <p>日报: 2026-01-15 | 生成时间: 2026-01-19</p>
+                <div class="header-text">
+                    <h1>大模型论文速读（14/14）</h1>
+                    <p>日报: 2026-01-15 | 生成时间: 2026-03-24</p>
+                </div>
+                <div class="header-actions">
+                    <a id="md-download-btn" class="md-link-btn" href="#" target="_blank" title="以 Markdown 格式查看，适合 AI 阅读">
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <rect x="1" y="2" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/>
+                            <path d="M3.5 10.5V5.5L5.5 8l2-2.5 2 2.5 2-2.5v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Markdown
+                    </a>
+                </div>
             </div>
             
             <!-- Tab Contents -->
@@ -1282,6 +1402,11 @@
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-SFT" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-SFT"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('SFT')">展开全部</a>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2601.09398">
                                     <div class="paper-header" onclick="showPaperDetail('2601.09398', 'SFT')">
@@ -1322,7 +1447,7 @@
                                             <div class="paper-summary-inline">本文由加州大学圣地亚哥分校（UCSD）的研究团队提出了一种名为ACT（Activation-Guided Channel-wise Ability Transfer）的激活引导通道级能力迁移框架，旨在解决大语言模型在持续预训练或微调后出现的灾难性遗忘问题。论文通过分析跨模型激活差异，发现能力相关的激活高度集中在少数通道（<5%），且这些通道具有解耦性、充分性和稳定性。基于此，ACT通过激活差异定位能力相关通道，并选择性迁移对应参数，结合轻量级微调实现能力恢复与集成。方法创新性强，实验设计充分，在多语言数学和科学推理任务上验证了有效性。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.4</span>
+                                        <span class="paper-score score-low">8.4</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -1483,6 +1608,11 @@
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-RLHF" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-RLHF"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('RLHF')">展开全部</a>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2601.09361">
                                     <div class="paper-header" onclick="showPaperDetail('2601.09361', 'RLHF')">
@@ -1523,7 +1653,7 @@
                                             <div class="paper-summary-inline">本文由美团与北京大学联合团队提出，第一作者为美团实习生、北京大学学生，通讯作者为美团研究员。团队针对强化学习与可验证奖励（RLVR）场景，提出了几何感知的低秩适配方法GeoRA，有效解决了现有参数高效微调方法在RLVR中存在的几何失配和优化不稳定问题。该方法在多个数学推理基准测试上取得了最先进的性能，并展现出优异的泛化能力和抗遗忘性。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.6</span>
+                                        <span class="paper-score score-mid">8.6</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -2036,6 +2166,358 @@ GeoRA 首次将 RLVR 特有的“非主、低幅、可压缩”更新几何转�
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-Agent" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Agent"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Agent')">展开全部</a>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2507.21184">
+                                    <div class="paper-header" onclick="showPaperDetail('2507.21184', 'Agent')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Can Language Models Discover Scaling Laws?
+                                                <button class="mark-button" 
+                                                        data-paper-id="2507.21184"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2507.21184", "authors": ["Lin", "Ye", "Feng", "Huang", "Li", "Lim", "Li", "Wang", "Ma", "Zou", "Liang"], "id": "2507.21184", "pdf_url": "https://arxiv.org/pdf/2507.21184", "rank": 8.571428571428571, "title": "Can Language Models Discover Scaling Laws?"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2507.21184" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ACan%20Language%20Models%20Discover%20Scaling%20Laws%3F%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2507.21184&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ACan%20Language%20Models%20Discover%20Scaling%20Laws%3F%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2507.21184%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Lin, Ye, Feng, Huang, Li, Lim, Li, Wang, Ma, Zou, Liang</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文由北京大学人工智能研究院、清华大学电子工程系和清华大学人工智能产业研究院的联合团队提出了一种名为EvoSLD的自动化神经网络缩放律发现框架。该方法创新性地将大语言模型引导的进化算法与符号回归相结合，用于从实验数据中自动推导出描述模型性能随规模变化的数学规律。在五个真实场景的评估中，EvoSLD不仅能够重新发现人类专家推导的精确规律，在更复杂的场景下甚至能发现更优的表达式，显著降低了拟合误差。论文实验设计严谨，代码已开源，具有较高的研究价值和应用潜力。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score score-mid">8.6</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2507.21184" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Can Language Models Discover Scaling Laws?</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 1 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>论文旨在解决“如何自动化地发现适用于大规模模型的性能预测缩放定律（scaling laws）”这一核心问题。传统上，这类定律依赖人类专家通过大量小规模实验手动提出假设、反复试错，效率低且难以保证最优。作者提出以下关键论点：</p>
+<ul>
+<li>现有基于大语言模型（LLM）的“AI 科学家”范式在开放、符号化的科学发现任务上仍落后于人类专家。</li>
+<li>为此，构建了一个涵盖 7 类训练场景、超 5 000 组实验数据的基准 SLDBench，要求智能体仅利用小规模观测数据，输出可外推的<strong>符号表达式</strong>及其参数。</li>
+<li>进一步提出进化式智能体 SLDAgent，通过协同优化“定律表达式”与“参数拟合器”双组件，在符号空间中进行多代搜索。</li>
+<li>实验表明，SLDAgent 在所有任务上的外推精度一致优于人类文献给出的定律，首次验证了 AI 系统可以自主发现比人类更精准、更具理论合理性的缩放定律，并可直接用于预训练超参优化和微调模型选型等实际场景。</li>
+</ul>
+<h2>相关工作</h2>
+<p>论文在第 5 节（Related Works and Discussions）与附录引文中系统梳理了相关研究，可归纳为三大主线：</p>
+<ol>
+<li><p>终端-代码智能体与评测</p>
+<ul>
+<li>终端交互式编程框架：Aider、Terminus、OpenHands、Codex、OpenCode、Goose、Mini-SWE-Agent 等（Jimenez et al., 2024a; Wang et al., 2025; Anthropic, 2025; OpenAI, 2025 等）。</li>
+<li>软件工程基准：SWE-bench 系列、SWE-polylang、PaperBench、MLE-bench、CO-bench 等（Jimenez et al., 2024a; Rashid et al., 2025; Starace et al., 2025; Chan et al., 2024b; Sun et al., 2025）。<br />
+这些工作聚焦“让 LLM 自动写代码、修 bug、跑实验”，但目标并非发现可外推的符号定律。</li>
+</ul>
+</li>
+<li><p>科学发现 AI / 符号回归</p>
+<ul>
+<li>早期符号回归：AI Feynman、SINDy、GP-based 方法（Udrescu &amp; Tegmark, 2020; Brunton et al., 2016; Koza, 1992）。</li>
+<li>近期 LLM-驱动：LLM-SRBench、ScienceAgentBench、AlphaEvolve、OpenEvolve（Shojaee et al., 2025; Chen et al., 2025b; Novikov et al., 2025; Sharma, 2025）。<br />
+这些研究多针对物理、生物等学科，且通常“再发现”已知解析式；本文首次把符号回归用于 AI 自我缩放行为研究，并强调跨场景外推。</li>
+</ul>
+</li>
+<li><p>神经缩放定律（Neural Scaling Laws）</p>
+<ul>
+<li>经典幂律：Kaplan et al., 2020；Hoffmann et al., 2022（Chinchilla）。</li>
+<li>扩展维度：数据质量、MoE、词汇量、域混合、并行度、微调、对齐、多模态等（Henighan et al., 2020; Fedus et al., 2021; Tao et al., 2024; Ye et al., 2024; Krajewski et al., 2024; Lin et al., 2024; Chen et al., 2025a; Li et al., 2025）。<br />
+这些工作提供人类专家手工拟合的定律，被本文当作强基线；SLDAgent 首次以自动化方式全面超越这些人工定律。</li>
+</ul>
+</li>
+</ol>
+<h2>解决方案</h2>
+<p>论文将“自动化发现缩放定律”形式化为一个<strong>开放端符号回归</strong>问题，并提出三层技术路线予以解决：</p>
+<ol>
+<li><p>任务与基准形式化<br />
+构建 SLDBench，把 7 类真实训练日志统一成同一接口：</p>
+<ul>
+<li>输入：小规模观测集 $D={(x_i, j_i, y_i)}_{i=1}^m$，其中 $x_i$ 为可变规模变量（参数数、数据量、批大小等），$j_i$ 为控制上下文（语料、模型架构等），$y_i$ 为观测指标（loss、perplexity）。</li>
+<li>输出：一个<strong>符号表达式</strong> $f_\theta(x)$ 及每组上下文 $j$ 的专属参数 $\theta_j$，使得在<strong>更大规模、未见过的测试集</strong>上 $R^2$ 最高。<br />
+该设定把“定律发现”变成可计算、可比较、但解空间无限且真值未知的优化目标，规避了传统符号回归“再发现已知公式”的局限。</li>
+</ul>
+</li>
+<li><p>进化式智能体 SLDAgent<br />
+受人类科研“假设→实验→修正”循环启发，设计<strong>双组件协同进化</strong>：</p>
+<ul>
+<li>Expression 子程序：生成候选符号模型 $f_\theta(x)$（Python 函数）。</li>
+<li>Optimization 子程序：为给定模型快速拟合 $\theta_j$（可替换 BFGS、L-BFGS-B、 Ridge 等）。<br />
+二者作为一个“可执行程序对”整体存储，适应度 = 在训练集上的 $R^2$。<br />
+算法流程：<br />
+a) 初始化数据库（空）。<br />
+b) 每轮按 70 % 利用 + 20 % 多样性 + 10 % 精英 的策略采样父代。<br />
+c) LLM 在提示中读取父代代码、高分灵感代码及数据统计，输出“差异补丁”生成子代。<br />
+d) 子代立即被执行、评估，写回数据库。<br />
+e) 50 轮后返回库中最佳程序对。<br />
+采用 5-island+MAP-Elites 保持多样性，测试集全程不接触，防止过拟合。</li>
+</ul>
+</li>
+<li><p>实验验证与落地</p>
+<ul>
+<li>在 SLDBench 全部 7 任务上，SLDAgent 平均 $R^2$ 比人类文献定律提升 0.09–0.47，首次实现“超人类”水平。</li>
+<li>消融实验表明：协同优化 Expression+Optimization 比仅进化表达式平均 $R^2$ 高 0.07，且在最难任务 lr_and_bsz 上由负转正。</li>
+<li>应用一：利用发现的四维损失面 $L(N,D,\ell,b)$ 解析求导，直接给出 1 B 模型在 100 B token 上的最优 $(\ell^<em>, b^</em>)$，真实训练误差仅 0.067 %。</li>
+<li>应用二：用发现的 SFT 定律在 6.25 % 小数据上预测全量微调效果，14 选 1 模型时 RelAcc 达 100 %，显著优于现有 5 条人工定律。</li>
+</ul>
+</li>
+</ol>
+<p>通过“基准形式化→双组件协同进化→真实场景验证”的闭环，论文首次证明 AI 系统可自主发现比人类更准确、更具理论合理性的缩放定律，并直接服务于预训练与微调实践。</p>
+<h2>实验验证</h2>
+<p>论文围绕「能否让 AI 自动发现比人类更精准的外推缩放定律」这一核心问题，设计了三类实验，覆盖<strong>基准评测、消融验证、真实场景落地</strong>三个层次。所有实验均基于同一开源框架，数据与代码已公开。</p>
+<hr />
+<h3>1. SLDBench 主评测：7 任务 × 多智能体对比</h3>
+<p><strong>目的</strong>：验证 SLDAgent 是否在多样场景下一致优于人类定律与现有代码智能体。</p>
+<table>
+<thead>
+<tr>
+  <th>实验维度</th>
+  <th>设置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>任务</td>
+  <td>7 个真实训练日志任务（parallel / vocab_size / sft / domain_mix / moe / d_constrain / lr_and_bsz）</td>
+</tr>
+<tr>
+  <td>数据规模</td>
+  <td>5 000+ 实验记录，按「小尺度拟合 → 大尺度外推」划分 train/test</td>
+</tr>
+<tr>
+  <td>基线智能体</td>
+  <td>7 个终端代码智能体（OpenHands、Codex、Claude-Code 等）+ 人类文献定律</td>
+</tr>
+<tr>
+  <td>backbone LLM</td>
+  <td>统一使用 o4-mini，再补充 GPT-5、Claude-Sonnet-4、Gemini-2.5-Flash 等</td>
+</tr>
+<tr>
+  <td>指标</td>
+  <td>外推集 R²、NMSE、NMAE；结果取 3 次随机种子平均</td>
+</tr>
+</tbody>
+</table>
+<p><strong>主要结果</strong></p>
+<ul>
+<li>o4-mini 单模型下，SLDAgent 平均 R² = 0.848，次佳基线仅 0.613；<strong>6/7 任务超人类</strong>。</li>
+<li>换用 GPT-5 后，SLDAgent 首次<strong>全部 7 任务同时击败人类定律</strong>，平均 R² 提升至 0.913。</li>
+<li>在最难的 lr_and_bsz 任务（2 702 → 117 外推）上，人类定律 R² = –0.076，SLDAgent-GPT-5 达 0.610，实现负→正跨越。</li>
+</ul>
+<hr />
+<h3>2. 消融实验：验证「双组件协同进化」必要性</h3>
+<p><strong>目的</strong>：证明同时进化 Expression+Optimization 优于仅进化表达式。</p>
+<table>
+<thead>
+<tr>
+  <th>变量</th>
+  <th>设置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>对照组</td>
+  <td>SLDAgent-law-only：固定 BFGS 优化器，只进化符号公式</td>
+</tr>
+<tr>
+  <td>评价指标</td>
+  <td>同上，7 任务平均 R²</td>
+</tr>
+</tbody>
+</table>
+<p><strong>结果</strong></p>
+<ul>
+<li>完整版平均 R² 0.848 vs. 0.775（–0.073），其中 lr_and_bsz 任务差距最大：0.194 vs. –0.224。</li>
+<li>确认「好的公式」与「适配的拟合器」必须联合搜索，否则在复杂曲面无法收敛。</li>
+</ul>
+<hr />
+<h3>3. 进化过程诊断：50 代动态跟踪</h3>
+<p><strong>目的</strong>：观察搜索是否收敛、是否过拟合。</p>
+<ul>
+<li>在易/中/难三类任务上随机重复 10 次，每代记录最佳 R²。</li>
+<li>曲线显示：<ul>
+<li>easy（parallel）快速饱和至 R²≈1；</li>
+<li>medium（moe）稳步上升后平稳；</li>
+<li>hard（lr_and_bsz）早期波动大，但 50 代内持续向上且无下降。<br />
+⇒ 证明进化策略足够探索且未过拟合 seen 数据。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>4. 真实场景应用一：预训练超参直接优化</h3>
+<p><strong>步骤</strong></p>
+<ol>
+<li>用发现的四维定律 $L(N,D,\ell,b)$ 对 $\ell,b$ 求偏导→解析解 $(\ell^<em>, b^</em>)=f(N,D)$。</li>
+<li>在 1 B 参数 + 100 B token 的<strong>双倍 extrapolation</strong> 场景部署，网格取最近可行点训练。</li>
+</ol>
+<p><strong>结果</strong></p>
+<ul>
+<li>解析最优 $(1.77\times10^{-3}, 402)$，实际训练验证损失 2.0776，与真实最优 2.0762 相差 0.067 %。</li>
+<li>相比传统 StepLaw 需 3 000 次实验仅选 17 点拟合，SLDAgent 利用全部 2 702 点信息，<strong>零额外实验</strong>即定位近最优超参。</li>
+</ul>
+<hr />
+<h3>5. 真实场景应用二：微调模型精选</h3>
+<p><strong>步骤</strong></p>
+<ol>
+<li>取 14 个 HuggingFace 预训练模型，在 3 个下游任务（FLAN/Wikitext/Gigaword）上各跑 6.25 % 小样本微调，记录 loss。</li>
+<li>用 SLDAgent-SFT 定律外推「全量数据」表现，按预测值排序并挑选最佳模型。</li>
+<li>与 5 条已有定律（RectifiedLaw、NLPMetrics、SubTuning、ModelSize、ZeroShot）对比。</li>
+</ol>
+<p><strong>结果</strong></p>
+<ul>
+<li>SLDAgent 定律在 3 数据集均实现 <strong>RelAcc = 100 %</strong>（每次都选中事后最佳模型），平均 PearCorr = 87.7 %，显著领先次佳方法。</li>
+<li>证明发现定律不仅拟合优，且可迁移到真实模型选型流程，显著节省算力。</li>
+</ul>
+<hr />
+<h3>6. 灵敏度与稳定性补充</h3>
+<ul>
+<li>给出 NMSE、NMAE 完整表格，并报告 3 次重复标准差；SLDAgent-GPT-5 在 7 任务上标准差均最小，显示<strong>高稳定性</strong>。</li>
+<li>对人类专家手工推导的 lr_and_bsz 定律进行双盲对比，两位人类分别得 R² = –1.10 与 –0.08，远低于 SLDAgent 的 0.61，侧面说明<strong>人类在复杂曲面建模上易失效</strong>。</li>
+</ul>
+<hr />
+<p>综上，论文通过「基准横向评测 → 内部消融 → 真实业务落地」的完整实验链路，既验证了方法的有效性，也展示了其直接服务于预训练与微调工程的价值。</p>
+<h2>未来工作</h2>
+<p>以下方向可视为“自动化发现缩放定律”研究的自然延伸，既弥补当前局限，也拓展到更宏大的科学发现场景。所有条目均按可独立立项、可量化评估的原则列出，并给出可操作的切入点。</p>
+<hr />
+<h3>1. 任务与数据维度扩展</h3>
+<ul>
+<li><strong>多模态缩放</strong>：将 SLDBench 从纯文本扩展到 Vision-Language、Speech-Text、Diffusion 等场景，考察参数量- token- 图像分辨率- 音频时长等混合变量。</li>
+<li><strong>异构算力轴</strong>：引入 GPU 小时、内存带宽、通信开销等“硬件变量”，发现面向训练/推理成本联合最优的缩放定律。</li>
+<li><strong>质量-数量权衡</strong>：在数据清洗、过滤、去重、合成等不同质量操作下，建立“有效 token”统一度量，验证能否用单一定律同时解释“脏数据+大参”与“干净数据+小参”两种路线。</li>
+<li><strong>长尾外推</strong>：把 seen/unseen 切分从“2× 规模”推向 10–100× 极端外推，测试定律在“准无限大”区域的理论一致性（是否仍保持幂律/对数/指数形态）。</li>
+</ul>
+<hr />
+<h3>2. 搜索策略升级</h3>
+<ul>
+<li><strong>混合符号-神经表示</strong>：允许 Expression 子程序同时输出可解释公式与小型 MLP 残差项，实现“先保证可解释、再补偿高阶误差”的半解析定律。</li>
+<li><strong>可微分符号图</strong>：把符号表达式编码为可微 DAG，用梯度下降联合优化结构-参数，减少 LLM 采样随机性。</li>
+<li><strong>元学习初始化</strong>：用已有任务预训练一个“定律先验”模型，新任务到来时先加载先验，再进化微调，实现跨任务知识复用。</li>
+<li><strong>因果-约束注入</strong>：在提示中引入渐近线、单调性、量纲齐次等物理规则，让 LLM 突变时自动满足因果或量纲一致性，减少无意义表达式。</li>
+</ul>
+<hr />
+<h3>3. 自动化实验闭环</h3>
+<ul>
+<li><strong>Agent-Cluster 联动</strong>：SLDAgent 提出定律 → 集群自动提交训练任务 → 新数据回流数据库 → 触发下一轮进化，实现“无人值守”的 24×7 定律迭代。</li>
+<li><strong>主动采样</strong>：用不确定性加权或梯度信息，主动申请在“高预期信息增益”区域做实验，降低总训练成本。</li>
+<li><strong>多目标进化</strong>：同时优化外推误差、参数简洁性、训练 FLOPs 三目标，生成帕累托前沿，供用户按“可解释-精度-成本”偏好选择。</li>
+</ul>
+<hr />
+<h3>4. 理论剖析与可解释性</h3>
+<ul>
+<li><strong>定律复杂度 vs. 外推误差相变</strong>：系统改变参数数量上限，绘制“复杂度-误差”曲线，观察是否存在相变点，为“最小够用模型”提供依据。</li>
+<li>** universality 检验**：对比不同架构（Transformer、MoE、RWKV、Mamba）是否收敛到同一普适族，验证“架构无关”的深层机制。</li>
+<li><strong>渐近行为审计</strong>：对 SLDAgent 给出的公式做极限分析（N→∞, D→∞），检查是否出现非物理的发散或负损失，强制加入正则化约束。</li>
+</ul>
+<hr />
+<h3>5. 面向真实科学新发现</h3>
+<ul>
+<li><strong>未知区域探索</strong>：把框架直接用于公开 yet 未形成定律的新场景——例如<br />
+– RLHF 中“偏好样本量- KL 惩罚系数- 最终奖励”三维关系；<br />
+– 连续思维链长度 vs. 推理任务准确率；<br />
+– 多步蒸馏“教师模型规模- 学生规模- 蒸馏数据量”三角关系。<br />
+目标是<strong>首次给出</strong>被社区认可的预测公式，而非复现已有人类定律。</li>
+<li><strong>交叉学科迁移</strong>：将 SLDAgent 用于材料基因组、药物剂量-毒性、聚变装置功率缩放等实验密集型领域，验证“AI 发现科学定律”的通用性。</li>
+</ul>
+<hr />
+<h3>6. 系统与社区层面</h3>
+<ul>
+<li><strong>在线擂台机制</strong>：持续收集社区提交的新训练日志，每月更新排行榜；对击败当前最佳定律的提交给予算力券奖励，形成“众包数据 + AI 发现”正循环。</li>
+<li><strong>可验证发布</strong>：要求所有提交定律必须附带可执行 Python 文件与系数，系统在一键复现后给出官方 R²，防止“手工调参”或“测试集泄露”。</li>
+<li><strong>轻量化本地版</strong>：开源小模型（≤7 B）+ 量化版 SLDAgent，允许个人研究者在单机 24 GB 显卡上运行，降低门槛促进学术圈广泛使用。</li>
+</ul>
+<hr />
+<h3>7. 伦理与风险</h3>
+<ul>
+<li><strong>双重用途审查</strong>：对外推至 100 T 参数级别的定律进行风险评估，防止给出“只需极少数据即可训练超大模型”的误导性公式。</li>
+<li><strong>能耗标签</strong>：为每条定律自动生成“达到该预测精度所需总 GPU 小时”，提醒社区“高精度≠绿色 AI”，引导低碳科研。</li>
+</ul>
+<hr />
+<p>以上方向可并行推进，短期内（3–6 个月）以 1+2+3 为主，实现“更多任务、更好搜索、自动实验”；中长期（1–2 年）聚焦 4+5，向“AI 自主提出新物理”与“跨学科定律发现”迈进。</p>
+<h2>总结</h2>
+<h1>论文核心速览</h1>
+<h2>1. 研究目标</h2>
+<ul>
+<li>传统缩放定律依赖人类专家手工假设与反复实验，效率低且易陷入次优。</li>
+<li>本文首次系统探讨「能否让大模型智能体自动发现比人类更准确、可外推的符号缩放定律」。</li>
+</ul>
+<h2>2. 贡献框架</h2>
+<ul>
+<li><strong>SLDBench</strong>：从 5 000+ 真实训练日志提炼 7 类任务（预训练 / 微调 / MoE / 词汇 / 并行 / 数据受限 / 超参），统一为「小尺度拟合 → 大尺度外推」评测范式。</li>
+<li><strong>SLDAgent</strong>：进化式代码智能体，协同优化「符号表达式」与「参数拟合器」双组件，50 代搜索后输出最优定律。</li>
+<li>实验结果：在全部任务上外推 R² 一致优于人类文献定律与 7 个现有代码智能体；搭配 GPT-5 时首次实现 7/7 任务全面超人类。</li>
+<li>落地验证：<br />
+– 用发现的四维损失面解析求导，1 B 模型 100 B token 场景零实验定位最优 lr/bsz，误差 0.067 %。<br />
+– 用 SFT 定律在小样本外推全量微调效果，14 选 1 模型准确率 100 %。</li>
+</ul>
+<h2>3. 关键意义</h2>
+<ul>
+<li>证明 AI 系统可自主理解并加速自身规模扩展，开启「AI-for-AI-science」新范式。</li>
+<li>开源框架与数据，为社区提供可直接使用的自动化科学发现工具。</li>
+</ul>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.6</span></span>
+                                            <span>置信度: 0.90</span>
+                                            <span>分类: Agent</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Agent</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2507.21184" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2507.21184" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2601.04748">
                                     <div class="paper-header" onclick="showPaperDetail('2601.04748', 'Agent')">
@@ -2076,7 +2558,7 @@ GeoRA 首次将 RLVR 特有的“非主、低幅、可压缩”更新几何转�
                                             <div class="paper-summary-inline">本文由英属哥伦比亚大学（University of British Columbia）可信高效人工智能实验室（TEA Lab）的Xiaoxiao Li（CIFAR AI Chair，Vector Institute）撰写。论文探讨了用具备技能库的单智能体系统（SAS）替代多智能体系统（MAS）的可行性、效率边界及其根本限制。作者创新性地提出了从MAS到SAS的“编译”理论框架，并通过实验验证了其效率优势。更重要的是，论文从认知科学视角出发，系统性地研究了技能选择随技能库规模扩大的非线性缩放规律，发现了类似人类认知的容量限制和相变现象，并提出了分层路由的缓解方案。该工作兼具理论深度和实用价值，为构建高效、可扩展的基于技能的智能体系统提供了新的见解和设计原则。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.8</span>
+                                        <span class="paper-score score-mid">8.8</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -2566,21 +3048,21 @@ $|S|=120$ 时，Flat 选择准确率 45 %→分层后 85 %（GPT-4o-mini），<s
                                     </div>
                                 </div>
                                 
-                                <div class="paper-item-compact" id="paper-item-2601.09465">
-                                    <div class="paper-header" onclick="showPaperDetail('2601.09465', 'Agent')">
+                                <div class="paper-item-compact" id="paper-item-2601.08955">
+                                    <div class="paper-header" onclick="showPaperDetail('2601.08955', 'Agent')">
                                         <div style="flex: 1;">
                                             <div class="paper-title">
-                                                EvoFSM: Controllable Self-Evolution for Deep Research with Finite State Machines
+                                                Imagine-then-Plan: Agent Learning from Adaptive Lookahead with World Models
                                                 <button class="mark-button" 
-                                                        data-paper-id="2601.09465"
-                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2601.09465", "authors": ["Zhang", "Yuan", "Guo", "Yu", "Xu", "Chen", "Li", "Yang", "Guan", "Tang", "Hu", "Zhang", "Chen", "Wang"], "id": "2601.09465", "pdf_url": "https://arxiv.org/pdf/2601.09465", "rank": 8.642857142857144, "title": "EvoFSM: Controllable Self-Evolution for Deep Research with Finite State Machines"}"
+                                                        data-paper-id="2601.08955"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2601.08955", "authors": ["Liu", "Wang", "Wang", "Guo", "Li"], "id": "2601.08955", "pdf_url": "https://arxiv.org/pdf/2601.08955", "rank": 8.357142857142858, "title": "Imagine-then-Plan: Agent Learning from Adaptive Lookahead with World Models"}"
                                                         onclick="handleMarkClickFromButton(this); event.stopPropagation();"
                                                         title="标记这篇论文">☆</button>
-                                                <a href="https://arxiv.org/abs/2601.09465" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <a href="https://arxiv.org/abs/2601.08955" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
                                                     
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AEvoFSM%3A%20Controllable%20Self-Evolution%20for%20Deep%20Research%20with%20Finite%20State%20Machines%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2601.09465&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AImagine-then-Plan%3A%20Agent%20Learning%20from%20Adaptive%20Lookahead%20with%20World%20Models%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2601.08955&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
                                                        class="ai-link ai-link-kimi" 
                                                        target="_blank" 
                                                        onclick="event.stopPropagation();"
@@ -2589,7 +3071,7 @@ $|S|=120$ 时，Flat 选择准确率 45 %→分层后 85 %（GPT-4o-mini），<s
                                                         <span>Kimi</span>
                                                     </a>
                                                     
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AEvoFSM%3A%20Controllable%20Self-Evolution%20for%20Deep%20Research%20with%20Finite%20State%20Machines%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2601.09465%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AImagine-then-Plan%3A%20Agent%20Learning%20from%20Adaptive%20Lookahead%20with%20World%20Models%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2601.08955%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
                                                        class="ai-link ai-link-chatgpt" 
                                                        target="_blank" 
                                                        onclick="event.stopPropagation();"
@@ -2599,18 +3081,18 @@ $|S|=120$ 时，Flat 选择准确率 45 %→分层后 85 %（GPT-4o-mini），<s
                                                     </a>
                                                 </span>
                                             </div>
-                                            <div class="paper-authors">Zhang, Yuan, Guo, Yu, Xu, Chen, Li, Yang, Guan, Tang, Hu, Zhang, Chen, Wang</div>
+                                            <div class="paper-authors">Liu, Wang, Wang, Guo, Li</div>
                                             <!-- 中文摘要（默认显示） -->
                                             
-                                            <div class="paper-summary-inline">本文由来自QuantaAlpha（量化阿尔法）以及香港科技大学（HKUST）、复旦大学（FDU）、清华大学（THU）、上海财经大学（SUFE）、加州大学戴维斯分校（UCD）、北京大学（PKU）、中国科学院大学（UCAS）等知名高校的联合团队提出了一种名为EvoFSM的结构化自进化框架，用于深度研究任务。该框架通过将研究过程建模为有限状态机（FSM），将优化空间解耦为宏观流程（Flow）和微观技能（Skill），实现了可控的自进化。在五个多跳问答基准测试中取得了显著提升，并在交互式决策任务上验证了其泛化能力。方法创新性强，实验设计充分，叙述结构清晰。</div>
+                                            <div class="paper-summary-inline">本文由香港理工大学与中南大学的研究团队合作完成，提出了一种名为Imagine-then-Plan（ITP）的智能体学习框架，通过自适应前瞻机制与世界模型结合，显著提升了智能体在复杂任务中的规划与推理能力。该方法在多个代表性基准测试中表现优异，创新性强，实验设计严谨，且具备良好的通用性。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.6</span>
+                                        <span class="paper-score score-low">8.4</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2601.09465" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">EvoFSM: Controllable Self-Evolution for Deep Research with Finite State Machines</h3>
+                                    <div id="details-2601.08955" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Imagine-then-Plan: Agent Learning from Adaptive Lookahead with World Models</h3>
                                         
                                         <!-- 全文分析（如果可用且无错误） -->
                                         
@@ -2620,550 +3102,204 @@ $|S|=120$ 时，Flat 选择准确率 45 %→分层后 85 %（GPT-4o-mini），<s
                                         <h4>📊 全文分析</h4>
                                         <div class="markdown-content">
                                             <blockquote>
-<p><strong>社区热度</strong>: ⭐ 9 (来自 papers.cool)</p>
+<p><strong>社区热度</strong>: ⭐ 5 (来自 papers.cool)</p>
 </blockquote>
 <h2>问题定义</h2>
-<p>论文旨在解决现有 LLM-based 深度研究（deep-research）代理在“自演化”过程中因<strong>无约束全局重写</strong>而导致的三大核心问题：</p>
+<p>论文旨在解决<strong>大模型智能体在长程任务规划中“浅层落地”（shallow grounding）</strong>的问题。现有方法主要依赖即时观测与历史轨迹做决策，缺乏对未来环境演化的深度、因果理解，导致：</p>
 <ol>
-<li><p><strong>稳定性崩溃</strong><br />
-无限制地修改系统提示或工具集容易触发幻觉、指令漂移（instruction drift），甚至破坏原有功能模块，使系统性能不升反降。</p>
-</li>
-<li><p><strong>优化空间混沌</strong><br />
-将“工作流拓扑”与“单点技能”混在一起进行全局改写，导致无法精准定位失败根因，进化动作难以解释与回退。</p>
-</li>
-<li><p><strong>经验无法累积</strong><br />
-每次任务被视为孤立优化问题，历史成功轨迹与失败模式无法沉淀为可复用先验，造成重复试错、难以持续改进。</p>
-</li>
+<li>无法在行动前预判长期后果，出现冲突或失败时才事后补救；</li>
+<li>单步或固定步数的“世界模型”推演无法兼顾不同任务阶段对前瞻深度的差异化需求，要么遗漏长程依赖，要么浪费计算。</li>
 </ol>
-<p>为此，作者提出 <strong>EvoFSM</strong>：通过显式有限状态机（FSM）把宏观“流”（Flow）与微观“技能”（Skill）解耦，在<strong>结构化、可解释、可逆</strong>的原子操作空间内执行受控自演化，并配合自演化记忆机制实现跨任务经验蒸馏，从而在保持功能完整性的同时，实现对开放、多跳、长周期研究任务的自适应与持续精进。</p>
+<p>为此，作者提出 <strong>Imagine-then-Plan (ITP)</strong> 框架，通过<strong>自适应前瞻想象机制</strong>让智能体在“心理沙盘”内动态决定想象步数，把可观测的当下与可想象的未来统一建模成 <strong>部分可观测且可想象马尔可夫决策过程（POIMDP）</strong>，从而在长程复杂任务中实现：</p>
+<ul>
+<li>事前发现潜在冲突与瓶颈，主动修正策略；</li>
+<li>按任务进展与目标权衡，灵活分配计算资源；</li>
+<li>无需额外训练（ITPI）或通过强化学习（ITPR）即可显著提升成功率。</li>
+</ul>
 <h2>相关工作</h2>
-<p>论文将相关研究划分为两条主线，并在第 2 节系统对比。以下按主题归纳，均给出原文对应小节或引用编号，方便快速定位。</p>
-<hr />
-<h3>1. Deep Research Agents</h3>
-<table>
-<thead>
-<tr>
-  <th>代表工作</th>
-  <th>核心思路</th>
-  <th>与 EvoFSM 的关键差异</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td><strong>Search-o1</strong> (Li et al., 2025a)</td>
-  <td>在 RAG 循环中插入 Reason-in-Documents 模块，做“边检索边推理”。</td>
-  <td>仍沿用固定“retrieve→reason”模板，无法针对查询动态调整拓扑。</td>
-</tr>
-<tr>
-  <td><strong>Search-R1</strong> (Jin et al., 2025)</td>
-  <td>用 RL 训练 LLM 自主生成搜索 query，多轮交互。</td>
-  <td>优化的是 query 生成策略，而非工作流结构。</td>
-</tr>
-<tr>
-  <td><strong>WebThinker / WebAgent-R1</strong> (Li et al., 2025b; Wei et al., 2025)</td>
-  <td>端到端 RL 让代理在真实网页环境自主浏览、起草报告。</td>
-  <td>关注单轮交互决策，缺少跨任务经验沉淀机制。</td>
-</tr>
-<tr>
-  <td><strong>RepoMaster</strong> (Wang et al., 2025)</td>
-  <td>把代码仓库结构建模成图，支持代理级探索。</td>
-  <td>场景限定在软件工程，未涉及通用研究流程演化。</td>
-</tr>
-<tr>
-  <td><strong>ReSearch / ZeroSearch</strong> (Sun et al., 2024; Xu et al., 2024)</td>
-  <td>通过重排序或零样本 query 分解提升检索效率。</td>
-  <td>只优化检索阶段，不改变宏观推理流程。</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3>2. Self-Evolving Agents</h3>
-<table>
-<thead>
-<tr>
-  <th>代表工作</th>
-  <th>演化粒度</th>
-  <th>主要风险 / 局限性</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td><strong>LIVE-SWE-Agent</strong> (Deppen et al., 2024)</td>
-  <td>运行时合成新工具或更新脚手架代码。</td>
-  <td>无结构约束，易破坏原有接口一致性。</td>
-</tr>
-<tr>
-  <td><strong>STELLA</strong> (Wang et al., 2024)</td>
-  <td>生物医学场景下自我改写 prompt 与工具。</td>
-  <td>领域特定，进化空间小，通用性不足。</td>
-</tr>
-<tr>
-  <td><strong>ShieldLearner</strong> (Ni et al., 2025)</td>
-  <td>通过自我博弈学习 jailbreak 防御策略。</td>
-  <td>只针对安全策略，未涉及通用任务流。</td>
-</tr>
-<tr>
-  <td><strong>MorphAgent</strong> (Li et al., 2024)</td>
-  <td>多 agent 场景下自我调整“角色画像”。</td>
-  <td>角色演化≠工作流演化，仍属局部优化。</td>
-</tr>
-<tr>
-  <td><strong>CoMAS</strong> (Wu et al., 2025)</td>
-  <td>基于交互奖励的去中心化协同演化。</td>
-  <td>依赖外部奖励信号，无显式拓扑约束。</td>
-</tr>
-<tr>
-  <td><strong>Huxley-Gödel Machine</strong> (Schmidhuber et al., 2024)</td>
-  <td>极端开放：允许递归地重写自身全部代码。</td>
-  <td>理论框架，缺乏可解释性与稳定性保证。</td>
-</tr>
-<tr>
-  <td><strong>SE-Agent</strong> (Lin et al., 2025)</td>
-  <td>多步推理轨迹自我优化。</td>
-  <td>仅优化轨迹文本，不改宏观流程或状态机。</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3>3. 与 EvoFSM 最接近的两条支线</h3>
-<ul>
-<li><p><strong>StateFlow</strong> (Wu et al., 2024)<br />
-同样用 FSM 组织 LLM 对话状态，但<strong>状态图静态</strong>，没有自演化机制。</p>
-</li>
-<li><p><strong>Reflexion</strong> (Shinn et al., 2023)<br />
-用语言强化学习让代理自我反思，但反思结果以<strong>无约束自然语言</strong>形式回写 prompt，仍面临指令漂移风险。</p>
-</li>
-</ul>
-<hr />
-<h3>小结</h3>
-<p>EvoFSM 的差异化定位在于：</p>
+<p>论文在第 5 节“Related Work”中系统梳理了两条主线研究，并指出其与 ITP 的差异。可归纳为以下四类：</p>
 <ol>
-<li>把“宏观流程（Flow）”与“微观技能（Skill）”显式解耦，用<strong>可解释原子操作</strong>替代自由形式重写；</li>
-<li>引入<strong>可演化的 FSM 拓扑</strong>，兼顾稳定性与适应性；</li>
-<li>通过<strong>自演化记忆池</strong>实现跨任务经验复用，弥补以往工作“单任务孤立优化”的缺陷。</li>
+<li><p><strong>LLM-based Agent 决策优化</strong></p>
+<ul>
+<li>轨迹/步级优化：ETO、IPR、E2CL</li>
+<li>反思式后训练：Agent-R、STeCa、AgentRefine<br />
+共同点：仅利用历史轨迹做迭代修正，缺乏对未来状态的显式前瞻，仍处“浅层落地”。</li>
+</ul>
+</li>
+<li><p><strong>World Model 用于规划</strong></p>
+<ul>
+<li>隐式规划：RAP 把 LLM 推理当作隐状态搜索</li>
+<li>显式 rollout：WKM、IWM、D2PO、DMWM、WebEvolver<br />
+差异：均采用<strong>固定步数</strong>或<strong>单步</strong>推演，无法随任务阶段动态调整想象深度；ITP 首次提出<strong>自适应前瞻</strong>并形式化为 POIMDP。</li>
+</ul>
+</li>
+<li><p><strong>POMDP 扩展与模型增强 MDP</strong></p>
+<ul>
+<li>传统 POMDP 仅考虑观测历史</li>
+<li>POIMDP（本文）额外引入“可想象”未来轨迹，作为第二决策信号源。</li>
+</ul>
+</li>
+<li><p><strong>高效 rollout 与计算权衡</strong></p>
+<ul>
+<li>speculative decoding、蒸馏世界模型等属于加速方向，与 ITP 的“动态决定要不要想象”正交，可互补。</li>
+</ul>
+</li>
 </ol>
+<p>因此，ITP 在“用世界模型做规划”这一领域首次把<strong>自适应想象步数</strong>与<strong>策略学习</strong>联合建模，填补了固定 horizon 策略的空白。</p>
 <h2>解决方案</h2>
-<p>论文将“无约束自演化”带来的不稳定问题转化为<strong>在显式有限状态机（FSM）上进行受控、可解释、可逆的结构化自演化</strong>。具体实现可概括为三层机制，每层均对应一个核心公式/算法，确保“流”与“技能”解耦、进化局部化、经验可累积。</p>
-<hr />
-<h3>1. 确定性骨架：把研究流程建模为动态 FSM</h3>
-<p><strong>形式化</strong><br />
-$$ M = \langle S,; T,; I,; C \rangle $$</p>
-<ul>
-<li>$S$：可扩展状态集（Search、Browse、Verify…）</li>
-<li>$T: S \times \mathcal{H} \to S$：宏观 Flow，根据运行时上下文 $\mathcal{H}$ 决定下一状态</li>
-<li>$I$：微观 Skill，每个状态对应的系统 prompt</li>
-<li>$C$：Critic，输出失败模式标签，用作演化触发信号</li>
-</ul>
-<p>该骨架保证：</p>
-<ul>
-<li>任何时刻代理行为受<strong>状态边界</strong>约束，杜绝自由格式重写导致的指令漂移；</li>
-<li>运行时只执行 $I$ 规定的局部技能，全局拓扑 $T$ 保持不变，直至 Critic 显式触发演化。</li>
-</ul>
-<hr />
-<h3>2. 结构化自演化：仅允许原子操作</h3>
-<p><strong>进化公式</strong><br />
-$$ M_{t+1} = M_t \oplus \mathsf{op},\quad \mathsf{op} \in \mathcal{O}<em>{\text{flow}} \cup \mathcal{O}</em>{\text{skill}} $$</p>
-<table>
-<thead>
-<tr>
-  <th>操作类别</th>
-  <th>原子操作</th>
-  <th>作用域</th>
-  <th>可逆性</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td><strong>Flow 操作</strong> $\mathcal{O}_{\text{flow}}$</td>
-  <td>ADD_STATE / DELETE_STATE / MODIFY_TRANSITION</td>
-  <td>仅改 $S$ 与 $T$，不碰 $I$</td>
-  <td>局部、可解释</td>
-</tr>
-<tr>
-  <td><strong>Skill 操作</strong> $\mathcal{O}_{\text{skill}}$</td>
-  <td>REVISE_INSTRUCTION</td>
-  <td>仅改 $I$ 中单条 prompt，不动拓扑</td>
-  <td>局部、可解释</td>
-</tr>
-</tbody>
-</table>
-<p><strong>演化流程</strong></p>
+<p>论文将“浅层落地”问题形式化为<strong>缺少对未来状态序列的显式、可扩展推演</strong>，进而提出 <strong>Imagine-then-Plan (ITP)</strong> 框架，核心解决路径如下：</p>
 <ol>
-<li>Critic 诊断失败模式 → 输出“Flow-Gap”或“Skill-Gap”标签；</li>
-<li>根据标签从原子操作库中<strong>唯一地</strong>选择一条 $\mathsf{op}$；</li>
-<li>执行 $\oplus$ 更新 $M_t$；</li>
-<li>新 FSM 立即投入下一轮推理，循环直至任务通过或达到最大迭代次数。</li>
+<li><p>统一建模：从 POMDP 扩展到 <strong>POIMDP</strong><br />
+状态空间同时包含</p>
+<ul>
+<li>可观测部分：当前文本观测 $o_t$</li>
+<li>可想象部分：由世界模型生成的 $K_t$ 步未来轨迹 $\hat{\tau}<em>t^{(K_t)}$<br />
+策略输入变为 $a_t \sim \pi</em>\theta(\cdot \mid s_t,; \hat{\tau}_t^{(K_t)})$，把“未来后果”纳入决策条件。</li>
+</ul>
+</li>
+<li><p>自适应前瞻机制：动态决定想象步数 $K_t$<br />
+权衡<strong>终极任务目标</strong>与<strong>当前进度</strong>，避免固定步数带来的</p>
+<ul>
+<li><p>长程依赖遗漏（步数太少）</p>
+</li>
+<li><p>误差累积与算力浪费（步数太多）<br />
+实现方式分两条技术路线：</p>
+</li>
+<li><p><strong>ITPI（training-free）</strong><br />
+用 frozen LLM 自身做“反思型提示”：</p>
+<ol>
+<li>评估当前状态 → 选择 $K_t\in[0,K_{\max}]$</li>
+<li>调用世界模型 rollout 得到 $\hat{\tau}_t^{(K_t)}$</li>
+<li>以“想象结果”做自我反思，再输出最终动作<br />
+全程无需梯度更新，即插即用。</li>
 </ol>
-<hr />
-<h3>3. 自演化记忆：跨任务经验蒸馏</h3>
-<p><strong>记忆池</strong><br />
-$$ \mathcal{E} = \mathcal{E}^+ \cup \mathcal{E}^- $$</p>
-<ul>
-<li>$\mathcal{E}^+$：成功轨迹 → 作为先验初始化 $M_{\text{init}}$</li>
-<li>$\mathcal{E}^-$：失败模式 → 作为负约束，在 $T$ 中禁用曾导致死胡同的转移</li>
+</li>
+<li><p><strong>ITPR（reinforcement-trained）</strong><br />
+引入轻量级 <strong>K-head 预测器</strong> $P_\theta(K_t \mid s_t)$，与策略网络联合优化：</p>
+<ol>
+<li><strong>伪标签阶段</strong>：用专家动作在世界模型上 teacher-force，挑使专家动作似然最高且 penalized by $K$ 的步数 $\tilde{K}_t$</li>
+<li><strong>Warm-up</strong>：监督学习模仿专家动作并拟合 $\tilde{K}_t$</li>
+<li><strong>在线 A2C</strong>：奖励函数显式 penalize 过长想象<br />
+$$r_{t+1}=r_{\text{env}}-\lambda_K K_t -\lambda_{\text{step}}$$<br />
+通过策略-价值-熵三项目标同步更新动作策略与前瞻预测器，学会“何时深想、何时浅想”。</li>
+</ol>
+</li>
 </ul>
-<p><strong>检索与更新</strong></p>
+</li>
+<li><p>训练&amp;推理流程</p>
 <ul>
-<li>新查询 $q_{\text{new}}$ 嵌入后与 $\mathcal{E}$ 中记录做最近邻搜索，取 top-$k$；</li>
-<li>初始化阶段把对应成功 FSM 直接实例化为 $M_0$；</li>
-<li>每完成一次任务，反射代理把最终 $M_{\text{optimized}}$ 与所用原子操作序列压缩成新记录 $r$ 写回 $\mathcal{E}$，实现<strong>持续增广</strong>。</li>
+<li>世界模型先在大纲演示与 rollout 数据上最小化负对数似然<br />
+$$\mathcal{L}<em>{\text{WM}}(\phi)=-\mathbb{E}</em>{(s,a,s')\sim \mathcal{D}<em>{\text{WM}}}!\left[\log p</em>\phi(s'\mid s,a)\right]$$</li>
+<li>推理时按上述自适应逻辑生成动作，实现“先想象再行动”的闭环。</li>
 </ul>
-<hr />
-<h3>4. 端到端算法流程（伪代码）</h3>
-<pre><code class="language-python">def EvoFSM(q):
-    M = RetrieveFSM(q, E)          # 用记忆池初始化
-    for t in range(max_iter):
-        traj = Execute(M, q)       # 按当前 FSM 运行
-        feedback = Critic(traj, q) # 返回失败标签
-        if feedback == 'OK':
-            E.persist(M, traj)     # 成功，写回记忆
-            return traj.answer
-        op = SelectAtomicOp(feedback)  # 仅选一条原子操作
-        M = M ⊕ op                 # 局部、可逆更新
-    return traj.answer
-</code></pre>
-<hr />
-<h3>结果验证</h3>
-<ul>
-<li>在五大多跳 QA 数据集上，EvoFSM 相对最强基线平均提升 <strong>3.2–16%</strong>；</li>
-<li>消融实验显示：<br />
-– 去掉结构化演化（静态 FSM）→ <strong>DeepSearch 掉 15%</strong>；<br />
-– 去掉 FSM 拓扑（无约束 prompt 重写）→ <strong>再掉 9%</strong>；</li>
-<li>跨任务迁移到 ALFWorld/WebShop，成功率提升 <strong>6–13%</strong>，证明 Flow-Skill 解耦机制通用且稳定。</li>
-</ul>
-<hr />
-<h3>一句话总结</h3>
-<p>EvoFSM 用“显式 FSM + 原子操作 + 经验池”把原本混沌的自演化约束在<strong>可解释、可逆、可累积</strong>的轨道上，既保持功能完整性，又实现对复杂开放查询的持续自适应。</p>
+</li>
+</ol>
+<p>通过把“想象深度”变成可学习、可反射的变量，ITP 在复杂长程任务上显著降低环境交互失败率，同时控制计算预算。</p>
 <h2>实验验证</h2>
-<p>论文从 <strong>多跳问答</strong> 与 <strong>交互式决策</strong> 两大场景、共 <strong>7 个数据集</strong> 展开系统实验，既验证主任务效果，也检验跨域泛化与组件贡献。全部结果均报告 <strong>准确率（%）</strong> 或 <strong>成功率（%）</strong>，无其他指标混合。</p>
-<hr />
-<h3>1. 主任务：多跳问答（5 基准）</h3>
-<table>
-<thead>
-<tr>
-  <th>数据集</th>
-  <th>特点</th>
-  <th>测试焦点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>HotpotQA</td>
-  <td>英文维基多段落 2-hop</td>
-  <td>经典基线</td>
-</tr>
-<tr>
-  <td>2WikiMultiHopQA</td>
-  <td>显式推理路径</td>
-  <td>可解释性</td>
-</tr>
-<tr>
-  <td>MuSiQue</td>
-  <td>2–4 hop 合成问题</td>
-  <td>抗组合歧义</td>
-</tr>
-<tr>
-  <td>Bamboogle</td>
-  <td>搜索引擎易错组合问句</td>
-  <td>真实难度</td>
-</tr>
-<tr>
-  <td>DeepSearch</td>
-  <td>中文深度搜索池</td>
-  <td>长周期、开放域</td>
-</tr>
-</tbody>
-</table>
-<p><strong>实验设置</strong></p>
+<p>论文在 §4 实验部分系统评估了 <strong>Imagine-then-Plan (ITP)</strong> 的两条实例化路线（ITPI、ITPR），共涵盖 <strong>3 套主干模型 × 2 个代表性基准 × 多任务细分</strong>，并辅以消融与效率分析。具体实验一览如下：</p>
+<ol>
+<li><p>主实验：成功率对比</p>
 <ul>
-<li>5 种 backbone：GPT-4o、Claude-4、Llama-3-70B、DeepSeek-v3、Qwen3-32B</li>
-<li>3 组基线：Standard RAG、Agentic RAG、Search-o1</li>
-<li>统一工具：Serper 搜索 + Jina Reader 解析；迭代上限 3 轮；状态数 ≤10</li>
+<li>基准<br />
+– ALFWorld（6 类家务任务：PICK / CLEAN / HEAT / COOL / LOOK / PICK2）<br />
+– ScienceWorld（194 seen + 151 unseen 科学实验任务）</li>
+<li>主干<br />
+– Qwen2.5-7B、Qwen3-8B、Llama-3.1-8B</li>
+<li>对照组<br />
+– Prompting 类：CoT、ReAct、RAP<br />
+– Training 类：SFT、WKM、IWM</li>
+<li>指标：任务级与总体 Success Rate (SR)</li>
+<li>结果：ITPI 零样本超越全部 prompting 基线；ITPR 在每一组主干上均拿到最高 SR，ALFWorld 最高 88.57 %，ScienceWorld seen 最高 63.91 %。</li>
 </ul>
-<p><strong>主要结果（表 1）</strong></p>
+</li>
+<li><p>消融实验：验证强化训练阶段必要性</p>
 <ul>
-<li>EvoFSM 在 <strong>全部 25 项模型-数据集组合</strong> 中 <strong>19 次第一、6 次第二</strong></li>
-<li>最具挑战的 DeepSearch 上，相对最佳基线提升 <strong>+11.0%（Claude-4）、+10.0%（GPT-4o）、+8.0%（DeepSeek-v3）</strong></li>
+<li>设置：ITPR 去掉在线 A2C 优化（w/o RT）</li>
+<li>结果：ALFWorld SR 从 88.57 % → 71.42 %；ScienceWorld 59.7 % → 46 %，证明自适应 horizon 的在线精炼是关键。</li>
 </ul>
-<hr />
-<h3>2. 消融实验（表 2）</h3>
-<p>以 DeepSeek-v3 为固定 backbone，系统移除不同组件：</p>
-<table>
-<thead>
-<tr>
-  <th>变体</th>
-  <th>说明</th>
-  <th>DeepSearch 降幅</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>w/o Structured Evolution（静态 FSM）</td>
-  <td>固定 Search→Browse→Analysis 流程</td>
-  <td><strong>-15.0%</strong></td>
-</tr>
-<tr>
-  <td>w/o FSM Topology（无结构演化）</td>
-  <td>允许自由 prompt 重写，无状态图约束</td>
-  <td><strong>-9.0%</strong></td>
-</tr>
-<tr>
-  <td>w/o All（标准 ReAct）</td>
-  <td>既无 FSM 也无演化</td>
-  <td><strong>-17.0%</strong></td>
-</tr>
-</tbody>
-</table>
-<p>结论：FSM 骨架与结构化演化<strong>互补</strong>，缺一即显著掉分。</p>
-<hr />
-<h3>3. 跨域泛化：交互式决策（2 基准）</h3>
-<table>
-<thead>
-<tr>
-  <th>场景</th>
-  <th>任务量</th>
-  <th>评估指标</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>ALFWorld</td>
-  <td>134  household 任务</td>
-  <td>成功率 + 平均步数</td>
-</tr>
-<tr>
-  <td>WebShop</td>
-  <td>12 k 人类指令</td>
-  <td>成功率 + 平均步数</td>
-</tr>
-</tbody>
-</table>
-<p><strong>对比方法</strong><br />
-ReAct、ReAct-Reflexion、CogFSM（纯静态 FSM）</p>
-<p><strong>结果（图 3）</strong></p>
+</li>
+<li><p>效率与权衡分析</p>
 <ul>
-<li><strong>成功率</strong>：WebShop 上 EvoFSM 达 <strong>44%</strong>，相对 ReAct 提升 <strong>+13 pp</strong>；ALFWorld 达 <strong>84.2%</strong>，提升 <strong>+6 pp</strong></li>
-<li><strong>步数</strong>：仅增加约 2–4 步，换来 &gt;10% 成功率增益，验证“结构换稳健”策略跨域有效</li>
+<li>固定 horizon 对比：k = 0–5 逐一测试<br />
+– SR 随 k 先升后降；ITP 自适应曲线维持高 SR 同时 Normalized Budget (NB) 显著更低。</li>
+<li>随机 horizon 对比：每步独立采样 Kt<br />
+– 在相同 NB 下，ITP 平均 SR 分别比 ReAct+Random、SFT+Random 高 15 % 与 10 % 以上，说明“状态条件式”分配而非随机性带来增益。</li>
 </ul>
-<hr />
-<h3>4. 迭代深度影响（图 4）</h3>
-<p>在 GPT-4o 上分别跑 1–5 次演化循环：</p>
-<table>
-<thead>
-<tr>
-  <th>数据集</th>
-  <th>1→5 轮涨幅</th>
-  <th>饱和点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>DeepSearch</td>
-  <td><strong>29% → 45%（+16 pp）</strong></td>
-  <td>第 4 轮后平缓</td>
-</tr>
-<tr>
-  <td>Bamboogle</td>
-  <td><strong>80.5% → 82.4%（+1.9 pp）</strong></td>
-  <td>第 2 轮即饱和</td>
-</tr>
-</tbody>
-</table>
-<p>说明：复杂度越高，持续结构化演化的收益越大。</p>
-<hr />
-<h3>5. 定性案例（图 5–7）</h3>
+</li>
+<li><p>世界模型主干敏感性实验</p>
 <ul>
-<li><strong>Flow 演化</strong>：ADD_STATE 注入 Verifier 节点，打破 Search-Browse 死循环</li>
-<li><strong>Skill 演化</strong>：REVISE_INSTRUCTION 约束 Browse 节点“禁止摘要数值”，直接提取 Wh/kg</li>
-<li><strong>协同演化</strong>：同一查询同时执行 ADD_STATE(Legal_Verifier) + REVISE_INSTRUCTION(Search)，把泛泛新闻检索升级为精准法条分析</li>
+<li>固定策略为 Qwen3-8B，仅替换世界模型：Qwen3-8B、Llama-3.1-8B、DeepSeek-V3.2（未做世界模型训练）</li>
+<li>结果：<br />
+– ITPI 对 world-model 质量敏感，DeepSeek 无监督训练时 SR 明显下降；<br />
+– ITPR 通过强化微调后，DeepSeek 也能与其他模型持平，说明联合优化可弥补世界模型本身差距。</li>
 </ul>
-<hr />
-<h3>实验覆盖度小结</h3>
-<table>
-<thead>
-<tr>
-  <th>维度</th>
-  <th>覆盖情况</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>任务类型</td>
-  <td>文本问答 + 交互决策</td>
-</tr>
-<tr>
-  <td>语言</td>
-  <td>英文 + 中文</td>
-</tr>
-<tr>
-  <td>模型规模</td>
-  <td>7B–70B 开源 &amp; 闭源</td>
-</tr>
-<tr>
-  <td>消融粒度</td>
-  <td>组件级 + 迭代级</td>
-</tr>
-<tr>
-  <td>可解释性</td>
-  <td>提供原子操作轨迹与案例</td>
-</tr>
-</tbody>
-</table>
-<p>以上实验共同表明：EvoFSM 的“结构化自演化”在精度、稳健性、跨域迁移上均显著优于无约束重写或静态工作流基线。</p>
+</li>
+<li><p>统计与预算分析（附录）</p>
+<ul>
+<li>给出两 benchmark 的平均自适应步数 K 与平均 episode 长度：ALFWorld K=3/步数=8；ScienceWorld K=8/步数=15，验证自适应策略与任务复杂度匹配。</li>
+<li>提供完整超参数表、提示模板与训练耗时，保证可复现。</li>
+</ul>
+</li>
+</ol>
+<p>综上，实验从 <strong>性能、消融、效率、鲁棒性、模型替换</strong> 五个维度验证了 ITP 框架的有效性与通用性。</p>
 <h2>未来工作</h2>
-<p>以下方向可视为 EvoFSM 的直接延伸，仍围绕“可控自演化”这一核心主题，但分别针对 <strong>模型层、验证层、记忆层、理论层、应用层</strong> 展开。每点均给出可验证的实验变量或评价指标，便于后续工作落地。</p>
-<hr />
-<h3>1. 模型层：将 FSM 逻辑蒸馏进小参数模型</h3>
+<p>以下方向可进一步挖掘，按“问题–可能思路”列出，供后续研究参考：</p>
 <ul>
-<li><strong>问题</strong>：目前完全依赖 prompt 工程，长程状态转移需反复携带历史，token 开销大。</li>
-<li><strong>探索</strong>：<ul>
-<li>用 EvoFSM 产生的 &lt;查询, 最优 FSM&gt; 对训练 lightweight Policy Model（≤7B），直接输出下一状态或原子操作概率 π(a|s,q)。</li>
-<li>对比指标：<strong>token 节省率</strong>、<strong>推理延迟</strong>、<strong>准确率漂移</strong>（≤2% 视为无损蒸馏）。</li>
-</ul>
+<li><p><strong>多模态世界模型</strong><br />
+问题：当前仅用文本状态，真实机器人或 GUI 场景含视觉、传感器信号。<br />
+思路：把视觉编码器与 LLM 拼接，训练跨模态动态预测头；在 Imagine 阶段输出图文混合未来帧，验证自适应 horizon 是否依然有效。</p>
+</li>
+<li><p><strong>层次化或递归式想象</strong><br />
+问题：单段 Kt-步 rollout 难以捕获“子任务–原语”两级耦合。<br />
+思路：引入选项（option）框架，上层策略先想象子目标序列，下层再对每子目标调用 Kt 步展开；Kt 可在两层同时自适应。</p>
+</li>
+<li><p><strong>世界模型在线修正</strong><br />
+问题：训练后世界模型参数冻结，分布漂移导致误差累积。<br />
+思路：① 用环境反馈构造滚动缓冲，周期性微调 Mϕ；② 引入粒子滤波或贝叶斯更新，对想象分布做实时校正。</p>
+</li>
+<li><p><strong>计算预算可微分配</strong><br />
+问题：现用启发式 penalty λKKt 控制步数，非全局最优。<br />
+思路：把总 episode 计算预算当作硬约束，用强化学习或约束策略优化把“剩余预算”作为状态输入，实现端到端可微的预算分配。</p>
+</li>
+<li><p><strong>蒸馏轻量世界模型</strong><br />
+问题：大模型 rollout 延迟高，实时系统受限。<br />
+思路：以教师-学生框架把 8B/70B 世界模型蒸馏到 1–3B 小模型；结合投机解码，让 Kt 步想象并行展开，降低延迟并保持 SR。</p>
+</li>
+<li><p><strong>开放环境自我演化</strong><br />
+问题：ALFWorld/ScienceWorld 状态空间有限，开放世界工具调用或网页操作存在不可数动作。<br />
+思路：① 将动作空间表示为文本子句，用检索或代码生成器动态扩展；② 引入“想象即代码”范式，让 world model 直接生成可执行 Python 脚本并沙箱运行，返回下一观测。</p>
+</li>
+<li><p><strong>安全与可验证想象</strong><br />
+问题：幻觉 rollout 可能给出虚假安全保证。<br />
+思路：结合形式化验证或合约检查，对想象轨迹加入硬约束（如物理定律、业务规则）；若违反则回退 Kt 并惩罚，提升安全性。</p>
+</li>
+<li><p><strong>人机协同自适应 horizon</strong><br />
+问题：人类偏好可能要求更多或更少解释。<br />
+思路：把人类注视、编辑或语言反馈作为即时奖励，微调 K-head，实现“人在回路”的个性化前瞻深度。</p>
+</li>
+<li><p><strong>跨任务迁移与元学习</strong><br />
+问题：每换环境需重新标注 Kt 伪标签。<br />
+思路：在大量任务上元训练 K-head，使其仅依赖任务描述与初始状态即可输出合理 Kt；快速适应新领域。</p>
+</li>
+<li><p><strong>能耗-性能权衡基准</strong><br />
+问题：社区尚缺统一指标衡量“成功率/焦耳”。<br />
+思路：公开能量计接口，把 GPU/CPU 功耗实时记录，提出 SR per kWh 指标，推动绿色 Agent 研究。</p>
 </li>
 </ul>
-<hr />
-<h3>2. 验证层：构建可验证的 Critic</h3>
-<ul>
-<li><strong>问题</strong>：Critic 本身也是 LLM，可能幻觉“通过”或漏检逻辑错误。</li>
-<li><strong>探索</strong>：<ul>
-<li>引入 <strong>形式化验证器</strong>（如合同约束检查、定理证明器）对关键状态输出给出布尔信号；</li>
-<li>或采用 <strong>多 Critic 投票 + 不确定性估计</strong>，当熵&gt;阈值时拒绝自演化并转人工。</li>
-<li>评价指标：<strong>误接受率（False-Accept）</strong>、<strong>演化失败链长度</strong>（应缩短 ≥30%）。</li>
-</ul>
-</li>
-</ul>
-<hr />
-<h3>3. 记忆层：可遗忘与抽象的长期记忆</h3>
-<ul>
-<li><strong>问题</strong>：经验池无限增长 → 检索延迟↑、过时策略污染。</li>
-<li><strong>探索</strong>：<ul>
-<li><strong>策略聚类合并</strong>：对相似 FSM 做结构哈希，维护原型图 + 计数器，实现常数级存储增长；</li>
-<li><strong>时效衰减 + 不确定性引导遗忘</strong>：给每条记录加半衰期权重 w(t)=exp(−λt)，低于阈值即剪枝。</li>
-<li>评价指标：<strong>检索耗时</strong>、<strong>记忆命中率</strong>、<strong>遗忘后精度变化</strong>（应无显著下降）。</li>
-</ul>
-</li>
-</ul>
-<hr />
-<h3>4. 理论层：演化收敛性与稳定性边界</h3>
-<ul>
-<li><strong>问题</strong>：原子操作序列是否一定收敛？是否存在循环演化？</li>
-<li><strong>探索</strong>：<ul>
-<li>把状态空间与操作符视为 <strong>马尔可夫决策过程</strong>，定义演化策略的 Lyapunov 函数 V(M)；</li>
-<li>证明在 <strong>操作成本正则化</strong> 与 <strong>负记忆屏蔽</strong> 下，V(M) 单调不增 → 收敛到 ε-最优。</li>
-<li>实验验证：<strong>演化轮次分布尾部</strong>（应指数下降）、<strong>重复回环检测</strong>（出现率&lt;1%）。</li>
-</ul>
-</li>
-</ul>
-<hr />
-<h3>5. 应用层：领域专用 FSM 自动生成</h3>
-<ul>
-<li><strong>问题</strong>：当前初始状态集仍偏通用，垂直领域（法律、医疗、金融）需专家手写。</li>
-<li><strong>探索</strong>：<ul>
-<li>基于 <strong>领域语料库</strong> 做 <strong>状态归纳</strong>：对专家解题轨迹运行 frequent subgraph mining，自动抽取高频状态-转移作为初始 M₀；</li>
-<li>采用 <strong>人机协同演化</strong>：允许专家在原子操作层面加锁（如禁止 DELETE_STATE），实现“可控-共演化”。</li>
-<li>评价指标：<strong>专家干预次数↓</strong>、<strong>首次通过率↑</strong>、<strong>领域 F1</strong>（应≥人工模板水平）。</li>
-</ul>
-</li>
-</ul>
-<hr />
-<h3>6. 安全层：对抗性自演化攻击</h3>
-<ul>
-<li><strong>问题</strong>：恶意查询能否通过连续演化注入有害状态？</li>
-<li><strong>探索</strong>：<ul>
-<li>构建 <strong>Adversarial Evolution Dataset</strong>：以 jailbreak 目标为奖励，强化搜索能否诱导 ADD_STATE→生成非法指令；</li>
-<li>在记忆池加入 <strong>不可变约束列表</strong>（黑名状态/操作），任何演化路径一旦匹配即自动回滚。</li>
-<li>评价指标：<strong>攻击成功率（ASR）</strong>（应压至 ≤2%）、<strong>正常任务精度保持</strong>。</li>
-</ul>
-</li>
-</ul>
-<hr />
-<h3>7. 多模态层：FSM 拓展至图文混合研究</h3>
-<ul>
-<li><strong>问题</strong>：当前仅文本检索，多跳 QA 已出现图像证据（图表、截图）。</li>
-<li><strong>探索</strong>：<ul>
-<li>状态集扩展 <strong>VisualBrowse、ChartParser、ImageVerifier</strong> 等节点；</li>
-<li>原子操作增加 <strong>MODALITY_SWITCH</strong>（文本↔视觉转移条件）。</li>
-<li>评价指标：<strong>含图问题准确率</strong>、<strong>跨模态循环次数</strong>（应减少 ≥20%）。</li>
-</ul>
-</li>
-</ul>
-<hr />
-<h3>8. 系统层：异步分布式 EvoFSM</h3>
-<ul>
-<li><strong>问题</strong>：单线程演化遇重型工具（PDF 解析、视频理解）时成为瓶颈。</li>
-<li><strong>探索</strong>：<ul>
-<li>将不同状态部署为 <strong>微服务</strong>，转移逻辑通过消息队列实现；</li>
-<li>演化过程改为 <strong>异步批处理</strong>：Critic 收集多条轨迹后离线生成最佳 op，再热更新路由表。</li>
-<li>评价指标：<strong>吞吐量（QPS）↑</strong>、<strong>端到端延迟↓</strong>、<strong>一致性错误率</strong>（应&lt;0.5%）。</li>
-</ul>
-</li>
-</ul>
-<hr />
-<h3>小结</h3>
-<p>以上 8 点覆盖 <strong>效率、可靠性、可扩展性、安全性、多模态、分布式</strong> 等维度，均可直接继承 EvoFSM 的 FSM 抽象与原子操作思想，形成下一轮“可控自演化”研究路线图。</p>
+<p>探索以上任一点都可与 ITP 的自适应 lookahead 机制结合，形成下一代“ deliberative &amp; efficient” 智能体。</p>
 <h2>总结</h2>
-<p>论文提出 <strong>EvoFSM</strong>，一种面向深度研究任务的<strong>结构化自演化</strong>框架，核心是把“工作流拓扑”与“单点技能”显式解耦，用<strong>可解释、可逆的原子操作</strong>在有限状态机（FSM）上实现受控进化，并配备自演化记忆池实现跨任务经验复用。主要贡献与结果如下：</p>
-<hr />
-<h3>1. 核心思想</h3>
-<ul>
-<li><strong>确定性骨架</strong>：将检索-推理流程建模为动态 FSM<br />
-$$ M = \langle S,; T,; I,; C \rangle $$<br />
-其中 $T$ 管宏观 Flow，$I$ 管微观 Skill，$C$ 为触发演化的批评器。</li>
-<li><strong>受控演化</strong>：只允许两类原子操作<ul>
-<li>Flow 级：ADD_STATE / DELETE_STATE / MODIFY_TRANSITION</li>
-<li>Skill 级：REVISE_INSTRUCTION<br />
-保证任何修改<strong>局部、可解释、可回退</strong>。</li>
+<p><strong>Imagine-then-Plan (ITP)</strong> 提出“先想象再行动”框架，让大模型智能体通过<strong>自适应多步推演</strong>弥补“浅层落地”缺陷。核心贡献与流程如下：</p>
+<ol>
+<li>新形式化：把 POMDP 扩展为 <strong>POIMDP</strong>，策略输入同时包含当前观测 $o_t$ 与世界模型生成的 $K_t$ 步想象轨迹 $\hat{\tau}_t^{(K_t)}$。</li>
+<li>自适应前瞻：每步动态决定想象深度 $K_t\in[0,K_{\max}]$，在<strong>任务目标</strong>与<strong>计算开销</strong>间权衡，避免固定步数带来的遗漏或浪费。</li>
+<li>双实例化：<ul>
+<li><strong>ITPI</strong>（training-free）：用 frozen LLM 做反思式提示，推理阶段零样本提升。</li>
+<li><strong>ITPR</strong>（reinforcement-trained）：联合学习动作策略与轻量 K-head 预测器，在线 A2C 优化，明确惩罚过长 rollout。</li>
 </ul>
 </li>
-<li><strong>经验累积</strong>：成功轨迹与失败模式分别写入 $\mathcal{E}^+$ 与 $\mathcal{E}^-$，新查询先检索 top-$k$ 记录初始化 FSM，实现<strong>持续增广</strong>。</li>
-</ul>
-<hr />
-<h3>2. 实验规模</h3>
-<table>
-<thead>
-<tr>
-  <th>场景</th>
-  <th>数据集</th>
-  <th>backbone</th>
-  <th>主要指标</th>
-  <th>关键结果</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>多跳 QA</td>
-  <td>HotpotQA / 2Wiki / MuSiQue / Bamboogle / DeepSearch</td>
-  <td>GPT-4o、Claude-4、Llama-3-70B、DeepSeek-v3、Qwen3-32B</td>
-  <td>准确率</td>
-  <td><strong>25 组实验 19 次第一</strong>；DeepSearch 最高提升 <strong>+11 pp</strong></td>
-</tr>
-<tr>
-  <td>交互决策</td>
-  <td>ALFWorld / WebShop</td>
-  <td>GPT-4o</td>
-  <td>成功率</td>
-  <td>WebShop <strong>44 %</strong>（+13 pp）；ALFWorld <strong>84 %</strong>（+6 pp）</td>
-</tr>
-<tr>
-  <td>消融</td>
-  <td>同上</td>
-  <td>DeepSeek-v3</td>
-  <td>准确率</td>
-  <td>去演化 <strong>-15 %</strong>；去 FSM <strong>-9 %</strong>；去两者 <strong>-17 %</strong></td>
-</tr>
-<tr>
-  <td>迭代深度</td>
-  <td>DeepSearch / Bamboogle</td>
-  <td>GPT-4o</td>
-  <td>准确率</td>
-  <td>DeepSearch 5 轮累加 <strong>+16 pp</strong>；简单任务 3 轮即饱和</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3>3. 结论</h3>
-<p>EvoFSM 用显式 FSM 替代无约束全局重写，在<strong>稳定性、可解释性、跨任务迁移</strong>三维度同时提升，为构建可靠、长寿命的自主研究代理提供了新范式。</p>
+<li>实验结果：在 ALFWorld 与 ScienceWorld 上，3 套主干模型均取得<strong>最高成功率</strong>，消融与效率分析证实“自适应”是性能-预算双赢的关键。</li>
+</ol>
+<p>ITP 首次将“想象步数”变为可学习变量，为长程复杂任务提供了一种<strong>可扩展、可控制</strong>的世界模型利用范式。</p>
 <p>Q7: 想要进一步了解论文</p>
 <p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
 
@@ -3173,8 +3309,8 @@ $$ M = \langle S,; T,; I,; C \rangle $$<br />
                                         
                                         <!-- 论文元信息 -->
                                         <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.6</span></span>
-                                            <span>置信度: 0.95</span>
+                                            <span>评分: <span class="paper-score">8.4</span></span>
+                                            <span>置信度: 0.80</span>
                                             <span>分类: Agent</span>
                                         </div>
                                         
@@ -3189,355 +3325,8 @@ $$ M = \langle S,; T,; I,; C \rangle $$<br />
                                         
                                         <!-- 链接 -->
                                         <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2601.09465" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2601.09465" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="paper-item-compact" id="paper-item-2507.21184">
-                                    <div class="paper-header" onclick="showPaperDetail('2507.21184', 'Agent')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Can Language Models Discover Scaling Laws?
-                                                <button class="mark-button" 
-                                                        data-paper-id="2507.21184"
-                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2507.21184", "authors": ["Lin", "Ye", "Feng", "Huang", "Li", "Lim", "Li", "Wang", "Ma", "Zou", "Liang"], "id": "2507.21184", "pdf_url": "https://arxiv.org/pdf/2507.21184", "rank": 8.571428571428571, "title": "Can Language Models Discover Scaling Laws?"}"
-                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
-                                                        title="标记这篇论文">☆</button>
-                                                <a href="https://arxiv.org/abs/2507.21184" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ACan%20Language%20Models%20Discover%20Scaling%20Laws%3F%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2507.21184&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ACan%20Language%20Models%20Discover%20Scaling%20Laws%3F%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2507.21184%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Lin, Ye, Feng, Huang, Li, Lim, Li, Wang, Ma, Zou, Liang</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文由北京大学人工智能研究院、清华大学电子工程系和清华大学人工智能产业研究院的联合团队提出了一种名为EvoSLD的自动化神经网络缩放律发现框架。该方法创新性地将大语言模型引导的进化算法与符号回归相结合，用于从实验数据中自动推导出描述模型性能随规模变化的数学规律。在五个真实场景的评估中，EvoSLD不仅能够重新发现人类专家推导的精确规律，在更复杂的场景下甚至能发现更优的表达式，显著降低了拟合误差。论文实验设计严谨，代码已开源，具有较高的研究价值和应用潜力。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.6</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2507.21184" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Can Language Models Discover Scaling Laws?</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 1 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>论文旨在解决“如何自动化地发现适用于大规模模型的性能预测缩放定律（scaling laws）”这一核心问题。传统上，这类定律依赖人类专家通过大量小规模实验手动提出假设、反复试错，效率低且难以保证最优。作者提出以下关键论点：</p>
-<ul>
-<li>现有基于大语言模型（LLM）的“AI 科学家”范式在开放、符号化的科学发现任务上仍落后于人类专家。</li>
-<li>为此，构建了一个涵盖 7 类训练场景、超 5 000 组实验数据的基准 SLDBench，要求智能体仅利用小规模观测数据，输出可外推的<strong>符号表达式</strong>及其参数。</li>
-<li>进一步提出进化式智能体 SLDAgent，通过协同优化“定律表达式”与“参数拟合器”双组件，在符号空间中进行多代搜索。</li>
-<li>实验表明，SLDAgent 在所有任务上的外推精度一致优于人类文献给出的定律，首次验证了 AI 系统可以自主发现比人类更精准、更具理论合理性的缩放定律，并可直接用于预训练超参优化和微调模型选型等实际场景。</li>
-</ul>
-<h2>相关工作</h2>
-<p>论文在第 5 节（Related Works and Discussions）与附录引文中系统梳理了相关研究，可归纳为三大主线：</p>
-<ol>
-<li><p>终端-代码智能体与评测</p>
-<ul>
-<li>终端交互式编程框架：Aider、Terminus、OpenHands、Codex、OpenCode、Goose、Mini-SWE-Agent 等（Jimenez et al., 2024a; Wang et al., 2025; Anthropic, 2025; OpenAI, 2025 等）。</li>
-<li>软件工程基准：SWE-bench 系列、SWE-polylang、PaperBench、MLE-bench、CO-bench 等（Jimenez et al., 2024a; Rashid et al., 2025; Starace et al., 2025; Chan et al., 2024b; Sun et al., 2025）。<br />
-这些工作聚焦“让 LLM 自动写代码、修 bug、跑实验”，但目标并非发现可外推的符号定律。</li>
-</ul>
-</li>
-<li><p>科学发现 AI / 符号回归</p>
-<ul>
-<li>早期符号回归：AI Feynman、SINDy、GP-based 方法（Udrescu &amp; Tegmark, 2020; Brunton et al., 2016; Koza, 1992）。</li>
-<li>近期 LLM-驱动：LLM-SRBench、ScienceAgentBench、AlphaEvolve、OpenEvolve（Shojaee et al., 2025; Chen et al., 2025b; Novikov et al., 2025; Sharma, 2025）。<br />
-这些研究多针对物理、生物等学科，且通常“再发现”已知解析式；本文首次把符号回归用于 AI 自我缩放行为研究，并强调跨场景外推。</li>
-</ul>
-</li>
-<li><p>神经缩放定律（Neural Scaling Laws）</p>
-<ul>
-<li>经典幂律：Kaplan et al., 2020；Hoffmann et al., 2022（Chinchilla）。</li>
-<li>扩展维度：数据质量、MoE、词汇量、域混合、并行度、微调、对齐、多模态等（Henighan et al., 2020; Fedus et al., 2021; Tao et al., 2024; Ye et al., 2024; Krajewski et al., 2024; Lin et al., 2024; Chen et al., 2025a; Li et al., 2025）。<br />
-这些工作提供人类专家手工拟合的定律，被本文当作强基线；SLDAgent 首次以自动化方式全面超越这些人工定律。</li>
-</ul>
-</li>
-</ol>
-<h2>解决方案</h2>
-<p>论文将“自动化发现缩放定律”形式化为一个<strong>开放端符号回归</strong>问题，并提出三层技术路线予以解决：</p>
-<ol>
-<li><p>任务与基准形式化<br />
-构建 SLDBench，把 7 类真实训练日志统一成同一接口：</p>
-<ul>
-<li>输入：小规模观测集 $D={(x_i, j_i, y_i)}_{i=1}^m$，其中 $x_i$ 为可变规模变量（参数数、数据量、批大小等），$j_i$ 为控制上下文（语料、模型架构等），$y_i$ 为观测指标（loss、perplexity）。</li>
-<li>输出：一个<strong>符号表达式</strong> $f_\theta(x)$ 及每组上下文 $j$ 的专属参数 $\theta_j$，使得在<strong>更大规模、未见过的测试集</strong>上 $R^2$ 最高。<br />
-该设定把“定律发现”变成可计算、可比较、但解空间无限且真值未知的优化目标，规避了传统符号回归“再发现已知公式”的局限。</li>
-</ul>
-</li>
-<li><p>进化式智能体 SLDAgent<br />
-受人类科研“假设→实验→修正”循环启发，设计<strong>双组件协同进化</strong>：</p>
-<ul>
-<li>Expression 子程序：生成候选符号模型 $f_\theta(x)$（Python 函数）。</li>
-<li>Optimization 子程序：为给定模型快速拟合 $\theta_j$（可替换 BFGS、L-BFGS-B、 Ridge 等）。<br />
-二者作为一个“可执行程序对”整体存储，适应度 = 在训练集上的 $R^2$。<br />
-算法流程：<br />
-a) 初始化数据库（空）。<br />
-b) 每轮按 70 % 利用 + 20 % 多样性 + 10 % 精英 的策略采样父代。<br />
-c) LLM 在提示中读取父代代码、高分灵感代码及数据统计，输出“差异补丁”生成子代。<br />
-d) 子代立即被执行、评估，写回数据库。<br />
-e) 50 轮后返回库中最佳程序对。<br />
-采用 5-island+MAP-Elites 保持多样性，测试集全程不接触，防止过拟合。</li>
-</ul>
-</li>
-<li><p>实验验证与落地</p>
-<ul>
-<li>在 SLDBench 全部 7 任务上，SLDAgent 平均 $R^2$ 比人类文献定律提升 0.09–0.47，首次实现“超人类”水平。</li>
-<li>消融实验表明：协同优化 Expression+Optimization 比仅进化表达式平均 $R^2$ 高 0.07，且在最难任务 lr_and_bsz 上由负转正。</li>
-<li>应用一：利用发现的四维损失面 $L(N,D,\ell,b)$ 解析求导，直接给出 1 B 模型在 100 B token 上的最优 $(\ell^<em>, b^</em>)$，真实训练误差仅 0.067 %。</li>
-<li>应用二：用发现的 SFT 定律在 6.25 % 小数据上预测全量微调效果，14 选 1 模型时 RelAcc 达 100 %，显著优于现有 5 条人工定律。</li>
-</ul>
-</li>
-</ol>
-<p>通过“基准形式化→双组件协同进化→真实场景验证”的闭环，论文首次证明 AI 系统可自主发现比人类更准确、更具理论合理性的缩放定律，并直接服务于预训练与微调实践。</p>
-<h2>实验验证</h2>
-<p>论文围绕「能否让 AI 自动发现比人类更精准的外推缩放定律」这一核心问题，设计了三类实验，覆盖<strong>基准评测、消融验证、真实场景落地</strong>三个层次。所有实验均基于同一开源框架，数据与代码已公开。</p>
-<hr />
-<h3>1. SLDBench 主评测：7 任务 × 多智能体对比</h3>
-<p><strong>目的</strong>：验证 SLDAgent 是否在多样场景下一致优于人类定律与现有代码智能体。</p>
-<table>
-<thead>
-<tr>
-  <th>实验维度</th>
-  <th>设置</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>任务</td>
-  <td>7 个真实训练日志任务（parallel / vocab_size / sft / domain_mix / moe / d_constrain / lr_and_bsz）</td>
-</tr>
-<tr>
-  <td>数据规模</td>
-  <td>5 000+ 实验记录，按「小尺度拟合 → 大尺度外推」划分 train/test</td>
-</tr>
-<tr>
-  <td>基线智能体</td>
-  <td>7 个终端代码智能体（OpenHands、Codex、Claude-Code 等）+ 人类文献定律</td>
-</tr>
-<tr>
-  <td>backbone LLM</td>
-  <td>统一使用 o4-mini，再补充 GPT-5、Claude-Sonnet-4、Gemini-2.5-Flash 等</td>
-</tr>
-<tr>
-  <td>指标</td>
-  <td>外推集 R²、NMSE、NMAE；结果取 3 次随机种子平均</td>
-</tr>
-</tbody>
-</table>
-<p><strong>主要结果</strong></p>
-<ul>
-<li>o4-mini 单模型下，SLDAgent 平均 R² = 0.848，次佳基线仅 0.613；<strong>6/7 任务超人类</strong>。</li>
-<li>换用 GPT-5 后，SLDAgent 首次<strong>全部 7 任务同时击败人类定律</strong>，平均 R² 提升至 0.913。</li>
-<li>在最难的 lr_and_bsz 任务（2 702 → 117 外推）上，人类定律 R² = –0.076，SLDAgent-GPT-5 达 0.610，实现负→正跨越。</li>
-</ul>
-<hr />
-<h3>2. 消融实验：验证「双组件协同进化」必要性</h3>
-<p><strong>目的</strong>：证明同时进化 Expression+Optimization 优于仅进化表达式。</p>
-<table>
-<thead>
-<tr>
-  <th>变量</th>
-  <th>设置</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>对照组</td>
-  <td>SLDAgent-law-only：固定 BFGS 优化器，只进化符号公式</td>
-</tr>
-<tr>
-  <td>评价指标</td>
-  <td>同上，7 任务平均 R²</td>
-</tr>
-</tbody>
-</table>
-<p><strong>结果</strong></p>
-<ul>
-<li>完整版平均 R² 0.848 vs. 0.775（–0.073），其中 lr_and_bsz 任务差距最大：0.194 vs. –0.224。</li>
-<li>确认「好的公式」与「适配的拟合器」必须联合搜索，否则在复杂曲面无法收敛。</li>
-</ul>
-<hr />
-<h3>3. 进化过程诊断：50 代动态跟踪</h3>
-<p><strong>目的</strong>：观察搜索是否收敛、是否过拟合。</p>
-<ul>
-<li>在易/中/难三类任务上随机重复 10 次，每代记录最佳 R²。</li>
-<li>曲线显示：<ul>
-<li>easy（parallel）快速饱和至 R²≈1；</li>
-<li>medium（moe）稳步上升后平稳；</li>
-<li>hard（lr_and_bsz）早期波动大，但 50 代内持续向上且无下降。<br />
-⇒ 证明进化策略足够探索且未过拟合 seen 数据。</li>
-</ul>
-</li>
-</ul>
-<hr />
-<h3>4. 真实场景应用一：预训练超参直接优化</h3>
-<p><strong>步骤</strong></p>
-<ol>
-<li>用发现的四维定律 $L(N,D,\ell,b)$ 对 $\ell,b$ 求偏导→解析解 $(\ell^<em>, b^</em>)=f(N,D)$。</li>
-<li>在 1 B 参数 + 100 B token 的<strong>双倍 extrapolation</strong> 场景部署，网格取最近可行点训练。</li>
-</ol>
-<p><strong>结果</strong></p>
-<ul>
-<li>解析最优 $(1.77\times10^{-3}, 402)$，实际训练验证损失 2.0776，与真实最优 2.0762 相差 0.067 %。</li>
-<li>相比传统 StepLaw 需 3 000 次实验仅选 17 点拟合，SLDAgent 利用全部 2 702 点信息，<strong>零额外实验</strong>即定位近最优超参。</li>
-</ul>
-<hr />
-<h3>5. 真实场景应用二：微调模型精选</h3>
-<p><strong>步骤</strong></p>
-<ol>
-<li>取 14 个 HuggingFace 预训练模型，在 3 个下游任务（FLAN/Wikitext/Gigaword）上各跑 6.25 % 小样本微调，记录 loss。</li>
-<li>用 SLDAgent-SFT 定律外推「全量数据」表现，按预测值排序并挑选最佳模型。</li>
-<li>与 5 条已有定律（RectifiedLaw、NLPMetrics、SubTuning、ModelSize、ZeroShot）对比。</li>
-</ol>
-<p><strong>结果</strong></p>
-<ul>
-<li>SLDAgent 定律在 3 数据集均实现 <strong>RelAcc = 100 %</strong>（每次都选中事后最佳模型），平均 PearCorr = 87.7 %，显著领先次佳方法。</li>
-<li>证明发现定律不仅拟合优，且可迁移到真实模型选型流程，显著节省算力。</li>
-</ul>
-<hr />
-<h3>6. 灵敏度与稳定性补充</h3>
-<ul>
-<li>给出 NMSE、NMAE 完整表格，并报告 3 次重复标准差；SLDAgent-GPT-5 在 7 任务上标准差均最小，显示<strong>高稳定性</strong>。</li>
-<li>对人类专家手工推导的 lr_and_bsz 定律进行双盲对比，两位人类分别得 R² = –1.10 与 –0.08，远低于 SLDAgent 的 0.61，侧面说明<strong>人类在复杂曲面建模上易失效</strong>。</li>
-</ul>
-<hr />
-<p>综上，论文通过「基准横向评测 → 内部消融 → 真实业务落地」的完整实验链路，既验证了方法的有效性，也展示了其直接服务于预训练与微调工程的价值。</p>
-<h2>未来工作</h2>
-<p>以下方向可视为“自动化发现缩放定律”研究的自然延伸，既弥补当前局限，也拓展到更宏大的科学发现场景。所有条目均按可独立立项、可量化评估的原则列出，并给出可操作的切入点。</p>
-<hr />
-<h3>1. 任务与数据维度扩展</h3>
-<ul>
-<li><strong>多模态缩放</strong>：将 SLDBench 从纯文本扩展到 Vision-Language、Speech-Text、Diffusion 等场景，考察参数量- token- 图像分辨率- 音频时长等混合变量。</li>
-<li><strong>异构算力轴</strong>：引入 GPU 小时、内存带宽、通信开销等“硬件变量”，发现面向训练/推理成本联合最优的缩放定律。</li>
-<li><strong>质量-数量权衡</strong>：在数据清洗、过滤、去重、合成等不同质量操作下，建立“有效 token”统一度量，验证能否用单一定律同时解释“脏数据+大参”与“干净数据+小参”两种路线。</li>
-<li><strong>长尾外推</strong>：把 seen/unseen 切分从“2× 规模”推向 10–100× 极端外推，测试定律在“准无限大”区域的理论一致性（是否仍保持幂律/对数/指数形态）。</li>
-</ul>
-<hr />
-<h3>2. 搜索策略升级</h3>
-<ul>
-<li><strong>混合符号-神经表示</strong>：允许 Expression 子程序同时输出可解释公式与小型 MLP 残差项，实现“先保证可解释、再补偿高阶误差”的半解析定律。</li>
-<li><strong>可微分符号图</strong>：把符号表达式编码为可微 DAG，用梯度下降联合优化结构-参数，减少 LLM 采样随机性。</li>
-<li><strong>元学习初始化</strong>：用已有任务预训练一个“定律先验”模型，新任务到来时先加载先验，再进化微调，实现跨任务知识复用。</li>
-<li><strong>因果-约束注入</strong>：在提示中引入渐近线、单调性、量纲齐次等物理规则，让 LLM 突变时自动满足因果或量纲一致性，减少无意义表达式。</li>
-</ul>
-<hr />
-<h3>3. 自动化实验闭环</h3>
-<ul>
-<li><strong>Agent-Cluster 联动</strong>：SLDAgent 提出定律 → 集群自动提交训练任务 → 新数据回流数据库 → 触发下一轮进化，实现“无人值守”的 24×7 定律迭代。</li>
-<li><strong>主动采样</strong>：用不确定性加权或梯度信息，主动申请在“高预期信息增益”区域做实验，降低总训练成本。</li>
-<li><strong>多目标进化</strong>：同时优化外推误差、参数简洁性、训练 FLOPs 三目标，生成帕累托前沿，供用户按“可解释-精度-成本”偏好选择。</li>
-</ul>
-<hr />
-<h3>4. 理论剖析与可解释性</h3>
-<ul>
-<li><strong>定律复杂度 vs. 外推误差相变</strong>：系统改变参数数量上限，绘制“复杂度-误差”曲线，观察是否存在相变点，为“最小够用模型”提供依据。</li>
-<li>** universality 检验**：对比不同架构（Transformer、MoE、RWKV、Mamba）是否收敛到同一普适族，验证“架构无关”的深层机制。</li>
-<li><strong>渐近行为审计</strong>：对 SLDAgent 给出的公式做极限分析（N→∞, D→∞），检查是否出现非物理的发散或负损失，强制加入正则化约束。</li>
-</ul>
-<hr />
-<h3>5. 面向真实科学新发现</h3>
-<ul>
-<li><strong>未知区域探索</strong>：把框架直接用于公开 yet 未形成定律的新场景——例如<br />
-– RLHF 中“偏好样本量- KL 惩罚系数- 最终奖励”三维关系；<br />
-– 连续思维链长度 vs. 推理任务准确率；<br />
-– 多步蒸馏“教师模型规模- 学生规模- 蒸馏数据量”三角关系。<br />
-目标是<strong>首次给出</strong>被社区认可的预测公式，而非复现已有人类定律。</li>
-<li><strong>交叉学科迁移</strong>：将 SLDAgent 用于材料基因组、药物剂量-毒性、聚变装置功率缩放等实验密集型领域，验证“AI 发现科学定律”的通用性。</li>
-</ul>
-<hr />
-<h3>6. 系统与社区层面</h3>
-<ul>
-<li><strong>在线擂台机制</strong>：持续收集社区提交的新训练日志，每月更新排行榜；对击败当前最佳定律的提交给予算力券奖励，形成“众包数据 + AI 发现”正循环。</li>
-<li><strong>可验证发布</strong>：要求所有提交定律必须附带可执行 Python 文件与系数，系统在一键复现后给出官方 R²，防止“手工调参”或“测试集泄露”。</li>
-<li><strong>轻量化本地版</strong>：开源小模型（≤7 B）+ 量化版 SLDAgent，允许个人研究者在单机 24 GB 显卡上运行，降低门槛促进学术圈广泛使用。</li>
-</ul>
-<hr />
-<h3>7. 伦理与风险</h3>
-<ul>
-<li><strong>双重用途审查</strong>：对外推至 100 T 参数级别的定律进行风险评估，防止给出“只需极少数据即可训练超大模型”的误导性公式。</li>
-<li><strong>能耗标签</strong>：为每条定律自动生成“达到该预测精度所需总 GPU 小时”，提醒社区“高精度≠绿色 AI”，引导低碳科研。</li>
-</ul>
-<hr />
-<p>以上方向可并行推进，短期内（3–6 个月）以 1+2+3 为主，实现“更多任务、更好搜索、自动实验”；中长期（1–2 年）聚焦 4+5，向“AI 自主提出新物理”与“跨学科定律发现”迈进。</p>
-<h2>总结</h2>
-<h1>论文核心速览</h1>
-<h2>1. 研究目标</h2>
-<ul>
-<li>传统缩放定律依赖人类专家手工假设与反复实验，效率低且易陷入次优。</li>
-<li>本文首次系统探讨「能否让大模型智能体自动发现比人类更准确、可外推的符号缩放定律」。</li>
-</ul>
-<h2>2. 贡献框架</h2>
-<ul>
-<li><strong>SLDBench</strong>：从 5 000+ 真实训练日志提炼 7 类任务（预训练 / 微调 / MoE / 词汇 / 并行 / 数据受限 / 超参），统一为「小尺度拟合 → 大尺度外推」评测范式。</li>
-<li><strong>SLDAgent</strong>：进化式代码智能体，协同优化「符号表达式」与「参数拟合器」双组件，50 代搜索后输出最优定律。</li>
-<li>实验结果：在全部任务上外推 R² 一致优于人类文献定律与 7 个现有代码智能体；搭配 GPT-5 时首次实现 7/7 任务全面超人类。</li>
-<li>落地验证：<br />
-– 用发现的四维损失面解析求导，1 B 模型 100 B token 场景零实验定位最优 lr/bsz，误差 0.067 %。<br />
-– 用 SFT 定律在小样本外推全量微调效果，14 选 1 模型准确率 100 %。</li>
-</ul>
-<h2>3. 关键意义</h2>
-<ul>
-<li>证明 AI 系统可自主理解并加速自身规模扩展，开启「AI-for-AI-science」新范式。</li>
-<li>开源框架与数据，为社区提供可直接使用的自动化科学发现工具。</li>
-</ul>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.6</span></span>
-                                            <span>置信度: 0.90</span>
-                                            <span>分类: Agent</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">Agent</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2507.21184" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2507.21184" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                            <a href="https://arxiv.org/abs/2601.08955" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2601.08955" class="arxiv-link" target="_blank">📥 PDF下载</a>
                                         </div>
                                     </div>
                                 </div>
@@ -3581,7 +3370,7 @@ e) 50 轮后返回库中最佳程序对。<br />
                                             <div class="paper-summary-inline">本文是一篇关于大语言模型和多模态大语言模型中记忆机制的综述性论文。作者团队来自多个研究机构，其中Song-Chun Zhu教授是计算机视觉和人工智能领域的知名学者，曾任职于UCLA并创立了北京通用人工智能研究院（BIGAI），团队在人工智能基础理论方面有深厚积累。论文系统性地梳理了LLMs和MLLMs中的记忆研究，提出了隐式、显式和智能体记忆的三分法分类框架，并对多模态记忆、关键架构进展和开放挑战进行了全面讨论。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.4</span>
+                                        <span class="paper-score score-low">8.4</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -4200,289 +3989,6 @@ MVP：设计“编辑-检索-行动”三阶段任务（先改事实→再问答
                                     </div>
                                 </div>
                                 
-                                <div class="paper-item-compact" id="paper-item-2601.08955">
-                                    <div class="paper-header" onclick="showPaperDetail('2601.08955', 'Agent')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Imagine-then-Plan: Agent Learning from Adaptive Lookahead with World Models
-                                                <button class="mark-button" 
-                                                        data-paper-id="2601.08955"
-                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2601.08955", "authors": ["Liu", "Wang", "Wang", "Guo", "Li"], "id": "2601.08955", "pdf_url": "https://arxiv.org/pdf/2601.08955", "rank": 8.357142857142858, "title": "Imagine-then-Plan: Agent Learning from Adaptive Lookahead with World Models"}"
-                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
-                                                        title="标记这篇论文">☆</button>
-                                                <a href="https://arxiv.org/abs/2601.08955" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AImagine-then-Plan%3A%20Agent%20Learning%20from%20Adaptive%20Lookahead%20with%20World%20Models%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2601.08955&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AImagine-then-Plan%3A%20Agent%20Learning%20from%20Adaptive%20Lookahead%20with%20World%20Models%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2601.08955%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Liu, Wang, Wang, Guo, Li</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文由香港理工大学与中南大学的研究团队合作完成，提出了一种名为Imagine-then-Plan（ITP）的智能体学习框架，通过自适应前瞻机制与世界模型结合，显著提升了智能体在复杂任务中的规划与推理能力。该方法在多个代表性基准测试中表现优异，创新性强，实验设计严谨，且具备良好的通用性。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.4</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2601.08955" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Imagine-then-Plan: Agent Learning from Adaptive Lookahead with World Models</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 5 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>论文旨在解决<strong>大模型智能体在长程任务规划中“浅层落地”（shallow grounding）</strong>的问题。现有方法主要依赖即时观测与历史轨迹做决策，缺乏对未来环境演化的深度、因果理解，导致：</p>
-<ol>
-<li>无法在行动前预判长期后果，出现冲突或失败时才事后补救；</li>
-<li>单步或固定步数的“世界模型”推演无法兼顾不同任务阶段对前瞻深度的差异化需求，要么遗漏长程依赖，要么浪费计算。</li>
-</ol>
-<p>为此，作者提出 <strong>Imagine-then-Plan (ITP)</strong> 框架，通过<strong>自适应前瞻想象机制</strong>让智能体在“心理沙盘”内动态决定想象步数，把可观测的当下与可想象的未来统一建模成 <strong>部分可观测且可想象马尔可夫决策过程（POIMDP）</strong>，从而在长程复杂任务中实现：</p>
-<ul>
-<li>事前发现潜在冲突与瓶颈，主动修正策略；</li>
-<li>按任务进展与目标权衡，灵活分配计算资源；</li>
-<li>无需额外训练（ITPI）或通过强化学习（ITPR）即可显著提升成功率。</li>
-</ul>
-<h2>相关工作</h2>
-<p>论文在第 5 节“Related Work”中系统梳理了两条主线研究，并指出其与 ITP 的差异。可归纳为以下四类：</p>
-<ol>
-<li><p><strong>LLM-based Agent 决策优化</strong></p>
-<ul>
-<li>轨迹/步级优化：ETO、IPR、E2CL</li>
-<li>反思式后训练：Agent-R、STeCa、AgentRefine<br />
-共同点：仅利用历史轨迹做迭代修正，缺乏对未来状态的显式前瞻，仍处“浅层落地”。</li>
-</ul>
-</li>
-<li><p><strong>World Model 用于规划</strong></p>
-<ul>
-<li>隐式规划：RAP 把 LLM 推理当作隐状态搜索</li>
-<li>显式 rollout：WKM、IWM、D2PO、DMWM、WebEvolver<br />
-差异：均采用<strong>固定步数</strong>或<strong>单步</strong>推演，无法随任务阶段动态调整想象深度；ITP 首次提出<strong>自适应前瞻</strong>并形式化为 POIMDP。</li>
-</ul>
-</li>
-<li><p><strong>POMDP 扩展与模型增强 MDP</strong></p>
-<ul>
-<li>传统 POMDP 仅考虑观测历史</li>
-<li>POIMDP（本文）额外引入“可想象”未来轨迹，作为第二决策信号源。</li>
-</ul>
-</li>
-<li><p><strong>高效 rollout 与计算权衡</strong></p>
-<ul>
-<li>speculative decoding、蒸馏世界模型等属于加速方向，与 ITP 的“动态决定要不要想象”正交，可互补。</li>
-</ul>
-</li>
-</ol>
-<p>因此，ITP 在“用世界模型做规划”这一领域首次把<strong>自适应想象步数</strong>与<strong>策略学习</strong>联合建模，填补了固定 horizon 策略的空白。</p>
-<h2>解决方案</h2>
-<p>论文将“浅层落地”问题形式化为<strong>缺少对未来状态序列的显式、可扩展推演</strong>，进而提出 <strong>Imagine-then-Plan (ITP)</strong> 框架，核心解决路径如下：</p>
-<ol>
-<li><p>统一建模：从 POMDP 扩展到 <strong>POIMDP</strong><br />
-状态空间同时包含</p>
-<ul>
-<li>可观测部分：当前文本观测 $o_t$</li>
-<li>可想象部分：由世界模型生成的 $K_t$ 步未来轨迹 $\hat{\tau}<em>t^{(K_t)}$<br />
-策略输入变为 $a_t \sim \pi</em>\theta(\cdot \mid s_t,; \hat{\tau}_t^{(K_t)})$，把“未来后果”纳入决策条件。</li>
-</ul>
-</li>
-<li><p>自适应前瞻机制：动态决定想象步数 $K_t$<br />
-权衡<strong>终极任务目标</strong>与<strong>当前进度</strong>，避免固定步数带来的</p>
-<ul>
-<li><p>长程依赖遗漏（步数太少）</p>
-</li>
-<li><p>误差累积与算力浪费（步数太多）<br />
-实现方式分两条技术路线：</p>
-</li>
-<li><p><strong>ITPI（training-free）</strong><br />
-用 frozen LLM 自身做“反思型提示”：</p>
-<ol>
-<li>评估当前状态 → 选择 $K_t\in[0,K_{\max}]$</li>
-<li>调用世界模型 rollout 得到 $\hat{\tau}_t^{(K_t)}$</li>
-<li>以“想象结果”做自我反思，再输出最终动作<br />
-全程无需梯度更新，即插即用。</li>
-</ol>
-</li>
-<li><p><strong>ITPR（reinforcement-trained）</strong><br />
-引入轻量级 <strong>K-head 预测器</strong> $P_\theta(K_t \mid s_t)$，与策略网络联合优化：</p>
-<ol>
-<li><strong>伪标签阶段</strong>：用专家动作在世界模型上 teacher-force，挑使专家动作似然最高且 penalized by $K$ 的步数 $\tilde{K}_t$</li>
-<li><strong>Warm-up</strong>：监督学习模仿专家动作并拟合 $\tilde{K}_t$</li>
-<li><strong>在线 A2C</strong>：奖励函数显式 penalize 过长想象<br />
-$$r_{t+1}=r_{\text{env}}-\lambda_K K_t -\lambda_{\text{step}}$$<br />
-通过策略-价值-熵三项目标同步更新动作策略与前瞻预测器，学会“何时深想、何时浅想”。</li>
-</ol>
-</li>
-</ul>
-</li>
-<li><p>训练&amp;推理流程</p>
-<ul>
-<li>世界模型先在大纲演示与 rollout 数据上最小化负对数似然<br />
-$$\mathcal{L}<em>{\text{WM}}(\phi)=-\mathbb{E}</em>{(s,a,s')\sim \mathcal{D}<em>{\text{WM}}}!\left[\log p</em>\phi(s'\mid s,a)\right]$$</li>
-<li>推理时按上述自适应逻辑生成动作，实现“先想象再行动”的闭环。</li>
-</ul>
-</li>
-</ol>
-<p>通过把“想象深度”变成可学习、可反射的变量，ITP 在复杂长程任务上显著降低环境交互失败率，同时控制计算预算。</p>
-<h2>实验验证</h2>
-<p>论文在 §4 实验部分系统评估了 <strong>Imagine-then-Plan (ITP)</strong> 的两条实例化路线（ITPI、ITPR），共涵盖 <strong>3 套主干模型 × 2 个代表性基准 × 多任务细分</strong>，并辅以消融与效率分析。具体实验一览如下：</p>
-<ol>
-<li><p>主实验：成功率对比</p>
-<ul>
-<li>基准<br />
-– ALFWorld（6 类家务任务：PICK / CLEAN / HEAT / COOL / LOOK / PICK2）<br />
-– ScienceWorld（194 seen + 151 unseen 科学实验任务）</li>
-<li>主干<br />
-– Qwen2.5-7B、Qwen3-8B、Llama-3.1-8B</li>
-<li>对照组<br />
-– Prompting 类：CoT、ReAct、RAP<br />
-– Training 类：SFT、WKM、IWM</li>
-<li>指标：任务级与总体 Success Rate (SR)</li>
-<li>结果：ITPI 零样本超越全部 prompting 基线；ITPR 在每一组主干上均拿到最高 SR，ALFWorld 最高 88.57 %，ScienceWorld seen 最高 63.91 %。</li>
-</ul>
-</li>
-<li><p>消融实验：验证强化训练阶段必要性</p>
-<ul>
-<li>设置：ITPR 去掉在线 A2C 优化（w/o RT）</li>
-<li>结果：ALFWorld SR 从 88.57 % → 71.42 %；ScienceWorld 59.7 % → 46 %，证明自适应 horizon 的在线精炼是关键。</li>
-</ul>
-</li>
-<li><p>效率与权衡分析</p>
-<ul>
-<li>固定 horizon 对比：k = 0–5 逐一测试<br />
-– SR 随 k 先升后降；ITP 自适应曲线维持高 SR 同时 Normalized Budget (NB) 显著更低。</li>
-<li>随机 horizon 对比：每步独立采样 Kt<br />
-– 在相同 NB 下，ITP 平均 SR 分别比 ReAct+Random、SFT+Random 高 15 % 与 10 % 以上，说明“状态条件式”分配而非随机性带来增益。</li>
-</ul>
-</li>
-<li><p>世界模型主干敏感性实验</p>
-<ul>
-<li>固定策略为 Qwen3-8B，仅替换世界模型：Qwen3-8B、Llama-3.1-8B、DeepSeek-V3.2（未做世界模型训练）</li>
-<li>结果：<br />
-– ITPI 对 world-model 质量敏感，DeepSeek 无监督训练时 SR 明显下降；<br />
-– ITPR 通过强化微调后，DeepSeek 也能与其他模型持平，说明联合优化可弥补世界模型本身差距。</li>
-</ul>
-</li>
-<li><p>统计与预算分析（附录）</p>
-<ul>
-<li>给出两 benchmark 的平均自适应步数 K 与平均 episode 长度：ALFWorld K=3/步数=8；ScienceWorld K=8/步数=15，验证自适应策略与任务复杂度匹配。</li>
-<li>提供完整超参数表、提示模板与训练耗时，保证可复现。</li>
-</ul>
-</li>
-</ol>
-<p>综上，实验从 <strong>性能、消融、效率、鲁棒性、模型替换</strong> 五个维度验证了 ITP 框架的有效性与通用性。</p>
-<h2>未来工作</h2>
-<p>以下方向可进一步挖掘，按“问题–可能思路”列出，供后续研究参考：</p>
-<ul>
-<li><p><strong>多模态世界模型</strong><br />
-问题：当前仅用文本状态，真实机器人或 GUI 场景含视觉、传感器信号。<br />
-思路：把视觉编码器与 LLM 拼接，训练跨模态动态预测头；在 Imagine 阶段输出图文混合未来帧，验证自适应 horizon 是否依然有效。</p>
-</li>
-<li><p><strong>层次化或递归式想象</strong><br />
-问题：单段 Kt-步 rollout 难以捕获“子任务–原语”两级耦合。<br />
-思路：引入选项（option）框架，上层策略先想象子目标序列，下层再对每子目标调用 Kt 步展开；Kt 可在两层同时自适应。</p>
-</li>
-<li><p><strong>世界模型在线修正</strong><br />
-问题：训练后世界模型参数冻结，分布漂移导致误差累积。<br />
-思路：① 用环境反馈构造滚动缓冲，周期性微调 Mϕ；② 引入粒子滤波或贝叶斯更新，对想象分布做实时校正。</p>
-</li>
-<li><p><strong>计算预算可微分配</strong><br />
-问题：现用启发式 penalty λKKt 控制步数，非全局最优。<br />
-思路：把总 episode 计算预算当作硬约束，用强化学习或约束策略优化把“剩余预算”作为状态输入，实现端到端可微的预算分配。</p>
-</li>
-<li><p><strong>蒸馏轻量世界模型</strong><br />
-问题：大模型 rollout 延迟高，实时系统受限。<br />
-思路：以教师-学生框架把 8B/70B 世界模型蒸馏到 1–3B 小模型；结合投机解码，让 Kt 步想象并行展开，降低延迟并保持 SR。</p>
-</li>
-<li><p><strong>开放环境自我演化</strong><br />
-问题：ALFWorld/ScienceWorld 状态空间有限，开放世界工具调用或网页操作存在不可数动作。<br />
-思路：① 将动作空间表示为文本子句，用检索或代码生成器动态扩展；② 引入“想象即代码”范式，让 world model 直接生成可执行 Python 脚本并沙箱运行，返回下一观测。</p>
-</li>
-<li><p><strong>安全与可验证想象</strong><br />
-问题：幻觉 rollout 可能给出虚假安全保证。<br />
-思路：结合形式化验证或合约检查，对想象轨迹加入硬约束（如物理定律、业务规则）；若违反则回退 Kt 并惩罚，提升安全性。</p>
-</li>
-<li><p><strong>人机协同自适应 horizon</strong><br />
-问题：人类偏好可能要求更多或更少解释。<br />
-思路：把人类注视、编辑或语言反馈作为即时奖励，微调 K-head，实现“人在回路”的个性化前瞻深度。</p>
-</li>
-<li><p><strong>跨任务迁移与元学习</strong><br />
-问题：每换环境需重新标注 Kt 伪标签。<br />
-思路：在大量任务上元训练 K-head，使其仅依赖任务描述与初始状态即可输出合理 Kt；快速适应新领域。</p>
-</li>
-<li><p><strong>能耗-性能权衡基准</strong><br />
-问题：社区尚缺统一指标衡量“成功率/焦耳”。<br />
-思路：公开能量计接口，把 GPU/CPU 功耗实时记录，提出 SR per kWh 指标，推动绿色 Agent 研究。</p>
-</li>
-</ul>
-<p>探索以上任一点都可与 ITP 的自适应 lookahead 机制结合，形成下一代“ deliberative &amp; efficient” 智能体。</p>
-<h2>总结</h2>
-<p><strong>Imagine-then-Plan (ITP)</strong> 提出“先想象再行动”框架，让大模型智能体通过<strong>自适应多步推演</strong>弥补“浅层落地”缺陷。核心贡献与流程如下：</p>
-<ol>
-<li>新形式化：把 POMDP 扩展为 <strong>POIMDP</strong>，策略输入同时包含当前观测 $o_t$ 与世界模型生成的 $K_t$ 步想象轨迹 $\hat{\tau}_t^{(K_t)}$。</li>
-<li>自适应前瞻：每步动态决定想象深度 $K_t\in[0,K_{\max}]$，在<strong>任务目标</strong>与<strong>计算开销</strong>间权衡，避免固定步数带来的遗漏或浪费。</li>
-<li>双实例化：<ul>
-<li><strong>ITPI</strong>（training-free）：用 frozen LLM 做反思式提示，推理阶段零样本提升。</li>
-<li><strong>ITPR</strong>（reinforcement-trained）：联合学习动作策略与轻量 K-head 预测器，在线 A2C 优化，明确惩罚过长 rollout。</li>
-</ul>
-</li>
-<li>实验结果：在 ALFWorld 与 ScienceWorld 上，3 套主干模型均取得<strong>最高成功率</strong>，消融与效率分析证实“自适应”是性能-预算双赢的关键。</li>
-</ol>
-<p>ITP 首次将“想象步数”变为可学习变量，为长程复杂任务提供了一种<strong>可扩展、可控制</strong>的世界模型利用范式。</p>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.4</span></span>
-                                            <span>置信度: 0.80</span>
-                                            <span>分类: Agent</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">Agent</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2601.08955" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2601.08955" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
                                 <div class="paper-item-compact" id="paper-item-2601.09259">
                                     <div class="paper-header" onclick="showPaperDetail('2601.09259', 'Agent')">
                                         <div style="flex: 1;">
@@ -4522,7 +4028,7 @@ $$\mathcal{L}<em>{\text{WM}}(\phi)=-\mathbb{E}</em>{(s,a,s')\sim \mathcal{D}<em>
                                             <div class="paper-summary-inline">本文由西安交通大学、南洋理工大学、新加坡国立大学和华南理工大学的研究人员组成的团队提出了一种名为MAXS的元自适应探索框架，旨在解决大型语言模型（LLM）智能体在推理过程中存在的局部短视生成和轨迹不稳定性问题。该方法通过前瞻性策略、复合价值估计和轨迹收敛机制，在多个基准测试和模型上实现了性能与推理效率的平衡，表现出色。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.4</span>
+                                        <span class="paper-score score-low">8.4</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -4797,6 +4303,635 @@ MAXS 借其思想把“步级方差”作为轨迹有界性条件。</p>
                                     </div>
                                 </div>
                                 
+                                <div class="paper-item-compact" id="paper-item-2601.09465">
+                                    <div class="paper-header" onclick="showPaperDetail('2601.09465', 'Agent')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                EvoFSM: Controllable Self-Evolution for Deep Research with Finite State Machines
+                                                <button class="mark-button" 
+                                                        data-paper-id="2601.09465"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2601.09465", "authors": ["Zhang", "Yuan", "Guo", "Yu", "Xu", "Chen", "Li", "Yang", "Guan", "Tang", "Hu", "Zhang", "Chen", "Wang"], "id": "2601.09465", "pdf_url": "https://arxiv.org/pdf/2601.09465", "rank": 8.642857142857144, "title": "EvoFSM: Controllable Self-Evolution for Deep Research with Finite State Machines"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2601.09465" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AEvoFSM%3A%20Controllable%20Self-Evolution%20for%20Deep%20Research%20with%20Finite%20State%20Machines%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2601.09465&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AEvoFSM%3A%20Controllable%20Self-Evolution%20for%20Deep%20Research%20with%20Finite%20State%20Machines%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2601.09465%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Zhang, Yuan, Guo, Yu, Xu, Chen, Li, Yang, Guan, Tang, Hu, Zhang, Chen, Wang</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文由来自QuantaAlpha（量化阿尔法）以及香港科技大学（HKUST）、复旦大学（FDU）、清华大学（THU）、上海财经大学（SUFE）、加州大学戴维斯分校（UCD）、北京大学（PKU）、中国科学院大学（UCAS）等知名高校的联合团队提出了一种名为EvoFSM的结构化自进化框架，用于深度研究任务。该框架通过将研究过程建模为有限状态机（FSM），将优化空间解耦为宏观流程（Flow）和微观技能（Skill），实现了可控的自进化。在五个多跳问答基准测试中取得了显著提升，并在交互式决策任务上验证了其泛化能力。方法创新性强，实验设计充分，叙述结构清晰。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score score-mid">8.6</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2601.09465" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">EvoFSM: Controllable Self-Evolution for Deep Research with Finite State Machines</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 9 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>论文旨在解决现有 LLM-based 深度研究（deep-research）代理在“自演化”过程中因<strong>无约束全局重写</strong>而导致的三大核心问题：</p>
+<ol>
+<li><p><strong>稳定性崩溃</strong><br />
+无限制地修改系统提示或工具集容易触发幻觉、指令漂移（instruction drift），甚至破坏原有功能模块，使系统性能不升反降。</p>
+</li>
+<li><p><strong>优化空间混沌</strong><br />
+将“工作流拓扑”与“单点技能”混在一起进行全局改写，导致无法精准定位失败根因，进化动作难以解释与回退。</p>
+</li>
+<li><p><strong>经验无法累积</strong><br />
+每次任务被视为孤立优化问题，历史成功轨迹与失败模式无法沉淀为可复用先验，造成重复试错、难以持续改进。</p>
+</li>
+</ol>
+<p>为此，作者提出 <strong>EvoFSM</strong>：通过显式有限状态机（FSM）把宏观“流”（Flow）与微观“技能”（Skill）解耦，在<strong>结构化、可解释、可逆</strong>的原子操作空间内执行受控自演化，并配合自演化记忆机制实现跨任务经验蒸馏，从而在保持功能完整性的同时，实现对开放、多跳、长周期研究任务的自适应与持续精进。</p>
+<h2>相关工作</h2>
+<p>论文将相关研究划分为两条主线，并在第 2 节系统对比。以下按主题归纳，均给出原文对应小节或引用编号，方便快速定位。</p>
+<hr />
+<h3>1. Deep Research Agents</h3>
+<table>
+<thead>
+<tr>
+  <th>代表工作</th>
+  <th>核心思路</th>
+  <th>与 EvoFSM 的关键差异</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Search-o1</strong> (Li et al., 2025a)</td>
+  <td>在 RAG 循环中插入 Reason-in-Documents 模块，做“边检索边推理”。</td>
+  <td>仍沿用固定“retrieve→reason”模板，无法针对查询动态调整拓扑。</td>
+</tr>
+<tr>
+  <td><strong>Search-R1</strong> (Jin et al., 2025)</td>
+  <td>用 RL 训练 LLM 自主生成搜索 query，多轮交互。</td>
+  <td>优化的是 query 生成策略，而非工作流结构。</td>
+</tr>
+<tr>
+  <td><strong>WebThinker / WebAgent-R1</strong> (Li et al., 2025b; Wei et al., 2025)</td>
+  <td>端到端 RL 让代理在真实网页环境自主浏览、起草报告。</td>
+  <td>关注单轮交互决策，缺少跨任务经验沉淀机制。</td>
+</tr>
+<tr>
+  <td><strong>RepoMaster</strong> (Wang et al., 2025)</td>
+  <td>把代码仓库结构建模成图，支持代理级探索。</td>
+  <td>场景限定在软件工程，未涉及通用研究流程演化。</td>
+</tr>
+<tr>
+  <td><strong>ReSearch / ZeroSearch</strong> (Sun et al., 2024; Xu et al., 2024)</td>
+  <td>通过重排序或零样本 query 分解提升检索效率。</td>
+  <td>只优化检索阶段，不改变宏观推理流程。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>2. Self-Evolving Agents</h3>
+<table>
+<thead>
+<tr>
+  <th>代表工作</th>
+  <th>演化粒度</th>
+  <th>主要风险 / 局限性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>LIVE-SWE-Agent</strong> (Deppen et al., 2024)</td>
+  <td>运行时合成新工具或更新脚手架代码。</td>
+  <td>无结构约束，易破坏原有接口一致性。</td>
+</tr>
+<tr>
+  <td><strong>STELLA</strong> (Wang et al., 2024)</td>
+  <td>生物医学场景下自我改写 prompt 与工具。</td>
+  <td>领域特定，进化空间小，通用性不足。</td>
+</tr>
+<tr>
+  <td><strong>ShieldLearner</strong> (Ni et al., 2025)</td>
+  <td>通过自我博弈学习 jailbreak 防御策略。</td>
+  <td>只针对安全策略，未涉及通用任务流。</td>
+</tr>
+<tr>
+  <td><strong>MorphAgent</strong> (Li et al., 2024)</td>
+  <td>多 agent 场景下自我调整“角色画像”。</td>
+  <td>角色演化≠工作流演化，仍属局部优化。</td>
+</tr>
+<tr>
+  <td><strong>CoMAS</strong> (Wu et al., 2025)</td>
+  <td>基于交互奖励的去中心化协同演化。</td>
+  <td>依赖外部奖励信号，无显式拓扑约束。</td>
+</tr>
+<tr>
+  <td><strong>Huxley-Gödel Machine</strong> (Schmidhuber et al., 2024)</td>
+  <td>极端开放：允许递归地重写自身全部代码。</td>
+  <td>理论框架，缺乏可解释性与稳定性保证。</td>
+</tr>
+<tr>
+  <td><strong>SE-Agent</strong> (Lin et al., 2025)</td>
+  <td>多步推理轨迹自我优化。</td>
+  <td>仅优化轨迹文本，不改宏观流程或状态机。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>3. 与 EvoFSM 最接近的两条支线</h3>
+<ul>
+<li><p><strong>StateFlow</strong> (Wu et al., 2024)<br />
+同样用 FSM 组织 LLM 对话状态，但<strong>状态图静态</strong>，没有自演化机制。</p>
+</li>
+<li><p><strong>Reflexion</strong> (Shinn et al., 2023)<br />
+用语言强化学习让代理自我反思，但反思结果以<strong>无约束自然语言</strong>形式回写 prompt，仍面临指令漂移风险。</p>
+</li>
+</ul>
+<hr />
+<h3>小结</h3>
+<p>EvoFSM 的差异化定位在于：</p>
+<ol>
+<li>把“宏观流程（Flow）”与“微观技能（Skill）”显式解耦，用<strong>可解释原子操作</strong>替代自由形式重写；</li>
+<li>引入<strong>可演化的 FSM 拓扑</strong>，兼顾稳定性与适应性；</li>
+<li>通过<strong>自演化记忆池</strong>实现跨任务经验复用，弥补以往工作“单任务孤立优化”的缺陷。</li>
+</ol>
+<h2>解决方案</h2>
+<p>论文将“无约束自演化”带来的不稳定问题转化为<strong>在显式有限状态机（FSM）上进行受控、可解释、可逆的结构化自演化</strong>。具体实现可概括为三层机制，每层均对应一个核心公式/算法，确保“流”与“技能”解耦、进化局部化、经验可累积。</p>
+<hr />
+<h3>1. 确定性骨架：把研究流程建模为动态 FSM</h3>
+<p><strong>形式化</strong><br />
+$$ M = \langle S,; T,; I,; C \rangle $$</p>
+<ul>
+<li>$S$：可扩展状态集（Search、Browse、Verify…）</li>
+<li>$T: S \times \mathcal{H} \to S$：宏观 Flow，根据运行时上下文 $\mathcal{H}$ 决定下一状态</li>
+<li>$I$：微观 Skill，每个状态对应的系统 prompt</li>
+<li>$C$：Critic，输出失败模式标签，用作演化触发信号</li>
+</ul>
+<p>该骨架保证：</p>
+<ul>
+<li>任何时刻代理行为受<strong>状态边界</strong>约束，杜绝自由格式重写导致的指令漂移；</li>
+<li>运行时只执行 $I$ 规定的局部技能，全局拓扑 $T$ 保持不变，直至 Critic 显式触发演化。</li>
+</ul>
+<hr />
+<h3>2. 结构化自演化：仅允许原子操作</h3>
+<p><strong>进化公式</strong><br />
+$$ M_{t+1} = M_t \oplus \mathsf{op},\quad \mathsf{op} \in \mathcal{O}<em>{\text{flow}} \cup \mathcal{O}</em>{\text{skill}} $$</p>
+<table>
+<thead>
+<tr>
+  <th>操作类别</th>
+  <th>原子操作</th>
+  <th>作用域</th>
+  <th>可逆性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Flow 操作</strong> $\mathcal{O}_{\text{flow}}$</td>
+  <td>ADD_STATE / DELETE_STATE / MODIFY_TRANSITION</td>
+  <td>仅改 $S$ 与 $T$，不碰 $I$</td>
+  <td>局部、可解释</td>
+</tr>
+<tr>
+  <td><strong>Skill 操作</strong> $\mathcal{O}_{\text{skill}}$</td>
+  <td>REVISE_INSTRUCTION</td>
+  <td>仅改 $I$ 中单条 prompt，不动拓扑</td>
+  <td>局部、可解释</td>
+</tr>
+</tbody>
+</table>
+<p><strong>演化流程</strong></p>
+<ol>
+<li>Critic 诊断失败模式 → 输出“Flow-Gap”或“Skill-Gap”标签；</li>
+<li>根据标签从原子操作库中<strong>唯一地</strong>选择一条 $\mathsf{op}$；</li>
+<li>执行 $\oplus$ 更新 $M_t$；</li>
+<li>新 FSM 立即投入下一轮推理，循环直至任务通过或达到最大迭代次数。</li>
+</ol>
+<hr />
+<h3>3. 自演化记忆：跨任务经验蒸馏</h3>
+<p><strong>记忆池</strong><br />
+$$ \mathcal{E} = \mathcal{E}^+ \cup \mathcal{E}^- $$</p>
+<ul>
+<li>$\mathcal{E}^+$：成功轨迹 → 作为先验初始化 $M_{\text{init}}$</li>
+<li>$\mathcal{E}^-$：失败模式 → 作为负约束，在 $T$ 中禁用曾导致死胡同的转移</li>
+</ul>
+<p><strong>检索与更新</strong></p>
+<ul>
+<li>新查询 $q_{\text{new}}$ 嵌入后与 $\mathcal{E}$ 中记录做最近邻搜索，取 top-$k$；</li>
+<li>初始化阶段把对应成功 FSM 直接实例化为 $M_0$；</li>
+<li>每完成一次任务，反射代理把最终 $M_{\text{optimized}}$ 与所用原子操作序列压缩成新记录 $r$ 写回 $\mathcal{E}$，实现<strong>持续增广</strong>。</li>
+</ul>
+<hr />
+<h3>4. 端到端算法流程（伪代码）</h3>
+<pre><code class="language-python">def EvoFSM(q):
+    M = RetrieveFSM(q, E)          # 用记忆池初始化
+    for t in range(max_iter):
+        traj = Execute(M, q)       # 按当前 FSM 运行
+        feedback = Critic(traj, q) # 返回失败标签
+        if feedback == 'OK':
+            E.persist(M, traj)     # 成功，写回记忆
+            return traj.answer
+        op = SelectAtomicOp(feedback)  # 仅选一条原子操作
+        M = M ⊕ op                 # 局部、可逆更新
+    return traj.answer
+</code></pre>
+<hr />
+<h3>结果验证</h3>
+<ul>
+<li>在五大多跳 QA 数据集上，EvoFSM 相对最强基线平均提升 <strong>3.2–16%</strong>；</li>
+<li>消融实验显示：<br />
+– 去掉结构化演化（静态 FSM）→ <strong>DeepSearch 掉 15%</strong>；<br />
+– 去掉 FSM 拓扑（无约束 prompt 重写）→ <strong>再掉 9%</strong>；</li>
+<li>跨任务迁移到 ALFWorld/WebShop，成功率提升 <strong>6–13%</strong>，证明 Flow-Skill 解耦机制通用且稳定。</li>
+</ul>
+<hr />
+<h3>一句话总结</h3>
+<p>EvoFSM 用“显式 FSM + 原子操作 + 经验池”把原本混沌的自演化约束在<strong>可解释、可逆、可累积</strong>的轨道上，既保持功能完整性，又实现对复杂开放查询的持续自适应。</p>
+<h2>实验验证</h2>
+<p>论文从 <strong>多跳问答</strong> 与 <strong>交互式决策</strong> 两大场景、共 <strong>7 个数据集</strong> 展开系统实验，既验证主任务效果，也检验跨域泛化与组件贡献。全部结果均报告 <strong>准确率（%）</strong> 或 <strong>成功率（%）</strong>，无其他指标混合。</p>
+<hr />
+<h3>1. 主任务：多跳问答（5 基准）</h3>
+<table>
+<thead>
+<tr>
+  <th>数据集</th>
+  <th>特点</th>
+  <th>测试焦点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>HotpotQA</td>
+  <td>英文维基多段落 2-hop</td>
+  <td>经典基线</td>
+</tr>
+<tr>
+  <td>2WikiMultiHopQA</td>
+  <td>显式推理路径</td>
+  <td>可解释性</td>
+</tr>
+<tr>
+  <td>MuSiQue</td>
+  <td>2–4 hop 合成问题</td>
+  <td>抗组合歧义</td>
+</tr>
+<tr>
+  <td>Bamboogle</td>
+  <td>搜索引擎易错组合问句</td>
+  <td>真实难度</td>
+</tr>
+<tr>
+  <td>DeepSearch</td>
+  <td>中文深度搜索池</td>
+  <td>长周期、开放域</td>
+</tr>
+</tbody>
+</table>
+<p><strong>实验设置</strong></p>
+<ul>
+<li>5 种 backbone：GPT-4o、Claude-4、Llama-3-70B、DeepSeek-v3、Qwen3-32B</li>
+<li>3 组基线：Standard RAG、Agentic RAG、Search-o1</li>
+<li>统一工具：Serper 搜索 + Jina Reader 解析；迭代上限 3 轮；状态数 ≤10</li>
+</ul>
+<p><strong>主要结果（表 1）</strong></p>
+<ul>
+<li>EvoFSM 在 <strong>全部 25 项模型-数据集组合</strong> 中 <strong>19 次第一、6 次第二</strong></li>
+<li>最具挑战的 DeepSearch 上，相对最佳基线提升 <strong>+11.0%（Claude-4）、+10.0%（GPT-4o）、+8.0%（DeepSeek-v3）</strong></li>
+</ul>
+<hr />
+<h3>2. 消融实验（表 2）</h3>
+<p>以 DeepSeek-v3 为固定 backbone，系统移除不同组件：</p>
+<table>
+<thead>
+<tr>
+  <th>变体</th>
+  <th>说明</th>
+  <th>DeepSearch 降幅</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>w/o Structured Evolution（静态 FSM）</td>
+  <td>固定 Search→Browse→Analysis 流程</td>
+  <td><strong>-15.0%</strong></td>
+</tr>
+<tr>
+  <td>w/o FSM Topology（无结构演化）</td>
+  <td>允许自由 prompt 重写，无状态图约束</td>
+  <td><strong>-9.0%</strong></td>
+</tr>
+<tr>
+  <td>w/o All（标准 ReAct）</td>
+  <td>既无 FSM 也无演化</td>
+  <td><strong>-17.0%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>结论：FSM 骨架与结构化演化<strong>互补</strong>，缺一即显著掉分。</p>
+<hr />
+<h3>3. 跨域泛化：交互式决策（2 基准）</h3>
+<table>
+<thead>
+<tr>
+  <th>场景</th>
+  <th>任务量</th>
+  <th>评估指标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>ALFWorld</td>
+  <td>134  household 任务</td>
+  <td>成功率 + 平均步数</td>
+</tr>
+<tr>
+  <td>WebShop</td>
+  <td>12 k 人类指令</td>
+  <td>成功率 + 平均步数</td>
+</tr>
+</tbody>
+</table>
+<p><strong>对比方法</strong><br />
+ReAct、ReAct-Reflexion、CogFSM（纯静态 FSM）</p>
+<p><strong>结果（图 3）</strong></p>
+<ul>
+<li><strong>成功率</strong>：WebShop 上 EvoFSM 达 <strong>44%</strong>，相对 ReAct 提升 <strong>+13 pp</strong>；ALFWorld 达 <strong>84.2%</strong>，提升 <strong>+6 pp</strong></li>
+<li><strong>步数</strong>：仅增加约 2–4 步，换来 &gt;10% 成功率增益，验证“结构换稳健”策略跨域有效</li>
+</ul>
+<hr />
+<h3>4. 迭代深度影响（图 4）</h3>
+<p>在 GPT-4o 上分别跑 1–5 次演化循环：</p>
+<table>
+<thead>
+<tr>
+  <th>数据集</th>
+  <th>1→5 轮涨幅</th>
+  <th>饱和点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>DeepSearch</td>
+  <td><strong>29% → 45%（+16 pp）</strong></td>
+  <td>第 4 轮后平缓</td>
+</tr>
+<tr>
+  <td>Bamboogle</td>
+  <td><strong>80.5% → 82.4%（+1.9 pp）</strong></td>
+  <td>第 2 轮即饱和</td>
+</tr>
+</tbody>
+</table>
+<p>说明：复杂度越高，持续结构化演化的收益越大。</p>
+<hr />
+<h3>5. 定性案例（图 5–7）</h3>
+<ul>
+<li><strong>Flow 演化</strong>：ADD_STATE 注入 Verifier 节点，打破 Search-Browse 死循环</li>
+<li><strong>Skill 演化</strong>：REVISE_INSTRUCTION 约束 Browse 节点“禁止摘要数值”，直接提取 Wh/kg</li>
+<li><strong>协同演化</strong>：同一查询同时执行 ADD_STATE(Legal_Verifier) + REVISE_INSTRUCTION(Search)，把泛泛新闻检索升级为精准法条分析</li>
+</ul>
+<hr />
+<h3>实验覆盖度小结</h3>
+<table>
+<thead>
+<tr>
+  <th>维度</th>
+  <th>覆盖情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>任务类型</td>
+  <td>文本问答 + 交互决策</td>
+</tr>
+<tr>
+  <td>语言</td>
+  <td>英文 + 中文</td>
+</tr>
+<tr>
+  <td>模型规模</td>
+  <td>7B–70B 开源 &amp; 闭源</td>
+</tr>
+<tr>
+  <td>消融粒度</td>
+  <td>组件级 + 迭代级</td>
+</tr>
+<tr>
+  <td>可解释性</td>
+  <td>提供原子操作轨迹与案例</td>
+</tr>
+</tbody>
+</table>
+<p>以上实验共同表明：EvoFSM 的“结构化自演化”在精度、稳健性、跨域迁移上均显著优于无约束重写或静态工作流基线。</p>
+<h2>未来工作</h2>
+<p>以下方向可视为 EvoFSM 的直接延伸，仍围绕“可控自演化”这一核心主题，但分别针对 <strong>模型层、验证层、记忆层、理论层、应用层</strong> 展开。每点均给出可验证的实验变量或评价指标，便于后续工作落地。</p>
+<hr />
+<h3>1. 模型层：将 FSM 逻辑蒸馏进小参数模型</h3>
+<ul>
+<li><strong>问题</strong>：目前完全依赖 prompt 工程，长程状态转移需反复携带历史，token 开销大。</li>
+<li><strong>探索</strong>：<ul>
+<li>用 EvoFSM 产生的 &lt;查询, 最优 FSM&gt; 对训练 lightweight Policy Model（≤7B），直接输出下一状态或原子操作概率 π(a|s,q)。</li>
+<li>对比指标：<strong>token 节省率</strong>、<strong>推理延迟</strong>、<strong>准确率漂移</strong>（≤2% 视为无损蒸馏）。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>2. 验证层：构建可验证的 Critic</h3>
+<ul>
+<li><strong>问题</strong>：Critic 本身也是 LLM，可能幻觉“通过”或漏检逻辑错误。</li>
+<li><strong>探索</strong>：<ul>
+<li>引入 <strong>形式化验证器</strong>（如合同约束检查、定理证明器）对关键状态输出给出布尔信号；</li>
+<li>或采用 <strong>多 Critic 投票 + 不确定性估计</strong>，当熵&gt;阈值时拒绝自演化并转人工。</li>
+<li>评价指标：<strong>误接受率（False-Accept）</strong>、<strong>演化失败链长度</strong>（应缩短 ≥30%）。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>3. 记忆层：可遗忘与抽象的长期记忆</h3>
+<ul>
+<li><strong>问题</strong>：经验池无限增长 → 检索延迟↑、过时策略污染。</li>
+<li><strong>探索</strong>：<ul>
+<li><strong>策略聚类合并</strong>：对相似 FSM 做结构哈希，维护原型图 + 计数器，实现常数级存储增长；</li>
+<li><strong>时效衰减 + 不确定性引导遗忘</strong>：给每条记录加半衰期权重 w(t)=exp(−λt)，低于阈值即剪枝。</li>
+<li>评价指标：<strong>检索耗时</strong>、<strong>记忆命中率</strong>、<strong>遗忘后精度变化</strong>（应无显著下降）。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>4. 理论层：演化收敛性与稳定性边界</h3>
+<ul>
+<li><strong>问题</strong>：原子操作序列是否一定收敛？是否存在循环演化？</li>
+<li><strong>探索</strong>：<ul>
+<li>把状态空间与操作符视为 <strong>马尔可夫决策过程</strong>，定义演化策略的 Lyapunov 函数 V(M)；</li>
+<li>证明在 <strong>操作成本正则化</strong> 与 <strong>负记忆屏蔽</strong> 下，V(M) 单调不增 → 收敛到 ε-最优。</li>
+<li>实验验证：<strong>演化轮次分布尾部</strong>（应指数下降）、<strong>重复回环检测</strong>（出现率&lt;1%）。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>5. 应用层：领域专用 FSM 自动生成</h3>
+<ul>
+<li><strong>问题</strong>：当前初始状态集仍偏通用，垂直领域（法律、医疗、金融）需专家手写。</li>
+<li><strong>探索</strong>：<ul>
+<li>基于 <strong>领域语料库</strong> 做 <strong>状态归纳</strong>：对专家解题轨迹运行 frequent subgraph mining，自动抽取高频状态-转移作为初始 M₀；</li>
+<li>采用 <strong>人机协同演化</strong>：允许专家在原子操作层面加锁（如禁止 DELETE_STATE），实现“可控-共演化”。</li>
+<li>评价指标：<strong>专家干预次数↓</strong>、<strong>首次通过率↑</strong>、<strong>领域 F1</strong>（应≥人工模板水平）。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>6. 安全层：对抗性自演化攻击</h3>
+<ul>
+<li><strong>问题</strong>：恶意查询能否通过连续演化注入有害状态？</li>
+<li><strong>探索</strong>：<ul>
+<li>构建 <strong>Adversarial Evolution Dataset</strong>：以 jailbreak 目标为奖励，强化搜索能否诱导 ADD_STATE→生成非法指令；</li>
+<li>在记忆池加入 <strong>不可变约束列表</strong>（黑名状态/操作），任何演化路径一旦匹配即自动回滚。</li>
+<li>评价指标：<strong>攻击成功率（ASR）</strong>（应压至 ≤2%）、<strong>正常任务精度保持</strong>。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>7. 多模态层：FSM 拓展至图文混合研究</h3>
+<ul>
+<li><strong>问题</strong>：当前仅文本检索，多跳 QA 已出现图像证据（图表、截图）。</li>
+<li><strong>探索</strong>：<ul>
+<li>状态集扩展 <strong>VisualBrowse、ChartParser、ImageVerifier</strong> 等节点；</li>
+<li>原子操作增加 <strong>MODALITY_SWITCH</strong>（文本↔视觉转移条件）。</li>
+<li>评价指标：<strong>含图问题准确率</strong>、<strong>跨模态循环次数</strong>（应减少 ≥20%）。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>8. 系统层：异步分布式 EvoFSM</h3>
+<ul>
+<li><strong>问题</strong>：单线程演化遇重型工具（PDF 解析、视频理解）时成为瓶颈。</li>
+<li><strong>探索</strong>：<ul>
+<li>将不同状态部署为 <strong>微服务</strong>，转移逻辑通过消息队列实现；</li>
+<li>演化过程改为 <strong>异步批处理</strong>：Critic 收集多条轨迹后离线生成最佳 op，再热更新路由表。</li>
+<li>评价指标：<strong>吞吐量（QPS）↑</strong>、<strong>端到端延迟↓</strong>、<strong>一致性错误率</strong>（应&lt;0.5%）。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>小结</h3>
+<p>以上 8 点覆盖 <strong>效率、可靠性、可扩展性、安全性、多模态、分布式</strong> 等维度，均可直接继承 EvoFSM 的 FSM 抽象与原子操作思想，形成下一轮“可控自演化”研究路线图。</p>
+<h2>总结</h2>
+<p>论文提出 <strong>EvoFSM</strong>，一种面向深度研究任务的<strong>结构化自演化</strong>框架，核心是把“工作流拓扑”与“单点技能”显式解耦，用<strong>可解释、可逆的原子操作</strong>在有限状态机（FSM）上实现受控进化，并配备自演化记忆池实现跨任务经验复用。主要贡献与结果如下：</p>
+<hr />
+<h3>1. 核心思想</h3>
+<ul>
+<li><strong>确定性骨架</strong>：将检索-推理流程建模为动态 FSM<br />
+$$ M = \langle S,; T,; I,; C \rangle $$<br />
+其中 $T$ 管宏观 Flow，$I$ 管微观 Skill，$C$ 为触发演化的批评器。</li>
+<li><strong>受控演化</strong>：只允许两类原子操作<ul>
+<li>Flow 级：ADD_STATE / DELETE_STATE / MODIFY_TRANSITION</li>
+<li>Skill 级：REVISE_INSTRUCTION<br />
+保证任何修改<strong>局部、可解释、可回退</strong>。</li>
+</ul>
+</li>
+<li><strong>经验累积</strong>：成功轨迹与失败模式分别写入 $\mathcal{E}^+$ 与 $\mathcal{E}^-$，新查询先检索 top-$k$ 记录初始化 FSM，实现<strong>持续增广</strong>。</li>
+</ul>
+<hr />
+<h3>2. 实验规模</h3>
+<table>
+<thead>
+<tr>
+  <th>场景</th>
+  <th>数据集</th>
+  <th>backbone</th>
+  <th>主要指标</th>
+  <th>关键结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>多跳 QA</td>
+  <td>HotpotQA / 2Wiki / MuSiQue / Bamboogle / DeepSearch</td>
+  <td>GPT-4o、Claude-4、Llama-3-70B、DeepSeek-v3、Qwen3-32B</td>
+  <td>准确率</td>
+  <td><strong>25 组实验 19 次第一</strong>；DeepSearch 最高提升 <strong>+11 pp</strong></td>
+</tr>
+<tr>
+  <td>交互决策</td>
+  <td>ALFWorld / WebShop</td>
+  <td>GPT-4o</td>
+  <td>成功率</td>
+  <td>WebShop <strong>44 %</strong>（+13 pp）；ALFWorld <strong>84 %</strong>（+6 pp）</td>
+</tr>
+<tr>
+  <td>消融</td>
+  <td>同上</td>
+  <td>DeepSeek-v3</td>
+  <td>准确率</td>
+  <td>去演化 <strong>-15 %</strong>；去 FSM <strong>-9 %</strong>；去两者 <strong>-17 %</strong></td>
+</tr>
+<tr>
+  <td>迭代深度</td>
+  <td>DeepSearch / Bamboogle</td>
+  <td>GPT-4o</td>
+  <td>准确率</td>
+  <td>DeepSearch 5 轮累加 <strong>+16 pp</strong>；简单任务 3 轮即饱和</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>3. 结论</h3>
+<p>EvoFSM 用显式 FSM 替代无约束全局重写，在<strong>稳定性、可解释性、跨任务迁移</strong>三维度同时提升，为构建可靠、长寿命的自主研究代理提供了新范式。</p>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.6</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: Agent</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Agent</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2601.09465" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2601.09465" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                             
                         </div>
                     </div>
@@ -4845,6 +4980,84 @@ MAXS 借其思想把“步级方差”作为轨迹有界性条件。</p>
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-Hallucination" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Hallucination"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Hallucination')">展开全部</a>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2601.09151">
+                                    <div class="paper-header" onclick="showPaperDetail('2601.09151', 'Hallucination')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Interpretable Probability Estimation with LLMs via Shapley Reconstruction
+                                                <button class="mark-button" 
+                                                        data-paper-id="2601.09151"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2601.09151", "authors": ["Nan", "Wen", "Wang", "He", "Tandon", "Ge", "Xu"], "id": "2601.09151", "pdf_url": "https://arxiv.org/pdf/2601.09151", "rank": 8.357142857142858, "title": "Interpretable Probability Estimation with LLMs via Shapley Reconstruction"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2601.09151" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AInterpretable%20Probability%20Estimation%20with%20LLMs%20via%20Shapley%20Reconstruction%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2601.09151&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AInterpretable%20Probability%20Estimation%20with%20LLMs%20via%20Shapley%20Reconstruction%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2601.09151%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Nan, Wen, Wang, He, Tandon, Ge, Xu</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文由亚利桑那大学（University of Arizona）和密歇根州立大学（Michigan State University）的研究团队提出了一种名为PRISM（Probability Reconstruction via Shapley Measures）的新框架，旨在解决大语言模型（LLM）进行概率估计时存在的噪声大、过程不透明的问题。该方法通过Shapley值量化每个输入因素的边际贡献，并聚合这些贡献来重构校准后的最终概率估计。在金融、医疗、农业等多个领域的实验表明，PRISM在预测准确性和可解释性方面均优于直接提示等基线方法。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score score-low">8.4</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2601.09151" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Interpretable Probability Estimation with LLMs via Shapley Reconstruction</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.4</span></span>
+                                            <span>置信度: 0.90</span>
+                                            <span>分类: Hallucination</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Hallucination</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2601.09151" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2601.09151" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2601.09241">
                                     <div class="paper-header" onclick="showPaperDetail('2601.09241', 'Hallucination')">
@@ -4885,7 +5098,7 @@ MAXS 借其思想把“步级方差”作为轨迹有界性条件。</p>
                                             <div class="paper-summary-inline">本文由澳大利亚皇家墨尔本理工大学（RMIT University）的研究团队提出了一种名为Ca2KG的因果感知校准框架，用于解决知识图谱检索增强生成（KG-RAG）模型中的过度自信问题。该框架创新性地将反事实提示与基于面板的重评分机制相结合，在保持预测准确性的同时显著改善了校准性能。论文实验设计严谨，在多个数据集上验证了方法的有效性，并开源了代码。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.5</span>
+                                        <span class="paper-score score-mid">8.5</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -5105,79 +5318,6 @@ Ca²KG 首次把因果干预引入 KG-RAG 校准，无需修改模型即可显�
                                     </div>
                                 </div>
                                 
-                                <div class="paper-item-compact" id="paper-item-2601.09151">
-                                    <div class="paper-header" onclick="showPaperDetail('2601.09151', 'Hallucination')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Interpretable Probability Estimation with LLMs via Shapley Reconstruction
-                                                <button class="mark-button" 
-                                                        data-paper-id="2601.09151"
-                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2601.09151", "authors": ["Nan", "Wen", "Wang", "He", "Tandon", "Ge", "Xu"], "id": "2601.09151", "pdf_url": "https://arxiv.org/pdf/2601.09151", "rank": 8.357142857142858, "title": "Interpretable Probability Estimation with LLMs via Shapley Reconstruction"}"
-                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
-                                                        title="标记这篇论文">☆</button>
-                                                <a href="https://arxiv.org/abs/2601.09151" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AInterpretable%20Probability%20Estimation%20with%20LLMs%20via%20Shapley%20Reconstruction%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2601.09151&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AInterpretable%20Probability%20Estimation%20with%20LLMs%20via%20Shapley%20Reconstruction%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2601.09151%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Nan, Wen, Wang, He, Tandon, Ge, Xu</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文由亚利桑那大学（University of Arizona）和密歇根州立大学（Michigan State University）的研究团队提出了一种名为PRISM（Probability Reconstruction via Shapley Measures）的新框架，旨在解决大语言模型（LLM）进行概率估计时存在的噪声大、过程不透明的问题。该方法通过Shapley值量化每个输入因素的边际贡献，并聚合这些贡献来重构校准后的最终概率估计。在金融、医疗、农业等多个领域的实验表明，PRISM在预测准确性和可解释性方面均优于直接提示等基线方法。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.4</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2601.09151" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Interpretable Probability Estimation with LLMs via Shapley Reconstruction</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.4</span></span>
-                                            <span>置信度: 0.90</span>
-                                            <span>分类: Hallucination</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">Hallucination</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2601.09151" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2601.09151" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
                             
                         </div>
                     </div>
@@ -5221,6 +5361,11 @@ Ca²KG 首次把因果干预引入 KG-RAG 校准，无需修改模型即可显�
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-Pretraining" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Pretraining"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Pretraining')">展开全部</a>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2507.03285">
                                     <div class="paper-header" onclick="showPaperDetail('2507.03285', 'Pretraining')">
@@ -5261,7 +5406,7 @@ Ca²KG 首次把因果干预引入 KG-RAG 校准，无需修改模型即可显�
                                             <div class="paper-summary-inline">本文由Meta AI Research (FAIR) 与纽约大学联合团队提出。作者Jianyu Zhang和Léon Bottou均来自世界顶级AI研究机构，其中Léon Bottou是CIFAR Fellow，在机器学习领域享有盛誉。论文成功将Memory Mosaics架构扩展至LLaMA-8B规模，在万亿真实世界token上训练，并引入三项架构改进（自适应带宽、门控时变键特征提取器、三级记忆设计），在多项新任务学习能力评估中显著超越Transformer基线。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.4</span>
+                                        <span class="paper-score score-low">8.4</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -5639,6 +5784,11 @@ k_t = \text{Norm}(\bar{k}<em>t), \quad \bar{k}_t = g_t \tilde{k}_t + \lambda_t \
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-Multimodal" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Multimodal"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Multimodal')">展开全部</a>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2601.09536">
                                     <div class="paper-header" onclick="showPaperDetail('2601.09536', 'Multimodal')">
@@ -5679,7 +5829,7 @@ k_t = \text{Norm}(\bar{k}<em>t), \quad \bar{k}_t = g_t \tilde{k}_t + \lambda_t \
                                             <div class="paper-summary-inline">本文由香港理工大学、新加坡管理大学、山东大学、中国科学技术大学、哈尔滨工业大学（深圳）等高校的研究团队合作提出。该论文针对多模态大语言模型（MLLMs）的推理能力，提出了一个名为“统一生成式多模态推理”的新范式。其核心创新在于，通过让模型在推理过程中生成中间功能图像（如放大区域、标记对象、绘制辅助线等），将多种离散的多模态推理技能（如定位、标记、视觉预测）统一在一个生成式框架内。论文不仅提出了需要少量标注的Omni-R1框架，还进一步提出了无需多模态标注、通过从纯文本推理数据中引导生成视觉轨迹的Omni-R1-Zero方案。实验表明，该方法在涵盖多种任务的自建评测集（Omni-Bench）以及多个标准多模态基准测试上均取得了优于现有基线模型的效果，尤其是在需要复杂视觉操作的场景中提升显著。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.6</span>
+                                        <span class="paper-score score-mid">8.6</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -6073,7 +6223,7 @@ $$R=\alpha R_{\text{Acc}}+\beta R_{\text{Fmt}}+\gamma R_{\text{Pe}}$$<br />
                                             <div class="paper-summary-inline">本文由哈尔滨工业大学（深圳）、香港浸会大学和香港城市大学的研究人员合作完成，提出了一种名为能力归因数据策展（CADC）的新范式，用于视觉语言模型的指令调优数据管理。该方法通过无监督方式从模型的学习动态中发现内在能力，并基于此进行数据选择和课程排序，在仅使用5%原始数据的情况下，在多个多模态基准测试上超越了全数据训练的性能。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.4</span>
+                                        <span class="paper-score score-low">8.4</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -6606,7 +6756,7 @@ $$<br />
                                             <div class="paper-summary-inline">本文由德国慕尼黑工业大学（Technical University of Munich, TUM）学习系统与机器人实验室（Learning Systems and Robotics Lab）和德国机器人研究所（Robotics Institute Germany）的研究团队提出。他们针对机器人视觉-语言-动作模型（VLA）在持续学习中的灾难性遗忘问题，提出了一种名为CLARE的通用、参数高效的免示例持续学习框架。该方法通过引入轻量级模块化适配器、基于特征相似性的自主扩展策略以及基于自编码器的路由机制，在保持预训练模型参数不变的同时，仅需为每个新任务增加约2%的参数，即可有效学习新任务并保留旧任务知识。实验在LIBERO基准测试上表现优异，显著超越了包括基于示例方法在内的基线。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.4</span>
+                                        <span class="paper-score score-low">8.4</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -7036,7 +7186,7 @@ CLARE 以<strong>“冻结原模型+按需扩展+特征相似度路由”</stron
         <!-- Footer with filter info -->
         
         <div class="footer">
-            主题筛选: Pretraining, Agent, SFT, Finance, Multimodal, RLHF, Hallucination | 状态: 已启用
+            主题筛选: Agent, Pretraining, Hallucination, Finance, RLHF, SFT, Multimodal | 状态: 已启用
         </div>
         
         </div>
@@ -7148,19 +7298,31 @@ CLARE 以<strong>“冻结原模型+按需扩展+特征相似度路由”</stron
         function toggleMark(paperId, paperData) {
             const markedPapers = getMarkedPapers();
             const isCurrentlyMarked = isMarked(paperId);
-            
+
             if (isCurrentlyMarked) {
                 // 取消标记
                 const filtered = markedPapers.filter(p => p.id !== paperId);
                 saveMarkedPapers(filtered);
                 updateMarkButtonState(paperId, false);
+                // 展开卡片
+                const item = document.getElementById('paper-item-' + paperId);
+                if (item) item.classList.remove('paper-collapsed');
             } else {
                 // 添加标记
                 const fullPaperData = getPaperData(paperId, paperData);
                 markedPapers.push(fullPaperData);
                 saveMarkedPapers(markedPapers);
                 updateMarkButtonState(paperId, true);
+                // 折叠卡片
+                const item = document.getElementById('paper-item-' + paperId);
+                if (item) item.classList.add('paper-collapsed');
             }
+
+            // 刷新所有 tab 的折叠提示条
+            document.querySelectorAll('[id^="collapsed-notice-"]').forEach(notice => {
+                const topicId = notice.id.replace('collapsed-notice-', '');
+                refreshCollapsedNotice(topicId);
+            });
         }
         
         // 更新标记按钮状态
@@ -7298,18 +7460,53 @@ CLARE 以<strong>“冻结原模型+按需扩展+特征相似度路由”</stron
         function initMarkStates() {
             const markedPapers = getMarkedPapers();
             const markedIds = new Set(markedPapers.map(p => p.id));
-            
-            // 更新所有标记按钮的状态
+
+            // 更新所有标记按钮的状态，并折叠已标记论文
             document.querySelectorAll('.mark-button[data-paper-id]').forEach(button => {
                 const paperId = button.getAttribute('data-paper-id');
                 if (markedIds.has(paperId)) {
                     button.textContent = '⭐';
                     button.classList.add('marked');
+                    // 折叠该论文卡片
+                    const item = document.getElementById('paper-item-' + paperId);
+                    if (item) item.classList.add('paper-collapsed');
                 } else {
                     button.textContent = '☆';
                     button.classList.remove('marked');
                 }
             });
+
+            // 更新各 tab 的折叠提示条
+            document.querySelectorAll('[id^="collapsed-notice-"]').forEach(notice => {
+                const topicId = notice.id.replace('collapsed-notice-', '');
+                refreshCollapsedNotice(topicId);
+            });
+        }
+
+        // 刷新某个 tab 的折叠提示条
+        function refreshCollapsedNotice(topicId) {
+            const tabEl = document.getElementById('tab-' + topicId);
+            if (!tabEl) return;
+            const count = tabEl.querySelectorAll('.paper-item-compact.paper-collapsed').length;
+            const notice = document.getElementById('collapsed-notice-' + topicId);
+            const countEl = document.getElementById('collapsed-count-' + topicId);
+            if (!notice || !countEl) return;
+            if (count > 0) {
+                countEl.textContent = count;
+                notice.style.display = 'flex';
+            } else {
+                notice.style.display = 'none';
+            }
+        }
+
+        // 展开某 tab 所有已标记论文
+        function expandAllMarked(topicId) {
+            const tabEl = document.getElementById('tab-' + topicId);
+            if (!tabEl) return;
+            tabEl.querySelectorAll('.paper-item-compact.paper-collapsed').forEach(item => {
+                item.classList.remove('paper-collapsed');
+            });
+            refreshCollapsedNotice(topicId);
         }
 
         // 切换标签页
@@ -7536,7 +7733,19 @@ CLARE 以<strong>“冻结原模型+按需扩展+特征相似度路由”</stron
             if (firstNavItem) {
                 firstNavItem.classList.add('active');
             }
-            
+
+            // 设置 Markdown 链接：将当前 .html URL 替换为 .md
+            (function() {
+                const btn = document.getElementById('md-download-btn');
+                if (!btn) return;
+                const mdUrl = window.location.href.replace(/\.html(\?.*)?$/, '.md');
+                btn.href = mdUrl;
+                // 如果无法推断（URL 没有 .html 后缀），则隐藏按钮
+                if (mdUrl === window.location.href) {
+                    btn.style.display = 'none';
+                }
+            })();
+
             // 初始化标记状态
             initMarkStates();
             

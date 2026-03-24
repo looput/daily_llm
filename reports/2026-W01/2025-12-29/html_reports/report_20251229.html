@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大模型论文速读（14/334）</title>
+    <title>大模型论文速读（14/14）</title>
     <style>
         * {
             margin: 0;
@@ -165,6 +165,16 @@
             border-bottom: 1px solid #e8e8e8;
             color: #1a1a1a;
             padding: 32px 40px 24px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-text {
+            flex: 1;
+            min-width: 0;
         }
 
         .header h1 {
@@ -179,6 +189,43 @@
             color: #666;
             font-size: 14px;
             font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            padding-top: 4px;
+        }
+
+        .md-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+            background: #fafafa;
+            color: #555;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .md-link-btn:hover {
+            background: #f0f0f0;
+            border-color: #999;
+            color: #1a1a1a;
+        }
+
+        .md-link-btn svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
         }
 
         .filter-info {
@@ -1067,8 +1114,14 @@
             .header {
                 padding: 24px 20px 16px;
                 padding-top: 60px; /* 为菜单按钮留空间 */
+                flex-direction: column;
+                gap: 10px;
             }
-            
+
+            .header-actions {
+                align-self: flex-start;
+            }
+
             .header h1 {
                 font-size: 22px;
             }
@@ -1168,10 +1221,66 @@
         .paper-title .mark-button {
             margin-left: 8px;
         }
-        
+
         .detail-panel-header .mark-button,
         .mobile-modal-header .mark-button {
             margin-right: 8px;
+        }
+
+        /* ── 评分色阶 ── */
+        .paper-score.score-high {
+            background: #dcfce7;
+            color: #15803d;
+        }
+        .paper-score.score-mid {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        .paper-score.score-low {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        /* ── 已标记论文折叠态 ── */
+        .paper-item-compact.paper-collapsed .paper-authors,
+        .paper-item-compact.paper-collapsed .paper-summary-inline {
+            display: none;
+        }
+        .paper-item-compact.paper-collapsed {
+            border-left: 3px solid #ffa500;
+            padding-left: 14px;
+            padding-top: 11px;
+            padding-bottom: 11px;
+            opacity: 0.68;
+            transition: opacity 0.18s, border-left-color 0.18s;
+        }
+        .paper-item-compact.paper-collapsed:hover {
+            opacity: 1;
+            border-left-color: #ff8c00;
+        }
+
+        /* ── 折叠数量提示条 ── */
+        .collapsed-notice {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #999;
+            padding: 8px 0 16px;
+            user-select: none;
+        }
+        .collapsed-notice a {
+            color: #ffa500;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .collapsed-notice a:hover { text-decoration: underline; }
+        .collapsed-notice .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #ffa500;
+            flex-shrink: 0;
         }
     </style>
     <!-- KaTeX数学公式渲染库 -->
@@ -1231,8 +1340,19 @@
         <!-- 主内容区域 -->
         <div class="container">
             <div class="header">
-                <h1>大模型论文速读（14/334）</h1>
-                <p>日报: 2025-12-29 | 生成时间: 2026-01-04</p>
+                <div class="header-text">
+                    <h1>大模型论文速读（14/14）</h1>
+                    <p>日报: 2025-12-29 | 生成时间: 2026-03-24</p>
+                </div>
+                <div class="header-actions">
+                    <a id="md-download-btn" class="md-link-btn" href="#" target="_blank" title="以 Markdown 格式查看，适合 AI 阅读">
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <rect x="1" y="2" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/>
+                            <path d="M3.5 10.5V5.5L5.5 8l2-2.5 2 2.5 2-2.5v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Markdown
+                    </a>
+                </div>
             </div>
             
             <!-- Tab Contents -->
@@ -1276,6 +1396,11 @@
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-RLHF" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-RLHF"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('RLHF')">展开全部</a>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2512.21852">
                                     <div class="paper-header" onclick="showPaperDetail('2512.21852', 'RLHF')">
@@ -1316,7 +1441,7 @@
                                             <div class="paper-summary-inline">本文由来自Google DeepMind、Mila、蒙特利尔大学等知名机构的顶尖研究团队（包括Yoshua Bengio、Aaron Courville等知名学者）合作完成。论文系统性地研究了大型语言模型强化学习训练中KL正则化估计器的设计与实现问题，揭示了现有实践中梯度偏差的来源及其对模型性能的影响，并通过在多款主流LLM上的实验验证了无偏梯度估计器配置的优越性。这项工作填补了RL训练LLMs中KL正则化实现细节的理论与实践空白，对提升RLHF训练稳定性和效果具有重要指导意义。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.4</span>
+                                        <span class="paper-score score-low">8.4</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -1633,6 +1758,582 @@ K1 无偏但方差高，K3 方差低却有偏。能否借鉴控制变量或多�
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-Agent" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Agent"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Agent')">展开全部</a>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2507.18033">
+                                    <div class="paper-header" onclick="showPaperDetail('2507.18033', 'Agent')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                OpenNav: Open-World Navigation with Multimodal Large Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2507.18033"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2507.18033", "authors": ["Yuan", "Wang", "Waslander"], "id": "2507.18033", "pdf_url": "https://arxiv.org/pdf/2507.18033", "rank": 8.357142857142858, "title": "OpenNav: Open-World Navigation with Multimodal Large Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2507.18033" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AOpenNav%3A%20Open-World%20Navigation%20with%20Multimodal%20Large%20Language%20Models%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2507.18033&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AOpenNav%3A%20Open-World%20Navigation%20with%20Multimodal%20Large%20Language%20Models%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2507.18033%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Yuan, Wang, Waslander</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文由多伦多大学航空航天研究所和多伦多机器人研究所的研究团队提出了一种名为OpenNav的零样本视觉语言导航框架。该研究首次利用多模态大语言模型直接生成户外导航轨迹，无需依赖预训练技能、运动基元或上下文示例。通过整合开放词汇感知系统、MLLM高级规划和经典轨迹优化算法，实现了对开放集指令和对象的强鲁棒性，并在自动驾驶数据集和真实机器人平台上验证了有效性。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score score-low">8.4</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2507.18033" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">OpenNav: Open-World Navigation with Multimodal Large Language Models</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 2 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>这篇论文试图解决在开放世界（open-world）环境下，如何使机器人能够理解和执行自由形式（free-form）语言指令以完成导航任务的问题。具体来说，主要挑战和目标包括以下几点：</p>
+<h3>开放世界导航的挑战</h3>
+<ul>
+<li><strong>开放集对象（Open-set Objects）</strong>：在现实世界的导航任务中，机器人会遇到各种各样的对象，这些对象可能以不同的方式被描述，例如通过其类别（如“房子”）、基于特征的描述（如“圆柱形建筑”）或功能描述（如“扔掉垃圾”）。传统的导航方法通常依赖于预定义的对象类别和指令，难以处理这些开放集对象。</li>
+<li><strong>开放集指令（Open-set Instructions）</strong>：真实应用场景中的指令通常是自由形式的，具有很大的灵活性和多样性。不同的指令可能需要不同层次的空间、语义和关系推理，从区分相似对象到识别特定地标，再到理解跨越大范围无结构户外空间的抽象空间关系。现有方法在处理这种指令的丰富性和变异性方面面临挑战。</li>
+<li><strong>从语言到行动的转换</strong>：尽管预训练的大型语言模型（LLMs）和视觉-语言模型（VLMs）在语言和常识推理方面表现出色，但将这些模型的强大能力转化为机器人的物理执行动作仍然是一个开放性问题。现有方法大多假设这些模型不适合硬件依赖的低级控制，因此通常将LLMs用作高级规划器，忽视低级机器人运动控制或依赖预定义的运动原语，这限制了语言指令在控制机器人运动行为方面的灵活性。</li>
+</ul>
+<h3>论文的目标</h3>
+<ul>
+<li><strong>零样本视觉-语言导航（Zero-shot Vision-Language Navigation）</strong>：开发一个能够在没有预训练技能、运动原语或上下文示例的情况下，直接根据开放集指令和开放集对象生成轨迹的导航框架。这个框架需要能够处理自由形式的自然语言导航指令，并在保持对物体检测错误和语言歧义的鲁棒性的同时，有效地执行各种导航任务。</li>
+<li><strong>多模态交互与理解</strong>：通过结合多模态大型语言模型（MLLMs）的跨模态理解和代码生成能力，与视觉-语言感知模型进行交互，生成组合式的二维鸟瞰图价值地图（2D bird-eye-view value maps），有效地将MLLMs的语义知识与地图的空间信息结合起来，增强机器人的空间理解能力。</li>
+<li><strong>实际应用验证</strong>：在大规模自动驾驶车辆数据集（AVDs）和真实世界的机器人平台上验证所提出的框架，证明其在户外导航任务中的有效性和鲁棒性，以及在处理开放集对象和指令时的能力。</li>
+</ul>
+<h2>相关工作</h2>
+<p>论文中提到了多个与本研究相关的领域和具体工作，以下是这些相关研究的分类和介绍：</p>
+<h3>开放集感知与规划（Open-Set Perception and Planning）</h3>
+<ul>
+<li><strong>早期基于深度学习的方法</strong>：早期的物体检测和语义3D映射主要依赖于深度学习方法和标记数据集，这些模型在封闭集（closed-set）的物体类别和特定场景数据集下进行训练，因此在复杂开放环境中识别未见物体类别时性能受限。</li>
+<li><strong>基于VLMs的开放词汇理解</strong>：最近的视觉-语言模型（VLMs）通过互联网规模的数据训练，能够进行开放词汇的2D和3D理解。在机器人应用中，常用模型如SAM和CLIP生成分割物体的点云和相关检测标签及特征嵌入。</li>
+<li><strong>空间语义场景描述</strong>：一些工作从点云数据中构建空间语义文本场景描述，虽然在简单小规模环境中有效，但在复杂、大规模开放环境中，这种仅依赖文本描述的方法变得不足，因为缺乏对环境的视觉细节理解。</li>
+</ul>
+<h3>视觉-语言导航（Vision-Language Navigation）</h3>
+<ul>
+<li><strong>早期离散导航研究</strong>：早期在如Matterport3D这样的模拟器中的离散导航研究，主要关注在预定义节点之间的瞬移式移动。</li>
+<li><strong>基于预训练LLMs的导航</strong>：随着预训练LLMs的发展，许多研究利用大规模模型和预训练技术来增强导航能力，但这些研究主要集中在高级决策上，忽视了低级运动控制。</li>
+<li><strong>连续环境中的导航</strong>：最近的研究转向连续环境，其中代理使用中等层次的动作（如向前移动、原地旋转）进行导航。一些方法使用航点模型来预测候选位置，但这些方法在泛化能力、运动规划和避障方面存在局限性。</li>
+</ul>
+<h3>代码作为策略（Code as Policy）</h3>
+<ul>
+<li><strong>机器人操作中的LLMs</strong>：一些工作利用LLMs作为机器人操作的规划器，例如SayCan，它在推理时严重依赖上下文示例。</li>
+<li><strong>基于LLMs的轨迹生成</strong>：与Kwon等人的工作相似，但他们的关注点在于操作任务，而本研究则专注于导航任务。本研究使用单一的、与任务无关的提示，无需上下文示例或预定义的运动原语，以实现通用导航。</li>
+</ul>
+<h3>其他相关工作</h3>
+<ul>
+<li><strong>开放世界导航的挑战</strong>：在开放世界设置中，如户外导航，机器人必须处理由开放集对象组成的环境，这些对象具有无结构的布局，导致复杂性和环境不确定性显著增加。</li>
+<li><strong>现有方法的局限性</strong>：现有方法依赖于物体检测器来描述环境，并在语言领域使用LLMs进行推理，导致导航任务中丢失了关键的空间和微妙信息。因此，这些方法在处理开放世界应用的丰富性和变异性方面存在困难。</li>
+</ul>
+<p>这些相关研究为本论文提供了背景和基础，同时也指出了现有方法的局限性，从而引出了本研究提出的新方法和框架。</p>
+<h2>解决方案</h2>
+<p>论文提出了一种名为 <strong>OpenNav</strong> 的零样本视觉-语言导航框架，通过结合多模态大型语言模型（MLLMs）的强大语言理解、推理和代码生成能力，以及经典的规划算法，来解决开放世界环境下的导航问题。以下是该框架解决该问题的具体方法和步骤：</p>
+<h3>1. <strong>零样本视觉-语言导航框架（Zero-shot Vision-Language Navigation Framework）</strong></h3>
+<ul>
+<li><p><strong>开放集指令（Open-set Instructions）</strong>：</p>
+<ul>
+<li><strong>任务无关提示（Task-agnostic Prompt）</strong>：设计了一个单一的任务无关提示，使机器人能够泛化到各种户外导航任务。这个提示包括五个关键部分：可用函数、环境描述、碰撞避免指导、初始规划和代码生成。</li>
+<li><strong>指令理解与分解</strong>：利用MLLM的强大语义理解和任务规划能力，识别相关目标（如房屋、可行驶表面、障碍物等），并根据指令中的空间关系（如“在你的右边”）确定目标对象。</li>
+<li><strong>代码生成与轨迹合成</strong>：MLLM通过代码生成能力，生成Python脚本来指定轨迹的起点、中间航点和终点，从而生成符合语言指令的轨迹。</li>
+</ul>
+</li>
+<li><p><strong>开放集对象（Open-set Objects）</strong>：</p>
+<ul>
+<li><strong>开放词汇感知系统（Open-Vocabulary Perception System, OVPS）</strong>：该系统由开放词汇对象感知模块和地图重建模块组成。它负责对象检测、分割、描述生成，并提取对象属性（如位置、尺寸等）。</li>
+<li><strong>多模态输入</strong>：OVPS生成的文本描述和注释图像作为MLLM的输入，使MLLM能够更好地理解环境中的对象和场景。</li>
+</ul>
+</li>
+</ul>
+<h3>2. <strong>轨迹合成与优化（Trajectory Synthesis and Optimization）</strong></h3>
+<ul>
+<li><p><strong>基于MLLM的轨迹生成</strong>：</p>
+<ul>
+<li><strong>轨迹形状推理</strong>：MLLM根据任务和环境感知，推断轨迹形状，选择中间航点，并生成轨迹代码。</li>
+<li><strong>错误检测与调试</strong>：如果生成的代码在执行时出现错误，MLLM会自动调试脚本，直到生成有效的轨迹。</li>
+</ul>
+</li>
+<li><p><strong>几何合规轨迹细化（Geometry-compliant Trajectory Refinement）</strong>：</p>
+<ul>
+<li><strong>2D鸟瞰图价值地图（2D Bird-eye-view Value Map）</strong>：结合MLLM生成的轨迹和环境的几何信息，构建2D鸟瞰图价值地图，包括语义地图和占用地图。</li>
+<li><strong>A*算法优化</strong>：使用A*算法基于价值地图生成优化后的轨迹，确保轨迹与语言指令一致，同时避免碰撞。</li>
+</ul>
+</li>
+</ul>
+<h3>3. <strong>开放词汇感知系统（Open-Vocabulary Perception System, OVPS）</strong></h3>
+<ul>
+<li><p><strong>对象检测与描述生成</strong>：</p>
+<ul>
+<li>使用 <strong>Recognize Anything Model (RAM)</strong> 进行开放集对象类别识别。</li>
+<li>使用 <strong>Grounding DINO</strong> 模型进行对象检测，生成边界框。</li>
+<li>使用 <strong>Tokenize Anything via Prompting (TAP)</strong> 模型进行对象分割和描述生成，生成分割掩码和文本描述。</li>
+</ul>
+</li>
+<li><p><strong>地图重建</strong>：</p>
+<ul>
+<li>将3D LiDAR点云投影到2D图像平面，生成对象特定的3D点云。</li>
+<li>构建2D占用地图和语义地图，用于轨迹规划和3D可视化。</li>
+</ul>
+</li>
+</ul>
+<h3>4. <strong>实验验证（Experimental Validation）</strong></h3>
+<ul>
+<li><strong>数据集与场景</strong>：使用SemanticKITTI数据集进行实验，该数据集提供了丰富的户外场景、2D RGB图像、3D LiDAR点云和相应的姿态信息。</li>
+<li><strong>任务类型</strong>：<ul>
+<li><strong>移动到对象任务（Move-to-object Task）</strong>：包括特定对象导航和模糊对象导航。</li>
+<li><strong>高级语言指令任务（High-level Language Instruction Task）</strong>：评估模型对高级语言指令的理解和执行能力。</li>
+</ul>
+</li>
+<li><strong>评估指标</strong>：<ul>
+<li><strong>成功率（Success Rate, SR）</strong>：如果轨迹的最终位置在真实位置1米范围内，则认为成功。</li>
+<li><strong>导航误差（Navigation Error, NE）</strong>：估计终点和真实终点之间的平均欧几里得距离。</li>
+</ul>
+</li>
+</ul>
+<h3>5. <strong>实验结果</strong></h3>
+<ul>
+<li><p><strong>与现有方法的比较</strong>：</p>
+<ul>
+<li><strong>LLM-TG</strong>：依赖于对象检测器提供的文本描述，包括对象标题、坐标、尺寸和每个可行驶区域到目标的最近可达点。</li>
+<li><strong>OpenNav</strong>：通过多模态输入和MLLM的推理能力，显著提高了在模糊对象导航和高级语言指令任务中的成功率和导航精度。</li>
+</ul>
+</li>
+<li><p><strong>轨迹合成性能</strong>：</p>
+<ul>
+<li><strong>A*算法</strong>：仅基于占用地图生成碰撞自由轨迹，但轨迹形状与任务要求的对齐性较差。</li>
+<li><strong>VLT-Code</strong>：MLLM直接生成轨迹，但缺乏深度和几何信息，导致碰撞率较高。</li>
+<li><strong>OpenNav</strong>：结合MLLM和几何约束，生成既符合语言指令又避免碰撞的轨迹。</li>
+</ul>
+</li>
+</ul>
+<p>通过上述方法，OpenNav框架成功地将MLLM的强大语言和常识推理能力转化为机器人的物理执行动作，实现了在开放世界环境下的零样本视觉-语言导航。</p>
+<h2>实验验证</h2>
+<p>论文中进行了以下实验来验证所提出的 <strong>OpenNav</strong> 框架的有效性和鲁棒性：</p>
+<h3>1. <strong>导航任务实验</strong></h3>
+<h4><strong>实验设置</strong></h4>
+<ul>
+<li><strong>数据集</strong>：使用了 <strong>SemanticKITTI</strong> 数据集，该数据集提供了丰富的户外场景，包括2D RGB图像、3D LiDAR点云和相应的姿态信息。</li>
+<li><strong>任务类型</strong>：实验分为两类导航任务：<ul>
+<li><strong>移动到对象任务（Move-to-object Task）</strong>：<ul>
+<li><strong>特定对象导航（Specific object navigation）</strong>：指令明确指定目标对象，环境中只有一个这样的对象，例如“Go to the red car”。</li>
+<li><strong>模糊对象导航（Ambiguous object navigation）</strong>：环境中存在多个相似对象，需要机器人利用多模态信息解决歧义，例如“Go to the second car on your left”。</li>
+</ul>
+</li>
+<li><strong>高级语言指令任务（High-level Language Instruction Task）</strong>：指令不明确提及目标对象或不能通过单个对象描述解决，需要机器人理解任务、进行推理并整合环境观察以生成轨迹，例如“Throw away the trash”或“Go straight first, then turn right into the courtyard”。</li>
+</ul>
+</li>
+</ul>
+<h4><strong>评估指标</strong></h4>
+<ul>
+<li><strong>成功率（Success Rate, SR）</strong>：如果轨迹的最终位置在真实位置1米范围内，则认为成功。</li>
+<li><strong>导航误差（Navigation Error, NE）</strong>：估计终点和真实终点之间的平均欧几里得距离。</li>
+</ul>
+<h4><strong>实验结果</strong></h4>
+<ul>
+<li><strong>与现有方法的比较</strong>：<ul>
+<li><strong>LLM-TG</strong>：依赖于对象检测器提供的文本描述，包括对象标题、坐标、尺寸和每个可行驶区域到目标的最近可达点。</li>
+<li><strong>OpenNav</strong>：通过多模态输入和MLLM的推理能力，显著提高了在模糊对象导航和高级语言指令任务中的成功率和导航精度。</li>
+<li><strong>具体结果</strong>：<ul>
+<li><strong>特定对象导航</strong>：LLM-TG和OpenNav均实现了100%的成功率。</li>
+<li><strong>模糊对象导航</strong>：LLM-TG的成功率为26%，而OpenNav的成功率为84%。</li>
+<li><strong>高级语言指令任务</strong>：LLM-TG的成功率为46%，而OpenNav的成功率为80%。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>2. <strong>轨迹合成实验</strong></h3>
+<h4><strong>实验设置</strong></h4>
+<ul>
+<li><strong>用户定义的轨迹</strong>：用户提供语言指令，并在地图上手动绘制他们偏好的轨迹，作为评估生成轨迹质量的真值。</li>
+<li><strong>评估方法</strong>：<ul>
+<li><strong>Fréchet距离</strong>：严格保留轨迹形状，对偏差敏感。</li>
+<li><strong>归一化动态时间规整（NDTW）</strong>：考虑速度变化，允许灵活的时间对齐。</li>
+<li><strong>碰撞检测</strong>：记录生成轨迹是否与障碍物发生碰撞。</li>
+</ul>
+</li>
+</ul>
+<h4><strong>实验结果</strong></h4>
+<ul>
+<li><strong>不同方法的比较</strong>：<ul>
+<li><strong>A*算法</strong>：仅基于占用地图生成碰撞自由轨迹，但轨迹形状与任务要求的对齐性较差。<ul>
+<li><strong>Fréchet距离</strong>：24.20</li>
+<li><strong>NDTW</strong>：0.08</li>
+<li><strong>碰撞次数</strong>：0/30</li>
+</ul>
+</li>
+<li><strong>VLT-Code</strong>：MLLM直接生成轨迹，但缺乏深度和几何信息，导致碰撞率较高。<ul>
+<li><strong>Fréchet距离</strong>：17.53</li>
+<li><strong>NDTW</strong>：0.16</li>
+<li><strong>碰撞次数</strong>：16/30</li>
+</ul>
+</li>
+<li><strong>OpenNav</strong>：结合MLLM和几何约束，生成既符合语言指令又避免碰撞的轨迹。<ul>
+<li><strong>Fréchet距离</strong>：12.60</li>
+<li><strong>NDTW</strong>：0.38</li>
+<li><strong>碰撞次数</strong>：2/30</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>3. <strong>真实机器人实验</strong></h3>
+<h4><strong>实验设置</strong></h4>
+<ul>
+<li><strong>机器人平台</strong>：使用Husky机器人在室内和室外场景中进行实验。</li>
+<li><strong>任务类型</strong>：包括移动到特定对象和执行高级语言指令的任务。</li>
+</ul>
+<h4><strong>实验结果</strong></h4>
+<ul>
+<li><strong>真实机器人实验验证了OpenNav框架在实际应用中的鲁棒性和适用性</strong>：<ul>
+<li><strong>室内场景</strong>：机器人能够准确地导航到目标对象，并在执行高级语言指令时表现出良好的性能。</li>
+<li><strong>室外场景</strong>：机器人在复杂的户外环境中表现出色，能够处理开放集对象和模糊指令，生成符合语言指令的轨迹。</li>
+</ul>
+</li>
+</ul>
+<h3>4. <strong>补充实验</strong></h3>
+<ul>
+<li><strong>更多实验结果和真实机器人演示</strong>：论文的项目网站提供了更全面的实验结果和真实机器人演示，以进一步验证OpenNav框架的有效性。</li>
+</ul>
+<p>通过这些实验，论文验证了OpenNav框架在处理开放集对象和指令时的鲁棒性，以及在生成符合语言指令的轨迹方面的有效性。</p>
+<h2>未来工作</h2>
+<p>论文提出的 <strong>OpenNav</strong> 框架在开放世界导航任务中展示了强大的性能和鲁棒性，但仍有一些可以进一步探索和改进的方向：</p>
+<h3>1. <strong>动态环境中的导航</strong></h3>
+<ul>
+<li><strong>当前限制</strong>：当前的实验主要在静态环境中进行，而真实世界中的导航任务通常涉及动态环境，如行人、车辆和其他移动障碍物。</li>
+<li><strong>改进方向</strong>：<ul>
+<li><strong>动态障碍物检测与避让</strong>：结合实时的动态障碍物检测技术，使机器人能够实时感知并避让移动障碍物。</li>
+<li><strong>预测性轨迹规划</strong>：利用预测模型（如基于深度学习的运动预测网络）预测动态障碍物的未来位置，并在轨迹规划中考虑这些预测结果。</li>
+</ul>
+</li>
+</ul>
+<h3>2. <strong>多模态感知的进一步优化</strong></h3>
+<ul>
+<li><strong>当前限制</strong>：尽管OpenNav已经结合了视觉和语言信息，但感知系统的精度和鲁棒性仍有提升空间。</li>
+<li><strong>改进方向</strong>：<ul>
+<li><strong>多传感器融合</strong>：进一步优化多传感器（如RGB-D相机、LiDAR、IMU等）的融合方法，提高环境感知的准确性和鲁棒性。</li>
+<li><strong>实时感知更新</strong>：在导航过程中实时更新感知信息，确保机器人始终基于最新的环境信息进行决策。</li>
+</ul>
+</li>
+</ul>
+<h3>3. <strong>复杂任务的执行</strong></h3>
+<ul>
+<li><strong>当前限制</strong>：当前的实验主要集中在相对简单的导航任务上，如移动到特定对象或执行高级语言指令。</li>
+<li><strong>改进方向</strong>：<ul>
+<li><strong>多步骤任务规划</strong>：扩展框架以支持更复杂的多步骤任务，如涉及多个目标对象和多个导航阶段的任务。</li>
+<li><strong>任务分解与组合</strong>：开发更高级的任务分解和组合方法，使机器人能够处理更复杂的指令和任务序列。</li>
+</ul>
+</li>
+</ul>
+<h3>4. <strong>长距离导航</strong></h3>
+<ul>
+<li><strong>当前限制</strong>：当前的实验主要在相对较小的区域内进行，长距离导航可能面临更多的挑战，如地图更新、路径规划的效率等。</li>
+<li><strong>改进方向</strong>：<ul>
+<li><strong>分段路径规划</strong>：将长距离导航任务分解为多个短距离子任务，分别规划路径，提高路径规划的效率和准确性。</li>
+<li><strong>地图更新与维护</strong>：开发实时地图更新和维护机制，确保机器人在长距离导航过程中始终基于最新的地图信息进行决策。</li>
+</ul>
+</li>
+</ul>
+<h3>5. <strong>与其他机器人的协作</strong></h3>
+<ul>
+<li><strong>当前限制</strong>：当前的实验主要集中在单个机器人上，而实际应用中可能需要多个机器人协作完成任务。</li>
+<li><strong>改进方向</strong>：<ul>
+<li><strong>多机器人协调</strong>：开发多机器人协调机制，使多个机器人能够协同工作，共同完成复杂的导航任务。</li>
+<li><strong>通信与信息共享</strong>：研究高效的通信和信息共享机制，确保机器人之间能够实时交换感知信息和任务状态。</li>
+</ul>
+</li>
+</ul>
+<h3>6. <strong>模型的可扩展性和适应性</strong></h3>
+<ul>
+<li><strong>当前限制</strong>：尽管OpenNav展示了强大的零样本泛化能力，但其适应性和可扩展性仍有待进一步验证。</li>
+<li><strong>改进方向</strong>：<ul>
+<li><strong>跨领域适应性</strong>：验证框架在不同领域（如室内、室外、城市、乡村等）的适应性，确保其在多样化环境中的鲁棒性。</li>
+<li><strong>模型优化</strong>：进一步优化MLLM的训练和微调方法，提高其在特定任务和环境中的性能。</li>
+</ul>
+</li>
+</ul>
+<h3>7. <strong>实时性能优化</strong></h3>
+<ul>
+<li><strong>当前限制</strong>：当前的实验主要关注轨迹生成的准确性和鲁棒性，而实时性能的优化也是实际应用中的一个重要方面。</li>
+<li><strong>改进方向</strong>：<ul>
+<li><strong>实时轨迹生成</strong>：优化轨迹生成算法，确保机器人能够在实时环境中快速生成和更新轨迹。</li>
+<li><strong>计算效率</strong>：研究高效的计算方法，减少轨迹生成和优化的计算时间，提高系统的实时响应能力。</li>
+</ul>
+</li>
+</ul>
+<h3>8. <strong>用户交互与反馈</strong></h3>
+<ul>
+<li><strong>当前限制</strong>：当前的实验主要关注机器人自主完成任务，而用户交互和反馈机制对于提高系统的可用性和用户体验至关重要。</li>
+<li><strong>改进方向</strong>：<ul>
+<li><strong>实时用户反馈</strong>：开发实时用户反馈机制，使用户能够实时监控和调整机器人的行为。</li>
+<li><strong>自然语言交互</strong>：进一步优化自然语言交互模块，使机器人能够更好地理解和执行用户的指令。</li>
+</ul>
+</li>
+</ul>
+<p>通过这些进一步的探索和改进，OpenNav框架有望在更复杂、更动态的环境中实现更高效、更鲁棒的导航能力，为实际应用中的机器人导航任务提供更强大的支持。</p>
+<h2>总结</h2>
+<p>当然可以。以下是论文《OpenNav: Open-World Navigation with Multimodal Large Language Models》的主要内容总结：</p>
+<h3>论文标题</h3>
+<p>OpenNav: Open-World Navigation with Multimodal Large Language Models</p>
+<h3>作者</h3>
+<p>Mingfeng Yuan, Letian Wang, Steven L. Waslander</p>
+<h3>摘要</h3>
+<p>本文提出了一种名为 <strong>OpenNav</strong> 的零样本视觉-语言导航框架，旨在使机器人能够理解和执行自由形式的语言指令，以完成开放世界环境中的导航任务。该框架利用多模态大型语言模型（MLLMs）的强大语言理解和代码生成能力，结合经典的规划算法，生成符合语言指令的导航轨迹。实验表明，OpenNav在处理开放集对象和指令时具有很强的鲁棒性，并在真实世界的机器人平台上验证了其有效性。</p>
+<h3>研究背景</h3>
+<ul>
+<li><strong>视觉-语言模型（VLMs）</strong>：近年来，VLMs在对齐自然语言与视觉信息方面取得了显著进展，但这些进展大多局限于结构化场景，如室内固定桌面操作任务或室内目标导航任务。在开放世界环境中，机器人需要处理开放集对象和自由形式的语言指令，这对现有方法提出了挑战。</li>
+<li><strong>现有方法的局限性</strong>：现有方法依赖于物体检测器来描述环境，并在语言领域使用LLMs进行推理，导致导航任务中丢失了关键的空间和微妙信息。此外，现有方法大多假设LLMs不适合硬件依赖的低级控制，因此通常将LLMs用作高级规划器，忽视低级机器人运动控制或依赖预定义的运动原语。</li>
+</ul>
+<h3>研究贡献</h3>
+<ol>
+<li><strong>OpenNav框架</strong>：提出了一种零样本视觉-语言导航框架，能够直接生成轨迹，无需预训练技能、运动原语或上下文示例。</li>
+<li><strong>多专家系统</strong>：结合最先进的MLLMs和开放词汇感知系统，通过单一任务无关提示和多模态接口，显著提高了对开放集对象和语言指令的鲁棒性。</li>
+<li><strong>实验验证</strong>：在大规模自动驾驶车辆数据集（AVDs）和真实世界的机器人平台上验证了OpenNav的有效性，证明了其在视觉-语言导航和体现智能研究中的有效性。</li>
+</ol>
+<h3>方法</h3>
+<h4>1. <strong>零样本视觉-语言导航框架（Zero-shot Vision-Language Navigation Framework）</strong></h4>
+<ul>
+<li><p><strong>开放集指令（Open-set Instructions）</strong>：</p>
+<ul>
+<li><strong>任务无关提示（Task-agnostic Prompt）</strong>：设计了一个单一的任务无关提示，使机器人能够泛化到各种户外导航任务。该提示包括可用函数、环境描述、碰撞避免指导、初始规划和代码生成。</li>
+<li><strong>指令理解与分解</strong>：利用MLLM的强大语义理解和任务规划能力，识别相关目标，并根据指令中的空间关系确定目标对象。</li>
+<li><strong>代码生成与轨迹合成</strong>：MLLM通过代码生成能力，生成Python脚本来指定轨迹的起点、中间航点和终点，从而生成符合语言指令的轨迹。</li>
+</ul>
+</li>
+<li><p><strong>开放集对象（Open-set Objects）</strong>：</p>
+<ul>
+<li><strong>开放词汇感知系统（Open-Vocabulary Perception System, OVPS）</strong>：该系统由开放词汇对象感知模块和地图重建模块组成。它负责对象检测、分割、描述生成，并提取对象属性（如位置、尺寸等）。</li>
+<li><strong>多模态输入</strong>：OVPS生成的文本描述和注释图像作为MLLM的输入，使MLLM能够更好地理解环境中的对象和场景。</li>
+</ul>
+</li>
+</ul>
+<h4>2. <strong>轨迹合成与优化（Trajectory Synthesis and Optimization）</strong></h4>
+<ul>
+<li><p><strong>基于MLLM的轨迹生成</strong>：</p>
+<ul>
+<li><strong>轨迹形状推理</strong>：MLLM根据任务和环境感知，推断轨迹形状，选择中间航点，并生成轨迹代码。</li>
+<li><strong>错误检测与调试</strong>：如果生成的代码在执行时出现错误，MLLM会自动调试脚本，直到生成有效的轨迹。</li>
+</ul>
+</li>
+<li><p><strong>几何合规轨迹细化（Geometry-compliant Trajectory Refinement）</strong>：</p>
+<ul>
+<li><strong>2D鸟瞰图价值地图（2D Bird-eye-view Value Map）</strong>：结合MLLM生成的轨迹和环境的几何信息，构建2D鸟瞰图价值地图，包括语义地图和占用地图。</li>
+<li><strong>A*算法优化</strong>：使用A*算法基于价值地图生成优化后的轨迹，确保轨迹与语言指令一致，同时避免碰撞。</li>
+</ul>
+</li>
+</ul>
+<h4>3. <strong>开放词汇感知系统（Open-Vocabulary Perception System, OVPS）</strong></h4>
+<ul>
+<li><p><strong>对象检测与描述生成</strong>：</p>
+<ul>
+<li>使用 <strong>Recognize Anything Model (RAM)</strong> 进行开放集对象类别识别。</li>
+<li>使用 <strong>Grounding DINO</strong> 模型进行对象检测，生成边界框。</li>
+<li>使用 <strong>Tokenize Anything via Prompting (TAP)</strong> 模型进行对象分割和描述生成，生成分割掩码和文本描述。</li>
+</ul>
+</li>
+<li><p><strong>地图重建</strong>：</p>
+<ul>
+<li>将3D LiDAR点云投影到2D图像平面，生成对象特定的3D点云。</li>
+<li>构建2D占用地图和语义地图，用于轨迹规划和3D可视化。</li>
+</ul>
+</li>
+</ul>
+<h3>实验</h3>
+<h4>1. <strong>导航任务实验</strong></h4>
+<ul>
+<li><strong>数据集</strong>：使用 <strong>SemanticKITTI</strong> 数据集，提供丰富的户外场景、2D RGB图像、3D LiDAR点云和相应的姿态信息。</li>
+<li><strong>任务类型</strong>：<ul>
+<li><strong>移动到对象任务（Move-to-object Task）</strong>：包括特定对象导航和模糊对象导航。</li>
+<li><strong>高级语言指令任务（High-level Language Instruction Task）</strong>：评估模型对高级语言指令的理解和执行能力。</li>
+</ul>
+</li>
+<li><strong>评估指标</strong>：<ul>
+<li><strong>成功率（Success Rate, SR）</strong>：如果轨迹的最终位置在真实位置1米范围内，则认为成功。</li>
+<li><strong>导航误差（Navigation Error, NE）</strong>：估计终点和真实终点之间的平均欧几里得距离。</li>
+</ul>
+</li>
+<li><strong>实验结果</strong>：<ul>
+<li><strong>特定对象导航</strong>：LLM-TG和OpenNav均实现了100%的成功率。</li>
+<li><strong>模糊对象导航</strong>：LLM-TG的成功率为26%，而OpenNav的成功率为84%。</li>
+<li><strong>高级语言指令任务</strong>：LLM-TG的成功率为46%，而OpenNav的成功率为80%。</li>
+</ul>
+</li>
+</ul>
+<h4>2. <strong>轨迹合成实验</strong></h4>
+<ul>
+<li><strong>用户定义的轨迹</strong>：用户提供语言指令，并在地图上手动绘制他们偏好的轨迹，作为评估生成轨迹质量的真值。</li>
+<li><strong>评估方法</strong>：<ul>
+<li><strong>Fréchet距离</strong>：严格保留轨迹形状，对偏差敏感。</li>
+<li><strong>归一化动态时间规整（NDTW）</strong>：考虑速度变化，允许灵活的时间对齐。</li>
+<li><strong>碰撞检测</strong>：记录生成轨迹是否与障碍物发生碰撞。</li>
+</ul>
+</li>
+<li><strong>实验结果</strong>：<ul>
+<li><strong>A*算法</strong>：<ul>
+<li><strong>Fréchet距离</strong>：24.20</li>
+<li><strong>NDTW</strong>：0.08</li>
+<li><strong>碰撞次数</strong>：0/30</li>
+</ul>
+</li>
+<li><strong>VLT-Code</strong>：<ul>
+<li><strong>Fréchet距离</strong>：17.53</li>
+<li><strong>NDTW</strong>：0.16</li>
+<li><strong>碰撞次数</strong>：16/30</li>
+</ul>
+</li>
+<li><strong>OpenNav</strong>：<ul>
+<li><strong>Fréchet距离</strong>：12.60</li>
+<li><strong>NDTW</strong>：0.38</li>
+<li><strong>碰撞次数</strong>：2/30</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4>3. <strong>真实机器人实验</strong></h4>
+<ul>
+<li><strong>机器人平台</strong>：使用Husky机器人在室内和室外场景中进行实验。</li>
+<li><strong>任务类型</strong>：包括移动到特定对象和执行高级语言指令的任务。</li>
+<li><strong>实验结果</strong>：真实机器人实验验证了OpenNav框架在实际应用中的鲁棒性和适用性。</li>
+</ul>
+<h3>结论</h3>
+<p>OpenNav框架成功地将MLLM的强大语言和常识推理能力转化为机器人的物理执行动作，实现了在开放世界环境下的零样本视觉-语言导航。未来的工作将扩展该方法到更复杂和动态的环境中，进一步提高其鲁棒性和适应性。</p>
+<p>希望这个总结对你有所帮助！</p>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.4</span></span>
+                                            <span>置信度: 0.90</span>
+                                            <span>分类: Agent</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Agent</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2507.18033" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2507.18033" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2512.21354">
+                                    <div class="paper-header" onclick="showPaperDetail('2512.21354', 'Agent')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Reflection-Driven Control for Trustworthy Code Agents
+                                                <button class="mark-button" 
+                                                        data-paper-id="2512.21354"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2512.21354", "authors": ["Wang", "Quan", "Yu", "Hu", "Yuhao", "Tsang"], "id": "2512.21354", "pdf_url": "https://arxiv.org/pdf/2512.21354", "rank": 8.428571428571429, "title": "Reflection-Driven Control for Trustworthy Code Agents"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2512.21354" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AReflection-Driven%20Control%20for%20Trustworthy%20Code%20Agents%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2512.21354&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AReflection-Driven%20Control%20for%20Trustworthy%20Code%20Agents%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2512.21354%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Wang, Quan, Yu, Hu, Yuhao, Tsang</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文提出了一种名为‘反射驱动控制’的标准化、可插拔模块，用于提升LLM智能体（特别是代码生成智能体）的安全性和可信度。该方法将‘自我反思’从后处理步骤提升为智能体推理过程中的显式控制循环，通过动态内存检索和证据注入来约束和修正不安全行为。论文在八个安全关键的CWE代码生成场景上进行了系统评估，结果表明该方法能显著提升生成代码的安全性和策略合规性，同时保持功能正确性，且运行时和令牌开销极低。作者团队包括来自学术界的研究人员，其中Ivor Tsang教授是机器学习领域的知名学者。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score score-low">8.4</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2512.21354" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Reflection-Driven Control for Trustworthy Code Agents</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.4</span></span>
+                                            <span>置信度: 0.90</span>
+                                            <span>分类: Agent</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Agent</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2512.21354" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2512.21354" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2512.21720">
                                     <div class="paper-header" onclick="showPaperDetail('2512.21720', 'Agent')">
@@ -1673,7 +2374,7 @@ K1 无偏但方差高，K3 方差低却有偏。能否借鉴控制变量或多�
                                             <div class="paper-summary-inline">本文由斯坦福大学（Stanford University）的跨学科研究团队（来自计算机科学系、统计学系和吴蔡神经科学研究所）提出了一种基于信息论的智能体系统设计新视角。该研究针对当前流行的压缩器-预测器（compressor-predictor）智能体架构，首次引入互信息（Mutual Information）作为任务无关的压缩质量评估指标，并构建了一个信息论分析框架。通过五个数据集和三个模型家族的全面实证分析，论文揭示了压缩器模型规模对下游性能的关键影响，并提炼出四条实用的智能体系统设计原则。该方法创新性强，实验设计严谨，为理解和优化多智能体系统提供了理论基础和实用工具。</div>
                                             
                                         </div>
-                                        <span class="paper-score">9.0</span>
+                                        <span class="paper-score score-high">9.0</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -2150,7 +2851,7 @@ $$R=\frac{I(X;Z|Q)}{L}\quad(\text{bits/token})$$<br />
                                             <div class="paper-summary-inline">本文由来自康奈尔大学、加州大学伯克利分校、俄亥俄州立大学、耶鲁大学、西蒙弗雷泽大学、洛桑联邦理工学院、佐治亚理工学院、东北大学等国际顶尖高校，以及Deep Principle公司的跨学科研究团队合作完成。该团队提出了一种名为SAGA（Scientific Autonomous Goal-evolving Agents）的双层智能体框架，旨在解决科学发现中目标函数难以预先准确设定的核心挑战。SAGA通过外层LLM智能体分析优化结果、提出新目标并转化为可计算评分函数，内层进行候选解优化的方式，实现了目标空间的系统性探索。论文在抗生素设计、无机材料设计、功能DNA序列设计和化工过程设计四个不同科学领域进行了广泛验证，结果表明自动化目标制定能显著提升科学发现智能体的有效性。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.9</span>
+                                        <span class="paper-score score-mid">8.9</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -2996,7 +3697,7 @@ $$</p>
                                             <div class="paper-summary-inline">本文由香港科技大学和阿里巴巴集团千问团队联合提出，作者团队来自顶尖高校和知名工业研究机构，具备强大的研究实力和工程背景。论文针对软件工程智能体开发中广泛使用的基于执行的反馈（如单元测试）存在的稀疏性和依赖高质量测试用例等问题，提出了SWE-RM——一种无需执行的奖励模型。该模型通过混合专家架构（30B总参数，3B激活参数）和长达256K的上下文支持，为软件工程任务提供细粒度的反馈信号。论文系统性地分析了奖励模型在测试时扩展和强化学习中的关键属性（TTS、AUC、校准），并通过大规模消融实验研究了训练数据规模、正负样本比例、策略混合和数据源组成等因素的影响。实验表明，SWE-RM在SWE-Bench Verified基准上显著提升了Qwen3-Coder系列模型的性能，并在强化学习训练中取得了优于纯执行反馈的效果。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.6</span>
+                                        <span class="paper-score score-mid">8.6</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -3495,577 +4196,6 @@ SWE-RM 采用 30B-MoE(3B 激活)。可系统比较 Dense、MoE、LoRA/DoRA、RNN
                                     </div>
                                 </div>
                                 
-                                <div class="paper-item-compact" id="paper-item-2512.21354">
-                                    <div class="paper-header" onclick="showPaperDetail('2512.21354', 'Agent')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Reflection-Driven Control for Trustworthy Code Agents
-                                                <button class="mark-button" 
-                                                        data-paper-id="2512.21354"
-                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2512.21354", "authors": ["Wang", "Quan", "Yu", "Hu", "Yuhao", "Tsang"], "id": "2512.21354", "pdf_url": "https://arxiv.org/pdf/2512.21354", "rank": 8.428571428571429, "title": "Reflection-Driven Control for Trustworthy Code Agents"}"
-                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
-                                                        title="标记这篇论文">☆</button>
-                                                <a href="https://arxiv.org/abs/2512.21354" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AReflection-Driven%20Control%20for%20Trustworthy%20Code%20Agents%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2512.21354&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AReflection-Driven%20Control%20for%20Trustworthy%20Code%20Agents%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2512.21354%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Wang, Quan, Yu, Hu, Yuhao, Tsang</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文提出了一种名为‘反射驱动控制’的标准化、可插拔模块，用于提升LLM智能体（特别是代码生成智能体）的安全性和可信度。该方法将‘自我反思’从后处理步骤提升为智能体推理过程中的显式控制循环，通过动态内存检索和证据注入来约束和修正不安全行为。论文在八个安全关键的CWE代码生成场景上进行了系统评估，结果表明该方法能显著提升生成代码的安全性和策略合规性，同时保持功能正确性，且运行时和令牌开销极低。作者团队包括来自学术界的研究人员，其中Ivor Tsang教授是机器学习领域的知名学者。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.4</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2512.21354" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Reflection-Driven Control for Trustworthy Code Agents</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.4</span></span>
-                                            <span>置信度: 0.90</span>
-                                            <span>分类: Agent</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">Agent</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2512.21354" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2512.21354" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="paper-item-compact" id="paper-item-2507.18033">
-                                    <div class="paper-header" onclick="showPaperDetail('2507.18033', 'Agent')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                OpenNav: Open-World Navigation with Multimodal Large Language Models
-                                                <button class="mark-button" 
-                                                        data-paper-id="2507.18033"
-                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2507.18033", "authors": ["Yuan", "Wang", "Waslander"], "id": "2507.18033", "pdf_url": "https://arxiv.org/pdf/2507.18033", "rank": 8.357142857142858, "title": "OpenNav: Open-World Navigation with Multimodal Large Language Models"}"
-                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
-                                                        title="标记这篇论文">☆</button>
-                                                <a href="https://arxiv.org/abs/2507.18033" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AOpenNav%3A%20Open-World%20Navigation%20with%20Multimodal%20Large%20Language%20Models%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2507.18033&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AOpenNav%3A%20Open-World%20Navigation%20with%20Multimodal%20Large%20Language%20Models%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2507.18033%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Yuan, Wang, Waslander</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文由多伦多大学航空航天研究所和多伦多机器人研究所的研究团队提出了一种名为OpenNav的零样本视觉语言导航框架。该研究首次利用多模态大语言模型直接生成户外导航轨迹，无需依赖预训练技能、运动基元或上下文示例。通过整合开放词汇感知系统、MLLM高级规划和经典轨迹优化算法，实现了对开放集指令和对象的强鲁棒性，并在自动驾驶数据集和真实机器人平台上验证了有效性。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.4</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2507.18033" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">OpenNav: Open-World Navigation with Multimodal Large Language Models</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 2 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>这篇论文试图解决在开放世界（open-world）环境下，如何使机器人能够理解和执行自由形式（free-form）语言指令以完成导航任务的问题。具体来说，主要挑战和目标包括以下几点：</p>
-<h3>开放世界导航的挑战</h3>
-<ul>
-<li><strong>开放集对象（Open-set Objects）</strong>：在现实世界的导航任务中，机器人会遇到各种各样的对象，这些对象可能以不同的方式被描述，例如通过其类别（如“房子”）、基于特征的描述（如“圆柱形建筑”）或功能描述（如“扔掉垃圾”）。传统的导航方法通常依赖于预定义的对象类别和指令，难以处理这些开放集对象。</li>
-<li><strong>开放集指令（Open-set Instructions）</strong>：真实应用场景中的指令通常是自由形式的，具有很大的灵活性和多样性。不同的指令可能需要不同层次的空间、语义和关系推理，从区分相似对象到识别特定地标，再到理解跨越大范围无结构户外空间的抽象空间关系。现有方法在处理这种指令的丰富性和变异性方面面临挑战。</li>
-<li><strong>从语言到行动的转换</strong>：尽管预训练的大型语言模型（LLMs）和视觉-语言模型（VLMs）在语言和常识推理方面表现出色，但将这些模型的强大能力转化为机器人的物理执行动作仍然是一个开放性问题。现有方法大多假设这些模型不适合硬件依赖的低级控制，因此通常将LLMs用作高级规划器，忽视低级机器人运动控制或依赖预定义的运动原语，这限制了语言指令在控制机器人运动行为方面的灵活性。</li>
-</ul>
-<h3>论文的目标</h3>
-<ul>
-<li><strong>零样本视觉-语言导航（Zero-shot Vision-Language Navigation）</strong>：开发一个能够在没有预训练技能、运动原语或上下文示例的情况下，直接根据开放集指令和开放集对象生成轨迹的导航框架。这个框架需要能够处理自由形式的自然语言导航指令，并在保持对物体检测错误和语言歧义的鲁棒性的同时，有效地执行各种导航任务。</li>
-<li><strong>多模态交互与理解</strong>：通过结合多模态大型语言模型（MLLMs）的跨模态理解和代码生成能力，与视觉-语言感知模型进行交互，生成组合式的二维鸟瞰图价值地图（2D bird-eye-view value maps），有效地将MLLMs的语义知识与地图的空间信息结合起来，增强机器人的空间理解能力。</li>
-<li><strong>实际应用验证</strong>：在大规模自动驾驶车辆数据集（AVDs）和真实世界的机器人平台上验证所提出的框架，证明其在户外导航任务中的有效性和鲁棒性，以及在处理开放集对象和指令时的能力。</li>
-</ul>
-<h2>相关工作</h2>
-<p>论文中提到了多个与本研究相关的领域和具体工作，以下是这些相关研究的分类和介绍：</p>
-<h3>开放集感知与规划（Open-Set Perception and Planning）</h3>
-<ul>
-<li><strong>早期基于深度学习的方法</strong>：早期的物体检测和语义3D映射主要依赖于深度学习方法和标记数据集，这些模型在封闭集（closed-set）的物体类别和特定场景数据集下进行训练，因此在复杂开放环境中识别未见物体类别时性能受限。</li>
-<li><strong>基于VLMs的开放词汇理解</strong>：最近的视觉-语言模型（VLMs）通过互联网规模的数据训练，能够进行开放词汇的2D和3D理解。在机器人应用中，常用模型如SAM和CLIP生成分割物体的点云和相关检测标签及特征嵌入。</li>
-<li><strong>空间语义场景描述</strong>：一些工作从点云数据中构建空间语义文本场景描述，虽然在简单小规模环境中有效，但在复杂、大规模开放环境中，这种仅依赖文本描述的方法变得不足，因为缺乏对环境的视觉细节理解。</li>
-</ul>
-<h3>视觉-语言导航（Vision-Language Navigation）</h3>
-<ul>
-<li><strong>早期离散导航研究</strong>：早期在如Matterport3D这样的模拟器中的离散导航研究，主要关注在预定义节点之间的瞬移式移动。</li>
-<li><strong>基于预训练LLMs的导航</strong>：随着预训练LLMs的发展，许多研究利用大规模模型和预训练技术来增强导航能力，但这些研究主要集中在高级决策上，忽视了低级运动控制。</li>
-<li><strong>连续环境中的导航</strong>：最近的研究转向连续环境，其中代理使用中等层次的动作（如向前移动、原地旋转）进行导航。一些方法使用航点模型来预测候选位置，但这些方法在泛化能力、运动规划和避障方面存在局限性。</li>
-</ul>
-<h3>代码作为策略（Code as Policy）</h3>
-<ul>
-<li><strong>机器人操作中的LLMs</strong>：一些工作利用LLMs作为机器人操作的规划器，例如SayCan，它在推理时严重依赖上下文示例。</li>
-<li><strong>基于LLMs的轨迹生成</strong>：与Kwon等人的工作相似，但他们的关注点在于操作任务，而本研究则专注于导航任务。本研究使用单一的、与任务无关的提示，无需上下文示例或预定义的运动原语，以实现通用导航。</li>
-</ul>
-<h3>其他相关工作</h3>
-<ul>
-<li><strong>开放世界导航的挑战</strong>：在开放世界设置中，如户外导航，机器人必须处理由开放集对象组成的环境，这些对象具有无结构的布局，导致复杂性和环境不确定性显著增加。</li>
-<li><strong>现有方法的局限性</strong>：现有方法依赖于物体检测器来描述环境，并在语言领域使用LLMs进行推理，导致导航任务中丢失了关键的空间和微妙信息。因此，这些方法在处理开放世界应用的丰富性和变异性方面存在困难。</li>
-</ul>
-<p>这些相关研究为本论文提供了背景和基础，同时也指出了现有方法的局限性，从而引出了本研究提出的新方法和框架。</p>
-<h2>解决方案</h2>
-<p>论文提出了一种名为 <strong>OpenNav</strong> 的零样本视觉-语言导航框架，通过结合多模态大型语言模型（MLLMs）的强大语言理解、推理和代码生成能力，以及经典的规划算法，来解决开放世界环境下的导航问题。以下是该框架解决该问题的具体方法和步骤：</p>
-<h3>1. <strong>零样本视觉-语言导航框架（Zero-shot Vision-Language Navigation Framework）</strong></h3>
-<ul>
-<li><p><strong>开放集指令（Open-set Instructions）</strong>：</p>
-<ul>
-<li><strong>任务无关提示（Task-agnostic Prompt）</strong>：设计了一个单一的任务无关提示，使机器人能够泛化到各种户外导航任务。这个提示包括五个关键部分：可用函数、环境描述、碰撞避免指导、初始规划和代码生成。</li>
-<li><strong>指令理解与分解</strong>：利用MLLM的强大语义理解和任务规划能力，识别相关目标（如房屋、可行驶表面、障碍物等），并根据指令中的空间关系（如“在你的右边”）确定目标对象。</li>
-<li><strong>代码生成与轨迹合成</strong>：MLLM通过代码生成能力，生成Python脚本来指定轨迹的起点、中间航点和终点，从而生成符合语言指令的轨迹。</li>
-</ul>
-</li>
-<li><p><strong>开放集对象（Open-set Objects）</strong>：</p>
-<ul>
-<li><strong>开放词汇感知系统（Open-Vocabulary Perception System, OVPS）</strong>：该系统由开放词汇对象感知模块和地图重建模块组成。它负责对象检测、分割、描述生成，并提取对象属性（如位置、尺寸等）。</li>
-<li><strong>多模态输入</strong>：OVPS生成的文本描述和注释图像作为MLLM的输入，使MLLM能够更好地理解环境中的对象和场景。</li>
-</ul>
-</li>
-</ul>
-<h3>2. <strong>轨迹合成与优化（Trajectory Synthesis and Optimization）</strong></h3>
-<ul>
-<li><p><strong>基于MLLM的轨迹生成</strong>：</p>
-<ul>
-<li><strong>轨迹形状推理</strong>：MLLM根据任务和环境感知，推断轨迹形状，选择中间航点，并生成轨迹代码。</li>
-<li><strong>错误检测与调试</strong>：如果生成的代码在执行时出现错误，MLLM会自动调试脚本，直到生成有效的轨迹。</li>
-</ul>
-</li>
-<li><p><strong>几何合规轨迹细化（Geometry-compliant Trajectory Refinement）</strong>：</p>
-<ul>
-<li><strong>2D鸟瞰图价值地图（2D Bird-eye-view Value Map）</strong>：结合MLLM生成的轨迹和环境的几何信息，构建2D鸟瞰图价值地图，包括语义地图和占用地图。</li>
-<li><strong>A*算法优化</strong>：使用A*算法基于价值地图生成优化后的轨迹，确保轨迹与语言指令一致，同时避免碰撞。</li>
-</ul>
-</li>
-</ul>
-<h3>3. <strong>开放词汇感知系统（Open-Vocabulary Perception System, OVPS）</strong></h3>
-<ul>
-<li><p><strong>对象检测与描述生成</strong>：</p>
-<ul>
-<li>使用 <strong>Recognize Anything Model (RAM)</strong> 进行开放集对象类别识别。</li>
-<li>使用 <strong>Grounding DINO</strong> 模型进行对象检测，生成边界框。</li>
-<li>使用 <strong>Tokenize Anything via Prompting (TAP)</strong> 模型进行对象分割和描述生成，生成分割掩码和文本描述。</li>
-</ul>
-</li>
-<li><p><strong>地图重建</strong>：</p>
-<ul>
-<li>将3D LiDAR点云投影到2D图像平面，生成对象特定的3D点云。</li>
-<li>构建2D占用地图和语义地图，用于轨迹规划和3D可视化。</li>
-</ul>
-</li>
-</ul>
-<h3>4. <strong>实验验证（Experimental Validation）</strong></h3>
-<ul>
-<li><strong>数据集与场景</strong>：使用SemanticKITTI数据集进行实验，该数据集提供了丰富的户外场景、2D RGB图像、3D LiDAR点云和相应的姿态信息。</li>
-<li><strong>任务类型</strong>：<ul>
-<li><strong>移动到对象任务（Move-to-object Task）</strong>：包括特定对象导航和模糊对象导航。</li>
-<li><strong>高级语言指令任务（High-level Language Instruction Task）</strong>：评估模型对高级语言指令的理解和执行能力。</li>
-</ul>
-</li>
-<li><strong>评估指标</strong>：<ul>
-<li><strong>成功率（Success Rate, SR）</strong>：如果轨迹的最终位置在真实位置1米范围内，则认为成功。</li>
-<li><strong>导航误差（Navigation Error, NE）</strong>：估计终点和真实终点之间的平均欧几里得距离。</li>
-</ul>
-</li>
-</ul>
-<h3>5. <strong>实验结果</strong></h3>
-<ul>
-<li><p><strong>与现有方法的比较</strong>：</p>
-<ul>
-<li><strong>LLM-TG</strong>：依赖于对象检测器提供的文本描述，包括对象标题、坐标、尺寸和每个可行驶区域到目标的最近可达点。</li>
-<li><strong>OpenNav</strong>：通过多模态输入和MLLM的推理能力，显著提高了在模糊对象导航和高级语言指令任务中的成功率和导航精度。</li>
-</ul>
-</li>
-<li><p><strong>轨迹合成性能</strong>：</p>
-<ul>
-<li><strong>A*算法</strong>：仅基于占用地图生成碰撞自由轨迹，但轨迹形状与任务要求的对齐性较差。</li>
-<li><strong>VLT-Code</strong>：MLLM直接生成轨迹，但缺乏深度和几何信息，导致碰撞率较高。</li>
-<li><strong>OpenNav</strong>：结合MLLM和几何约束，生成既符合语言指令又避免碰撞的轨迹。</li>
-</ul>
-</li>
-</ul>
-<p>通过上述方法，OpenNav框架成功地将MLLM的强大语言和常识推理能力转化为机器人的物理执行动作，实现了在开放世界环境下的零样本视觉-语言导航。</p>
-<h2>实验验证</h2>
-<p>论文中进行了以下实验来验证所提出的 <strong>OpenNav</strong> 框架的有效性和鲁棒性：</p>
-<h3>1. <strong>导航任务实验</strong></h3>
-<h4><strong>实验设置</strong></h4>
-<ul>
-<li><strong>数据集</strong>：使用了 <strong>SemanticKITTI</strong> 数据集，该数据集提供了丰富的户外场景，包括2D RGB图像、3D LiDAR点云和相应的姿态信息。</li>
-<li><strong>任务类型</strong>：实验分为两类导航任务：<ul>
-<li><strong>移动到对象任务（Move-to-object Task）</strong>：<ul>
-<li><strong>特定对象导航（Specific object navigation）</strong>：指令明确指定目标对象，环境中只有一个这样的对象，例如“Go to the red car”。</li>
-<li><strong>模糊对象导航（Ambiguous object navigation）</strong>：环境中存在多个相似对象，需要机器人利用多模态信息解决歧义，例如“Go to the second car on your left”。</li>
-</ul>
-</li>
-<li><strong>高级语言指令任务（High-level Language Instruction Task）</strong>：指令不明确提及目标对象或不能通过单个对象描述解决，需要机器人理解任务、进行推理并整合环境观察以生成轨迹，例如“Throw away the trash”或“Go straight first, then turn right into the courtyard”。</li>
-</ul>
-</li>
-</ul>
-<h4><strong>评估指标</strong></h4>
-<ul>
-<li><strong>成功率（Success Rate, SR）</strong>：如果轨迹的最终位置在真实位置1米范围内，则认为成功。</li>
-<li><strong>导航误差（Navigation Error, NE）</strong>：估计终点和真实终点之间的平均欧几里得距离。</li>
-</ul>
-<h4><strong>实验结果</strong></h4>
-<ul>
-<li><strong>与现有方法的比较</strong>：<ul>
-<li><strong>LLM-TG</strong>：依赖于对象检测器提供的文本描述，包括对象标题、坐标、尺寸和每个可行驶区域到目标的最近可达点。</li>
-<li><strong>OpenNav</strong>：通过多模态输入和MLLM的推理能力，显著提高了在模糊对象导航和高级语言指令任务中的成功率和导航精度。</li>
-<li><strong>具体结果</strong>：<ul>
-<li><strong>特定对象导航</strong>：LLM-TG和OpenNav均实现了100%的成功率。</li>
-<li><strong>模糊对象导航</strong>：LLM-TG的成功率为26%，而OpenNav的成功率为84%。</li>
-<li><strong>高级语言指令任务</strong>：LLM-TG的成功率为46%，而OpenNav的成功率为80%。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3>2. <strong>轨迹合成实验</strong></h3>
-<h4><strong>实验设置</strong></h4>
-<ul>
-<li><strong>用户定义的轨迹</strong>：用户提供语言指令，并在地图上手动绘制他们偏好的轨迹，作为评估生成轨迹质量的真值。</li>
-<li><strong>评估方法</strong>：<ul>
-<li><strong>Fréchet距离</strong>：严格保留轨迹形状，对偏差敏感。</li>
-<li><strong>归一化动态时间规整（NDTW）</strong>：考虑速度变化，允许灵活的时间对齐。</li>
-<li><strong>碰撞检测</strong>：记录生成轨迹是否与障碍物发生碰撞。</li>
-</ul>
-</li>
-</ul>
-<h4><strong>实验结果</strong></h4>
-<ul>
-<li><strong>不同方法的比较</strong>：<ul>
-<li><strong>A*算法</strong>：仅基于占用地图生成碰撞自由轨迹，但轨迹形状与任务要求的对齐性较差。<ul>
-<li><strong>Fréchet距离</strong>：24.20</li>
-<li><strong>NDTW</strong>：0.08</li>
-<li><strong>碰撞次数</strong>：0/30</li>
-</ul>
-</li>
-<li><strong>VLT-Code</strong>：MLLM直接生成轨迹，但缺乏深度和几何信息，导致碰撞率较高。<ul>
-<li><strong>Fréchet距离</strong>：17.53</li>
-<li><strong>NDTW</strong>：0.16</li>
-<li><strong>碰撞次数</strong>：16/30</li>
-</ul>
-</li>
-<li><strong>OpenNav</strong>：结合MLLM和几何约束，生成既符合语言指令又避免碰撞的轨迹。<ul>
-<li><strong>Fréchet距离</strong>：12.60</li>
-<li><strong>NDTW</strong>：0.38</li>
-<li><strong>碰撞次数</strong>：2/30</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3>3. <strong>真实机器人实验</strong></h3>
-<h4><strong>实验设置</strong></h4>
-<ul>
-<li><strong>机器人平台</strong>：使用Husky机器人在室内和室外场景中进行实验。</li>
-<li><strong>任务类型</strong>：包括移动到特定对象和执行高级语言指令的任务。</li>
-</ul>
-<h4><strong>实验结果</strong></h4>
-<ul>
-<li><strong>真实机器人实验验证了OpenNav框架在实际应用中的鲁棒性和适用性</strong>：<ul>
-<li><strong>室内场景</strong>：机器人能够准确地导航到目标对象，并在执行高级语言指令时表现出良好的性能。</li>
-<li><strong>室外场景</strong>：机器人在复杂的户外环境中表现出色，能够处理开放集对象和模糊指令，生成符合语言指令的轨迹。</li>
-</ul>
-</li>
-</ul>
-<h3>4. <strong>补充实验</strong></h3>
-<ul>
-<li><strong>更多实验结果和真实机器人演示</strong>：论文的项目网站提供了更全面的实验结果和真实机器人演示，以进一步验证OpenNav框架的有效性。</li>
-</ul>
-<p>通过这些实验，论文验证了OpenNav框架在处理开放集对象和指令时的鲁棒性，以及在生成符合语言指令的轨迹方面的有效性。</p>
-<h2>未来工作</h2>
-<p>论文提出的 <strong>OpenNav</strong> 框架在开放世界导航任务中展示了强大的性能和鲁棒性，但仍有一些可以进一步探索和改进的方向：</p>
-<h3>1. <strong>动态环境中的导航</strong></h3>
-<ul>
-<li><strong>当前限制</strong>：当前的实验主要在静态环境中进行，而真实世界中的导航任务通常涉及动态环境，如行人、车辆和其他移动障碍物。</li>
-<li><strong>改进方向</strong>：<ul>
-<li><strong>动态障碍物检测与避让</strong>：结合实时的动态障碍物检测技术，使机器人能够实时感知并避让移动障碍物。</li>
-<li><strong>预测性轨迹规划</strong>：利用预测模型（如基于深度学习的运动预测网络）预测动态障碍物的未来位置，并在轨迹规划中考虑这些预测结果。</li>
-</ul>
-</li>
-</ul>
-<h3>2. <strong>多模态感知的进一步优化</strong></h3>
-<ul>
-<li><strong>当前限制</strong>：尽管OpenNav已经结合了视觉和语言信息，但感知系统的精度和鲁棒性仍有提升空间。</li>
-<li><strong>改进方向</strong>：<ul>
-<li><strong>多传感器融合</strong>：进一步优化多传感器（如RGB-D相机、LiDAR、IMU等）的融合方法，提高环境感知的准确性和鲁棒性。</li>
-<li><strong>实时感知更新</strong>：在导航过程中实时更新感知信息，确保机器人始终基于最新的环境信息进行决策。</li>
-</ul>
-</li>
-</ul>
-<h3>3. <strong>复杂任务的执行</strong></h3>
-<ul>
-<li><strong>当前限制</strong>：当前的实验主要集中在相对简单的导航任务上，如移动到特定对象或执行高级语言指令。</li>
-<li><strong>改进方向</strong>：<ul>
-<li><strong>多步骤任务规划</strong>：扩展框架以支持更复杂的多步骤任务，如涉及多个目标对象和多个导航阶段的任务。</li>
-<li><strong>任务分解与组合</strong>：开发更高级的任务分解和组合方法，使机器人能够处理更复杂的指令和任务序列。</li>
-</ul>
-</li>
-</ul>
-<h3>4. <strong>长距离导航</strong></h3>
-<ul>
-<li><strong>当前限制</strong>：当前的实验主要在相对较小的区域内进行，长距离导航可能面临更多的挑战，如地图更新、路径规划的效率等。</li>
-<li><strong>改进方向</strong>：<ul>
-<li><strong>分段路径规划</strong>：将长距离导航任务分解为多个短距离子任务，分别规划路径，提高路径规划的效率和准确性。</li>
-<li><strong>地图更新与维护</strong>：开发实时地图更新和维护机制，确保机器人在长距离导航过程中始终基于最新的地图信息进行决策。</li>
-</ul>
-</li>
-</ul>
-<h3>5. <strong>与其他机器人的协作</strong></h3>
-<ul>
-<li><strong>当前限制</strong>：当前的实验主要集中在单个机器人上，而实际应用中可能需要多个机器人协作完成任务。</li>
-<li><strong>改进方向</strong>：<ul>
-<li><strong>多机器人协调</strong>：开发多机器人协调机制，使多个机器人能够协同工作，共同完成复杂的导航任务。</li>
-<li><strong>通信与信息共享</strong>：研究高效的通信和信息共享机制，确保机器人之间能够实时交换感知信息和任务状态。</li>
-</ul>
-</li>
-</ul>
-<h3>6. <strong>模型的可扩展性和适应性</strong></h3>
-<ul>
-<li><strong>当前限制</strong>：尽管OpenNav展示了强大的零样本泛化能力，但其适应性和可扩展性仍有待进一步验证。</li>
-<li><strong>改进方向</strong>：<ul>
-<li><strong>跨领域适应性</strong>：验证框架在不同领域（如室内、室外、城市、乡村等）的适应性，确保其在多样化环境中的鲁棒性。</li>
-<li><strong>模型优化</strong>：进一步优化MLLM的训练和微调方法，提高其在特定任务和环境中的性能。</li>
-</ul>
-</li>
-</ul>
-<h3>7. <strong>实时性能优化</strong></h3>
-<ul>
-<li><strong>当前限制</strong>：当前的实验主要关注轨迹生成的准确性和鲁棒性，而实时性能的优化也是实际应用中的一个重要方面。</li>
-<li><strong>改进方向</strong>：<ul>
-<li><strong>实时轨迹生成</strong>：优化轨迹生成算法，确保机器人能够在实时环境中快速生成和更新轨迹。</li>
-<li><strong>计算效率</strong>：研究高效的计算方法，减少轨迹生成和优化的计算时间，提高系统的实时响应能力。</li>
-</ul>
-</li>
-</ul>
-<h3>8. <strong>用户交互与反馈</strong></h3>
-<ul>
-<li><strong>当前限制</strong>：当前的实验主要关注机器人自主完成任务，而用户交互和反馈机制对于提高系统的可用性和用户体验至关重要。</li>
-<li><strong>改进方向</strong>：<ul>
-<li><strong>实时用户反馈</strong>：开发实时用户反馈机制，使用户能够实时监控和调整机器人的行为。</li>
-<li><strong>自然语言交互</strong>：进一步优化自然语言交互模块，使机器人能够更好地理解和执行用户的指令。</li>
-</ul>
-</li>
-</ul>
-<p>通过这些进一步的探索和改进，OpenNav框架有望在更复杂、更动态的环境中实现更高效、更鲁棒的导航能力，为实际应用中的机器人导航任务提供更强大的支持。</p>
-<h2>总结</h2>
-<p>当然可以。以下是论文《OpenNav: Open-World Navigation with Multimodal Large Language Models》的主要内容总结：</p>
-<h3>论文标题</h3>
-<p>OpenNav: Open-World Navigation with Multimodal Large Language Models</p>
-<h3>作者</h3>
-<p>Mingfeng Yuan, Letian Wang, Steven L. Waslander</p>
-<h3>摘要</h3>
-<p>本文提出了一种名为 <strong>OpenNav</strong> 的零样本视觉-语言导航框架，旨在使机器人能够理解和执行自由形式的语言指令，以完成开放世界环境中的导航任务。该框架利用多模态大型语言模型（MLLMs）的强大语言理解和代码生成能力，结合经典的规划算法，生成符合语言指令的导航轨迹。实验表明，OpenNav在处理开放集对象和指令时具有很强的鲁棒性，并在真实世界的机器人平台上验证了其有效性。</p>
-<h3>研究背景</h3>
-<ul>
-<li><strong>视觉-语言模型（VLMs）</strong>：近年来，VLMs在对齐自然语言与视觉信息方面取得了显著进展，但这些进展大多局限于结构化场景，如室内固定桌面操作任务或室内目标导航任务。在开放世界环境中，机器人需要处理开放集对象和自由形式的语言指令，这对现有方法提出了挑战。</li>
-<li><strong>现有方法的局限性</strong>：现有方法依赖于物体检测器来描述环境，并在语言领域使用LLMs进行推理，导致导航任务中丢失了关键的空间和微妙信息。此外，现有方法大多假设LLMs不适合硬件依赖的低级控制，因此通常将LLMs用作高级规划器，忽视低级机器人运动控制或依赖预定义的运动原语。</li>
-</ul>
-<h3>研究贡献</h3>
-<ol>
-<li><strong>OpenNav框架</strong>：提出了一种零样本视觉-语言导航框架，能够直接生成轨迹，无需预训练技能、运动原语或上下文示例。</li>
-<li><strong>多专家系统</strong>：结合最先进的MLLMs和开放词汇感知系统，通过单一任务无关提示和多模态接口，显著提高了对开放集对象和语言指令的鲁棒性。</li>
-<li><strong>实验验证</strong>：在大规模自动驾驶车辆数据集（AVDs）和真实世界的机器人平台上验证了OpenNav的有效性，证明了其在视觉-语言导航和体现智能研究中的有效性。</li>
-</ol>
-<h3>方法</h3>
-<h4>1. <strong>零样本视觉-语言导航框架（Zero-shot Vision-Language Navigation Framework）</strong></h4>
-<ul>
-<li><p><strong>开放集指令（Open-set Instructions）</strong>：</p>
-<ul>
-<li><strong>任务无关提示（Task-agnostic Prompt）</strong>：设计了一个单一的任务无关提示，使机器人能够泛化到各种户外导航任务。该提示包括可用函数、环境描述、碰撞避免指导、初始规划和代码生成。</li>
-<li><strong>指令理解与分解</strong>：利用MLLM的强大语义理解和任务规划能力，识别相关目标，并根据指令中的空间关系确定目标对象。</li>
-<li><strong>代码生成与轨迹合成</strong>：MLLM通过代码生成能力，生成Python脚本来指定轨迹的起点、中间航点和终点，从而生成符合语言指令的轨迹。</li>
-</ul>
-</li>
-<li><p><strong>开放集对象（Open-set Objects）</strong>：</p>
-<ul>
-<li><strong>开放词汇感知系统（Open-Vocabulary Perception System, OVPS）</strong>：该系统由开放词汇对象感知模块和地图重建模块组成。它负责对象检测、分割、描述生成，并提取对象属性（如位置、尺寸等）。</li>
-<li><strong>多模态输入</strong>：OVPS生成的文本描述和注释图像作为MLLM的输入，使MLLM能够更好地理解环境中的对象和场景。</li>
-</ul>
-</li>
-</ul>
-<h4>2. <strong>轨迹合成与优化（Trajectory Synthesis and Optimization）</strong></h4>
-<ul>
-<li><p><strong>基于MLLM的轨迹生成</strong>：</p>
-<ul>
-<li><strong>轨迹形状推理</strong>：MLLM根据任务和环境感知，推断轨迹形状，选择中间航点，并生成轨迹代码。</li>
-<li><strong>错误检测与调试</strong>：如果生成的代码在执行时出现错误，MLLM会自动调试脚本，直到生成有效的轨迹。</li>
-</ul>
-</li>
-<li><p><strong>几何合规轨迹细化（Geometry-compliant Trajectory Refinement）</strong>：</p>
-<ul>
-<li><strong>2D鸟瞰图价值地图（2D Bird-eye-view Value Map）</strong>：结合MLLM生成的轨迹和环境的几何信息，构建2D鸟瞰图价值地图，包括语义地图和占用地图。</li>
-<li><strong>A*算法优化</strong>：使用A*算法基于价值地图生成优化后的轨迹，确保轨迹与语言指令一致，同时避免碰撞。</li>
-</ul>
-</li>
-</ul>
-<h4>3. <strong>开放词汇感知系统（Open-Vocabulary Perception System, OVPS）</strong></h4>
-<ul>
-<li><p><strong>对象检测与描述生成</strong>：</p>
-<ul>
-<li>使用 <strong>Recognize Anything Model (RAM)</strong> 进行开放集对象类别识别。</li>
-<li>使用 <strong>Grounding DINO</strong> 模型进行对象检测，生成边界框。</li>
-<li>使用 <strong>Tokenize Anything via Prompting (TAP)</strong> 模型进行对象分割和描述生成，生成分割掩码和文本描述。</li>
-</ul>
-</li>
-<li><p><strong>地图重建</strong>：</p>
-<ul>
-<li>将3D LiDAR点云投影到2D图像平面，生成对象特定的3D点云。</li>
-<li>构建2D占用地图和语义地图，用于轨迹规划和3D可视化。</li>
-</ul>
-</li>
-</ul>
-<h3>实验</h3>
-<h4>1. <strong>导航任务实验</strong></h4>
-<ul>
-<li><strong>数据集</strong>：使用 <strong>SemanticKITTI</strong> 数据集，提供丰富的户外场景、2D RGB图像、3D LiDAR点云和相应的姿态信息。</li>
-<li><strong>任务类型</strong>：<ul>
-<li><strong>移动到对象任务（Move-to-object Task）</strong>：包括特定对象导航和模糊对象导航。</li>
-<li><strong>高级语言指令任务（High-level Language Instruction Task）</strong>：评估模型对高级语言指令的理解和执行能力。</li>
-</ul>
-</li>
-<li><strong>评估指标</strong>：<ul>
-<li><strong>成功率（Success Rate, SR）</strong>：如果轨迹的最终位置在真实位置1米范围内，则认为成功。</li>
-<li><strong>导航误差（Navigation Error, NE）</strong>：估计终点和真实终点之间的平均欧几里得距离。</li>
-</ul>
-</li>
-<li><strong>实验结果</strong>：<ul>
-<li><strong>特定对象导航</strong>：LLM-TG和OpenNav均实现了100%的成功率。</li>
-<li><strong>模糊对象导航</strong>：LLM-TG的成功率为26%，而OpenNav的成功率为84%。</li>
-<li><strong>高级语言指令任务</strong>：LLM-TG的成功率为46%，而OpenNav的成功率为80%。</li>
-</ul>
-</li>
-</ul>
-<h4>2. <strong>轨迹合成实验</strong></h4>
-<ul>
-<li><strong>用户定义的轨迹</strong>：用户提供语言指令，并在地图上手动绘制他们偏好的轨迹，作为评估生成轨迹质量的真值。</li>
-<li><strong>评估方法</strong>：<ul>
-<li><strong>Fréchet距离</strong>：严格保留轨迹形状，对偏差敏感。</li>
-<li><strong>归一化动态时间规整（NDTW）</strong>：考虑速度变化，允许灵活的时间对齐。</li>
-<li><strong>碰撞检测</strong>：记录生成轨迹是否与障碍物发生碰撞。</li>
-</ul>
-</li>
-<li><strong>实验结果</strong>：<ul>
-<li><strong>A*算法</strong>：<ul>
-<li><strong>Fréchet距离</strong>：24.20</li>
-<li><strong>NDTW</strong>：0.08</li>
-<li><strong>碰撞次数</strong>：0/30</li>
-</ul>
-</li>
-<li><strong>VLT-Code</strong>：<ul>
-<li><strong>Fréchet距离</strong>：17.53</li>
-<li><strong>NDTW</strong>：0.16</li>
-<li><strong>碰撞次数</strong>：16/30</li>
-</ul>
-</li>
-<li><strong>OpenNav</strong>：<ul>
-<li><strong>Fréchet距离</strong>：12.60</li>
-<li><strong>NDTW</strong>：0.38</li>
-<li><strong>碰撞次数</strong>：2/30</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h4>3. <strong>真实机器人实验</strong></h4>
-<ul>
-<li><strong>机器人平台</strong>：使用Husky机器人在室内和室外场景中进行实验。</li>
-<li><strong>任务类型</strong>：包括移动到特定对象和执行高级语言指令的任务。</li>
-<li><strong>实验结果</strong>：真实机器人实验验证了OpenNav框架在实际应用中的鲁棒性和适用性。</li>
-</ul>
-<h3>结论</h3>
-<p>OpenNav框架成功地将MLLM的强大语言和常识推理能力转化为机器人的物理执行动作，实现了在开放世界环境下的零样本视觉-语言导航。未来的工作将扩展该方法到更复杂和动态的环境中，进一步提高其鲁棒性和适应性。</p>
-<p>希望这个总结对你有所帮助！</p>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.4</span></span>
-                                            <span>置信度: 0.90</span>
-                                            <span>分类: Agent</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">Agent</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2507.18033" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2507.18033" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
                             
                         </div>
                     </div>
@@ -4111,6 +4241,11 @@ SWE-RM 采用 30B-MoE(3B 激活)。可系统比较 Dense、MoE、LoRA/DoRA、RNN
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-Hallucination" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Hallucination"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Hallucination')">展开全部</a>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2512.19920">
                                     <div class="paper-header" onclick="showPaperDetail('2512.19920', 'Hallucination')">
@@ -4151,7 +4286,7 @@ SWE-RM 采用 30B-MoE(3B 激活)。可系统比较 Dense、MoE、LoRA/DoRA、RNN
                                             <div class="paper-summary-inline">本文由卡内基梅隆大学（CMU）和字节跳动的研究人员合作提出了一种名为“行为校准强化学习”的新方法，用于缓解大语言模型的幻觉问题。该方法通过设计严格的评分规则奖励函数，训练模型根据用户指定的风险阈值自适应地承认不确定性并选择弃答，从而将模型行为与其内在置信度对齐。实验表明，该方法能使较小的模型（如4B参数）在不确定性量化方面超越前沿大模型，并且这种校准能力可作为可迁移的元技能，在跨领域任务中保持有效。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.8</span>
+                                        <span class="paper-score score-mid">8.8</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -4469,7 +4604,7 @@ Critic-Value 已给出每 token 置信，可据此<strong>提前终止</strong>�
                                             <div class="paper-summary-inline">本文由来自卡内基梅隆大学、斯坦福大学、俄亥俄州立大学等知名高校以及Patronus AI、DegenAI Labs等机构的跨学科研究团队合作完成。该论文对人工智能领域长期存在的‘幻觉’问题提出了一个统一的理论框架，将不同任务中的幻觉定义归结为‘不准确的世界建模’。论文通过形式化定义和丰富的跨领域示例，系统性地整合了从机器翻译、摘要生成到多模态和智能体场景下的各类幻觉概念，并基于此框架提出了构建可扩展基准测试的路线图。这项工作在概念创新和理论整合方面贡献突出，为未来幻觉的评估和缓解研究提供了清晰的语言和方向。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.8</span>
+                                        <span class="paper-score score-mid">8.8</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -4796,6 +4931,11 @@ $$<br />
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-Pretraining" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Pretraining"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Pretraining')">展开全部</a>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2512.10858">
                                     <div class="paper-header" onclick="showPaperDetail('2512.10858', 'Pretraining')">
@@ -4836,7 +4976,7 @@ $$<br />
                                             <div class="paper-summary-inline">本文由苏黎世联邦理工学院（ETH Zürich）、ELLIS Institute Tübingen和马克斯·普朗克智能系统研究所（Max Planck Institute for Intelligent Systems）的联合团队完成。该研究首次系统性地探索了离散扩散语言模型（DLMs）在不同噪声类型（掩码、均匀及混合噪声）下的缩放行为，并提出了基于信噪比（SNR）的统一混合扩散框架。研究发现，均匀扩散在计算效率训练中表现出更优的参数-数据权衡，并在大规模（高达100亿参数）实验中验证了其缩放定律，表明DLMs有望在规模上与传统自回归模型竞争。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.6</span>
+                                        <span class="paper-score score-mid">8.6</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -5100,7 +5240,7 @@ DLMs 具备与 ALM 竞争的大规模潜力；uniform 扩散因归纳偏置弱�
                                             <div class="paper-summary-inline">本文由北京邮电大学和新加坡南洋理工大学的研究团队提出了一种改进混合专家（MoE）模型训练的新方法。该方法针对MoE模型中辅助负载均衡损失导致专家重叠和路由趋同的问题，创新性地引入了正交性损失和方差损失两个互补目标，以促进专家专业化和路由决策的差异化。实验表明，该方法在多种模型架构和基准测试上显著提升了性能，且无需修改模型结构。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.4</span>
+                                        <span class="paper-score score-low">8.4</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -5420,464 +5560,10 @@ L_v = -\sum_{i=1}^{N} \sum_{j=1}^{n} \frac{1}{n} (s_{ij} - \bar{s}<em>j)^2, \qua
                         
                         <div class="topic-content">
                             
-                                
-                                <div class="paper-item-compact" id="paper-item-2512.21482">
-                                    <div class="paper-header" onclick="showPaperDetail('2512.21482', 'Multimodal')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                LogicLens: Visual-Logical Co-Reasoning for Text-Centric Forgery Analysis
-                                                <button class="mark-button" 
-                                                        data-paper-id="2512.21482"
-                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2512.21482", "authors": ["Zeng", "Miao", "Huang", "Tan", "Gong", "Yu", "Wang", "Tan", "Yao", "Li"], "id": "2512.21482", "pdf_url": "https://arxiv.org/pdf/2512.21482", "rank": 8.642857142857144, "title": "LogicLens: Visual-Logical Co-Reasoning for Text-Centric Forgery Analysis"}"
-                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
-                                                        title="标记这篇论文">☆</button>
-                                                <a href="https://arxiv.org/abs/2512.21482" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ALogicLens%3A%20Visual-Logical%20Co-Reasoning%20for%20Text-Centric%20Forgery%20Analysis%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2512.21482&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ALogicLens%3A%20Visual-Logical%20Co-Reasoning%20for%20Text-Centric%20Forgery%20Analysis%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2512.21482%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Zeng, Miao, Huang, Tan, Gong, Yu, Wang, Tan, Yao, Li</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文由蚂蚁集团（Ant Group）与南洋理工大学（Nanyang Technological University）的研究团队提出了一种名为LogicLens的统一视觉-逻辑协同推理框架，用于文本中心伪造分析。该工作将检测、定位和解释三个子任务统一为联合生成范式，并提出了新颖的跨线索感知思维链（CCT）机制和加权多任务奖励函数进行优化。同时，团队构建了包含精细标注的大规模数据集RealText。实验表明，LogicLens在多个基准测试中取得了最先进的性能，并展现出优异的零样本泛化能力和鲁棒性。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.6</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2512.21482" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">LogicLens: Visual-Logical Co-Reasoning for Text-Centric Forgery Analysis</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.6</span></span>
-                                            <span>置信度: 0.90</span>
-                                            <span>分类: Multimodal</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">Multimodal</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2512.21482" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2512.21482" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="paper-item-compact" id="paper-item-2510.13626">
-                                    <div class="paper-header" onclick="showPaperDetail('2510.13626', 'Multimodal')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                LIBERO-Plus: In-depth Robustness Analysis of Vision-Language-Action Models
-                                                <button class="mark-button" 
-                                                        data-paper-id="2510.13626"
-                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.13626", "authors": ["Fei", "Wang", "Shi", "Dai", "Cai", "Qian", "Ji", "He", "Zhang", "Fei", "Fu", "Gong", "Qiu"], "id": "2510.13626", "pdf_url": "https://arxiv.org/pdf/2510.13626", "rank": 8.571428571428571, "title": "LIBERO-Plus: In-depth Robustness Analysis of Vision-Language-Action Models"}"
-                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
-                                                        title="标记这篇论文">☆</button>
-                                                <a href="https://arxiv.org/abs/2510.13626" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ALIBERO-Plus%3A%20In-depth%20Robustness%20Analysis%20of%20Vision-Language-Action%20Models%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2510.13626&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ALIBERO-Plus%3A%20In-depth%20Robustness%20Analysis%20of%20Vision-Language-Action%20Models%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2510.13626%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Fei, Wang, Shi, Dai, Cai, Qian, Ji, He, Zhang, Fei, Fu, Gong, Qiu</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文由复旦大学、上海人工智能实验室等机构的研究团队（作者包括Xipeng Qiu等知名学者）提出了一种针对视觉-语言-动作（VLA）模型的系统性鲁棒性分析方法LIBERO-Plus。该研究通过引入七个维度的受控扰动，对多个最先进的VLA模型进行了深入的脆弱性分析，揭示了这些模型在基准测试高分背后存在的严重鲁棒性问题。研究发现模型对视角、初始状态等扰动极其敏感，而对语言指令却几乎完全忽略，这一发现挑战了当前评估实践的可靠性假设。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.6</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2510.13626" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">LIBERO-Plus: In-depth Robustness Analysis of Vision-Language-Action Models</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 11 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>该研究针对当前视觉-语言-动作（VLA）模型在标准基准上“高分低能”的现象：尽管在静态、理想环境中成功率接近饱和，一旦遇到轻微的现实扰动（如相机角度、光照、机器人初始位姿、语言指令改写等）就会崩溃。论文系统量化了这一脆弱性，并揭示其根源在于</p>
-<ul>
-<li>对固定视觉-动作映射的过拟合，而非真正的多模态理解；</li>
-<li>对语言模态的“选择性忽视”，模型在多数任务中退化成了视觉-动作模型；</li>
-<li>对目标物体位置的“位置记忆”，而非语义泛化；</li>
-<li>多扰动组合下的非线性性能衰减，即组合泛化缺口。</li>
-</ul>
-<p>为此，作者提出 LIBERO-Plus 基准，通过七类单维度及组合扰动、上万个任务和五级难度划分，对 10 个代表性 VLA 模型进行“压力测试”，并给出可复现的自动化评测与训练框架，推动社区从“刷榜”转向对真实鲁棒性的关注。</p>
-<h2>相关工作</h2>
-<p>与 LIBERO-Plus 直接相关的研究可归纳为两条主线：</p>
-<ol>
-<li>Vision-Language-Action（VLA）模型架构与训练范式；</li>
-<li>机器人操作泛化/鲁棒性评测基准。</li>
-</ol>
-<p>主要文献按主题列举如下（均已在原文 Section 7 引用，此处给出核心贡献便于快速定位）：</p>
-<h3>1. VLA 模型架构</h3>
-<ul>
-<li><p><strong>OpenVLA 系列</strong></p>
-<ul>
-<li>Kim et al., 2024 —— 首个开源 7B 级 VLA，离散动作 token 化 + 微调视觉编码器。</li>
-<li>Kim et al., 2025 —— OpenVLA-OFT，连续动作头 + FiLM 语言调制，支持并行解码。</li>
-</ul>
-</li>
-<li><p><strong>π0 家族</strong></p>
-<ul>
-<li>Black et al., 2024 —— 基于 Transfusion 的流匹配扩散策略，多视角 + 语言。</li>
-<li>Pertsch et al., 2025 —— π0-fast，DCT+BPE 动作压缩，加速推理。</li>
-</ul>
-</li>
-<li><p><strong>Nora</strong>（Hung et al., 2025）<br />
-3B 通用 VLA，Qwen-2.5-VL 骨干 + FAST+ 离散动作 tokenizer。</p>
-</li>
-<li><p><strong>WorldVLA</strong>（Cen et al., 2025）<br />
-统一自回归“动作-世界”模型，联合训练策略与帧预测。</p>
-</li>
-<li><p><strong>UniVLA</strong>（Bu et al., 2025）<br />
-任务中心隐动作空间，跨本体泛化，三阶段训练。</p>
-</li>
-<li><p><strong>RIPT-VLA</strong>（Brohan et al., 2022 基础上拓展）<br />
-在 OpenVLA-OFT 上增加 Laplace 动作分布与 LOOP-PPO 强化后训练。</p>
-</li>
-</ul>
-<h3>2. 泛化/鲁棒性评测基准</h3>
-<table>
-<thead>
-<tr>
-  <th>基准</th>
-  <th>自动化</th>
-  <th>模拟器</th>
-  <th>细粒度扰动维度</th>
-  <th>主要局限</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>AGNOSTOS (Zhou et al., 2025)</td>
-  <td>✗</td>
-  <td>RLBench</td>
-  <td>背景纹理</td>
-  <td>无相机、语言、噪声等</td>
-</tr>
-<tr>
-  <td>RL4VLA (Liu et al., 2025)</td>
-  <td>✗</td>
-  <td>ManiSkill</td>
-  <td>光照+相机+机器人</td>
-  <td>样本量 &lt;100，无语言扰动</td>
-</tr>
-<tr>
-  <td>INT-ACT (Fang et al., 2025)</td>
-  <td>✗</td>
-  <td>ManiSkill</td>
-  <td>光照+噪声</td>
-  <td>仅 2 维度，手工任务</td>
-</tr>
-<tr>
-  <td>Gembench (Garcia et al., 2025)</td>
-  <td>✗</td>
-  <td>RLBench</td>
-  <td>背景</td>
-  <td>无组合扰动</td>
-</tr>
-<tr>
-  <td>VLATest (Wang et al., 2025)</td>
-  <td>✓</td>
-  <td>ManiSkill</td>
-  <td>相机+机器人+噪声</td>
-  <td>无语言、光照、布局</td>
-</tr>
-<tr>
-  <td>COLOSSEUM (Pumacay et al., 2024)</td>
-  <td>✓</td>
-  <td>RLBench</td>
-  <td>相机+光照+机器人</td>
-  <td>无语言、噪声、细粒度难度分级</td>
-</tr>
-<tr>
-  <td><strong>LIBERO-Plus（本文）</strong></td>
-  <td>✓</td>
-  <td>LIBERO</td>
-  <td>7 维度 21 子维度 + 五级难度 + 组合泛化缺口</td>
-  <td>—</td>
-</tr>
-</tbody>
-</table>
-<h3>3. 其他相关方法</h3>
-<ul>
-<li><strong>RT-1/RT-2</strong>（Brohan et al., 2022, 2023）—— 早期 Transformer 机器人控制，未系统评测扰动鲁棒性。</li>
-<li><strong>ManipLLM</strong>（Li et al., 2024b）—— 物体中心操作，侧重语义 grounding，未考虑组合扰动。</li>
-<li><strong>TinyVLA/DiffusionVLA</strong>（Wen et al., 2025a,b）—— 轻量或扩散架构，未提供大规模泛化评测。</li>
-</ul>
-<p>综上，LIBERO-Plus 首次在单一基准内同时覆盖七大扰动维度、自动批量生成、细粒度难度分层与组合泛化统计检验，填补了现有 VLA 鲁棒性评测的空白。</p>
-<h2>解决方案</h2>
-<p>论文并未提出全新架构，而是从“评测-诊断-增训”三阶段闭环入手，系统暴露并缓解现有 VLA 模型的脆弱性。具体路径如下：</p>
-<ol>
-<li><p>构建大规模扰动评测套件</p>
-<ul>
-<li>在 LIBERO 上自动扩展出 10 030 个任务，覆盖 7 大扰动维度、21 项子维度、5 级难度。</li>
-<li>引入组合扰动统计框架，用协方差 Δij 量化“非独立”泛化缺口，首次将组合鲁棒性形式化为可度量指标。</li>
-</ul>
-</li>
-<li><p>细粒度诊断</p>
-<ul>
-<li>单维度消融：发现相机位姿与机器人初始状态是最大瓶颈（绝对下降 60–90 pp），语言扰动反而最小，揭示模型基本忽视语言。</li>
-<li>极端消融：黑掉第三视角或全部图像，验证腕部相机提供光照不变几何线索，解释为何光照扰动仅降 10 pp。</li>
-<li>目标替换实验：把指令中的“alphabet soup”换成“tomato sauce”，成功率趋零，确认模型执行的是记忆轨迹而非指令。</li>
-</ul>
-</li>
-<li><p>数据增训与后训练</p>
-<ul>
-<li>利用同一自动化管线生成 22 400 条成功轨迹（含 6 类扰动），经筛选得到 20 K 高质量轨迹。</li>
-<li>以 OpenVLA-OFT 为骨干，进行混合微调（lr=5×10⁻⁴，100 k step，8×A100）。</li>
-<li>在 LIBERO-Plus 上，后训练模型相机鲁棒性从 55.6 %→92.8 %（+37.2 pp），整体平均成功率提升 11.5 pp，达到 79.6 %，显著优于所有基线。</li>
-</ul>
-</li>
-</ol>
-<p>通过“先全面暴露脆弱性→再针对性增训”的策略，论文证明了：</p>
-<ul>
-<li>当前 VLA 的瓶颈主要在数据分布窄，而非架构容量不足；</li>
-<li>组合扰动下的非线性衰减可通过大规模多样化数据显著缓解；</li>
-<li>真实鲁棒性可量化、可追踪，应成为与成功率并列的核心评测指标。</li>
-</ul>
-<h2>实验验证</h2>
-<p>论文围绕“单维度脆弱性→视觉-语言模态真伪→组合泛化缺口→数据增训疗效”四条主线，共设计并执行了 6 组核心实验。所有实验均在同一 LIBERO-Plus 自动化管线内完成，保证可复现与统计显著性（≥2000 次独立 rollout）。</p>
-<ol>
-<li><p>单维度扰动鲁棒性扫描</p>
-<ul>
-<li>10 个开源 VLA 模型 × 7 大扰动维度（物体布局、相机、机器人初始、语言、光照、背景、传感器噪声）。</li>
-<li>指标：绝对成功率与绝对下降值（↓pp）。</li>
-<li>发现：相机与机器人初始状态平均下降 60–90 pp；语言扰动仅降 25 pp，显著低于预期。</li>
-</ul>
-</li>
-<li><p>视觉模态细粒度消融</p>
-<ul>
-<li>物体布局子分解：<br />
-– 仅加干扰物（confounding）<br />
-– 仅移目标物（displacement）</li>
-<li>极端光照消融：<br />
-– 3rd-black：第三视角全黑，保留腕部相机<br />
-– all-black：双视角全黑</li>
-<li>发现：干扰物几乎不影响，位移导致 40–70 pp 下降；腕部相机单独即可维持 40–67 % 成功率，证明光照鲁棒性源于近场几何线索。</li>
-</ul>
-</li>
-<li><p>语言模态真伪检验</p>
-<ul>
-<li>blank prompt 实验：将指令替换为空字符串。</li>
-<li>goal replacement 实验：把指令与任务目标中的物体同时替换为同场景另一物体（如 alphabet soup → tomato sauce）。</li>
-<li>发现：空指令下降 &lt;5 pp（除长时任务外）；目标替换后成功率趋零，模型仍执行原轨迹，确认其“视觉-动作”而非“视觉-语言-动作”本质。</li>
-</ul>
-</li>
-<li><p>组合泛化缺口统计检验</p>
-<ul>
-<li>定义随机变量 $D_i$ 表示第 i 类扰动是否施加，引入条件协方差<br />
-$$ \Delta_{ij}= \mathrm{Cov}(D_i,D_j|Y=1) $$</li>
-<li>2000 次独立试验 × 6 类扰动两两组合，计算 $\Delta_{ij}$ 并用 $\chi^2$ 检验验证显著性。</li>
-<li>发现：所有 $\Delta_{ij}&lt;0$，p&lt;0.05，说明组合扰动呈显著负协同，模型缺乏高阶依赖建模能力。</li>
-</ul>
-</li>
-<li><p>难度分层与趋势分析</p>
-<ul>
-<li>用 4 个代表性模型对 10 030 任务打分，按“被几模型解出”划分 L1–L5 难度。</li>
-<li>绘制成功率-难度曲线，验证脆弱性随扰动强度单调下降，为后续增训提供优先级依据。</li>
-</ul>
-</li>
-<li><p>大规模增训对照实验</p>
-<ul>
-<li>基于上述诊断，用自动化管线采集 20 K+ 成功轨迹（覆盖 6 类扰动）。</li>
-<li>以 OpenVLA-OFT_m 为骨干，混合微调 100 k step，得到“Ours-PT”模型。</li>
-<li>在完整 LIBERO-Plus 上重新评测，记录每维提升幅度，并与 9 个最强基线对比。</li>
-<li>结果：相机维度绝对提升 37.2 pp，总体平均提升 11.5 pp，达到 79.6 %，验证“暴露-增训”闭环有效性。</li>
-</ul>
-</li>
-</ol>
-<h2>未来工作</h2>
-<p>以下方向可在此基础上继续深入，分为“评测-诊断”与“训练-架构”两大板块，均直接对应论文暴露出的核心缺口。</p>
-<hr />
-<h3>一、评测与诊断层面</h3>
-<ol>
-<li><p><strong>真实-到-模拟（real-to-sim）扰动校准</strong></p>
-<ul>
-<li>用相机标定、光照估计、关节回差测量等手段，把真实世界采集到的扰动参数反向注入仿真，验证“仿真测得的 Δij 是否仍与真实场景一致”。</li>
-</ul>
-</li>
-<li><p><strong>时序组合泛化</strong></p>
-<ul>
-<li>目前组合实验仅考虑“单步同时施加多扰动”，可进一步定义“扰动序列”——例如先光照突变、再物体位移、再语言改写——度量模型在线适应的“时序鲁棒性”。</li>
-</ul>
-</li>
-<li><p><strong>语言-视觉一致性分数（LVC-Score）</strong></p>
-<ul>
-<li>设计一个无需真值的动作-语义对齐指标：利用 VLM 对 rollout 视频与指令做余弦相似度，量化“模型是否真正执行了语言描述”，从而自动诊断语言忽视程度。</li>
-</ul>
-</li>
-<li><p><strong>因果归因可视化</strong></p>
-<ul>
-<li>结合扰动敏感性与因果干预（如因果中介分析），定位“哪一层特征对相机位移最敏感”“哪一层对语言替换最无感”，为后续模块化重训提供病灶坐标。</li>
-</ul>
-</li>
-<li><p><strong>极限组合下的能力边界拟合</strong></p>
-<ul>
-<li>以 Δij 为监督信号，拟合一个“能力边界函数”<br />
-$$ P_{\text{succ}} = f(\boldsymbol{\delta}; \boldsymbol{\theta}) $$<br />
-其中 δ 为七维扰动强度向量，θ 为模型超参。反解该函数可直接估计“给定扰动预算下，模型最高可达成功率”，用于系统级风险预估。</li>
-</ul>
-</li>
-</ol>
-<hr />
-<h3>二、训练与架构层面</h3>
-<ol start="6">
-<li><p><strong>腕部-第三视角动态融合机制</strong></p>
-<ul>
-<li>当前模型仅静态拼接两视角。可引入“光照-不确定度加权”门控，让腕部视角在强光/阴影区自动获得更高权重，实现光照自适应融合。</li>
-</ul>
-</li>
-<li><p><strong>语言即锚点（Language-as-Anchor）训练</strong></p>
-<ul>
-<li>在增训阶段加入“指令一致性损失”：用 VLM 对预测动作序列与指令做对比学习，强制动作特征与指令特征在联合空间对齐，缓解语言忽视。</li>
-</ul>
-</li>
-<li><p><strong>位置-语义解耦表示</strong></p>
-<ul>
-<li>借鉴 Slot Attention 或 Object-Centric Transformer，把“物体 ID-语义属性”与“6-DoF 位姿”显式拆成两套隐变量，再用数据增训只扰动位姿分支，迫使语义分支保持置换不变性。</li>
-</ul>
-</li>
-<li><p><strong>组合扰动的课程强化学习</strong></p>
-<ul>
-<li>以 Δij 为课程难度指标，从“独立扰动”逐渐过渡到“负协同最强的一对扰动”，用 LOOP-PPO 动态调整采样概率，实现“最难组合优先”课程。</li>
-</ul>
-</li>
-<li><p><strong>可提示的鲁棒性元适配</strong></p>
-<ul>
-<li>训练一个轻量级“鲁棒提示生成器”：输入当前扰动类型，输出 20 个 token 的软提示，拼接到原指令前，即可让冻结的 VLA 在测试时零样本适应新扰动，无需重训骨干。</li>
-</ul>
-</li>
-</ol>
-<hr />
-<h3>三、数据与系统层面</h3>
-<ol start="11">
-<li><p><strong>真实世界“扰动-轨迹”闭环采集</strong></p>
-<ul>
-<li>在真实机械臂上部署主动扰动模块（电动云台、LED 阵列、随机背景布），实时记录扰动参数与成功标志，构建“真实 LIBERO-Plus”，验证仿真诊断结论是否迁移。</li>
-</ul>
-</li>
-<li><p><strong>跨 embodiment 的鲁棒性迁移定律</strong></p>
-<ul>
-<li>用同一套扰动语义（相机、光照、语言改写）在不同机器人（xArm、Franka、UR5）上测试，拟合“embodiment 间 Δij 映射函数”，探索是否可用仿真结果预测真实新本体的脆弱点。</li>
-</ul>
-</li>
-</ol>
-<p>通过上述 12 个方向的持续探索，可逐步把“仿真诊断→真实迁移→在线适配”全链路打通，使 VLA 模型从“高分低能”走向“高分高能”。</p>
-<h2>总结</h2>
-<p>论文系统揭示了当前 Vision-Language-Action（VLA）模型“高分低能”的普遍现象，并提出一套可复现的“诊断-增训”闭环，核心内容可概括为以下四点：</p>
-<ol>
-<li><p>大规模扰动诊断</p>
-<ul>
-<li>构建 LIBERO-Plus：10 030 任务、7 维扰动、21 子维度、5 级难度，2000 次统计显著试验。</li>
-<li>10 个代表模型一致暴露脆弱性：相机/机器人初始状态轻微变化即可让成功率从 95 %→&lt;30 %；语言扰动仅降 25 pp，揭示模型基本忽视指令。</li>
-</ul>
-</li>
-<li><p>根因剖析</p>
-<ul>
-<li>视觉：依赖腕部相机近场几何线索，对光照不敏感；对目标物体“位置记忆”而非语义理解。</li>
-<li>语言：空指令几乎不降点；目标替换成功率趋零，证明模型退化为人 Vision-Action 映射。</li>
-<li>组合：提出条件协方差 Δij，量化“负协同”泛化缺口，所有双扰动组合均显著低于独立假设。</li>
-</ul>
-</li>
-<li><p>数据增训与后训练</p>
-<ul>
-<li>用同一自动化管线采集 20 K+ 成功轨迹（覆盖 6 类扰动），对 OpenVLA-OFT 进行 100 k 步混合微调。</li>
-<li>相机鲁棒性绝对提升 37.2 pp，总体平均成功率提升 11.5 pp 至 79.6 %，显著优于现有最强基线。</li>
-</ul>
-</li>
-<li><p>开源基准与工具链</p>
-<ul>
-<li>代码、数据、评测脚本全部开源，提供一键复现的“扰动-训练-评测”流水线，推动社区从“刷榜”转向对真实鲁棒性的关注。</li>
-</ul>
-</li>
-</ol>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.6</span></span>
-                                            <span>置信度: 0.90</span>
-                                            <span>分类: Multimodal</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">Multimodal</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2510.13626" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2510.13626" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
+                                <div class="collapsed-notice" id="collapsed-notice-Multimodal" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Multimodal"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Multimodal')">展开全部</a>
                                 </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2508.06259">
@@ -5919,7 +5605,7 @@ $$ P_{\text{succ}} = f(\boldsymbol{\delta}; \boldsymbol{\theta}) $$<br />
                                             <div class="paper-summary-inline">本文由清华大学与字节跳动的研究团队合作完成，提出了一种名为SIFThinker的空间感知图像聚焦视觉推理框架。该方法创新性地将深度增强的视觉定位与自然语言推理交织在一起，模拟人类动态视觉注意机制，在空间理解和细粒度视觉感知任务上显著超越了现有方法，同时保持了强大的通用能力。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.5</span>
+                                        <span class="paper-score score-mid">8.5</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -6145,7 +5831,7 @@ $$ P_{\text{succ}} = f(\boldsymbol{\delta}; \boldsymbol{\theta}) $$<br />
                                             <div class="paper-summary-inline">本文由来自佐治亚理工学院（Georgia Tech）、阿拉巴马大学伯明翰分校（University of Alabama at Birmingham）、江苏大学（Jiangsu University）以及TreNDS研究中心的团队合作提出。该研究团队提出了一种名为fMRI-LM的新型基础模型，旨在构建一个语言对齐的通用fMRI理解模型。该方法通过创新的三阶段框架（神经分词器训练、LLM微调、多任务指令调优）和构建大规模描述性语料库，将静息态fMRI信号与语言模型对齐，在多个神经影像数据集上实现了强大的零样本、少样本性能，并展现出优异的泛化能力和参数效率。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.5</span>
+                                        <span class="paper-score score-mid">8.5</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -6652,6 +6338,465 @@ iii. 新任务 + 新数据集（UKB→ADHD200/ABIDE2 疾病）</p>
                                     </div>
                                 </div>
                                 
+                                <div class="paper-item-compact" id="paper-item-2512.21482">
+                                    <div class="paper-header" onclick="showPaperDetail('2512.21482', 'Multimodal')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                LogicLens: Visual-Logical Co-Reasoning for Text-Centric Forgery Analysis
+                                                <button class="mark-button" 
+                                                        data-paper-id="2512.21482"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2512.21482", "authors": ["Zeng", "Miao", "Huang", "Tan", "Gong", "Yu", "Wang", "Tan", "Yao", "Li"], "id": "2512.21482", "pdf_url": "https://arxiv.org/pdf/2512.21482", "rank": 8.642857142857144, "title": "LogicLens: Visual-Logical Co-Reasoning for Text-Centric Forgery Analysis"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2512.21482" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ALogicLens%3A%20Visual-Logical%20Co-Reasoning%20for%20Text-Centric%20Forgery%20Analysis%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2512.21482&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ALogicLens%3A%20Visual-Logical%20Co-Reasoning%20for%20Text-Centric%20Forgery%20Analysis%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2512.21482%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Zeng, Miao, Huang, Tan, Gong, Yu, Wang, Tan, Yao, Li</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文由蚂蚁集团（Ant Group）与南洋理工大学（Nanyang Technological University）的研究团队提出了一种名为LogicLens的统一视觉-逻辑协同推理框架，用于文本中心伪造分析。该工作将检测、定位和解释三个子任务统一为联合生成范式，并提出了新颖的跨线索感知思维链（CCT）机制和加权多任务奖励函数进行优化。同时，团队构建了包含精细标注的大规模数据集RealText。实验表明，LogicLens在多个基准测试中取得了最先进的性能，并展现出优异的零样本泛化能力和鲁棒性。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score score-mid">8.6</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2512.21482" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">LogicLens: Visual-Logical Co-Reasoning for Text-Centric Forgery Analysis</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.6</span></span>
+                                            <span>置信度: 0.90</span>
+                                            <span>分类: Multimodal</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Multimodal</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2512.21482" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2512.21482" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2510.13626">
+                                    <div class="paper-header" onclick="showPaperDetail('2510.13626', 'Multimodal')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                LIBERO-Plus: In-depth Robustness Analysis of Vision-Language-Action Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2510.13626"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2510.13626", "authors": ["Fei", "Wang", "Shi", "Dai", "Cai", "Qian", "Ji", "He", "Zhang", "Fei", "Fu", "Gong", "Qiu"], "id": "2510.13626", "pdf_url": "https://arxiv.org/pdf/2510.13626", "rank": 8.571428571428571, "title": "LIBERO-Plus: In-depth Robustness Analysis of Vision-Language-Action Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2510.13626" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ALIBERO-Plus%3A%20In-depth%20Robustness%20Analysis%20of%20Vision-Language-Action%20Models%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2510.13626&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ALIBERO-Plus%3A%20In-depth%20Robustness%20Analysis%20of%20Vision-Language-Action%20Models%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2510.13626%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Fei, Wang, Shi, Dai, Cai, Qian, Ji, He, Zhang, Fei, Fu, Gong, Qiu</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文由复旦大学、上海人工智能实验室等机构的研究团队（作者包括Xipeng Qiu等知名学者）提出了一种针对视觉-语言-动作（VLA）模型的系统性鲁棒性分析方法LIBERO-Plus。该研究通过引入七个维度的受控扰动，对多个最先进的VLA模型进行了深入的脆弱性分析，揭示了这些模型在基准测试高分背后存在的严重鲁棒性问题。研究发现模型对视角、初始状态等扰动极其敏感，而对语言指令却几乎完全忽略，这一发现挑战了当前评估实践的可靠性假设。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score score-mid">8.6</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2510.13626" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">LIBERO-Plus: In-depth Robustness Analysis of Vision-Language-Action Models</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 11 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>该研究针对当前视觉-语言-动作（VLA）模型在标准基准上“高分低能”的现象：尽管在静态、理想环境中成功率接近饱和，一旦遇到轻微的现实扰动（如相机角度、光照、机器人初始位姿、语言指令改写等）就会崩溃。论文系统量化了这一脆弱性，并揭示其根源在于</p>
+<ul>
+<li>对固定视觉-动作映射的过拟合，而非真正的多模态理解；</li>
+<li>对语言模态的“选择性忽视”，模型在多数任务中退化成了视觉-动作模型；</li>
+<li>对目标物体位置的“位置记忆”，而非语义泛化；</li>
+<li>多扰动组合下的非线性性能衰减，即组合泛化缺口。</li>
+</ul>
+<p>为此，作者提出 LIBERO-Plus 基准，通过七类单维度及组合扰动、上万个任务和五级难度划分，对 10 个代表性 VLA 模型进行“压力测试”，并给出可复现的自动化评测与训练框架，推动社区从“刷榜”转向对真实鲁棒性的关注。</p>
+<h2>相关工作</h2>
+<p>与 LIBERO-Plus 直接相关的研究可归纳为两条主线：</p>
+<ol>
+<li>Vision-Language-Action（VLA）模型架构与训练范式；</li>
+<li>机器人操作泛化/鲁棒性评测基准。</li>
+</ol>
+<p>主要文献按主题列举如下（均已在原文 Section 7 引用，此处给出核心贡献便于快速定位）：</p>
+<h3>1. VLA 模型架构</h3>
+<ul>
+<li><p><strong>OpenVLA 系列</strong></p>
+<ul>
+<li>Kim et al., 2024 —— 首个开源 7B 级 VLA，离散动作 token 化 + 微调视觉编码器。</li>
+<li>Kim et al., 2025 —— OpenVLA-OFT，连续动作头 + FiLM 语言调制，支持并行解码。</li>
+</ul>
+</li>
+<li><p><strong>π0 家族</strong></p>
+<ul>
+<li>Black et al., 2024 —— 基于 Transfusion 的流匹配扩散策略，多视角 + 语言。</li>
+<li>Pertsch et al., 2025 —— π0-fast，DCT+BPE 动作压缩，加速推理。</li>
+</ul>
+</li>
+<li><p><strong>Nora</strong>（Hung et al., 2025）<br />
+3B 通用 VLA，Qwen-2.5-VL 骨干 + FAST+ 离散动作 tokenizer。</p>
+</li>
+<li><p><strong>WorldVLA</strong>（Cen et al., 2025）<br />
+统一自回归“动作-世界”模型，联合训练策略与帧预测。</p>
+</li>
+<li><p><strong>UniVLA</strong>（Bu et al., 2025）<br />
+任务中心隐动作空间，跨本体泛化，三阶段训练。</p>
+</li>
+<li><p><strong>RIPT-VLA</strong>（Brohan et al., 2022 基础上拓展）<br />
+在 OpenVLA-OFT 上增加 Laplace 动作分布与 LOOP-PPO 强化后训练。</p>
+</li>
+</ul>
+<h3>2. 泛化/鲁棒性评测基准</h3>
+<table>
+<thead>
+<tr>
+  <th>基准</th>
+  <th>自动化</th>
+  <th>模拟器</th>
+  <th>细粒度扰动维度</th>
+  <th>主要局限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>AGNOSTOS (Zhou et al., 2025)</td>
+  <td>✗</td>
+  <td>RLBench</td>
+  <td>背景纹理</td>
+  <td>无相机、语言、噪声等</td>
+</tr>
+<tr>
+  <td>RL4VLA (Liu et al., 2025)</td>
+  <td>✗</td>
+  <td>ManiSkill</td>
+  <td>光照+相机+机器人</td>
+  <td>样本量 &lt;100，无语言扰动</td>
+</tr>
+<tr>
+  <td>INT-ACT (Fang et al., 2025)</td>
+  <td>✗</td>
+  <td>ManiSkill</td>
+  <td>光照+噪声</td>
+  <td>仅 2 维度，手工任务</td>
+</tr>
+<tr>
+  <td>Gembench (Garcia et al., 2025)</td>
+  <td>✗</td>
+  <td>RLBench</td>
+  <td>背景</td>
+  <td>无组合扰动</td>
+</tr>
+<tr>
+  <td>VLATest (Wang et al., 2025)</td>
+  <td>✓</td>
+  <td>ManiSkill</td>
+  <td>相机+机器人+噪声</td>
+  <td>无语言、光照、布局</td>
+</tr>
+<tr>
+  <td>COLOSSEUM (Pumacay et al., 2024)</td>
+  <td>✓</td>
+  <td>RLBench</td>
+  <td>相机+光照+机器人</td>
+  <td>无语言、噪声、细粒度难度分级</td>
+</tr>
+<tr>
+  <td><strong>LIBERO-Plus（本文）</strong></td>
+  <td>✓</td>
+  <td>LIBERO</td>
+  <td>7 维度 21 子维度 + 五级难度 + 组合泛化缺口</td>
+  <td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>3. 其他相关方法</h3>
+<ul>
+<li><strong>RT-1/RT-2</strong>（Brohan et al., 2022, 2023）—— 早期 Transformer 机器人控制，未系统评测扰动鲁棒性。</li>
+<li><strong>ManipLLM</strong>（Li et al., 2024b）—— 物体中心操作，侧重语义 grounding，未考虑组合扰动。</li>
+<li><strong>TinyVLA/DiffusionVLA</strong>（Wen et al., 2025a,b）—— 轻量或扩散架构，未提供大规模泛化评测。</li>
+</ul>
+<p>综上，LIBERO-Plus 首次在单一基准内同时覆盖七大扰动维度、自动批量生成、细粒度难度分层与组合泛化统计检验，填补了现有 VLA 鲁棒性评测的空白。</p>
+<h2>解决方案</h2>
+<p>论文并未提出全新架构，而是从“评测-诊断-增训”三阶段闭环入手，系统暴露并缓解现有 VLA 模型的脆弱性。具体路径如下：</p>
+<ol>
+<li><p>构建大规模扰动评测套件</p>
+<ul>
+<li>在 LIBERO 上自动扩展出 10 030 个任务，覆盖 7 大扰动维度、21 项子维度、5 级难度。</li>
+<li>引入组合扰动统计框架，用协方差 Δij 量化“非独立”泛化缺口，首次将组合鲁棒性形式化为可度量指标。</li>
+</ul>
+</li>
+<li><p>细粒度诊断</p>
+<ul>
+<li>单维度消融：发现相机位姿与机器人初始状态是最大瓶颈（绝对下降 60–90 pp），语言扰动反而最小，揭示模型基本忽视语言。</li>
+<li>极端消融：黑掉第三视角或全部图像，验证腕部相机提供光照不变几何线索，解释为何光照扰动仅降 10 pp。</li>
+<li>目标替换实验：把指令中的“alphabet soup”换成“tomato sauce”，成功率趋零，确认模型执行的是记忆轨迹而非指令。</li>
+</ul>
+</li>
+<li><p>数据增训与后训练</p>
+<ul>
+<li>利用同一自动化管线生成 22 400 条成功轨迹（含 6 类扰动），经筛选得到 20 K 高质量轨迹。</li>
+<li>以 OpenVLA-OFT 为骨干，进行混合微调（lr=5×10⁻⁴，100 k step，8×A100）。</li>
+<li>在 LIBERO-Plus 上，后训练模型相机鲁棒性从 55.6 %→92.8 %（+37.2 pp），整体平均成功率提升 11.5 pp，达到 79.6 %，显著优于所有基线。</li>
+</ul>
+</li>
+</ol>
+<p>通过“先全面暴露脆弱性→再针对性增训”的策略，论文证明了：</p>
+<ul>
+<li>当前 VLA 的瓶颈主要在数据分布窄，而非架构容量不足；</li>
+<li>组合扰动下的非线性衰减可通过大规模多样化数据显著缓解；</li>
+<li>真实鲁棒性可量化、可追踪，应成为与成功率并列的核心评测指标。</li>
+</ul>
+<h2>实验验证</h2>
+<p>论文围绕“单维度脆弱性→视觉-语言模态真伪→组合泛化缺口→数据增训疗效”四条主线，共设计并执行了 6 组核心实验。所有实验均在同一 LIBERO-Plus 自动化管线内完成，保证可复现与统计显著性（≥2000 次独立 rollout）。</p>
+<ol>
+<li><p>单维度扰动鲁棒性扫描</p>
+<ul>
+<li>10 个开源 VLA 模型 × 7 大扰动维度（物体布局、相机、机器人初始、语言、光照、背景、传感器噪声）。</li>
+<li>指标：绝对成功率与绝对下降值（↓pp）。</li>
+<li>发现：相机与机器人初始状态平均下降 60–90 pp；语言扰动仅降 25 pp，显著低于预期。</li>
+</ul>
+</li>
+<li><p>视觉模态细粒度消融</p>
+<ul>
+<li>物体布局子分解：<br />
+– 仅加干扰物（confounding）<br />
+– 仅移目标物（displacement）</li>
+<li>极端光照消融：<br />
+– 3rd-black：第三视角全黑，保留腕部相机<br />
+– all-black：双视角全黑</li>
+<li>发现：干扰物几乎不影响，位移导致 40–70 pp 下降；腕部相机单独即可维持 40–67 % 成功率，证明光照鲁棒性源于近场几何线索。</li>
+</ul>
+</li>
+<li><p>语言模态真伪检验</p>
+<ul>
+<li>blank prompt 实验：将指令替换为空字符串。</li>
+<li>goal replacement 实验：把指令与任务目标中的物体同时替换为同场景另一物体（如 alphabet soup → tomato sauce）。</li>
+<li>发现：空指令下降 &lt;5 pp（除长时任务外）；目标替换后成功率趋零，模型仍执行原轨迹，确认其“视觉-动作”而非“视觉-语言-动作”本质。</li>
+</ul>
+</li>
+<li><p>组合泛化缺口统计检验</p>
+<ul>
+<li>定义随机变量 $D_i$ 表示第 i 类扰动是否施加，引入条件协方差<br />
+$$ \Delta_{ij}= \mathrm{Cov}(D_i,D_j|Y=1) $$</li>
+<li>2000 次独立试验 × 6 类扰动两两组合，计算 $\Delta_{ij}$ 并用 $\chi^2$ 检验验证显著性。</li>
+<li>发现：所有 $\Delta_{ij}&lt;0$，p&lt;0.05，说明组合扰动呈显著负协同，模型缺乏高阶依赖建模能力。</li>
+</ul>
+</li>
+<li><p>难度分层与趋势分析</p>
+<ul>
+<li>用 4 个代表性模型对 10 030 任务打分，按“被几模型解出”划分 L1–L5 难度。</li>
+<li>绘制成功率-难度曲线，验证脆弱性随扰动强度单调下降，为后续增训提供优先级依据。</li>
+</ul>
+</li>
+<li><p>大规模增训对照实验</p>
+<ul>
+<li>基于上述诊断，用自动化管线采集 20 K+ 成功轨迹（覆盖 6 类扰动）。</li>
+<li>以 OpenVLA-OFT_m 为骨干，混合微调 100 k step，得到“Ours-PT”模型。</li>
+<li>在完整 LIBERO-Plus 上重新评测，记录每维提升幅度，并与 9 个最强基线对比。</li>
+<li>结果：相机维度绝对提升 37.2 pp，总体平均提升 11.5 pp，达到 79.6 %，验证“暴露-增训”闭环有效性。</li>
+</ul>
+</li>
+</ol>
+<h2>未来工作</h2>
+<p>以下方向可在此基础上继续深入，分为“评测-诊断”与“训练-架构”两大板块，均直接对应论文暴露出的核心缺口。</p>
+<hr />
+<h3>一、评测与诊断层面</h3>
+<ol>
+<li><p><strong>真实-到-模拟（real-to-sim）扰动校准</strong></p>
+<ul>
+<li>用相机标定、光照估计、关节回差测量等手段，把真实世界采集到的扰动参数反向注入仿真，验证“仿真测得的 Δij 是否仍与真实场景一致”。</li>
+</ul>
+</li>
+<li><p><strong>时序组合泛化</strong></p>
+<ul>
+<li>目前组合实验仅考虑“单步同时施加多扰动”，可进一步定义“扰动序列”——例如先光照突变、再物体位移、再语言改写——度量模型在线适应的“时序鲁棒性”。</li>
+</ul>
+</li>
+<li><p><strong>语言-视觉一致性分数（LVC-Score）</strong></p>
+<ul>
+<li>设计一个无需真值的动作-语义对齐指标：利用 VLM 对 rollout 视频与指令做余弦相似度，量化“模型是否真正执行了语言描述”，从而自动诊断语言忽视程度。</li>
+</ul>
+</li>
+<li><p><strong>因果归因可视化</strong></p>
+<ul>
+<li>结合扰动敏感性与因果干预（如因果中介分析），定位“哪一层特征对相机位移最敏感”“哪一层对语言替换最无感”，为后续模块化重训提供病灶坐标。</li>
+</ul>
+</li>
+<li><p><strong>极限组合下的能力边界拟合</strong></p>
+<ul>
+<li>以 Δij 为监督信号，拟合一个“能力边界函数”<br />
+$$ P_{\text{succ}} = f(\boldsymbol{\delta}; \boldsymbol{\theta}) $$<br />
+其中 δ 为七维扰动强度向量，θ 为模型超参。反解该函数可直接估计“给定扰动预算下，模型最高可达成功率”，用于系统级风险预估。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3>二、训练与架构层面</h3>
+<ol start="6">
+<li><p><strong>腕部-第三视角动态融合机制</strong></p>
+<ul>
+<li>当前模型仅静态拼接两视角。可引入“光照-不确定度加权”门控，让腕部视角在强光/阴影区自动获得更高权重，实现光照自适应融合。</li>
+</ul>
+</li>
+<li><p><strong>语言即锚点（Language-as-Anchor）训练</strong></p>
+<ul>
+<li>在增训阶段加入“指令一致性损失”：用 VLM 对预测动作序列与指令做对比学习，强制动作特征与指令特征在联合空间对齐，缓解语言忽视。</li>
+</ul>
+</li>
+<li><p><strong>位置-语义解耦表示</strong></p>
+<ul>
+<li>借鉴 Slot Attention 或 Object-Centric Transformer，把“物体 ID-语义属性”与“6-DoF 位姿”显式拆成两套隐变量，再用数据增训只扰动位姿分支，迫使语义分支保持置换不变性。</li>
+</ul>
+</li>
+<li><p><strong>组合扰动的课程强化学习</strong></p>
+<ul>
+<li>以 Δij 为课程难度指标，从“独立扰动”逐渐过渡到“负协同最强的一对扰动”，用 LOOP-PPO 动态调整采样概率，实现“最难组合优先”课程。</li>
+</ul>
+</li>
+<li><p><strong>可提示的鲁棒性元适配</strong></p>
+<ul>
+<li>训练一个轻量级“鲁棒提示生成器”：输入当前扰动类型，输出 20 个 token 的软提示，拼接到原指令前，即可让冻结的 VLA 在测试时零样本适应新扰动，无需重训骨干。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3>三、数据与系统层面</h3>
+<ol start="11">
+<li><p><strong>真实世界“扰动-轨迹”闭环采集</strong></p>
+<ul>
+<li>在真实机械臂上部署主动扰动模块（电动云台、LED 阵列、随机背景布），实时记录扰动参数与成功标志，构建“真实 LIBERO-Plus”，验证仿真诊断结论是否迁移。</li>
+</ul>
+</li>
+<li><p><strong>跨 embodiment 的鲁棒性迁移定律</strong></p>
+<ul>
+<li>用同一套扰动语义（相机、光照、语言改写）在不同机器人（xArm、Franka、UR5）上测试，拟合“embodiment 间 Δij 映射函数”，探索是否可用仿真结果预测真实新本体的脆弱点。</li>
+</ul>
+</li>
+</ol>
+<p>通过上述 12 个方向的持续探索，可逐步把“仿真诊断→真实迁移→在线适配”全链路打通，使 VLA 模型从“高分低能”走向“高分高能”。</p>
+<h2>总结</h2>
+<p>论文系统揭示了当前 Vision-Language-Action（VLA）模型“高分低能”的普遍现象，并提出一套可复现的“诊断-增训”闭环，核心内容可概括为以下四点：</p>
+<ol>
+<li><p>大规模扰动诊断</p>
+<ul>
+<li>构建 LIBERO-Plus：10 030 任务、7 维扰动、21 子维度、5 级难度，2000 次统计显著试验。</li>
+<li>10 个代表模型一致暴露脆弱性：相机/机器人初始状态轻微变化即可让成功率从 95 %→&lt;30 %；语言扰动仅降 25 pp，揭示模型基本忽视指令。</li>
+</ul>
+</li>
+<li><p>根因剖析</p>
+<ul>
+<li>视觉：依赖腕部相机近场几何线索，对光照不敏感；对目标物体“位置记忆”而非语义理解。</li>
+<li>语言：空指令几乎不降点；目标替换成功率趋零，证明模型退化为人 Vision-Action 映射。</li>
+<li>组合：提出条件协方差 Δij，量化“负协同”泛化缺口，所有双扰动组合均显著低于独立假设。</li>
+</ul>
+</li>
+<li><p>数据增训与后训练</p>
+<ul>
+<li>用同一自动化管线采集 20 K+ 成功轨迹（覆盖 6 类扰动），对 OpenVLA-OFT 进行 100 k 步混合微调。</li>
+<li>相机鲁棒性绝对提升 37.2 pp，总体平均成功率提升 11.5 pp 至 79.6 %，显著优于现有最强基线。</li>
+</ul>
+</li>
+<li><p>开源基准与工具链</p>
+<ul>
+<li>代码、数据、评测脚本全部开源，提供一键复现的“扰动-训练-评测”流水线，推动社区从“刷榜”转向对真实鲁棒性的关注。</li>
+</ul>
+</li>
+</ol>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.6</span></span>
+                                            <span>置信度: 0.90</span>
+                                            <span>分类: Multimodal</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Multimodal</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2510.13626" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2510.13626" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                             
                         </div>
                     </div>
@@ -6662,7 +6807,7 @@ iii. 新任务 + 新数据集（UKB→ADHD200/ABIDE2 疾病）</p>
         <!-- Footer with filter info -->
         
         <div class="footer">
-            主题筛选: Agent, Finance, Multimodal, SFT, Pretraining, Hallucination, RLHF | 状态: 已启用
+            主题筛选: Agent, Pretraining, Hallucination, Finance, RLHF, SFT, Multimodal | 状态: 已启用
         </div>
         
         </div>
@@ -6774,19 +6919,31 @@ iii. 新任务 + 新数据集（UKB→ADHD200/ABIDE2 疾病）</p>
         function toggleMark(paperId, paperData) {
             const markedPapers = getMarkedPapers();
             const isCurrentlyMarked = isMarked(paperId);
-            
+
             if (isCurrentlyMarked) {
                 // 取消标记
                 const filtered = markedPapers.filter(p => p.id !== paperId);
                 saveMarkedPapers(filtered);
                 updateMarkButtonState(paperId, false);
+                // 展开卡片
+                const item = document.getElementById('paper-item-' + paperId);
+                if (item) item.classList.remove('paper-collapsed');
             } else {
                 // 添加标记
                 const fullPaperData = getPaperData(paperId, paperData);
                 markedPapers.push(fullPaperData);
                 saveMarkedPapers(markedPapers);
                 updateMarkButtonState(paperId, true);
+                // 折叠卡片
+                const item = document.getElementById('paper-item-' + paperId);
+                if (item) item.classList.add('paper-collapsed');
             }
+
+            // 刷新所有 tab 的折叠提示条
+            document.querySelectorAll('[id^="collapsed-notice-"]').forEach(notice => {
+                const topicId = notice.id.replace('collapsed-notice-', '');
+                refreshCollapsedNotice(topicId);
+            });
         }
         
         // 更新标记按钮状态
@@ -6924,18 +7081,53 @@ iii. 新任务 + 新数据集（UKB→ADHD200/ABIDE2 疾病）</p>
         function initMarkStates() {
             const markedPapers = getMarkedPapers();
             const markedIds = new Set(markedPapers.map(p => p.id));
-            
-            // 更新所有标记按钮的状态
+
+            // 更新所有标记按钮的状态，并折叠已标记论文
             document.querySelectorAll('.mark-button[data-paper-id]').forEach(button => {
                 const paperId = button.getAttribute('data-paper-id');
                 if (markedIds.has(paperId)) {
                     button.textContent = '⭐';
                     button.classList.add('marked');
+                    // 折叠该论文卡片
+                    const item = document.getElementById('paper-item-' + paperId);
+                    if (item) item.classList.add('paper-collapsed');
                 } else {
                     button.textContent = '☆';
                     button.classList.remove('marked');
                 }
             });
+
+            // 更新各 tab 的折叠提示条
+            document.querySelectorAll('[id^="collapsed-notice-"]').forEach(notice => {
+                const topicId = notice.id.replace('collapsed-notice-', '');
+                refreshCollapsedNotice(topicId);
+            });
+        }
+
+        // 刷新某个 tab 的折叠提示条
+        function refreshCollapsedNotice(topicId) {
+            const tabEl = document.getElementById('tab-' + topicId);
+            if (!tabEl) return;
+            const count = tabEl.querySelectorAll('.paper-item-compact.paper-collapsed').length;
+            const notice = document.getElementById('collapsed-notice-' + topicId);
+            const countEl = document.getElementById('collapsed-count-' + topicId);
+            if (!notice || !countEl) return;
+            if (count > 0) {
+                countEl.textContent = count;
+                notice.style.display = 'flex';
+            } else {
+                notice.style.display = 'none';
+            }
+        }
+
+        // 展开某 tab 所有已标记论文
+        function expandAllMarked(topicId) {
+            const tabEl = document.getElementById('tab-' + topicId);
+            if (!tabEl) return;
+            tabEl.querySelectorAll('.paper-item-compact.paper-collapsed').forEach(item => {
+                item.classList.remove('paper-collapsed');
+            });
+            refreshCollapsedNotice(topicId);
         }
 
         // 切换标签页
@@ -7162,7 +7354,19 @@ iii. 新任务 + 新数据集（UKB→ADHD200/ABIDE2 疾病）</p>
             if (firstNavItem) {
                 firstNavItem.classList.add('active');
             }
-            
+
+            // 设置 Markdown 链接：将当前 .html URL 替换为 .md
+            (function() {
+                const btn = document.getElementById('md-download-btn');
+                if (!btn) return;
+                const mdUrl = window.location.href.replace(/\.html(\?.*)?$/, '.md');
+                btn.href = mdUrl;
+                // 如果无法推断（URL 没有 .html 后缀），则隐藏按钮
+                if (mdUrl === window.location.href) {
+                    btn.style.display = 'none';
+                }
+            })();
+
             // 初始化标记状态
             initMarkStates();
             

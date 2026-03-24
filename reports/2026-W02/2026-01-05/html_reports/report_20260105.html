@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大模型论文速读（15/322）</title>
+    <title>大模型论文速读（14/14）</title>
     <style>
         * {
             margin: 0;
@@ -165,6 +165,16 @@
             border-bottom: 1px solid #e8e8e8;
             color: #1a1a1a;
             padding: 32px 40px 24px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-text {
+            flex: 1;
+            min-width: 0;
         }
 
         .header h1 {
@@ -179,6 +189,43 @@
             color: #666;
             font-size: 14px;
             font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            padding-top: 4px;
+        }
+
+        .md-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+            background: #fafafa;
+            color: #555;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .md-link-btn:hover {
+            background: #f0f0f0;
+            border-color: #999;
+            color: #1a1a1a;
+        }
+
+        .md-link-btn svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
         }
 
         .filter-info {
@@ -1067,8 +1114,14 @@
             .header {
                 padding: 24px 20px 16px;
                 padding-top: 60px; /* 为菜单按钮留空间 */
+                flex-direction: column;
+                gap: 10px;
             }
-            
+
+            .header-actions {
+                align-self: flex-start;
+            }
+
             .header h1 {
                 font-size: 22px;
             }
@@ -1168,10 +1221,66 @@
         .paper-title .mark-button {
             margin-left: 8px;
         }
-        
+
         .detail-panel-header .mark-button,
         .mobile-modal-header .mark-button {
             margin-right: 8px;
+        }
+
+        /* ── 评分色阶 ── */
+        .paper-score.score-high {
+            background: #dcfce7;
+            color: #15803d;
+        }
+        .paper-score.score-mid {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        .paper-score.score-low {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        /* ── 已标记论文折叠态 ── */
+        .paper-item-compact.paper-collapsed .paper-authors,
+        .paper-item-compact.paper-collapsed .paper-summary-inline {
+            display: none;
+        }
+        .paper-item-compact.paper-collapsed {
+            border-left: 3px solid #ffa500;
+            padding-left: 14px;
+            padding-top: 11px;
+            padding-bottom: 11px;
+            opacity: 0.68;
+            transition: opacity 0.18s, border-left-color 0.18s;
+        }
+        .paper-item-compact.paper-collapsed:hover {
+            opacity: 1;
+            border-left-color: #ff8c00;
+        }
+
+        /* ── 折叠数量提示条 ── */
+        .collapsed-notice {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #999;
+            padding: 8px 0 16px;
+            user-select: none;
+        }
+        .collapsed-notice a {
+            color: #ffa500;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .collapsed-notice a:hover { text-decoration: underline; }
+        .collapsed-notice .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #ffa500;
+            flex-shrink: 0;
         }
     </style>
     <!-- KaTeX数学公式渲染库 -->
@@ -1204,7 +1313,7 @@
                 <a class="nav-item " 
                    onclick="showTab('RLHF', event)">
                     强化学习对齐（RLHF）
-                    <span class="nav-item-count">4</span>
+                    <span class="nav-item-count">3</span>
                 </a>
                 
                 <a class="nav-item " 
@@ -1237,8 +1346,19 @@
         <!-- 主内容区域 -->
         <div class="container">
             <div class="header">
-                <h1>大模型论文速读（15/322）</h1>
-                <p>日报: 2026-01-05 | 生成时间: 2026-01-12</p>
+                <div class="header-text">
+                    <h1>大模型论文速读（14/14）</h1>
+                    <p>日报: 2026-01-05 | 生成时间: 2026-03-24</p>
+                </div>
+                <div class="header-actions">
+                    <a id="md-download-btn" class="md-link-btn" href="#" target="_blank" title="以 Markdown 格式查看，适合 AI 阅读">
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <rect x="1" y="2" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/>
+                            <path d="M3.5 10.5V5.5L5.5 8l2-2.5 2 2.5 2-2.5v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Markdown
+                    </a>
+                </div>
             </div>
             
             <!-- Tab Contents -->
@@ -1286,6 +1406,11 @@
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-SFT" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-SFT"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('SFT')">展开全部</a>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2512.03402">
                                     <div class="paper-header" onclick="showPaperDetail('2512.03402', 'SFT')">
@@ -1326,7 +1451,7 @@
                                             <div class="paper-summary-inline">本文由AMD（Advanced Micro Devices, Inc.）团队提出了一种名为Dual LoRA的新型参数高效微调方法。该方法通过将低秩更新矩阵分解为控制更新幅度的“幅度组”和决定更新方向的“方向组”，并引入ReLU和Sign函数，模拟了全参数微调中基于梯度的参数更新过程。实验表明，该方法在常识推理、自然语言理解和生成等多种NLP任务上，使用相同或更少的可训练参数，均能稳定超越原始LoRA及其多个先进变体（如LoRA+、DoRA），展现出显著的性能提升。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.7</span>
+                                        <span class="paper-score score-mid">8.7</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -1651,584 +1776,10 @@ Dual LoRA 通过“幅度-方向解耦”引入梯度式归纳偏置，在同等
                         
                         <div class="topic-content">
                             
-                                
-                                <div class="paper-item-compact" id="paper-item-2601.00647">
-                                    <div class="paper-header" onclick="showPaperDetail('2601.00647', 'RLHF')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Physio-DPO: Aligning Large Language Models with the Protein Energy Landscape to Eliminate Structural Hallucinations
-                                                <button class="mark-button" 
-                                                        data-paper-id="2601.00647"
-                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2601.00647", "authors": ["Meng"], "id": "2601.00647", "pdf_url": "https://arxiv.org/pdf/2601.00647", "rank": 8.785714285714286, "title": "Physio-DPO: Aligning Large Language Models with the Protein Energy Landscape to Eliminate Structural Hallucinations"}"
-                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
-                                                        title="标记这篇论文">☆</button>
-                                                <a href="https://arxiv.org/abs/2601.00647" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8APhysio-DPO%3A%20Aligning%20Large%20Language%20Models%20with%20the%20Protein%20Energy%20Landscape%20to%20Eliminate%20Structural%20Hallucinations%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2601.00647&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8APhysio-DPO%3A%20Aligning%20Large%20Language%20Models%20with%20the%20Protein%20Energy%20Landscape%20to%20Eliminate%20Structural%20Hallucinations%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2601.00647%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Meng</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文由西安交通大学的研究者提出了一种名为Physio-DPO的物理信息对齐框架，旨在解决大型蛋白质语言模型在生成蛋白质序列时产生的结构幻觉问题。该方法创新性地将连续物理能量景观信息融入偏好优化目标，显著提升了生成蛋白质的结构稳定性和可折叠性。论文实验设计严谨，在多个指标上超越了现有基线方法，并开源了大规模数据集PhysioPref-1M，具有重要的学术和应用价值。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.8</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2601.00647" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Physio-DPO: Aligning Large Language Models with the Protein Energy Landscape to Eliminate Structural Hallucinations</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 3 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>论文旨在消除<strong>蛋白质语言模型（PLM）的结构幻觉</strong>：模型生成的序列虽具有高语言似然度，却折叠成<strong>热力学不稳定、物理无效</strong>的三维构象。核心矛盾在于：</p>
-<ul>
-<li>现有 PLM 仅优化 token 级困惑度，仅间接反映进化适应性，<strong>未显式建模热力学稳定性</strong>；</li>
-<li>标准 DPO 等对齐方法把偏好当作<strong>二元标签</strong>，丢弃了能量景观的<strong>连续数值信息</strong>，无法区分微小波动与严重结构失效。</li>
-</ul>
-<p>为此，作者提出 <strong>Physio-DPO</strong>，将<strong>连续能量差</strong>嵌入偏好优化目标，使梯度更新幅度与物理能量 gap 成正比，从而把 PLM 对齐到热力学真实分布，显著降低幻觉序列比例。</p>
-<h2>相关工作</h2>
-<p>相关研究可归纳为两条主线：生成式蛋白质模型与对齐算法。以下按主题梳理代表性工作，并指出其与 Physio-DPO 的关联与差异。</p>
-<hr />
-<h3>1. 生成式蛋白质模型与“结构幻觉”</h3>
-<table>
-<thead>
-<tr>
-  <th>类别</th>
-  <th>代表工作</th>
-  <th>关键思路</th>
-  <th>与 Physio-DPO 的关系</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>早期统计模型</td>
-  <td>Potts 模型 (Levy et al., 2017)</td>
-  <td>基于 MSA 的共进化耦合</td>
-  <td>无生成能力，未考虑热力学</td>
-</tr>
-<tr>
-  <td>大规模自回归 PLM</td>
-  <td>ESM-2/3、ProGen2、ProtGPT2</td>
-  <td>Transformer 在百万级序列上预训练</td>
-  <td>同样骨架，但仅优化 token 困惑度→幻觉</td>
-</tr>
-<tr>
-  <td>结构扩散模型</td>
-  <td>RFdiffusion、Chroma</td>
-  <td>直接生成 3D 坐标</td>
-  <td>计算昂贵，缺乏序列设计灵活性；Physio-DPO 保留 PLM 效率</td>
-</tr>
-<tr>
-  <td>幻觉现象分析</td>
-  <td>Anishchenko 2021, Gopalan 2025</td>
-  <td>指出高置信序列可对应高能量构象</td>
-  <td>为 Physio-DPO 提供问题定义与评估指标</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3>2. 语言模型对齐方法</h3>
-<table>
-<thead>
-<tr>
-  <th>类别</th>
-  <th>代表工作</th>
-  <th>关键思路</th>
-  <th>与 Physio-DPO 的关系</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>RLHF/PPO</td>
-  <td>Schulman et al., 2017; Angermueller 2019</td>
-  <td>训练额外奖励/价值网络</td>
-  <td>高方差、易漂移；Physio-DPO 离线稳定</td>
-</tr>
-<tr>
-  <td>离线偏好优化</td>
-  <td>DPO (Rafailov 2023), IPO, KTO</td>
-  <td>把 RL 转为分类问题，避免奖励模型</td>
-  <td>仅二元偏好，丢弃能量幅值；Physio-DPO 引入连续权重 Ψ(δE)</td>
-</tr>
-<tr>
-  <td>无参考模型</td>
-  <td>SimPO, ORPO</td>
-  <td>去掉 π_ref，提升效率</td>
-  <td>同时去掉 KL 正则，易遗忘进化先验；Physio-DPO 保留 π_ref 保持生物合理性</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3>3. 物理能量引导的蛋白设计</h3>
-<ul>
-<li><strong>Rosetta 能量函数</strong> (Alford 2017)：PhysioPref-1M 使用其全原子评分作为能量 oracle。</li>
-<li><strong>AlphaFold2/ESMFold 置信度</strong> (pLDDT)：用于快速过滤“高置信-高能量”幻觉对。</li>
-<li><strong>基于能量的生成</strong> (Lisanza 2025)：在扩散空间引入 Rosetta 打分，需在线迭代；Physio-DPO 把能量差离线编码到偏好数据集，训练阶段零额外折叠成本。</li>
-</ul>
-<hr />
-<h3>4. 数据集与基准</h3>
-<table>
-<thead>
-<tr>
-  <th>名称</th>
-  <th>内容</th>
-  <th>与 PhysioPref-1M 的区别</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>ProteinGym (Notin 2023)</td>
-  <td>实验测量适应度 Landscape</td>
-  <td>用于零样本泛化评估，非对齐训练</td>
-</tr>
-<tr>
-  <td>Tranception ESM 变异效应</td>
-  <td>单点突变适应度回归</td>
-  <td>仅点突变，无全长序列生成偏好</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3>小结</h3>
-<p>Physio-DPO 在<strong>保留大规模 PLM 生成效率</strong>的前提下，首次把<strong>连续热力学能量 gap</strong> 嵌入<strong>离线偏好优化框架</strong>，填补了“物理连续信号”与“离散对齐目标”之间的空白，相对于既有生成模型和对齐方法，在抑制结构幻觉的同时维持了进化先验与语言多样性。</p>
-<h2>解决方案</h2>
-<p>论文将问题拆解为“离散偏好信号无法利用连续能量景观”这一核心瓶颈，并给出<strong>数据-目标-优化</strong>三环节的系统性解法。</p>
-<hr />
-<h3>1. 数据环节：构建连续能量差监督</h3>
-<p><strong>PhysioPref-1M</strong></p>
-<ul>
-<li><strong>生成</strong>：用 ProtGPT2 无条件采样 1 M 条序列</li>
-<li><strong>折叠</strong>：ESMFold/AlphaFold2 快速获得 3D 结构</li>
-<li><strong>打分</strong>：Rosetta 能量 $E(y)$ 与 pLDDT 置信度联合筛选</li>
-<li><strong>硬负挖掘</strong>：保留“高 pLDDT+高能量”的<strong>对抗性幻觉</strong>作为 $y_l$，与低能量 $y_w$ 组成偏好对，确保能量 gap $\delta E=E(y_l)-E(y_w)$ 连续且覆盖 0–200 REU 区间</li>
-</ul>
-<p>结果：得到<strong>带实值能量差</strong>的偏好数据集，替代传统二元标签。</p>
-<hr />
-<h3>2. 目标环节：把能量差嵌入偏好损失</h3>
-<p>提出<strong>幅值感知加权函数</strong><br />
-$$ \Psi(\delta E)=\lambda\cdot\sigma!\left(\frac{\delta E-\mu}{\tau}\right) \quad \in[0,\lambda_{\max}]$$</p>
-<ul>
-<li>$\delta E$ 越大→权重越接近 $\lambda_{\max}$，强调“严重物理违规”</li>
-<li>$\delta E\approx 0$→权重趋于 0，抑制噪声梯度</li>
-</ul>
-<p><strong>Physio-DPO 目标</strong><br />
-$$
-\mathcal{L}<em>{\text{Physio}}=-\mathbb{E}</em>{(x,y_w,y_l)}!\left[\Psi(\delta E)\cdot\log\sigma!\left(\beta\log\frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)}-\beta\log\frac{\pi_\theta(y_l|x)}{\pi_{\text{ref}}(y_l|x)}\right)\right]
-$$<br />
-相比标准 DPO，仅增加一个<strong>能量依赖系数</strong> $\Psi(\delta E)$，实现<strong>成本敏感学习</strong>：物理误差越大，梯度放大倍数越高。</p>
-<hr />
-<h3>3. 优化环节：梯度调制与理论保证</h3>
-<p>梯度推导<br />
-$$
-\nabla_\theta\mathcal{L}<em>{\text{Physio}}=-\mathbb{E}!\left[\Psi(\delta E)\cdot\underbrace{\sigma(-\Delta r</em>\theta)}<em>{\text{DPO 误差}}\cdot\nabla</em>\theta\Delta r_\theta\right]
-$$</p>
-<ul>
-<li>$\Psi(\delta E)$ 与模型置信度无关，仅由物理 oracle 决定→<strong>梯度方差降低</strong></li>
-<li>早期训练阶段局部等价于<strong>最大化能量差奖励</strong>；全局收敛时近似<strong>最小化与 Boltzmann 分布的 KL</strong></li>
-</ul>
-<hr />
-<h3>4. 推理阶段：零额外成本</h3>
-<p>训练完成后，$\pi_\theta$ 仍是自回归 PLM，推理速度与 ProGen2 相同，无需在线折叠或能量计算。</p>
-<hr />
-<h3>结果摘要</h3>
-<ul>
-<li>sc-RMSD 从 1.82 Å→1.28 Å（−29 %）</li>
-<li>Foldability 83.6 %→92.8 %</li>
-<li>幻觉样本（高置信+高能量）被清零</li>
-<li>零样本 ProteinGym 平均 Spearman ρ 提升至 0.72</li>
-</ul>
-<p>通过“<strong>连续能量差加权</strong>”这一简单改动，Physio-DPO 在不牺牲语言多样性的前提下，把蛋白质语言模型对齐到热力学稳定区域，从而系统性地消除结构幻觉。</p>
-<h2>实验验证</h2>
-<p>实验围绕三条主线展开：</p>
-<ol>
-<li>生成质量 vs. 物理有效性</li>
-<li>训练动态与稳定性</li>
-<li>消融、超参与泛化</li>
-</ol>
-<p>全部实验在自建的 <strong>PhysioPref-1M</strong> 拆分集（train/val/test 各 900 k/50 k/50 k，序列 identity &lt;30 %）与公开 <strong>ProteinGym</strong> 基准上完成； backbone 统一为 <strong>ProGen2-XL 6.4 B + LoRA</strong>，生成 30 k 条全长序列进行评估。</p>
-<hr />
-<h3>1. 主实验：生成质量对比</h3>
-<table>
-<thead>
-<tr>
-  <th>指标</th>
-  <th>sc-RMSD↓</th>
-  <th>pLDDT↑</th>
-  <th>Foldability↑</th>
-  <th>Rosetta Energy↓</th>
-  <th>PPL↓</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>ProGen2-XL (零样本)</td>
-  <td>3.25 Å</td>
-  <td>67.8</td>
-  <td>52.4 %</td>
-  <td>–1.65</td>
-  <td>6.1</td>
-</tr>
-<tr>
-  <td>SFT</td>
-  <td>2.35 Å</td>
-  <td>75.2</td>
-  <td>71.5 %</td>
-  <td>–2.25</td>
-  <td>7.4</td>
-</tr>
-<tr>
-  <td>PPO</td>
-  <td>2.15 Å</td>
-  <td>78.5</td>
-  <td>79.2 %</td>
-  <td>–2.48</td>
-  <td>12.5</td>
-</tr>
-<tr>
-  <td>标准 DPO</td>
-  <td>1.82 Å</td>
-  <td>81.3</td>
-  <td>83.6 %</td>
-  <td>–2.65</td>
-  <td>8.6</td>
-</tr>
-<tr>
-  <td><strong>Physio-DPO</strong></td>
-  <td><strong>1.28 Å</strong></td>
-  <td><strong>87.5</strong></td>
-  <td><strong>92.8 %</strong></td>
-  <td><strong>–3.05</strong></td>
-  <td>8.2</td>
-</tr>
-</tbody>
-</table>
-<p>→ 在所有对齐方法中取得 <strong>最低能量、最小 RMSD、最高 foldability</strong>，同时保持语言困惑度不升高。</p>
-<hr />
-<h3>2. 训练动态监测</h3>
-<ul>
-<li><strong>物理能量</strong>：Physio-DPO 全程下降，最终 –3.05 REU；PPO 2 k 步后反弹，出现奖励黑客。</li>
-<li><strong>KL 漂移</strong>：Physio-DPO 始终 &lt;1.5 nat；PPO 飙升至 5 nat 以上。</li>
-<li><strong>sc-RMSD</strong>：Physio-DPO 持续降低，未见饱和；标准 DPO 1 k 步后 plateau。</li>
-</ul>
-<hr />
-<h3>3. 消融实验（固定随机种子）</h3>
-<table>
-<thead>
-<tr>
-  <th>版本</th>
-  <th>sc-RMSD</th>
-  <th>Foldability</th>
-  <th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>完整 Physio-DPO</td>
-  <td>1.28 Å</td>
-  <td>92.8 %</td>
-  <td>硬负+sigmoid 权重</td>
-</tr>
-<tr>
-  <td>w/o 权重 (标准 DPO)</td>
-  <td>1.82 Å</td>
-  <td>83.6 %</td>
-  <td>能量 gap 被忽略</td>
-</tr>
-<tr>
-  <td>w/o 硬负 (随机负)</td>
-  <td>2.12 Å</td>
-  <td>76.5 %</td>
-  <td>梯度信息弱</td>
-</tr>
-<tr>
-  <td>线性权重 Ψ∝δE</td>
-  <td>1.45 Å</td>
-  <td>89.1 %</td>
-  <td>大 gap 过度放大</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3>4. 幻觉消除可视化</h3>
-<p>在 <strong>Energy–pLDDT 平面</strong> 绘制 30 k 样本：</p>
-<ul>
-<li>标准 DPO 出现明显“高置信-高能量”云团（幻觉）。</li>
-<li>Physio-DPO 将该区域清零，样本整体移至“高置信-低能量”理想区。</li>
-</ul>
-<hr />
-<h3>5. 结构失效模式定性抽检（图 5）</h3>
-<p>随机抽取 100 条对比结构，Physio-DPO 在以下方面显著优于 SFT：</p>
-<ul>
-<li>二级结构：无序环→规整 α-helix</li>
-<li>疏水核心：暴露 Leu/Ile→埋藏</li>
-<li>氢键网络：β-sheet 中断→连续</li>
-<li>几何违规：sawtooth 骨架、禁止二面角、链断裂、clash 均被修正</li>
-<li>内部空腔体积平均减少 38 %，packing 密度接近天然蛋白。</li>
-</ul>
-<hr />
-<h3>6. 零样本泛化（ProteinGym）</h3>
-<p>Spearman ρ 平均值</p>
-<table>
-<thead>
-<tr>
-  <th>方法</th>
-  <th>GFP</th>
-  <th>GB1</th>
-  <th>AAV2</th>
-  <th>TEM-1</th>
-  <th>P53</th>
-  <th>平均</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>标准 DPO</td>
-  <td>0.71</td>
-  <td>0.59</td>
-  <td>0.73</td>
-  <td>0.70</td>
-  <td>0.61</td>
-  <td>0.67</td>
-</tr>
-<tr>
-  <td><strong>Physio-DPO</strong></td>
-  <td><strong>0.78</strong></td>
-  <td><strong>0.63</strong></td>
-  <td><strong>0.75</strong></td>
-  <td><strong>0.76</strong></td>
-  <td><strong>0.70</strong></td>
-  <td><strong>0.72</strong></td>
-</tr>
-</tbody>
-</table>
-<p>→ 物理对齐后，模型对实验测量适应度的预测力同步提升。</p>
-<hr />
-<h3>7. 超参敏感性</h3>
-<ul>
-<li><strong>KL 系数 β∈[0.01,1.0]</strong>：Physio-DPO 的 sc-RMSD 保持在 1.28–1.35 Å，显著优于 DPO 的 1.7–2.1 Å。</li>
-<li><strong>能量尺度 μ∈[10,100]</strong>：μ=20–50 时能量与困惑度同时最优；μ&gt;100 出现语言退化（PPL↑）。</li>
-</ul>
-<hr />
-<h3>8. 长度与规模外推</h3>
-<ul>
-<li>生成 100–500 aa 长链：sc-RMSD 随长度增长斜率低于标准 DPO，说明能量加权对长序列更鲁棒。</li>
-<li>模型规模 0.8 B→6.4 B：Physio-DPO 的 foldability 提升幅度（+18 %）大于 DPO（+10 %），呈现<strong>规模友好</strong>趋势。</li>
-</ul>
-<hr />
-<h3>结论</h3>
-<p>实验覆盖 <strong>数据→训练→评估→部署</strong> 全链路，证明 Physio-DPO 在保持语言多样性的同时，可系统性地降低能量、消除幻觉、提升结构精度，并具备良好的零样本功能预测能力。</p>
-<h2>未来工作</h2>
-<p>以下方向可被视为 Physio-DPO 的<strong>直接外延</strong>或<strong>深层扩展</strong>，均围绕“如何把更多物理世界连续信号注入语言模型对齐”这一核心主题展开。</p>
-<hr />
-<h3>1. 多状态 &amp; 多体相互作用</h3>
-<ul>
-<li><strong>能量函数仅考虑单体折叠</strong>：可引入 <strong>ΔΔG 复合物结合</strong>、<strong>蛋白质-配体界面</strong>、<strong>寡聚态平衡</strong> 等多状态能量差<ul>
-<li>数据：AlphaFold-Multimer、RosettaDock 生成结合/非结合对</li>
-<li>权重：Ψ(δΔG_bind) 替代 Ψ(δE_fold)，对齐模型到 <strong>结合亲和力 landscape</strong></li>
-</ul>
-</li>
-</ul>
-<hr />
-<h3>2. 动力学与折叠路径</h3>
-<ul>
-<li>当前用 <strong>静态终点能量</strong>；可改用 <strong>Metadynamics/Replica Exchange</strong> 得到的<ul>
-<li>折叠速率 log k_f</li>
-<li>自由能垒 ΔG‡<br />
-将偏好对构建为“快折叠 vs 慢折叠”序列，对齐模型到 <strong>动力学可及性</strong> 而不仅是热力学最低点</li>
-</ul>
-</li>
-</ul>
-<hr />
-<h3>3. 显式溶剂与全原子连续力场</h3>
-<ul>
-<li>现依赖 Rosetta 经验势；可耦合 <strong>OpenMM-AMBER</strong> 或 <strong>NN 力场</strong> (NequIP, MACE)<ul>
-<li>获得 <strong>显式水-溶质相互作用</strong> 的连续能量信号</li>
-<li>训练阶段使用 <strong>可微分力场层</strong>，实现<strong>能量端到端反向传播</strong> → 真正的“物理可微损失”</li>
-</ul>
-</li>
-</ul>
-<hr />
-<h3>4. 温度/pH/离子强度条件感知</h3>
-<ul>
-<li>能量 gap 本身条件依赖：<br />
-$$δE(Τ, pH, [Na^+]) = E_{denatured} – E_{native}$$<br />
-构建 <strong>条件偏好对</strong> (同一序列在不同环境)，让模型学会<strong>条件稳定性分布</strong> π_θ(y | x, c)，实现<strong>环境鲁棒生成</strong></li>
-</ul>
-<hr />
-<h3>5. 连续-离散混合动作空间</h3>
-<ul>
-<li>把 <strong>侧链扭转角 χ</strong> 或 <strong>骨架 φ/ψ</strong> 作为连续动作，序列作为离散动作<ul>
-<li>采用 <strong>Diffusion-Policy + Autoregressive</strong> 混合架构</li>
-<li>用 Physio-DPO 思想对 <strong>连续-离散混合轨迹</strong> 进行偏好加权，统一优化序列与构象</li>
-</ul>
-</li>
-</ul>
-<hr />
-<h3>6. 物理引导的 <strong>在线</strong> 硬负挖掘</h3>
-<ul>
-<li>当前离线生成 1 M 对；可引入 <strong>迭代自我对抗</strong>：<ol>
-<li>π_θ 生成候选池</li>
-<li>能量 oracle 选 Top-高能量且高似然序列作为硬负</li>
-<li>实时加入偏好缓冲区，形成 <strong>在线课程学习</strong><br />
-理论：与 ** adversarial RL ** 连接，可证明收敛到 minimax 均衡</li>
-</ol>
-</li>
-</ul>
-<hr />
-<h3>7. 与其他模态的连续景观对齐</h3>
-<ul>
-<li><strong>RNA 折叠自由能</strong> (ViennaRNA) → RNA-Physio-DPO</li>
-<li><strong>小分子合成可及性</strong> ( retrosynthesis 打分 ) → Chem-Physio-DPO</li>
-<li><strong>抗体-抗原结合 + 免疫原性</strong> 双目标连续景观 → Antibody-Physio-DPO<br />
-统一框架：任意“<strong>连续物理可计算量</strong>”均可替换 δE 作为权重函数输入</li>
-</ul>
-<hr />
-<h3>8. 理论深化</h3>
-<ul>
-<li>将 Ψ(δE) 视为 <strong>Importance Sampling 权重</strong>，证明 Physio-DPO 实际在最小化<br />
-$$D_{\text{KL}}(\pi_\theta | p_{\text{Boltz}}), \quad p_{\text{Boltz}} \propto e^{-E(y)/kT}$$<br />
-进一步给出 <strong>样本复杂度</strong> 与 <strong>能量 oracle 误差</strong> 的收敛界</li>
-</ul>
-<hr />
-<h3>9. 安全与伦理</h3>
-<ul>
-<li>物理对齐可能放大 <strong>毒素稳定性</strong> → 需引入 <strong>连续毒性预测模型</strong> (e.g., Tox21 概率输出) 作为 <strong>负权重</strong>，形成 <strong>多物理量约束</strong> 的对抗博弈目标</li>
-</ul>
-<hr />
-<h3>10. 开源工具链</h3>
-<ul>
-<li>发布 <strong>通用 Physio-Alignment 库</strong>：<ul>
-<li>插件式能量 oracle 接口（Rosetta、OpenMM、DFT、MD）</li>
-<li>可微分权重函数模板 Ψ(·)</li>
-<li>分布式在线硬负挖矿服务<br />
-降低领域门槛，推动 <strong>“物理-语言模型”</strong> 社区标准化</li>
-</ul>
-</li>
-</ul>
-<hr />
-<h3>一句话总结</h3>
-<p>把“连续物理量→可微权重→偏好对齐”这一范式推广到<strong>任意生物大分子、任意环境条件、任意连续景观</strong>，将是后 Physio-DPO 时代最具想象空间的探索方向。</p>
-<h2>总结</h2>
-<h1>论文核心速览</h1>
-<h2>1. 问题</h2>
-<ul>
-<li>蛋白质语言模型（PLM）以 token 困惑度为训练目标，常生成“高置信-高能量”序列 → <strong>结构幻觉</strong></li>
-<li>现有对齐方法（DPO/RLHF）把偏好当<strong>二元标签</strong>，丢弃连续能量 landscape 的幅值信息，无法区分轻微波动与严重失稳</li>
-</ul>
-<h2>2. 方法：Physio-DPO</h2>
-<ul>
-<li><strong>数据</strong>：自建 <strong>PhysioPref-1M</strong><ul>
-<li>生成-折叠-打分流水线，用 Rosetta 能量 + pLDDT 筛选</li>
-<li>保留“高置信+高能量”硬负例，形成<strong>连续能量差</strong> δE = E(yl) − E(yw)</li>
-</ul>
-</li>
-<li><strong>目标</strong>：将 δE 映射为权重 Ψ(δE)=λσ((δE−μ)/τ) 并嵌入 DPO 损失<ul>
-<li>梯度大小 ∝ 物理误差，实现<strong>成本敏感偏好优化</strong></li>
-</ul>
-</li>
-<li><strong>训练</strong>：离线完成，推理阶段零额外折叠成本；保留 π_ref 防止遗忘进化先验</li>
-</ul>
-<h2>3. 结果（ProGen2-XL 6.4 B + LoRA，30 k 全长序列）</h2>
-<table>
-<thead>
-<tr>
-  <th>指标</th>
-  <th>sc-RMSD ↓</th>
-  <th>Foldability ↑</th>
-  <th>Rosetta Energy ↓</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>标准 DPO</td>
-  <td>1.82 Å</td>
-  <td>83.6 %</td>
-  <td>−2.65 REU</td>
-</tr>
-<tr>
-  <td><strong>Physio-DPO</strong></td>
-  <td><strong>1.28 Å</strong> (−29 %)</td>
-  <td><strong>92.8 %</strong> (+11 %)</td>
-  <td><strong>−3.05 REU</strong></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>训练曲线：能量与 RMSD 持续下降，KL 漂移 &lt;1.5 nat，优于 PPO 的稳定性和 DPO 的饱和问题</li>
-<li>幻觉清除：Energy-pLDDT 平面“高置信-高能量”象限样本被清零</li>
-<li>零样本泛化：ProteinGym 平均 Spearman ρ 提升至 0.72</li>
-<li>消融：硬负挖掘贡献最大（sc-RMSD 1.28 → 2.12 Å）；线性权重因无界放大而性能下降</li>
-</ul>
-<h2>4. 贡献</h2>
-<ol>
-<li>提出<strong>连续能量加权偏好优化</strong>框架，首次把热力学 landscape 幅值注入大型 PLM 对齐</li>
-<li>构建百万级<strong>物理 grounded 偏好数据集</strong> PhysioPref-1M，公开可用</li>
-<li>理论证明能量权重降低梯度方差，并逼近 Boltzmann 分布 KL 最小化</li>
-<li>实验验证在结构精度、foldability、能量、泛化、训练稳定性上全面优于 SFT/PPO/标准 DPO，同时保持语言多样性</li>
-</ol>
-<h2>5. 局限 &amp; 展望</h2>
-<ul>
-<li>仅针对<strong>单体折叠能量</strong>；可扩展到结合自由能、动力学路径、多状态平衡等更丰富的连续物理信号</li>
-<li>依赖近似能量 oracle；未来可耦合可微分力场或实验测量实现端到端物理反向传播</li>
-</ul>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.8</span></span>
-                                            <span>置信度: 0.90</span>
-                                            <span>分类: RLHF</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">RLHF</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2601.00647" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2601.00647" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
+                                <div class="collapsed-notice" id="collapsed-notice-RLHF" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-RLHF"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('RLHF')">展开全部</a>
                                 </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2601.00677">
@@ -2270,7 +1821,7 @@ $$D_{\text{KL}}(\pi_\theta | p_{\text{Boltz}}), \quad p_{\text{Boltz}} \propto e
                                             <div class="paper-summary-inline">本文提出了一种名为IRPO（Intergroup Relative Preference Optimization）的新型强化学习框架，旨在解决生成式奖励模型（GRMs）与强化学习算法（如GRPO）集成时的计算瓶颈问题。该方法通过将经典的Bradley-Terry模型扩展为点式评分，将评估的时间复杂度从O(n²)降低至O(n)，同时保持了模型的可解释性和细粒度奖励信号。实验表明，IRPO在多个基准测试中达到了点式GRMs的最先进水平，性能与领先的成对GRMs相当，并在后训练评估中显著优于成对GRMs。作者团队来自中国知名机构，包括Qwen（通义千问）团队，表明其研究具有坚实的工业界背景和资源支持。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.6</span>
+                                        <span class="paper-score score-mid">8.6</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -2590,7 +2141,7 @@ IRPO 的 critique 模板已包含 6 维细粒度 rubric，可继续：</p>
                                             <div class="paper-summary-inline">本文由清华大学、华盛顿大学、香港科技大学等知名高校的研究团队合作完成。该工作针对从人类偏好反馈中进行纳什学习（NLHF）的问题，首次为乐观乘性权重更新（OMWU）算法提供了在非正则化设置下的线性收敛保证。论文在更弱的假设（仅需存在全支撑纳什均衡，而非唯一性）下，显著改进了现有理论结果，消除了对实例相关常数的指数依赖，并提出了新颖的边际收敛行为分析框架。实验部分在表格化和神经网络策略设定下验证了理论优势，展示了OMWU在大语言模型对齐任务中的应用潜力。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.6</span>
+                                        <span class="paper-score score-mid">8.6</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -2755,7 +2306,7 @@ IRPO 的 critique 模板已包含 6 维细粒度 rubric，可继续：</p>
                                             <div class="paper-summary-inline">本文提出了一种创新的推理时对齐框架W2S-AlignTree，首次将蒙特卡洛树搜索（MCTS）与弱到强泛化（W2SG）范式相结合。该方法将大语言模型的对齐问题形式化为生成搜索树中的最优启发式搜索问题，利用弱模型的实时、细粒度信号作为对齐代理，在不修改强模型参数的情况下实现推理时的精细引导。实验在情感生成、摘要和指令遵循等多个任务上验证了其有效性，显著提升了模型的对齐性能。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.4</span>
+                                        <span class="paper-score score-low">8.4</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -3024,6 +2575,262 @@ $$r(x,y)=\log\frac{\pi_{\text{weak}}^*(y|x)}{\pi_{\text{weak}}^{\text{ref}}(y|x)
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-Agent" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Agent"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Agent')">展开全部</a>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2512.22716">
+                                    <div class="paper-header" onclick="showPaperDetail('2512.22716', 'Agent')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Memento 2: Learning by Stateful Reflective Memory
+                                                <button class="mark-button" 
+                                                        data-paper-id="2512.22716"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2512.22716", "authors": ["Wang"], "id": "2512.22716", "pdf_url": "https://arxiv.org/pdf/2512.22716", "rank": 8.5, "title": "Memento 2: Learning by Stateful Reflective Memory"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2512.22716" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AMemento%202%3A%20Learning%20by%20Stateful%20Reflective%20Memory%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2512.22716&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AMemento%202%3A%20Learning%20by%20Stateful%20Reflective%20Memory%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2512.22716%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Wang</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文提出了一种名为‘状态化反思记忆学习’的新理论框架，将情景记忆与强化学习相结合，为大语言模型（LLM）智能体的持续学习和经验学习提供了形式化基础。论文创新性地将反思机制（读取-写入）与策略评估-策略改进等价起来，并引入了状态化反思决策过程（SRDP）和反射MDP等理论工具，为基于记忆的持续学习提供了收敛性保证。作者团队（Wang）来自伦敦大学学院（UCL），是人工智能领域的重要研究机构。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score score-mid">8.5</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2512.22716" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Memento 2: Learning by Stateful Reflective Memory</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 2 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>论文旨在为“无需反向传播或模型微调即可持续学习”的大语言模型（LLM）智能体提供一套<strong>可证明收敛</strong>的理论框架。具体要解决的问题可归纳为：</p>
+<ol>
+<li><p>经验驱动但参数冻结的学习<br />
+现有 LLM 在部署后若想持续适应新任务，通常仍需大量数据做 SFT/RLHF。论文希望<strong>在不更新模型参数的前提下</strong>，仅通过“读写记忆”实现策略迭代，从而把经验直接转化为性能提升。</p>
+</li>
+<li><p>反射式记忆的数学抽象缺失<br />
+先前工作（Memento、CBR-LLM 等）经验上验证了“用记忆做反思”有效，但缺乏形式化描述，无法回答“为何收敛、何时最优”。论文提出 Stateful Reflective Decision Process（SRDP），将“读记忆≈策略改进、写记忆≈策略评估”严格对应到动态规划算子，使反射过程成为可分析的马尔可夫对象。</p>
+</li>
+<li><p>检索策略与探索-利用的平衡<br />
+记忆容量有限且随时间增长，需要一种<strong>密度感知的检索机制</strong>，既能利用高价值历史案例，又保留对未知区域的发现能力。论文通过 Parzen 核估计 + KL 正则的策略迭代，给出带熵正则的最优性保证，并证明当记忆覆盖趋于稠密时，复合策略收敛至 MDP 最优解。</p>
+</li>
+<li><p>在线持续学习的稳定性<br />
+记忆随交互流式写入，导致状态空间漂移。论文引入“反射 MDP”与双时间尺度随机逼近理论，证明<strong>慢速记忆更新 + 快速价值迭代</strong>的耦合过程几乎必然收敛，从而解决“记忆膨胀破坏马尔可夫性”带来的理论障碍。</p>
+</li>
+</ol>
+<p>简言之，论文把“案例回放”这一启发式做法升级为<strong>带收敛保证的软策略迭代算法</strong>，首次在 LLM 场景中实现了<br />
+<em>无需梯度更新、仅依赖读写记忆即可持续逼近最优策略</em> 的形式化学习与控制理论。</p>
+<h2>相关工作</h2>
+<p>论文在 §5 与 §6 中系统梳理了相关研究，可归纳为 6 条主线，并指出 SRDP/Reflected MDP 与它们的联系与区别：</p>
+<ol>
+<li><p>记忆增强强化学习（Memory-based RL）</p>
+<ul>
+<li>早期：LSTM／GRU 用隐状态承载历史，但缺乏显式记忆管理。</li>
+<li>显式 episodic 控制：MFEC、NEC 把 (s,a,r) 存入缓存，按 k-NN 或哈希检索；缺乏密度估计与收敛理论。</li>
+<li>本文引入 Parzen 核 + KL 正则，将检索动作视为策略空间，给出单调改进与最优性收敛证明。</li>
+</ul>
+</li>
+<li><p>经验回放（Experience Replay）</p>
+<ul>
+<li>DQN、Prioritized Replay 等按 TD-error 采样，目标是“更好地利用过往过渡”。</li>
+<li>SRDP 把“写”视为策略评估数据采集，但检索端用相似度先验而非 TD-error，强调泛化而非方差缩减。</li>
+</ul>
+</li>
+<li><p>案例推理与检索增强生成（CBR &amp; RAG）</p>
+<ul>
+<li>CBR：检索→复用→改写，用于法律、医疗诊断。</li>
+<li>RAG：把静态文档当外存，生成时拼接上下文。</li>
+<li>本文将“案例”视为策略改进的指数加权核，且记忆随交互持续写入，形成动态策略迭代，而非一次性提示。</li>
+</ul>
+</li>
+<li><p>神经科学启发记忆架构</p>
+<ul>
+<li>HAMI、Complementary Learning Systems 将海马体“回放”机制引入 RL。</li>
+<li>SRDP 同样采用 episodic replay，但用软策略迭代代替生物启发的手工规则，提供收敛保证。</li>
+</ul>
+</li>
+<li><p>信息论正则化 RL</p>
+<ul>
+<li>Max-Ent RL、SAC、MPO、TRPO 等在策略端加熵或 KL 约束以保证稳定。</li>
+<li>本文首次把 KL 正则同时施加在“检索策略”与“生成策略”两层，形成双重正则的反射式策略迭代。</li>
+</ul>
+</li>
+<li><p>大模型持续学习（LLM Continual Learning）</p>
+<ul>
+<li>In-context Learning、Chain-of-Thought、ReAct 等利用提示或反馈即时改进输出，但无理论刻画。</li>
+<li>Memento、DS-Agent、CASE-E 等经验系统展示“不写参数就能提升”的现象，却停留在启发式层面。</li>
+<li>SRDP 用 Reflected MDP 把上述经验统一为“读写即策略迭代”，首次给出收敛与最优性界，填补理论空白。</li>
+</ul>
+</li>
+</ol>
+<h2>解决方案</h2>
+<p>论文将“冻结参数的 LLM 如何持续学习”转化为<strong>可收敛的软策略迭代问题</strong>，核心思路是“把记忆操作当成 RL 的算子”。具体解法分四步：</p>
+<ol>
+<li><p>形式化：Stateful Reflective Decision Process（SRDP）</p>
+<ul>
+<li>在底层 MDP 上增加三元组 ⟨M, μ, pLLM⟩：<br />
+– M 为 episodic memory，存放过往 (s,a,r) 片段；<br />
+– μ(c|s,M) 是“检索策略”，决定读哪条记忆；<br />
+– pLLM(a|s,c) 是固定的 LLM 生成核。</li>
+<li>动作形成两阶段：先采样记忆 case c∼μ，再采样动作 a∼pLLM(·|s,c)。</li>
+<li>写操作 Mt+1=Write(Mt,s,a,r) 把新轨迹追加进记忆，完成“经验存盘”。</li>
+</ul>
+</li>
+<li><p>降维：Reflected MDP<br />
+把 (s,M) 拼成增广状态 x，将 LLM 的随机生成与记忆写入一并吸收进环境转移：<br />
+$$P_{LLM}(x'|x,c)=\sum_a pLLM(a|s,c),P(s'|s,a),\mathbf{1}_{M'=Write(M,s,a,R(s,a))}$$<br />
+于是原问题退化为“在增广空间上优化检索策略 μ(c|x)”，参数空间从 |A| 降到 |M|，且保持马尔可夫性。</p>
+</li>
+<li><p>算法：Parzen–KL 软策略迭代</p>
+<ul>
+<li>评估：用 Parzen 核估计状态密度，构造先验 μ0(c|x)；执行 KL-正则 Bellman 算子<br />
+$$(T_{KL}^μ Q)(x,c)=r+\gamma,\mathbb{E}<em>{x'}!\Big[\sum</em>{c'}μ(c'|x')Q(x',c')-\alpha,\text{KL}!\big(\mu(\cdot|x')|\mu_0(\cdot|x')\big)\Big]$$<br />
+该算子 γ-收缩，保证 Qμ 唯一。</li>
+<li>改进：闭式解<br />
+$$\mu^+(c|x)\propto\mu_0(c|x)\exp!\big(Q(x,c)/\alpha\big)$$<br />
+实现“高价值记忆被更频繁检索”。</li>
+<li>写回：交互产生 (s,a,r,s') 后立即追加到 M，下一轮先验 μ0 随之更新，形成外环迭代。</li>
+</ul>
+</li>
+<li><p>理论：双时间尺度收敛</p>
+<ul>
+<li>快尺度：Q,μ 以步长 ηt 迭代，跟踪“当前 M 下的最优反馈策略”。</li>
+<li>慢尺度：M 以步长 ρt≪ηt 更新，视作准静态。用 ODE 方法证明<br />
+(Qt,μt)−(Q_{M_t}^<em>,μ_{M_t}^</em>)→0 a.s.，且当覆盖半径 rM→0 时<br />
+$$|V^*-V^{π_M}|<em>\infty\le\frac{2R</em>{\max}}{(1-γ)^2},\varepsilon_{\text{LLM}}(rM)\to0$$<br />
+即记忆足够稠密时，复合策略收敛到真实最优。</li>
+</ul>
+</li>
+</ol>
+<p>通过“读=策略改进，写=策略评估”这一等价性（Theorem 15），论文把原本启发式的“案例回放”升级为<strong>带最优性保证的软策略迭代</strong>，从而在不更新 LLM 参数的前提下，实现持续、稳定、可证明的在线学习。</p>
+<h2>实验验证</h2>
+<p>全文未出现“Experiment”“Results”“Benchmark”等章节，也未给出任何定量指标或对比表格。<br />
+作者仅在 Introduction 与 Related Work 中<strong>引用自己先前的实证工作</strong>作为证据，说明该范式已“在多个领域被验证有效”：</p>
+<ul>
+<li>软件测试：CASE-E 框架（Guo et al. 2025, ref-[22]）</li>
+<li>自动化数据科学：DS-Agent（Guo et al. 2024, ref-[21]）</li>
+<li>深度科研助手：Memento 系统（Zhou et al. 2025, ref-[57]）</li>
+</ul>
+<p>这些前期工作展示了“冻结 LLM + 读写记忆”即可持续提升任务成功率，但<strong>本文本身没有新增实验</strong>。<br />
+当前论文的定位是<strong>纯理论补充</strong>：为已有经验现象提供 SRDP/Reflected MDP 抽象、Parzen-KL 软策略迭代算法以及收敛与最优性证明。</p>
+<h2>未来工作</h2>
+<p>以下方向可在此基础上继续推进，分为理论、算法、系统与评测四类：</p>
+<h3>理论深化</h3>
+<ul>
+<li><strong>连续状态/动作空间</strong>：将 Parzen 核推广到高斯过程或归一化流，建立密度估计与 RKHS 范数下的收敛率。</li>
+<li><strong>非平稳环境</strong>：用非平稳 MDP 或分段常数漂移模型刻画任务分布变化，给出遗忘-再学习权衡的遗憾界。</li>
+<li><strong>记忆容量有限时的遗忘机制</strong>：引入 Episodic Replay Buffer 的淘汰策略（FIFO、梯度遗忘、基于覆盖度的删除），分析对收敛速度的影响。</li>
+<li><strong>多智能体反射</strong>：把 SRDP 扩展到多智能体部分观测环境，研究“共享记忆”与“私有记忆”对均衡策略的作用。</li>
+</ul>
+<h3>算法创新</h3>
+<ul>
+<li><strong>自适应带宽与度量学习</strong>：让核带宽 h 与嵌入 ψ 随迭代自动优化，减少人工调参；可用 meta-gradient 或交叉验证。</li>
+<li><strong>分层检索</strong>：先快速粗排（向量 ANN），再细排（核加权），兼顾大规模记忆下的实时性与理论一致性。</li>
+<li><strong>记忆写入策略</strong>：由不确定性或信息增益引导“写哪些、写多少”，实现预算约束下的最优经验采集。</li>
+<li><strong>与参数高效微调协同</strong>：在慢时间尺度用 LoRA/AdaLoRA 对 LLM 进行稀疏更新，与快时间尺度的记忆读写形成“双轨”持续学习。</li>
+</ul>
+<h3>系统实现</h3>
+<ul>
+<li><strong>亿级记忆存储</strong>：结合向量数据库 + 磁盘级索引 + 冷热分层，解决随时间线性增长的存储与检索延迟问题。</li>
+<li><strong>异构记忆源</strong>：把文档、API 调用记录、人类反馈等多模态经验统一编码为 (s,a,r) 元组，纳入同一 SRDP 框架。</li>
+<li><strong>分布式部署</strong>：在多卡/多节点上并行执行 Policy Evaluation（读）与 Policy Improvement（写），保证一致性。</li>
+<li><strong>安全与隐私</strong>：对记忆做差分隐私或联邦聚合，防止敏感经验泄漏。</li>
+</ul>
+<h3>评测与基准</h3>
+<ul>
+<li><strong>长周期任务套件</strong>：构造需要数百步以上、奖励稀疏的代理任务（如长代码库调试、跨日科研实验规划），衡量持续改进曲线。</li>
+<li><strong>可重复性协议</strong>：开源记忆快照、检索日志与策略迭代轨迹，方便后续工作验证收敛定理。</li>
+<li><strong>消融实验</strong>：系统评估“无 void case”“无 KL 正则”“固定带宽”等失效模式，验证理论假设的必要性。</li>
+<li><strong>与人类基线对比</strong>：在同样样本预算下比较“人类专家+工具”与“SRDP 代理”的最终收益，量化样本效率提升。</li>
+</ul>
+<p>这些探索可逐步把“读写记忆即策略迭代”从理论构想推向<strong>大规模、安全、可解释</strong>的通用持续学习系统。</p>
+<h2>总结</h2>
+<p>论文提出 <strong>Stateful Reflective Decision Process（SRDP）</strong> 框架，把“冻结参数的 LLM 仅凭读写记忆就能持续学习”这一经验现象上升为<strong>可证明收敛的强化学习理论</strong>。核心贡献可概括为四点：</p>
+<ol>
+<li><p><strong>形式化</strong><br />
+在标准 MDP 上增加 episodic memory M、检索策略 μ 与固定 LLM 生成核 pLLM，形成两阶段决策：先读记忆 c∼μ，再生成动作 a∼pLLM(·|s,c)。写操作把新经验 (s,a,r) 追加到 M，完成一次“策略评估”。</p>
+</li>
+<li><p><strong>降维抽象</strong><br />
+把 (s,M) 拼成增广状态 x，将 LLM 生成与记忆写入吸收进环境转移，得到<strong>反射 MDP</strong>。原问题退化为“仅优化检索策略 μ(c|x)”，保持马尔可夫性且可用经典 RL 工具分析。</p>
+</li>
+<li><p><strong>算法与收敛</strong><br />
+采用 Parzen 核估计状态密度，构造先验 μ0；执行 KL-正则软策略迭代：</p>
+<ul>
+<li>评估算子 T_KL^μ 是 γ-收缩，保证 Qμ 唯一；</li>
+<li>改进步 μ^+(c|x)∝μ0(c|x)exp(Q/α) 单调提升软值；<br />
+双时间尺度（快：Q,μ；慢：M）下，(Q_t,μ_t) 几乎必然跟踪“当前记忆的最优策略”，且当记忆覆盖半径 r_M→0 时复合策略收敛至 MDP 最优解。</li>
+</ul>
+</li>
+<li><p><strong>等价性</strong><br />
+严格证明“读记忆 ⇔ 策略改进，写记忆 ⇔ 策略评估”，从而把案例回放、RAG、经验回放等启发式方法统一为<strong>带最优性保证的策略迭代</strong>。</p>
+</li>
+</ol>
+<p>综上，论文首次赋予“记忆驱动的反射式 LLM”以<strong>可收敛、可渐近最优</strong>的数学根基，为构建无需微调、即可持续自我改进的通用智能体奠定了理论路线。</p>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.5</span></span>
+                                            <span>置信度: 0.90</span>
+                                            <span>分类: Agent</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Agent</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2512.22716" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2512.22716" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2512.23631">
                                     <div class="paper-header" onclick="showPaperDetail('2512.23631', 'Agent')">
@@ -3064,7 +2871,7 @@ $$r(x,y)=\log\frac{\pi_{\text{weak}}^*(y|x)}{\pi_{\text{weak}}^{\text{ref}}(y|x)
                                             <div class="paper-summary-inline">本文由麻省理工学院（MIT）、MIT-IBM Watson AI Lab、斯坦福大学、马萨诸塞大学阿默斯特分校等知名机构的研究团队合作完成。该研究提出了一种名为BOAD（Bandit Optimization for Agent Design）的创新框架，用于自动发现用于软件工程任务的分层多智能体系统。该方法将多智能体设计问题建模为多臂老虎机问题，通过高效的探索-利用平衡和事后信用分配机制，自动发现有效的子智能体及其协调策略。在SWE-bench基准测试上，该方法超越了单智能体系统和人工设计的多智能体系统，使用36B参数的模型在SWE-bench-Live排行榜上取得了优异成绩，甚至超越了GPT-4、Claude等更大规模的模型。论文创新性强，实验设计充分，代码已开源。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.6</span>
+                                        <span class="paper-score score-mid">8.6</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -3325,257 +3132,6 @@ SWE 任务每次评估成本 ≈ 0.2 $，预算 B≤20 时总成本 4 $。可推
                                     </div>
                                 </div>
                                 
-                                <div class="paper-item-compact" id="paper-item-2512.22716">
-                                    <div class="paper-header" onclick="showPaperDetail('2512.22716', 'Agent')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Memento 2: Learning by Stateful Reflective Memory
-                                                <button class="mark-button" 
-                                                        data-paper-id="2512.22716"
-                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2512.22716", "authors": ["Wang"], "id": "2512.22716", "pdf_url": "https://arxiv.org/pdf/2512.22716", "rank": 8.5, "title": "Memento 2: Learning by Stateful Reflective Memory"}"
-                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
-                                                        title="标记这篇论文">☆</button>
-                                                <a href="https://arxiv.org/abs/2512.22716" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AMemento%202%3A%20Learning%20by%20Stateful%20Reflective%20Memory%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2512.22716&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AMemento%202%3A%20Learning%20by%20Stateful%20Reflective%20Memory%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2512.22716%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Wang</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文提出了一种名为‘状态化反思记忆学习’的新理论框架，将情景记忆与强化学习相结合，为大语言模型（LLM）智能体的持续学习和经验学习提供了形式化基础。论文创新性地将反思机制（读取-写入）与策略评估-策略改进等价起来，并引入了状态化反思决策过程（SRDP）和反射MDP等理论工具，为基于记忆的持续学习提供了收敛性保证。作者团队（Wang）来自伦敦大学学院（UCL），是人工智能领域的重要研究机构。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.5</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2512.22716" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Memento 2: Learning by Stateful Reflective Memory</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 2 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>论文旨在为“无需反向传播或模型微调即可持续学习”的大语言模型（LLM）智能体提供一套<strong>可证明收敛</strong>的理论框架。具体要解决的问题可归纳为：</p>
-<ol>
-<li><p>经验驱动但参数冻结的学习<br />
-现有 LLM 在部署后若想持续适应新任务，通常仍需大量数据做 SFT/RLHF。论文希望<strong>在不更新模型参数的前提下</strong>，仅通过“读写记忆”实现策略迭代，从而把经验直接转化为性能提升。</p>
-</li>
-<li><p>反射式记忆的数学抽象缺失<br />
-先前工作（Memento、CBR-LLM 等）经验上验证了“用记忆做反思”有效，但缺乏形式化描述，无法回答“为何收敛、何时最优”。论文提出 Stateful Reflective Decision Process（SRDP），将“读记忆≈策略改进、写记忆≈策略评估”严格对应到动态规划算子，使反射过程成为可分析的马尔可夫对象。</p>
-</li>
-<li><p>检索策略与探索-利用的平衡<br />
-记忆容量有限且随时间增长，需要一种<strong>密度感知的检索机制</strong>，既能利用高价值历史案例，又保留对未知区域的发现能力。论文通过 Parzen 核估计 + KL 正则的策略迭代，给出带熵正则的最优性保证，并证明当记忆覆盖趋于稠密时，复合策略收敛至 MDP 最优解。</p>
-</li>
-<li><p>在线持续学习的稳定性<br />
-记忆随交互流式写入，导致状态空间漂移。论文引入“反射 MDP”与双时间尺度随机逼近理论，证明<strong>慢速记忆更新 + 快速价值迭代</strong>的耦合过程几乎必然收敛，从而解决“记忆膨胀破坏马尔可夫性”带来的理论障碍。</p>
-</li>
-</ol>
-<p>简言之，论文把“案例回放”这一启发式做法升级为<strong>带收敛保证的软策略迭代算法</strong>，首次在 LLM 场景中实现了<br />
-<em>无需梯度更新、仅依赖读写记忆即可持续逼近最优策略</em> 的形式化学习与控制理论。</p>
-<h2>相关工作</h2>
-<p>论文在 §5 与 §6 中系统梳理了相关研究，可归纳为 6 条主线，并指出 SRDP/Reflected MDP 与它们的联系与区别：</p>
-<ol>
-<li><p>记忆增强强化学习（Memory-based RL）</p>
-<ul>
-<li>早期：LSTM／GRU 用隐状态承载历史，但缺乏显式记忆管理。</li>
-<li>显式 episodic 控制：MFEC、NEC 把 (s,a,r) 存入缓存，按 k-NN 或哈希检索；缺乏密度估计与收敛理论。</li>
-<li>本文引入 Parzen 核 + KL 正则，将检索动作视为策略空间，给出单调改进与最优性收敛证明。</li>
-</ul>
-</li>
-<li><p>经验回放（Experience Replay）</p>
-<ul>
-<li>DQN、Prioritized Replay 等按 TD-error 采样，目标是“更好地利用过往过渡”。</li>
-<li>SRDP 把“写”视为策略评估数据采集，但检索端用相似度先验而非 TD-error，强调泛化而非方差缩减。</li>
-</ul>
-</li>
-<li><p>案例推理与检索增强生成（CBR &amp; RAG）</p>
-<ul>
-<li>CBR：检索→复用→改写，用于法律、医疗诊断。</li>
-<li>RAG：把静态文档当外存，生成时拼接上下文。</li>
-<li>本文将“案例”视为策略改进的指数加权核，且记忆随交互持续写入，形成动态策略迭代，而非一次性提示。</li>
-</ul>
-</li>
-<li><p>神经科学启发记忆架构</p>
-<ul>
-<li>HAMI、Complementary Learning Systems 将海马体“回放”机制引入 RL。</li>
-<li>SRDP 同样采用 episodic replay，但用软策略迭代代替生物启发的手工规则，提供收敛保证。</li>
-</ul>
-</li>
-<li><p>信息论正则化 RL</p>
-<ul>
-<li>Max-Ent RL、SAC、MPO、TRPO 等在策略端加熵或 KL 约束以保证稳定。</li>
-<li>本文首次把 KL 正则同时施加在“检索策略”与“生成策略”两层，形成双重正则的反射式策略迭代。</li>
-</ul>
-</li>
-<li><p>大模型持续学习（LLM Continual Learning）</p>
-<ul>
-<li>In-context Learning、Chain-of-Thought、ReAct 等利用提示或反馈即时改进输出，但无理论刻画。</li>
-<li>Memento、DS-Agent、CASE-E 等经验系统展示“不写参数就能提升”的现象，却停留在启发式层面。</li>
-<li>SRDP 用 Reflected MDP 把上述经验统一为“读写即策略迭代”，首次给出收敛与最优性界，填补理论空白。</li>
-</ul>
-</li>
-</ol>
-<h2>解决方案</h2>
-<p>论文将“冻结参数的 LLM 如何持续学习”转化为<strong>可收敛的软策略迭代问题</strong>，核心思路是“把记忆操作当成 RL 的算子”。具体解法分四步：</p>
-<ol>
-<li><p>形式化：Stateful Reflective Decision Process（SRDP）</p>
-<ul>
-<li>在底层 MDP 上增加三元组 ⟨M, μ, pLLM⟩：<br />
-– M 为 episodic memory，存放过往 (s,a,r) 片段；<br />
-– μ(c|s,M) 是“检索策略”，决定读哪条记忆；<br />
-– pLLM(a|s,c) 是固定的 LLM 生成核。</li>
-<li>动作形成两阶段：先采样记忆 case c∼μ，再采样动作 a∼pLLM(·|s,c)。</li>
-<li>写操作 Mt+1=Write(Mt,s,a,r) 把新轨迹追加进记忆，完成“经验存盘”。</li>
-</ul>
-</li>
-<li><p>降维：Reflected MDP<br />
-把 (s,M) 拼成增广状态 x，将 LLM 的随机生成与记忆写入一并吸收进环境转移：<br />
-$$P_{LLM}(x'|x,c)=\sum_a pLLM(a|s,c),P(s'|s,a),\mathbf{1}_{M'=Write(M,s,a,R(s,a))}$$<br />
-于是原问题退化为“在增广空间上优化检索策略 μ(c|x)”，参数空间从 |A| 降到 |M|，且保持马尔可夫性。</p>
-</li>
-<li><p>算法：Parzen–KL 软策略迭代</p>
-<ul>
-<li>评估：用 Parzen 核估计状态密度，构造先验 μ0(c|x)；执行 KL-正则 Bellman 算子<br />
-$$(T_{KL}^μ Q)(x,c)=r+\gamma,\mathbb{E}<em>{x'}!\Big[\sum</em>{c'}μ(c'|x')Q(x',c')-\alpha,\text{KL}!\big(\mu(\cdot|x')|\mu_0(\cdot|x')\big)\Big]$$<br />
-该算子 γ-收缩，保证 Qμ 唯一。</li>
-<li>改进：闭式解<br />
-$$\mu^+(c|x)\propto\mu_0(c|x)\exp!\big(Q(x,c)/\alpha\big)$$<br />
-实现“高价值记忆被更频繁检索”。</li>
-<li>写回：交互产生 (s,a,r,s') 后立即追加到 M，下一轮先验 μ0 随之更新，形成外环迭代。</li>
-</ul>
-</li>
-<li><p>理论：双时间尺度收敛</p>
-<ul>
-<li>快尺度：Q,μ 以步长 ηt 迭代，跟踪“当前 M 下的最优反馈策略”。</li>
-<li>慢尺度：M 以步长 ρt≪ηt 更新，视作准静态。用 ODE 方法证明<br />
-(Qt,μt)−(Q_{M_t}^<em>,μ_{M_t}^</em>)→0 a.s.，且当覆盖半径 rM→0 时<br />
-$$|V^*-V^{π_M}|<em>\infty\le\frac{2R</em>{\max}}{(1-γ)^2},\varepsilon_{\text{LLM}}(rM)\to0$$<br />
-即记忆足够稠密时，复合策略收敛到真实最优。</li>
-</ul>
-</li>
-</ol>
-<p>通过“读=策略改进，写=策略评估”这一等价性（Theorem 15），论文把原本启发式的“案例回放”升级为<strong>带最优性保证的软策略迭代</strong>，从而在不更新 LLM 参数的前提下，实现持续、稳定、可证明的在线学习。</p>
-<h2>实验验证</h2>
-<p>全文未出现“Experiment”“Results”“Benchmark”等章节，也未给出任何定量指标或对比表格。<br />
-作者仅在 Introduction 与 Related Work 中<strong>引用自己先前的实证工作</strong>作为证据，说明该范式已“在多个领域被验证有效”：</p>
-<ul>
-<li>软件测试：CASE-E 框架（Guo et al. 2025, ref-[22]）</li>
-<li>自动化数据科学：DS-Agent（Guo et al. 2024, ref-[21]）</li>
-<li>深度科研助手：Memento 系统（Zhou et al. 2025, ref-[57]）</li>
-</ul>
-<p>这些前期工作展示了“冻结 LLM + 读写记忆”即可持续提升任务成功率，但<strong>本文本身没有新增实验</strong>。<br />
-当前论文的定位是<strong>纯理论补充</strong>：为已有经验现象提供 SRDP/Reflected MDP 抽象、Parzen-KL 软策略迭代算法以及收敛与最优性证明。</p>
-<h2>未来工作</h2>
-<p>以下方向可在此基础上继续推进，分为理论、算法、系统与评测四类：</p>
-<h3>理论深化</h3>
-<ul>
-<li><strong>连续状态/动作空间</strong>：将 Parzen 核推广到高斯过程或归一化流，建立密度估计与 RKHS 范数下的收敛率。</li>
-<li><strong>非平稳环境</strong>：用非平稳 MDP 或分段常数漂移模型刻画任务分布变化，给出遗忘-再学习权衡的遗憾界。</li>
-<li><strong>记忆容量有限时的遗忘机制</strong>：引入 Episodic Replay Buffer 的淘汰策略（FIFO、梯度遗忘、基于覆盖度的删除），分析对收敛速度的影响。</li>
-<li><strong>多智能体反射</strong>：把 SRDP 扩展到多智能体部分观测环境，研究“共享记忆”与“私有记忆”对均衡策略的作用。</li>
-</ul>
-<h3>算法创新</h3>
-<ul>
-<li><strong>自适应带宽与度量学习</strong>：让核带宽 h 与嵌入 ψ 随迭代自动优化，减少人工调参；可用 meta-gradient 或交叉验证。</li>
-<li><strong>分层检索</strong>：先快速粗排（向量 ANN），再细排（核加权），兼顾大规模记忆下的实时性与理论一致性。</li>
-<li><strong>记忆写入策略</strong>：由不确定性或信息增益引导“写哪些、写多少”，实现预算约束下的最优经验采集。</li>
-<li><strong>与参数高效微调协同</strong>：在慢时间尺度用 LoRA/AdaLoRA 对 LLM 进行稀疏更新，与快时间尺度的记忆读写形成“双轨”持续学习。</li>
-</ul>
-<h3>系统实现</h3>
-<ul>
-<li><strong>亿级记忆存储</strong>：结合向量数据库 + 磁盘级索引 + 冷热分层，解决随时间线性增长的存储与检索延迟问题。</li>
-<li><strong>异构记忆源</strong>：把文档、API 调用记录、人类反馈等多模态经验统一编码为 (s,a,r) 元组，纳入同一 SRDP 框架。</li>
-<li><strong>分布式部署</strong>：在多卡/多节点上并行执行 Policy Evaluation（读）与 Policy Improvement（写），保证一致性。</li>
-<li><strong>安全与隐私</strong>：对记忆做差分隐私或联邦聚合，防止敏感经验泄漏。</li>
-</ul>
-<h3>评测与基准</h3>
-<ul>
-<li><strong>长周期任务套件</strong>：构造需要数百步以上、奖励稀疏的代理任务（如长代码库调试、跨日科研实验规划），衡量持续改进曲线。</li>
-<li><strong>可重复性协议</strong>：开源记忆快照、检索日志与策略迭代轨迹，方便后续工作验证收敛定理。</li>
-<li><strong>消融实验</strong>：系统评估“无 void case”“无 KL 正则”“固定带宽”等失效模式，验证理论假设的必要性。</li>
-<li><strong>与人类基线对比</strong>：在同样样本预算下比较“人类专家+工具”与“SRDP 代理”的最终收益，量化样本效率提升。</li>
-</ul>
-<p>这些探索可逐步把“读写记忆即策略迭代”从理论构想推向<strong>大规模、安全、可解释</strong>的通用持续学习系统。</p>
-<h2>总结</h2>
-<p>论文提出 <strong>Stateful Reflective Decision Process（SRDP）</strong> 框架，把“冻结参数的 LLM 仅凭读写记忆就能持续学习”这一经验现象上升为<strong>可证明收敛的强化学习理论</strong>。核心贡献可概括为四点：</p>
-<ol>
-<li><p><strong>形式化</strong><br />
-在标准 MDP 上增加 episodic memory M、检索策略 μ 与固定 LLM 生成核 pLLM，形成两阶段决策：先读记忆 c∼μ，再生成动作 a∼pLLM(·|s,c)。写操作把新经验 (s,a,r) 追加到 M，完成一次“策略评估”。</p>
-</li>
-<li><p><strong>降维抽象</strong><br />
-把 (s,M) 拼成增广状态 x，将 LLM 生成与记忆写入吸收进环境转移，得到<strong>反射 MDP</strong>。原问题退化为“仅优化检索策略 μ(c|x)”，保持马尔可夫性且可用经典 RL 工具分析。</p>
-</li>
-<li><p><strong>算法与收敛</strong><br />
-采用 Parzen 核估计状态密度，构造先验 μ0；执行 KL-正则软策略迭代：</p>
-<ul>
-<li>评估算子 T_KL^μ 是 γ-收缩，保证 Qμ 唯一；</li>
-<li>改进步 μ^+(c|x)∝μ0(c|x)exp(Q/α) 单调提升软值；<br />
-双时间尺度（快：Q,μ；慢：M）下，(Q_t,μ_t) 几乎必然跟踪“当前记忆的最优策略”，且当记忆覆盖半径 r_M→0 时复合策略收敛至 MDP 最优解。</li>
-</ul>
-</li>
-<li><p><strong>等价性</strong><br />
-严格证明“读记忆 ⇔ 策略改进，写记忆 ⇔ 策略评估”，从而把案例回放、RAG、经验回放等启发式方法统一为<strong>带最优性保证的策略迭代</strong>。</p>
-</li>
-</ol>
-<p>综上，论文首次赋予“记忆驱动的反射式 LLM”以<strong>可收敛、可渐近最优</strong>的数学根基，为构建无需微调、即可持续自我改进的通用智能体奠定了理论路线。</p>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.5</span></span>
-                                            <span>置信度: 0.90</span>
-                                            <span>分类: Agent</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">Agent</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2512.22716" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2512.22716" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
                             
                         </div>
                     </div>
@@ -3619,6 +3175,11 @@ $$|V^*-V^{π_M}|<em>\infty\le\frac{2R</em>{\max}}{(1-γ)^2},\varepsilon_{\text{L
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-Hallucination" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Hallucination"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Hallucination')">展开全部</a>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2512.01661">
                                     <div class="paper-header" onclick="showPaperDetail('2512.01661', 'Hallucination')">
@@ -3659,7 +3220,7 @@ $$|V^*-V^{π_M}|<em>\infty\le\frac{2R</em>{\max}}{(1-γ)^2},\varepsilon_{\text{L
                                             <div class="paper-summary-inline">本文由哈尔滨工业大学（HIT）社会计算与交互机器人研究中心（LARG）、中南大学和科大讯飞（iFLYTEK）的联合研究团队提出了一种新颖的LLM对齐框架，旨在解决大语言模型区分客观不可解问题与主观能力限制的难题。该工作通过构建包含逻辑矛盾的UnsolvableQA数据集和设计包含动态校准机制的UnsolvableRL强化学习范式，显著提升了模型在可解问题上的推理准确性和对不可解问题的检测能力，揭示了数据与惩罚机制的关键协同效应，为构建更可靠的AI系统提供了新思路。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.6</span>
+                                        <span class="paper-score score-mid">8.6</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -3985,6 +3546,304 @@ Solvable-Only 训练后，1.7B/4B 的不可解拒率分别跌至 1.5 % 与 4.9 %
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-Pretraining" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Pretraining"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Pretraining')">展开全部</a>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2502.05795">
+                                    <div class="paper-header" onclick="showPaperDetail('2502.05795', 'Pretraining')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                The Curse of Depth in Large Language Models
+                                                <button class="mark-button" 
+                                                        data-paper-id="2502.05795"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2502.05795", "authors": ["Sun", "Song", "Li", "Yin", "Zheng", "Liu"], "id": "2502.05795", "pdf_url": "https://arxiv.org/pdf/2502.05795", "rank": 8.857142857142856, "title": "The Curse of Depth in Large Language Models"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2502.05795" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AThe%20Curse%20of%20Depth%20in%20Large%20Language%20Models%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2502.05795&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AThe%20Curse%20of%20Depth%20in%20Large%20Language%20Models%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2502.05795%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Sun, Song, Li, Yin, Zheng, Liu</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文由Wenfang Sun、Xinyuan Song、Pengxiang Li、Lu Yin、Yefeng Zheng、Shiwei Liu组成的团队（作者单位未在摘要中明确标注，但论文内容显示其研究深度和实验规模较大，可能来自知名研究机构或高校）提出了一种针对大语言模型（LLM）深度诅咒（Curse of Depth）问题的创新解决方案。论文首次系统性地定义并分析了现代LLM中深层Transformer层贡献不足的现象，并指出其根本原因在于广泛使用的Pre-Layer Normalization（Pre-LN）结构导致的输出方差指数级增长。为解决此问题，作者提出了LayerNorm Scaling方法，通过按层深平方根倒数缩放LayerNorm输出，有效控制了方差爆炸，显著提升了深层层的训练贡献度。实验在130M至1B参数的LLaMA架构模型上进行，证明了该方法在预训练和下游微调任务上的有效性，且代码已开源。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score score-mid">8.9</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2502.05795" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">The Curse of Depth in Large Language Models</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 19 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>这篇论文试图解决的问题是现代大型语言模型（LLMs）中深层（Transformer块）的效率问题，即所谓的“深度的诅咒”（Curse of Depth）。具体来说，论文指出在许多流行的LLMs（如Llama、Mistral、DeepSeek和Qwen）中，接近一半的深层在训练和表示学习方面贡献不足，这导致了资源的浪费。论文的主要目标是：</p>
+<ol>
+<li><strong>确认和解释</strong>这种深层效率低下的现象，并揭示其背后的原因。</li>
+<li><strong>提出解决方案</strong>，以提高深层对训练和表示学习的贡献，从而提高LLMs的整体性能和资源利用效率。</li>
+</ol>
+<p>论文通过理论分析和实验证据，确定了这种现象的根源在于广泛使用的预层归一化（Pre-Layer Normalization，Pre-LN）。尽管Pre-LN有助于稳定Transformer LLMs的训练，但其输出方差会随着模型深度呈指数增长，导致深层Transformer块的导数接近单位矩阵，从而在训练中几乎没有贡献。为了解决这一问题，论文提出了“LayerNorm Scaling”方法，通过按深度的平方根倒数缩放层归一化的输出，来控制深层的输出方差爆炸，从而提高深层的贡献。</p>
+<h2>相关工作</h2>
+<p>论文中提到了多个与“深度的诅咒”（Curse of Depth）相关的研究，这些研究从不同角度探讨了大型语言模型（LLMs）中深层的效率问题。以下是这些研究的分类和总结：</p>
+<h3>关于LLMs中深层效率的研究</h3>
+<ul>
+<li><strong>Yin et al. (2024)</strong>：发现LLMs的深层可以容忍更高水平的剪枝，与浅层相比，深层在剪枝后仍能保持较高的稀疏性。</li>
+<li><strong>Gromov et al. (2024)</strong> 和 <strong>Men et al. (2024)</strong>：表明移除早期层会导致模型性能显著下降，而移除深层则不会。</li>
+<li><strong>Lad et al. (2024)</strong>：展示了GPT-2和Pythia的中间层和深层对扰动（如层交换和层丢弃）表现出显著的鲁棒性。</li>
+<li><strong>Li et al. (2024a)</strong>：强调早期层包含更多异常值，因此对微调更为关键。</li>
+</ul>
+<p>这些研究揭示了LLMs中深层效率低下的现象，但没有深入探讨其根本原因或提出有效的解决方案。</p>
+<h3>关于层归一化（Layer Normalization）的研究</h3>
+<ul>
+<li><strong>Baevski and Auli (2019)</strong> 和 <strong>Dai et al. (2019)</strong>：介绍了预层归一化（Pre-LN），它在稳定Transformer LLMs的训练方面发挥了重要作用。</li>
+<li><strong>Xiong et al. (2020)</strong>：证明了后层归一化（Post-LN）在输出层附近梯度较大，需要较小的学习率来稳定训练，而Pre-LN则随着模型深度的增加而降低梯度，更适合深度Transformer。</li>
+<li><strong>Wang et al. (2019)</strong>：实证确认了Pre-LN有助于堆叠更多层，而Post-LN则容易出现梯度消失问题。</li>
+</ul>
+<p>这些研究为理解Pre-LN和Post-LN在Transformer架构中的作用提供了基础。</p>
+<h3>关于改进层归一化方法的研究</h3>
+<ul>
+<li><strong>Li et al. (2024b)</strong>：提出了Mix-LN，结合了Pre-LN和Post-LN，以增强中间层的性能。</li>
+<li><strong>Wang et al. (2024)</strong>：提出了DeepNorm，通过在应用层归一化之前放大残差连接，使得Transformer能够堆叠到1000层。</li>
+<li><strong>Ding et al. (2021)</strong>：提出了Sandwich LayerNorm，对每个Transformer子层的输入和输出都进行归一化。</li>
+<li><strong>Takase et al. (2023a)</strong>：引入了B2T，除了每层的最后一个外，跳过了所有的层归一化。</li>
+</ul>
+<p>这些研究尝试通过不同的层归一化方法来解决深度Transformer中的训练稳定性问题。</p>
+<h3>关于模型压缩和剪枝的研究</h3>
+<ul>
+<li><strong>Lu et al. (2024)</strong> 和 <strong>Dumitru et al. (2024)</strong>：探讨了LLMs的层压缩，表明深层可以被显著压缩以实现高压缩比。</li>
+<li><strong>Muralidharan et al. (2024)</strong> 和 <strong>Siddiqui et al. (2024)</strong>：展示了可以完全剪枝整个深层，而不会影响性能，从而实现更经济的LLMs。</li>
+</ul>
+<p>这些研究从模型压缩的角度出发，进一步证实了LLMs中深层的冗余性。</p>
+<h3>关于模型训练和优化的研究</h3>
+<ul>
+<li><strong>Achiam et al. (2023)</strong> 和 <strong>Touvron et al. (2023)</strong>：讨论了训练LLMs所需的资源，包括数千个GPU和数月的训练时间，以及数据策划和管理的工作量。</li>
+<li><strong>Li et al. (2024b)</strong>：强调了理想情况下，模型中的所有层都应该被充分训练，以最大化资源的利用效率。</li>
+</ul>
+<p>这些研究强调了提高LLMs训练效率和资源利用效率的重要性。</p>
+<h3>关于模型评估和基准测试的研究</h3>
+<ul>
+<li><strong>Hendrycks et al. (2021)</strong>：介绍了大规模多任务语言理解（MMLU）基准测试，用于评估模型在多任务语言理解方面的性能。</li>
+<li><strong>Rajpurkar (2016)</strong>：介绍了SQuAD v1.1数据集，用于衡量模型的阅读理解能力。</li>
+</ul>
+<p>这些研究提供了评估LLMs性能的基准和方法。</p>
+<h3>关于模型扩展和可扩展性的研究</h3>
+<ul>
+<li><strong>Shoeybi et al. (2020)</strong>：提出了缩放初始化方法，通过在初始化阶段对权重进行缩放，以减少深层的方差爆炸问题。</li>
+<li>**Takase et al. (2023b</li>
+</ul>
+<h2>解决方案</h2>
+<p>论文通过提出一种名为 <strong>LayerNorm Scaling</strong> 的方法来解决“深度的诅咒”（Curse of Depth）问题。这种方法的核心思想是通过按深度的平方根倒数缩放层归一化（Layer Normalization）的输出，来控制深层的输出方差爆炸，从而提高深层对训练和表示学习的贡献。以下是论文解决这一问题的具体步骤和方法：</p>
+<h3>1. 确认问题的存在</h3>
+<p>论文首先通过广泛的实验，确认了在多种流行的大型语言模型（LLMs）中，深层的效率低下是一个普遍存在的现象。具体来说，论文通过层剪枝（layer pruning）实验，展示了移除深层对模型性能的影响较小，而移除早期层则会导致性能显著下降。这一现象在多种模型（如Llama、Mistral、DeepSeek和Qwen）中都得到了验证。</p>
+<h3>2. 理论分析问题的根源</h3>
+<p>论文通过理论分析，揭示了深层效率低下的根本原因是广泛使用的预层归一化（Pre-LN）。具体来说，Pre-LN虽然能够稳定Transformer模型的训练，但其输出方差会随着模型深度呈指数增长。这种方差的爆炸导致深层Transformer块的导数接近单位矩阵，从而在训练中几乎没有贡献。论文通过数学推导，详细分析了Pre-LN模型的方差增长趋势，并证明了其导数的上界。</p>
+<h3>3. 提出LayerNorm Scaling方法</h3>
+<p>为了解决这一问题，论文提出了 <strong>LayerNorm Scaling</strong> 方法。该方法的核心思想是通过按深度的平方根倒数缩放层归一化的输出，来控制深层的输出方差爆炸。具体来说，对于一个具有 ( L ) 层的Transformer模型，LayerNorm Scaling将第 ( \ell ) 层的层归一化输出按 ( \frac{1}{\sqrt{\ell}} ) 的比例进行缩放。这一缩放机制有效地降低了深层的输出方差，使得深层能够对训练和表示学习做出更有意义的贡献。</p>
+<h3>4. 实验证明方法的有效性</h3>
+<p>论文通过一系列实验，验证了LayerNorm Scaling方法的有效性。实验涵盖了不同规模的模型（从130M到1B参数），并在多个基准数据集上进行了评估。实验结果表明，LayerNorm Scaling显著提高了LLMs的预训练性能，并且这种性能提升能够无缝地迁移到监督微调阶段。具体来说，LayerNorm Scaling在以下几个方面表现出色：</p>
+<ul>
+<li><strong>降低输出方差</strong>：通过实验，论文展示了LayerNorm Scaling能够有效控制深层的输出方差，避免其呈指数增长。</li>
+<li><strong>提高训练效率</strong>：LayerNorm Scaling使得模型在训练过程中能够更快地收敛，并且在相同的训练步数下达到更低的损失值。</li>
+<li><strong>增强深层贡献</strong>：通过层剪枝实验，论文证明了LayerNorm Scaling使得深层在模型中发挥了更有意义的作用，移除深层会导致更大的性能下降。</li>
+</ul>
+<h3>5. 方法的实现和推广</h3>
+<p>LayerNorm Scaling方法简单易实现，不需要额外的超参数调整，也不会引入额外的可训练参数。这使得该方法可以轻松地应用于现有的Transformer架构中，而不会增加实现的复杂性。论文还提供了代码实现，方便其他研究者和开发者使用和验证。</p>
+<h3>总结</h3>
+<p>通过上述步骤，论文不仅揭示了LLMs中深层效率低下的问题，还提出了一个有效的解决方案——LayerNorm Scaling。这一方法通过控制深层的输出方差，显著提高了深层对训练和表示学习的贡献，从而提高了LLMs的整体性能和资源利用效率。</p>
+<h2>实验验证</h2>
+<p>论文通过一系列实验来验证提出的 <strong>LayerNorm Scaling</strong> 方法的有效性。这些实验涵盖了不同规模的模型、不同的训练阶段以及多种评估指标。以下是论文中进行的主要实验及其结果：</p>
+<h3>1. 层剪枝实验（Layer Pruning Experiment）</h3>
+<p><strong>目的</strong>：验证不同层对模型性能的贡献，特别是深层和浅层的差异。
+<strong>方法</strong>：对多种流行的LLMs（如BERT-Large、Mistral-7B、LLaMA2-7B/13B、DeepSeek-7B和Qwen-7B）进行层剪枝实验，逐层移除模型的层，并在Massive Multitask Language Understanding（MMLU）基准测试上评估性能下降。
+<strong>结果</strong>：</p>
+<ul>
+<li><strong>BERT-Large（Post-LN）</strong>：移除深层导致显著的性能下降，而移除浅层影响较小。</li>
+<li><strong>Pre-LN模型</strong>：移除深层对性能的影响较小，表明深层贡献不足。</li>
+<li><strong>模型规模影响</strong>：随着模型规模的增加，可以剪枝的深层数量增加，表明深层的冗余性更高。</li>
+</ul>
+<h3>2. 层归一化方法比较实验</h3>
+<p><strong>目的</strong>：比较不同层归一化方法（如Post-LN、DeepNorm、Mix-LN和Pre-LN）的性能。
+<strong>方法</strong>：使用LLaMA架构的模型（130M、250M、350M和1B参数）进行预训练，采用相同的架构和训练设置，仅改变归一化方法。
+<strong>结果</strong>：</p>
+<ul>
+<li><strong>LayerNorm Scaling</strong>：在所有测试的模型规模上，LayerNorm Scaling均优于其他归一化方法，显著降低了困惑度（perplexity）。</li>
+<li><strong>DeepNorm</strong>：在较小模型上表现与Pre-LN相当，但在1B参数模型上出现不稳定和发散。</li>
+<li><strong>Mix-LN</strong>：在较小模型上优于Pre-LN，但在1B参数模型上未能收敛，显示出对架构设计和超参数调整的敏感性。</li>
+</ul>
+<h3>3. 监督微调实验</h3>
+<p><strong>目的</strong>：验证LayerNorm Scaling在监督微调阶段的有效性。
+<strong>方法</strong>：对预训练的模型进行监督微调，使用Commonsense170K数据集在八个下游任务上进行评估。
+<strong>结果</strong>：</p>
+<ul>
+<li><strong>LayerNorm Scaling</strong>：在所有评估的数据集上均优于其他归一化方法，平均性能提升显著。</li>
+<li><strong>具体提升</strong>：例如，在LLaMA-250M模型上，LayerNorm Scaling在ARC-e任务上比Mix-LN提高了3.56%；在LLaMA-1B模型上，LayerNorm Scaling在七个任务中的表现优于其他方法，平均提升1.86%。</li>
+</ul>
+<h3>4. 输出方差比较实验</h3>
+<p><strong>目的</strong>：验证LayerNorm Scaling是否有效降低了深层的输出方差。
+<strong>方法</strong>：比较LayerNorm Scaling与其他缩放方法（如LayerScale和缩放初始化）在训练过程中的输出方差。
+<strong>结果</strong>：</p>
+<ul>
+<li><strong>LayerNorm Scaling</strong>：显著降低了深层的输出方差，与Pre-LN和LayerScale相比，方差控制更为有效。</li>
+<li><strong>缩放初始化</strong>：虽然在初始化阶段降低了方差，但在训练过程中未能有效控制方差增长。</li>
+</ul>
+<h3>5. 深层贡献实验</h3>
+<p><strong>目的</strong>：验证LayerNorm Scaling是否提高了深层对模型训练的贡献。
+<strong>方法</strong>：对LLaMA-130M模型进行层剪枝实验，移除单个层并测量在ARC-e基准测试上的性能下降。
+<strong>结果</strong>：</p>
+<ul>
+<li><strong>Pre-LN</strong>：移除深层对性能的影响较小，表明深层贡献不足。</li>
+<li><strong>LayerNorm Scaling</strong>：移除深层导致显著的性能下降，表明深层在模型中发挥了更有意义的作用。</li>
+</ul>
+<h3>6. 训练损失曲线分析</h3>
+<p><strong>目的</strong>：比较Pre-LN和LayerNorm Scaling在训练过程中的损失曲线。
+<strong>方法</strong>：在LLaMA-1B模型上，记录使用Pre-LN和LayerNorm Scaling的训练损失曲线。
+<strong>结果</strong>：</p>
+<ul>
+<li><strong>LayerNorm Scaling</strong>：训练损失更快下降，且在相同训练步数下达到更低的损失值，表明训练效率更高。</li>
+</ul>
+<h3>7. 方差增长分析</h3>
+<p><strong>目的</strong>：分析Pre-LN在训练过程中深层方差的增长情况。
+<strong>方法</strong>：在LLaMA-130M模型的训练过程中，记录不同深度层的输出方差。
+<strong>结果</strong>：</p>
+<ul>
+<li><strong>Pre-LN</strong>：深层的输出方差在训练过程中呈指数增长，表明深层的方差问题是一个持续存在的问题，而不是暂时的。</li>
+</ul>
+<p>通过这些实验，论文全面验证了LayerNorm Scaling方法的有效性，证明了</p>
+<h2>未来工作</h2>
+<p>尽管论文提出的 <strong>LayerNorm Scaling</strong> 方法在解决“深度的诅咒”（Curse of Depth）问题上取得了显著的成果，但仍有一些可以进一步探索的点。以下是一些潜在的研究方向和改进点：</p>
+<h3>1. <strong>更深入的理论分析</strong></h3>
+<ul>
+<li><strong>方差控制的最优策略</strong>：虽然LayerNorm Scaling通过按深度的平方根倒数缩放层归一化的输出来控制方差，但是否还有更优的缩放策略可以进一步优化深层的贡献？例如，是否可以动态调整缩放因子，使其适应不同的训练阶段和模型状态？</li>
+<li><strong>与其他归一化方法的结合</strong>：LayerNorm Scaling是否可以与其他归一化方法（如Post-LN、DeepNorm、Mix-LN）结合，以进一步提高模型的稳定性和性能？</li>
+</ul>
+<h3>2. <strong>扩展到其他模型架构</strong></h3>
+<ul>
+<li><strong>非Transformer架构</strong>：LayerNorm Scaling是否可以应用于其他类型的深度神经网络架构，如卷积神经网络（CNNs）或图神经网络（GNNs）？这些架构中的深层是否也存在类似的问题，LayerNorm Scaling是否能够提供类似的改进？</li>
+<li><strong>多模态模型</strong>：在多模态模型（如视觉-语言模型）中，深层的效率问题是否同样存在？LayerNorm Scaling是否可以应用于这些模型，以提高其性能和资源利用效率？</li>
+</ul>
+<h3>3. <strong>更广泛的实验验证</strong></h3>
+<ul>
+<li><strong>更大规模的模型</strong>：虽然论文已经在1B参数的模型上进行了实验，但是否可以在更大规模的模型（如10B、100B参数）上验证LayerNorm Scaling的有效性？这些模型的深层是否会有不同的行为模式？</li>
+<li><strong>更多基准测试</strong>：除了MMLU和Commonsense170K，LayerNorm Scaling是否可以在其他基准测试（如GLUE、SuperGLUE、SQuAD等）上进一步验证其性能提升？</li>
+<li><strong>跨领域验证</strong>：LayerNorm Scaling是否可以在不同领域的任务（如自然语言处理、计算机视觉、语音识别等）中验证其有效性？这些领域的模型是否也会从LayerNorm Scaling中受益？</li>
+</ul>
+<h3>4. <strong>与其他技术的结合</strong></h3>
+<ul>
+<li><strong>模型压缩和剪枝</strong>：LayerNorm Scaling是否可以与模型压缩和剪枝技术结合，进一步提高模型的效率和性能？例如，是否可以在LayerNorm Scaling的基础上进行更激进的深层剪枝，而不会影响模型的整体性能？</li>
+<li><strong>知识蒸馏</strong>：LayerNorm Scaling是否可以与知识蒸馏技术结合，将深层的知识更有效地传递给浅层，从而进一步提高模型的性能和效率？</li>
+</ul>
+<h3>5. <strong>训练动态分析</strong></h3>
+<ul>
+<li><strong>训练过程中的动态调整</strong>：LayerNorm Scaling是否可以根据训练过程中的动态变化（如梯度变化、损失变化）动态调整缩放因子，以进一步优化训练过程？</li>
+<li><strong>长期训练稳定性</strong>：LayerNorm Scaling在长期训练（如数月甚至数年的训练）中的稳定性如何？是否需要进一步的调整或优化来确保长期训练的稳定性？</li>
+</ul>
+<h3>6. <strong>计算效率和资源利用</strong></h3>
+<ul>
+<li><strong>计算效率优化</strong>：LayerNorm Scaling是否可以通过进一步的优化（如减少计算复杂度、提高并行计算效率）来提高其在大规模训练中的适用性？</li>
+<li><strong>资源利用效率</strong>：LayerNorm Scaling是否可以进一步提高资源利用效率，减少训练和推理过程中的计算资源需求？</li>
+</ul>
+<h3>7. <strong>实际应用中的验证</strong></h3>
+<ul>
+<li><strong>工业级应用</strong>：LayerNorm Scaling是否可以在实际的工业级应用中验证其有效性？例如，在大规模的自然语言处理服务中，LayerNorm Scaling是否能够显著提高模型的性能和效率？</li>
+<li><strong>跨平台验证</strong>：LayerNorm Scaling是否可以在不同的硬件平台上（如GPU、TPU、FPGA）验证其性能提升？这些平台上的模型是否会有不同的行为模式？</li>
+</ul>
+<h3>8. <strong>可解释性和透明度</strong></h3>
+<ul>
+<li><strong>深层的可解释性</strong>：LayerNorm Scaling是否可以提高深层的可解释性，帮助我们更好地理解深层在模型中的作用和贡献？</li>
+<li><strong>透明度和可解释性工具</strong>：是否可以开发新的工具和方法，以更好地分析和解释LayerNorm Scaling对深层的影响？</li>
+</ul>
+<p>通过这些进一步的探索和研究，可以更全面地验证和优化LayerNorm Scaling方法，使其在更广泛的场景和应用中发挥更大的作用。</p>
+<h2>总结</h2>
+<p>当然，以下是论文《The Curse of Depth in Large Language Models》的主要内容总结：</p>
+<h3>论文标题</h3>
+<p>The Curse of Depth in Large Language Models</p>
+<h3>作者</h3>
+<p>Wenfang Sun<em>, Xinyuan Song</em>, Pengxiang Li, Lu Yin, Yefeng Zheng, Shiwei Liu</p>
+<h3>摘要</h3>
+<p>论文引入了“深度的诅咒”（Curse of Depth, CoD）这一概念，用以描述和解释现代大型语言模型（LLMs）中深层（Transformer块）效率低下的现象。研究发现，许多LLMs的深层在训练和表示学习中的贡献远低于预期。论文通过理论分析和实验证据，确定了这一问题的根源在于广泛使用的预层归一化（Pre-LN）。Pre-LN虽然稳定了Transformer LLMs的训练，但其输出方差会随着模型深度呈指数增长，导致深层Transformer块的导数接近单位矩阵，从而在训练中几乎没有贡献。为了解决这一问题，论文提出了 <strong>LayerNorm Scaling</strong> 方法，通过按深度的平方根倒数缩放层归一化的输出，来控制深层的输出方差爆炸，从而提高深层的贡献。实验结果表明，LayerNorm Scaling显著提高了LLMs的预训练性能，并且这种性能提升能够无缝地迁移到监督微调阶段。</p>
+<h3>1. 引言</h3>
+<p>论文指出，现代LLMs的深层在训练和表示学习中的效率低下是一个普遍存在的问题。这一现象不仅影响了模型的性能，还导致了资源的浪费。论文通过引入“深度的诅咒”这一概念，系统地描述了这一现象，并提出了相应的解决方案。</p>
+<h3>2. 实验证据</h3>
+<p>论文通过层剪枝实验，验证了不同层对模型性能的贡献。实验结果表明，Pre-LN模型的深层对性能的影响较小，而Post-LN模型的深层则对性能有显著贡献。这一现象在多种流行的LLMs（如Llama、Mistral、DeepSeek和Qwen）中都得到了验证。</p>
+<h3>3. “深度的诅咒”分析</h3>
+<p>论文通过理论分析，揭示了Pre-LN导致深层效率低下的根本原因。具体来说，Pre-LN的输出方差会随着模型深度呈指数增长，导致深层的导数接近单位矩阵，从而在训练中几乎没有贡献。论文通过数学推导，详细分析了Pre-LN模型的方差增长趋势，并证明了其导数的上界。</p>
+<h3>4. LayerNorm Scaling方法</h3>
+<p>为了解决“深度的诅咒”问题，论文提出了 <strong>LayerNorm Scaling</strong> 方法。该方法通过按深度的平方根倒数缩放层归一化的输出，来控制深层的输出方差爆炸。具体来说，对于一个具有 ( L ) 层的Transformer模型，LayerNorm Scaling将第 ( \ell ) 层的层归一化输出按 ( \frac{1}{\sqrt{\ell}} ) 的比例进行缩放。这一缩放机制有效地降低了深层的输出方差，使得深层能够对训练和表示学习做出更有意义的贡献。</p>
+<h3>5. 实验</h3>
+<p>论文通过一系列实验，验证了LayerNorm Scaling方法的有效性。实验涵盖了不同规模的模型（从130M到1B参数），并在多个基准数据集上进行了评估。实验结果表明，LayerNorm Scaling显著提高了LLMs的预训练性能，并且这种性能提升能够无缝地迁移到监督微调阶段。具体来说，LayerNorm Scaling在以下几个方面表现出色：</p>
+<ul>
+<li><strong>降低输出方差</strong>：通过实验，论文展示了LayerNorm Scaling能够有效控制深层的输出方差，避免其呈指数增长。</li>
+<li><strong>提高训练效率</strong>：LayerNorm Scaling使得模型在训练过程中能够更快地收敛，并且在相同的训练步数下达到更低的损失值。</li>
+<li><strong>增强深层贡献</strong>：通过层剪枝实验，论文证明了LayerNorm Scaling使得深层在模型中发挥了更有意义的作用，移除深层会导致更大的性能下降。</li>
+</ul>
+<h3>6. 相关工作</h3>
+<p>论文回顾了与层归一化（Layer Normalization）相关的研究，包括Pre-LN和Post-LN的比较、其他改进的层归一化方法（如DeepNorm、Mix-LN等），以及模型压缩和剪枝的研究。这些研究为理解“深度的诅咒”问题提供了背景和基础。</p>
+<h3>7. 结论</h3>
+<p>论文总结了LayerNorm Scaling方法的主要贡献，并强调了其在提高LLMs性能和资源利用效率方面的重要性。论文希望这一工作能够引起社区对“深度的诅咒”问题的关注，并推动LLMs的进一步发展。</p>
+<h3>8. 影响声明</h3>
+<p>论文指出，LayerNorm Scaling方法不仅提高了LLMs的性能，还减少了训练所需的计算资源和环境成本，使得LLMs的开发更加可持续和</p>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">8.9</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: Pretraining</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Pretraining</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2502.05795" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2502.05795" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2601.00671">
                                     <div class="paper-header" onclick="showPaperDetail('2601.00671', 'Pretraining')">
@@ -4025,7 +3884,7 @@ Solvable-Only 训练后，1.7B/4B 的不可解拒率分别跌至 1.5 % 与 4.9 %
                                             <div class="paper-summary-inline">本文由Sakana AI团队（由Llion Jones等知名AI研究员创立，致力于开发高效、可解释的AI模型）提出了一种新颖的深度学习方法——快速权重乘积键记忆（FwPKM）。该方法通过将静态的乘积键记忆（PKM）模块改造为动态的、可在训练和推理时通过局部梯度下降更新的快速权重模块，有效解决了序列建模中存储容量与计算效率之间的权衡问题。实验表明，FwPKM作为一种有效的情景记忆，与标准模块的语义记忆互补，在长上下文数据集上显著降低了困惑度，并展现出强大的泛化能力（如在仅4K训练序列下泛化至128K上下文）。方法创新性强，实验设计系统且验证充分，叙述结构清晰，技术细节详尽。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.9</span>
+                                        <span class="paper-score score-mid">8.9</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -4370,21 +4229,21 @@ $$o_t=g_t\cdot\hat v_{t+1}+(1-g_t)\cdot v_t$$</p>
                                     </div>
                                 </div>
                                 
-                                <div class="paper-item-compact" id="paper-item-2502.05795">
-                                    <div class="paper-header" onclick="showPaperDetail('2502.05795', 'Pretraining')">
+                                <div class="paper-item-compact" id="paper-item-2503.02152">
+                                    <div class="paper-header" onclick="showPaperDetail('2503.02152', 'Pretraining')">
                                         <div style="flex: 1;">
                                             <div class="paper-title">
-                                                The Curse of Depth in Large Language Models
+                                                Tabby: A Language Model Architecture for Tabular and Structured Data Synthesis
                                                 <button class="mark-button" 
-                                                        data-paper-id="2502.05795"
-                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2502.05795", "authors": ["Sun", "Song", "Li", "Yin", "Zheng", "Liu"], "id": "2502.05795", "pdf_url": "https://arxiv.org/pdf/2502.05795", "rank": 8.857142857142856, "title": "The Curse of Depth in Large Language Models"}"
+                                                        data-paper-id="2503.02152"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2503.02152", "authors": ["Cromp", "GNVV", "Alkhudhayri", "Cao", "Guo", "Roberts", "Sala"], "id": "2503.02152", "pdf_url": "https://arxiv.org/pdf/2503.02152", "rank": 8.357142857142858, "title": "Tabby: A Language Model Architecture for Tabular and Structured Data Synthesis"}"
                                                         onclick="handleMarkClickFromButton(this); event.stopPropagation();"
                                                         title="标记这篇论文">☆</button>
-                                                <a href="https://arxiv.org/abs/2502.05795" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <a href="https://arxiv.org/abs/2503.02152" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
                                                     
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AThe%20Curse%20of%20Depth%20in%20Large%20Language%20Models%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2502.05795&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ATabby%3A%20A%20Language%20Model%20Architecture%20for%20Tabular%20and%20Structured%20Data%20Synthesis%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2503.02152&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
                                                        class="ai-link ai-link-kimi" 
                                                        target="_blank" 
                                                        onclick="event.stopPropagation();"
@@ -4393,7 +4252,7 @@ $$o_t=g_t\cdot\hat v_{t+1}+(1-g_t)\cdot v_t$$</p>
                                                         <span>Kimi</span>
                                                     </a>
                                                     
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AThe%20Curse%20of%20Depth%20in%20Large%20Language%20Models%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2502.05795%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ATabby%3A%20A%20Language%20Model%20Architecture%20for%20Tabular%20and%20Structured%20Data%20Synthesis%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2503.02152%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
                                                        class="ai-link ai-link-chatgpt" 
                                                        target="_blank" 
                                                        onclick="event.stopPropagation();"
@@ -4403,18 +4262,18 @@ $$o_t=g_t\cdot\hat v_{t+1}+(1-g_t)\cdot v_t$$</p>
                                                     </a>
                                                 </span>
                                             </div>
-                                            <div class="paper-authors">Sun, Song, Li, Yin, Zheng, Liu</div>
+                                            <div class="paper-authors">Cromp, GNVV, Alkhudhayri, Cao, Guo, Roberts, Sala</div>
                                             <!-- 中文摘要（默认显示） -->
                                             
-                                            <div class="paper-summary-inline">本文由Wenfang Sun、Xinyuan Song、Pengxiang Li、Lu Yin、Yefeng Zheng、Shiwei Liu组成的团队（作者单位未在摘要中明确标注，但论文内容显示其研究深度和实验规模较大，可能来自知名研究机构或高校）提出了一种针对大语言模型（LLM）深度诅咒（Curse of Depth）问题的创新解决方案。论文首次系统性地定义并分析了现代LLM中深层Transformer层贡献不足的现象，并指出其根本原因在于广泛使用的Pre-Layer Normalization（Pre-LN）结构导致的输出方差指数级增长。为解决此问题，作者提出了LayerNorm Scaling方法，通过按层深平方根倒数缩放LayerNorm输出，有效控制了方差爆炸，显著提升了深层层的训练贡献度。实验在130M至1B参数的LLaMA架构模型上进行，证明了该方法在预训练和下游微调任务上的有效性，且代码已开源。</div>
+                                            <div class="paper-summary-inline">本文由威斯康星大学麦迪逊分校（University of Wisconsin-Madison）和GE HealthCare的研究团队提出了一种名为Tabby的新颖架构，用于提升语言模型在表格和结构化数据合成任务上的性能。该方法通过引入门控混合专家（MoE）层对标准Transformer架构进行后训练修改，使模型能为不同数据列分配专用参数，显著提升了合成数据的质量。实验表明，Tabby在多个表格数据集上达到或接近真实数据的性能，并能推广到嵌套JSON等更广泛的结构化数据。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.9</span>
+                                        <span class="paper-score score-low">8.4</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2502.05795" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">The Curse of Depth in Large Language Models</h3>
+                                    <div id="details-2503.02152" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Tabby: A Language Model Architecture for Tabular and Structured Data Synthesis</h3>
                                         
                                         <!-- 全文分析（如果可用且无错误） -->
                                         
@@ -4423,217 +4282,107 @@ $$o_t=g_t\cdot\hat v_{t+1}+(1-g_t)\cdot v_t$$</p>
                                             
                                         <h4>📊 全文分析</h4>
                                         <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 19 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>这篇论文试图解决的问题是现代大型语言模型（LLMs）中深层（Transformer块）的效率问题，即所谓的“深度的诅咒”（Curse of Depth）。具体来说，论文指出在许多流行的LLMs（如Llama、Mistral、DeepSeek和Qwen）中，接近一半的深层在训练和表示学习方面贡献不足，这导致了资源的浪费。论文的主要目标是：</p>
+                                            <h2>问题定义</h2>
+<p>论文旨在解决一个核心问题：<strong>如何利用大型语言模型（LLMs）高效、高质量地合成表格和结构化数据</strong>。尽管LLMs在文本生成方面取得了巨大成功，但表格数据合成领域相对被忽视，面临独特挑战：</p>
 <ol>
-<li><strong>确认和解释</strong>这种深层效率低下的现象，并揭示其背后的原因。</li>
-<li><strong>提出解决方案</strong>，以提高深层对训练和表示学习的贡献，从而提高LLMs的整体性能和资源利用效率。</li>
+<li><strong>复杂的列间依赖关系</strong>：表格列之间通常存在复杂的非线性关系。</li>
+<li><strong>多模态数据混合</strong>：一个表格可能同时包含文本、数值、分类甚至嵌套（如JSON）数据类型。</li>
+<li><strong>列顺序无关性</strong>：列的顺序通常没有语义意义，但传统的序列建模（如Transformer）可能会引入虚假的列间相关性。</li>
+<li><strong>缺乏专用架构</strong>：现有方法（如GANs、扩散模型、LLMs）大多是为图像或文本设计的，需要大量预处理，性能受限。</li>
 </ol>
-<p>论文通过理论分析和实验证据，确定了这种现象的根源在于广泛使用的预层归一化（Pre-Layer Normalization，Pre-LN）。尽管Pre-LN有助于稳定Transformer LLMs的训练，但其输出方差会随着模型深度呈指数增长，导致深层Transformer块的导数接近单位矩阵，从而在训练中几乎没有贡献。为了解决这一问题，论文提出了“LayerNorm Scaling”方法，通过按深度的平方根倒数缩放层归一化的输出，来控制深层的输出方差爆炸，从而提高深层的贡献。</p>
+<p>因此，论文的目标是设计一个专门针对表格数据特性的LLM架构修改方案，以生成更真实、更高质量的合成数据，并探索其向更广泛结构化数据（如JSON）的扩展能力。</p>
 <h2>相关工作</h2>
-<p>论文中提到了多个与“深度的诅咒”（Curse of Depth）相关的研究，这些研究从不同角度探讨了大型语言模型（LLMs）中深层的效率问题。以下是这些研究的分类和总结：</p>
-<h3>关于LLMs中深层效率的研究</h3>
-<ul>
-<li><strong>Yin et al. (2024)</strong>：发现LLMs的深层可以容忍更高水平的剪枝，与浅层相比，深层在剪枝后仍能保持较高的稀疏性。</li>
-<li><strong>Gromov et al. (2024)</strong> 和 <strong>Men et al. (2024)</strong>：表明移除早期层会导致模型性能显著下降，而移除深层则不会。</li>
-<li><strong>Lad et al. (2024)</strong>：展示了GPT-2和Pythia的中间层和深层对扰动（如层交换和层丢弃）表现出显著的鲁棒性。</li>
-<li><strong>Li et al. (2024a)</strong>：强调早期层包含更多异常值，因此对微调更为关键。</li>
+<p>论文梳理了表格数据合成的主要技术路线，并指出了各自的局限性：</p>
+<ol>
+<li><strong>经典方法（如贝叶斯网络）</strong>：表达能力有限，难以处理复杂的数据类型和分布。</li>
+<li><strong>生成对抗网络（GANs）</strong>：如CTGAN、TVAE。在处理不平衡的序数列、多峰连续列以及复杂的列间交互时，容易遭遇模式崩溃等问题。</li>
+<li><strong>扩散模型</strong>：如Tab-DDPM，是当前最先进的方法之一，在许多指标上表现优异。但其性能建立在<strong>强假设</strong>之上（例如，回归目标变量只能取整数值），且无法处理非分类的字符串列（如地址）。</li>
+<li><strong>大型语言模型（LLMs）</strong>：<ul>
+<li><strong>GReaT</strong>：开创性工作，将表格行转换为句子格式（如“<code>ColumnA</code> is <code>ValueA</code>”）供LLM处理，并提出通过打乱列顺序来训练以建模列间依赖。</li>
+<li><strong>TapTap</strong>：在多种表格数据上对LLM（如Distilled-GPT2）进行预训练，再进行下游微调。</li>
+<li><strong>Tabula</strong>：通过预处理（如将分类值映射为整数）使数据更易于被LLM建模。</li>
+<li><strong>局限性</strong>：这些工作主要集中在<strong>训练技术</strong>上，并未对LLM的<strong>核心架构</strong>进行针对表格特性的修改。它们可以被视为Tabby的补充技术。</li>
 </ul>
-<p>这些研究揭示了LLMs中深层效率低下的现象，但没有深入探讨其根本原因或提出有效的解决方案。</p>
-<h3>关于层归一化（Layer Normalization）的研究</h3>
-<ul>
-<li><strong>Baevski and Auli (2019)</strong> 和 <strong>Dai et al. (2019)</strong>：介绍了预层归一化（Pre-LN），它在稳定Transformer LLMs的训练方面发挥了重要作用。</li>
-<li><strong>Xiong et al. (2020)</strong>：证明了后层归一化（Post-LN）在输出层附近梯度较大，需要较小的学习率来稳定训练，而Pre-LN则随着模型深度的增加而降低梯度，更适合深度Transformer。</li>
-<li><strong>Wang et al. (2019)</strong>：实证确认了Pre-LN有助于堆叠更多层，而Post-LN则容易出现梯度消失问题。</li>
-</ul>
-<p>这些研究为理解Pre-LN和Post-LN在Transformer架构中的作用提供了基础。</p>
-<h3>关于改进层归一化方法的研究</h3>
-<ul>
-<li><strong>Li et al. (2024b)</strong>：提出了Mix-LN，结合了Pre-LN和Post-LN，以增强中间层的性能。</li>
-<li><strong>Wang et al. (2024)</strong>：提出了DeepNorm，通过在应用层归一化之前放大残差连接，使得Transformer能够堆叠到1000层。</li>
-<li><strong>Ding et al. (2021)</strong>：提出了Sandwich LayerNorm，对每个Transformer子层的输入和输出都进行归一化。</li>
-<li><strong>Takase et al. (2023a)</strong>：引入了B2T，除了每层的最后一个外，跳过了所有的层归一化。</li>
-</ul>
-<p>这些研究尝试通过不同的层归一化方法来解决深度Transformer中的训练稳定性问题。</p>
-<h3>关于模型压缩和剪枝的研究</h3>
-<ul>
-<li><strong>Lu et al. (2024)</strong> 和 <strong>Dumitru et al. (2024)</strong>：探讨了LLMs的层压缩，表明深层可以被显著压缩以实现高压缩比。</li>
-<li><strong>Muralidharan et al. (2024)</strong> 和 <strong>Siddiqui et al. (2024)</strong>：展示了可以完全剪枝整个深层，而不会影响性能，从而实现更经济的LLMs。</li>
-</ul>
-<p>这些研究从模型压缩的角度出发，进一步证实了LLMs中深层的冗余性。</p>
-<h3>关于模型训练和优化的研究</h3>
-<ul>
-<li><strong>Achiam et al. (2023)</strong> 和 <strong>Touvron et al. (2023)</strong>：讨论了训练LLMs所需的资源，包括数千个GPU和数月的训练时间，以及数据策划和管理的工作量。</li>
-<li><strong>Li et al. (2024b)</strong>：强调了理想情况下，模型中的所有层都应该被充分训练，以最大化资源的利用效率。</li>
-</ul>
-<p>这些研究强调了提高LLMs训练效率和资源利用效率的重要性。</p>
-<h3>关于模型评估和基准测试的研究</h3>
-<ul>
-<li><strong>Hendrycks et al. (2021)</strong>：介绍了大规模多任务语言理解（MMLU）基准测试，用于评估模型在多任务语言理解方面的性能。</li>
-<li><strong>Rajpurkar (2016)</strong>：介绍了SQuAD v1.1数据集，用于衡量模型的阅读理解能力。</li>
-</ul>
-<p>这些研究提供了评估LLMs性能的基准和方法。</p>
-<h3>关于模型扩展和可扩展性的研究</h3>
-<ul>
-<li><strong>Shoeybi et al. (2020)</strong>：提出了缩放初始化方法，通过在初始化阶段对权重进行缩放，以减少深层的方差爆炸问题。</li>
-<li>**Takase et al. (2023b</li>
-</ul>
+</li>
+</ol>
+<p><strong>与现有工作的关系</strong>：Tabby并非替代这些方法，而是提供了一个<strong>架构层面的增强</strong>。它可以直接与Plain、GReaT等训练技术结合使用。论文的核心创新在于首次提出了对Transformer LLM架构进行修改，使其更适配表格数据的生成任务。</p>
 <h2>解决方案</h2>
-<p>论文通过提出一种名为 <strong>LayerNorm Scaling</strong> 的方法来解决“深度的诅咒”（Curse of Depth）问题。这种方法的核心思想是通过按深度的平方根倒数缩放层归一化（Layer Normalization）的输出，来控制深层的输出方差爆炸，从而提高深层对训练和表示学习的贡献。以下是论文解决这一问题的具体步骤和方法：</p>
-<h3>1. 确认问题的存在</h3>
-<p>论文首先通过广泛的实验，确认了在多种流行的大型语言模型（LLMs）中，深层的效率低下是一个普遍存在的现象。具体来说，论文通过层剪枝（layer pruning）实验，展示了移除深层对模型性能的影响较小，而移除早期层则会导致性能显著下降。这一现象在多种模型（如Llama、Mistral、DeepSeek和Qwen）中都得到了验证。</p>
-<h3>2. 理论分析问题的根源</h3>
-<p>论文通过理论分析，揭示了深层效率低下的根本原因是广泛使用的预层归一化（Pre-LN）。具体来说，Pre-LN虽然能够稳定Transformer模型的训练，但其输出方差会随着模型深度呈指数增长。这种方差的爆炸导致深层Transformer块的导数接近单位矩阵，从而在训练中几乎没有贡献。论文通过数学推导，详细分析了Pre-LN模型的方差增长趋势，并证明了其导数的上界。</p>
-<h3>3. 提出LayerNorm Scaling方法</h3>
-<p>为了解决这一问题，论文提出了 <strong>LayerNorm Scaling</strong> 方法。该方法的核心思想是通过按深度的平方根倒数缩放层归一化的输出，来控制深层的输出方差爆炸。具体来说，对于一个具有 ( L ) 层的Transformer模型，LayerNorm Scaling将第 ( \ell ) 层的层归一化输出按 ( \frac{1}{\sqrt{\ell}} ) 的比例进行缩放。这一缩放机制有效地降低了深层的输出方差，使得深层能够对训练和表示学习做出更有意义的贡献。</p>
-<h3>4. 实验证明方法的有效性</h3>
-<p>论文通过一系列实验，验证了LayerNorm Scaling方法的有效性。实验涵盖了不同规模的模型（从130M到1B参数），并在多个基准数据集上进行了评估。实验结果表明，LayerNorm Scaling显著提高了LLMs的预训练性能，并且这种性能提升能够无缝地迁移到监督微调阶段。具体来说，LayerNorm Scaling在以下几个方面表现出色：</p>
+<p>论文提出了两个核心贡献：<strong>Tabby架构</strong>和<strong>Plain训练技术</strong>。</p>
+<h3>1. Tabby架构</h3>
 <ul>
-<li><strong>降低输出方差</strong>：通过实验，论文展示了LayerNorm Scaling能够有效控制深层的输出方差，避免其呈指数增长。</li>
-<li><strong>提高训练效率</strong>：LayerNorm Scaling使得模型在训练过程中能够更快地收敛，并且在相同的训练步数下达到更低的损失值。</li>
-<li><strong>增强深层贡献</strong>：通过层剪枝实验，论文证明了LayerNorm Scaling使得深层在模型中发挥了更有意义的作用，移除深层会导致更大的性能下降。</li>
+<li><strong>核心思想</strong>：在标准的Transformer LLM基础上，应用<strong>门控混合专家（Gated Mixture-of-Experts, MoE）</strong> 进行后训练修改。</li>
+<li><strong>具体实现</strong>：对于一个有V列的表格，Tabby将LLM中的某个（或某几个）模块（例如语言建模头LM Head）替换为一个MoE层 <code>Λ_a = [L_{a,1}, L_{a,2}, ..., L_{a,V}]</code>。其中，每个专家 <code>L_{a,i}</code> 专门负责建模数据集的第 <code>i</code> 列。</li>
+<li><strong>关键优势</strong>：<ul>
+<li><strong>列专用参数</strong>：为每一列分配独立的参数集，增强了模型对不同列特定分布的表达能力。</li>
+<li><strong>灵活性</strong>：MoE可以应用于LM Head、MLP或注意力块。论文中表现最佳的是 <strong>Tabby Multi-Head (MH)</strong>，即仅修改LM Head。</li>
+<li><strong>可扩展性</strong>：<ul>
+<li><strong>结构化数据</strong>：通过递归应用Tabby MoE，可以自然地扩展到嵌套数据结构（如JSON），模型架构本身就能体现数据的层次关系。</li>
+<li><strong>高维数据</strong>：可通过参数共享等技术控制参数量；实现上可以每次只将一个专家加载到内存，保持与非Tabby模型相同的内存需求。</li>
 </ul>
-<h3>5. 方法的实现和推广</h3>
-<p>LayerNorm Scaling方法简单易实现，不需要额外的超参数调整，也不会引入额外的可训练参数。这使得该方法可以轻松地应用于现有的Transformer架构中，而不会增加实现的复杂性。论文还提供了代码实现，方便其他研究者和开发者使用和验证。</p>
-<h3>总结</h3>
-<p>通过上述步骤，论文不仅揭示了LLMs中深层效率低下的问题，还提出了一个有效的解决方案——LayerNorm Scaling。这一方法通过控制深层的输出方差，显著提高了深层对训练和表示学习的贡献，从而提高了LLMs的整体性能和资源利用效率。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3>2. Plain训练技术</h3>
+<ul>
+<li><strong>核心思想</strong>：一种极其简单但高效的LLM表格数据微调方法。</li>
+<li><strong>数据格式化</strong>：将表格的每一行转换为一个句子：<code>&lt;BOS&gt; Column1 is Value1 &lt;EOC&gt; Column2 is Value2 &lt;EOC&gt; ... ColumnV is ValueV &lt;EOS&gt;</code>。其中<code>&lt;EOC&gt;</code>是新引入的“列结束”令牌。</li>
+<li><strong>训练与推理</strong>：以标准序列到序列的方式进行微调。推理时，提示词仅为<code>&lt;BOS&gt;</code>，模型会生成类似格式的文本，再解析回表格。</li>
+<li><strong>优势</strong>：相比GReaT等方法，Plain<strong>无需打乱列序或施加采样约束</strong>，更加轻量且性能更好。其简单性与优异性能的对比是论文的一个重要发现。</li>
+</ul>
+<p><strong>Tabby训练流程</strong>：在微调时，Tabby模型将每一行处理为一个长度为V的字符串列表（每列一个字符串）。训练第i列时，其提示词包含前i-1列的所有信息，并且<strong>每列的损失是独立计算的</strong>。这带来了额外好处：可以方便地监控每列在训练过程中的性能变化。</p>
 <h2>实验验证</h2>
-<p>论文通过一系列实验来验证提出的 <strong>LayerNorm Scaling</strong> 方法的有效性。这些实验涵盖了不同规模的模型、不同的训练阶段以及多种评估指标。以下是论文中进行的主要实验及其结果：</p>
-<h3>1. 层剪枝实验（Layer Pruning Experiment）</h3>
-<p><strong>目的</strong>：验证不同层对模型性能的贡献，特别是深层和浅层的差异。
-<strong>方法</strong>：对多种流行的LLMs（如BERT-Large、Mistral-7B、LLaMA2-7B/13B、DeepSeek-7B和Qwen-7B）进行层剪枝实验，逐层移除模型的层，并在Massive Multitask Language Understanding（MMLU）基准测试上评估性能下降。
-<strong>结果</strong>：</p>
+<p>论文通过一系列实验验证了四个核心主张，主要评估指标是<strong>机器学习效能（Machine Learning Efficacy, MLE）</strong>，即比较使用真实数据和合成数据训练的下游分类器/回归器的性能差异。</p>
+<h3>1. Claim 1: Tabby vs. 基线方法</h3>
 <ul>
-<li><strong>BERT-Large（Post-LN）</strong>：移除深层导致显著的性能下降，而移除浅层影响较小。</li>
-<li><strong>Pre-LN模型</strong>：移除深层对性能的影响较小，表明深层贡献不足。</li>
-<li><strong>模型规模影响</strong>：随着模型规模的增加，可以剪枝的深层数量增加，表明深层的冗余性更高。</li>
+<li><strong>设置</strong>：在6个常见表格数据集上，对比Tabby MH（Plain训练）与多种基线方法（CTGAN, TVAE, Tab-DDPM, 以及使用GReaT/GTT训练的Non-Tabby LLMs）。</li>
+<li><strong>结果</strong>：<ul>
+<li><strong>性能领先</strong>：Plain训练的Tabby MH在<strong>4/6</strong>的数据集上取得了最高的MLE，并在其中3个数据集上达到了与真实数据（“Original”）持平的性能上限。</li>
+<li><strong>训练技术优势</strong>：在所有6个数据集中，性能最好的LLM都采用了<strong>Plain训练</strong>。Plain训练的简单性显著优于更复杂的GReaT/GTT方法。</li>
+<li><strong>总体最佳</strong>：性能曲线（Performance Profile）和曲线下面积（AUP）分析表明，<strong>Plain训练的Tabby MH是所有方法中综合表现最好的</strong>，甚至超过了在强假设下工作的SOTA方法Tab-DDPM。</li>
 </ul>
-<h3>2. 层归一化方法比较实验</h3>
-<p><strong>目的</strong>：比较不同层归一化方法（如Post-LN、DeepNorm、Mix-LN和Pre-LN）的性能。
-<strong>方法</strong>：使用LLaMA架构的模型（130M、250M、350M和1B参数）进行预训练，采用相同的架构和训练设置，仅改变归一化方法。
-<strong>结果</strong>：</p>
+</li>
+</ul>
+<h3>2. Claim 2: 模型规模的影响</h3>
 <ul>
-<li><strong>LayerNorm Scaling</strong>：在所有测试的模型规模上，LayerNorm Scaling均优于其他归一化方法，显著降低了困惑度（perplexity）。</li>
-<li><strong>DeepNorm</strong>：在较小模型上表现与Pre-LN相当，但在1B参数模型上出现不稳定和发散。</li>
-<li><strong>Mix-LN</strong>：在较小模型上优于Pre-LN，但在1B参数模型上未能收敛，显示出对架构设计和超参数调整的敏感性。</li>
+<li><strong>设置</strong>：使用7种不同规模的LLM（从1.24亿到80亿参数），分别测试其Non-Tabby和Tabby MH版本在表格合成上的性能。</li>
+<li><strong>结果</strong>：<ul>
+<li><strong>Tabby提升显著</strong>：对于<strong>6/7</strong>的模型，Tabby架构都提升或保持了其MLE性能。</li>
+<li><strong>小模型逆袭</strong>：Tabby使得小参数模型（如Distilled-GPT2）能够达到甚至超越参数量大几个数量级的大模型（如Llama）的合成质量。这表明<strong>针对性的架构修改比单纯扩大模型规模更有效</strong>。</li>
 </ul>
-<h3>3. 监督微调实验</h3>
-<p><strong>目的</strong>：验证LayerNorm Scaling在监督微调阶段的有效性。
-<strong>方法</strong>：对预训练的模型进行监督微调，使用Commonsense170K数据集在八个下游任务上进行评估。
-<strong>结果</strong>：</p>
+</li>
+</ul>
+<h3>3. Claim 3: 扩展到结构化数据（JSON）</h3>
 <ul>
-<li><strong>LayerNorm Scaling</strong>：在所有评估的数据集上均优于其他归一化方法，平均性能提升显著。</li>
-<li><strong>具体提升</strong>：例如，在LLaMA-250M模型上，LayerNorm Scaling在ARC-e任务上比Mix-LN提高了3.56%；在LLaMA-1B模型上，LayerNorm Scaling在七个任务中的表现优于其他方法，平均提升1.86%。</li>
+<li><strong>设置</strong>：在一个嵌套的JSON格式的青光眼患者数据集上进行测试。</li>
+<li><strong>结果</strong>：Tabby MH将MLE提升了4%，<strong>达到了与真实数据持平的水平</strong>。同时，其合成数据与真实数据的可区分性（Discrimination）更低，表明合成数据更逼真。</li>
 </ul>
-<h3>4. 输出方差比较实验</h3>
-<p><strong>目的</strong>：验证LayerNorm Scaling是否有效降低了深层的输出方差。
-<strong>方法</strong>：比较LayerNorm Scaling与其他缩放方法（如LayerScale和缩放初始化）在训练过程中的输出方差。
-<strong>结果</strong>：</p>
+<h3>4. Claim 4: 逐列性能追踪</h3>
 <ul>
-<li><strong>LayerNorm Scaling</strong>：显著降低了深层的输出方差，与Pre-LN和LayerScale相比，方差控制更为有效。</li>
-<li><strong>缩放初始化</strong>：虽然在初始化阶段降低了方差，但在训练过程中未能有效控制方差增长。</li>
+<li><strong>设置</strong>：在训练Tabby MH时，记录每个列的独立验证损失。</li>
+<li><strong>结果</strong>：如图6所示，可以清晰观察到不同列的学习进度和难度差异（例如，某些列损失下降快，某些列则成为训练后期的瓶颈）。这为模型行为分析和调试提供了宝贵洞见。</li>
 </ul>
-<h3>5. 深层贡献实验</h3>
-<p><strong>目的</strong>：验证LayerNorm Scaling是否提高了深层对模型训练的贡献。
-<strong>方法</strong>：对LLaMA-130M模型进行层剪枝实验，移除单个层并测量在ARC-e基准测试上的性能下降。
-<strong>结果</strong>：</p>
-<ul>
-<li><strong>Pre-LN</strong>：移除深层对性能的影响较小，表明深层贡献不足。</li>
-<li><strong>LayerNorm Scaling</strong>：移除深层导致显著的性能下降，表明深层在模型中发挥了更有意义的作用。</li>
-</ul>
-<h3>6. 训练损失曲线分析</h3>
-<p><strong>目的</strong>：比较Pre-LN和LayerNorm Scaling在训练过程中的损失曲线。
-<strong>方法</strong>：在LLaMA-1B模型上，记录使用Pre-LN和LayerNorm Scaling的训练损失曲线。
-<strong>结果</strong>：</p>
-<ul>
-<li><strong>LayerNorm Scaling</strong>：训练损失更快下降，且在相同训练步数下达到更低的损失值，表明训练效率更高。</li>
-</ul>
-<h3>7. 方差增长分析</h3>
-<p><strong>目的</strong>：分析Pre-LN在训练过程中深层方差的增长情况。
-<strong>方法</strong>：在LLaMA-130M模型的训练过程中，记录不同深度层的输出方差。
-<strong>结果</strong>：</p>
-<ul>
-<li><strong>Pre-LN</strong>：深层的输出方差在训练过程中呈指数增长，表明深层的方差问题是一个持续存在的问题，而不是暂时的。</li>
-</ul>
-<p>通过这些实验，论文全面验证了LayerNorm Scaling方法的有效性，证明了</p>
 <h2>未来工作</h2>
-<p>尽管论文提出的 <strong>LayerNorm Scaling</strong> 方法在解决“深度的诅咒”（Curse of Depth）问题上取得了显著的成果，但仍有一些可以进一步探索的点。以下是一些潜在的研究方向和改进点：</p>
-<h3>1. <strong>更深入的理论分析</strong></h3>
-<ul>
-<li><strong>方差控制的最优策略</strong>：虽然LayerNorm Scaling通过按深度的平方根倒数缩放层归一化的输出来控制方差，但是否还有更优的缩放策略可以进一步优化深层的贡献？例如，是否可以动态调整缩放因子，使其适应不同的训练阶段和模型状态？</li>
-<li><strong>与其他归一化方法的结合</strong>：LayerNorm Scaling是否可以与其他归一化方法（如Post-LN、DeepNorm、Mix-LN）结合，以进一步提高模型的稳定性和性能？</li>
-</ul>
-<h3>2. <strong>扩展到其他模型架构</strong></h3>
-<ul>
-<li><strong>非Transformer架构</strong>：LayerNorm Scaling是否可以应用于其他类型的深度神经网络架构，如卷积神经网络（CNNs）或图神经网络（GNNs）？这些架构中的深层是否也存在类似的问题，LayerNorm Scaling是否能够提供类似的改进？</li>
-<li><strong>多模态模型</strong>：在多模态模型（如视觉-语言模型）中，深层的效率问题是否同样存在？LayerNorm Scaling是否可以应用于这些模型，以提高其性能和资源利用效率？</li>
-</ul>
-<h3>3. <strong>更广泛的实验验证</strong></h3>
-<ul>
-<li><strong>更大规模的模型</strong>：虽然论文已经在1B参数的模型上进行了实验，但是否可以在更大规模的模型（如10B、100B参数）上验证LayerNorm Scaling的有效性？这些模型的深层是否会有不同的行为模式？</li>
-<li><strong>更多基准测试</strong>：除了MMLU和Commonsense170K，LayerNorm Scaling是否可以在其他基准测试（如GLUE、SuperGLUE、SQuAD等）上进一步验证其性能提升？</li>
-<li><strong>跨领域验证</strong>：LayerNorm Scaling是否可以在不同领域的任务（如自然语言处理、计算机视觉、语音识别等）中验证其有效性？这些领域的模型是否也会从LayerNorm Scaling中受益？</li>
-</ul>
-<h3>4. <strong>与其他技术的结合</strong></h3>
-<ul>
-<li><strong>模型压缩和剪枝</strong>：LayerNorm Scaling是否可以与模型压缩和剪枝技术结合，进一步提高模型的效率和性能？例如，是否可以在LayerNorm Scaling的基础上进行更激进的深层剪枝，而不会影响模型的整体性能？</li>
-<li><strong>知识蒸馏</strong>：LayerNorm Scaling是否可以与知识蒸馏技术结合，将深层的知识更有效地传递给浅层，从而进一步提高模型的性能和效率？</li>
-</ul>
-<h3>5. <strong>训练动态分析</strong></h3>
-<ul>
-<li><strong>训练过程中的动态调整</strong>：LayerNorm Scaling是否可以根据训练过程中的动态变化（如梯度变化、损失变化）动态调整缩放因子，以进一步优化训练过程？</li>
-<li><strong>长期训练稳定性</strong>：LayerNorm Scaling在长期训练（如数月甚至数年的训练）中的稳定性如何？是否需要进一步的调整或优化来确保长期训练的稳定性？</li>
-</ul>
-<h3>6. <strong>计算效率和资源利用</strong></h3>
-<ul>
-<li><strong>计算效率优化</strong>：LayerNorm Scaling是否可以通过进一步的优化（如减少计算复杂度、提高并行计算效率）来提高其在大规模训练中的适用性？</li>
-<li><strong>资源利用效率</strong>：LayerNorm Scaling是否可以进一步提高资源利用效率，减少训练和推理过程中的计算资源需求？</li>
-</ul>
-<h3>7. <strong>实际应用中的验证</strong></h3>
-<ul>
-<li><strong>工业级应用</strong>：LayerNorm Scaling是否可以在实际的工业级应用中验证其有效性？例如，在大规模的自然语言处理服务中，LayerNorm Scaling是否能够显著提高模型的性能和效率？</li>
-<li><strong>跨平台验证</strong>：LayerNorm Scaling是否可以在不同的硬件平台上（如GPU、TPU、FPGA）验证其性能提升？这些平台上的模型是否会有不同的行为模式？</li>
-</ul>
-<h3>8. <strong>可解释性和透明度</strong></h3>
-<ul>
-<li><strong>深层的可解释性</strong>：LayerNorm Scaling是否可以提高深层的可解释性，帮助我们更好地理解深层在模型中的作用和贡献？</li>
-<li><strong>透明度和可解释性工具</strong>：是否可以开发新的工具和方法，以更好地分析和解释LayerNorm Scaling对深层的影响？</li>
-</ul>
-<p>通过这些进一步的探索和研究，可以更全面地验证和优化LayerNorm Scaling方法，使其在更广泛的场景和应用中发挥更大的作用。</p>
+<p>论文指出了以下可以进一步探索的方向和当前局限性：</p>
+<ol>
+<li><strong>更具挑战性的数据集</strong>：当前评估使用的部分数据集（如Adult, Diabetes）已较为普遍。未来需要关注更复杂、更具挑战性的表格数据合成任务。</li>
+<li><strong>对其他结构化模态的深入探索</strong>：论文初步验证了Tabby对JSON数据的有效性，未来可以系统性地扩展到更多类型的结构化数据（如XML、知识图谱、关系数据库）。</li>
+<li><strong>效率优化</strong>：虽然提出了参数共享和内存优化方案，但如何更高效地训练和部署具有大量列（即大量专家）的Tabby模型仍需深入研究。</li>
+<li><strong>与更多训练技术的结合</strong>：本文主要结合了Plain和GReaT，未来可以探索Tabby与其他先进表格预训练、微调技术的结合。</li>
+<li><strong>理论分析</strong>：对Tabby架构为何能有效建模列间依赖和列内分布进行更深入的理论解释。</li>
+<li><strong>局限性</strong>：Tabby的性能仍然依赖于基础LLM的文本预训练知识。对于与文本语义关联极弱的纯数值表格，其优势可能需要进一步验证。此外，MoE层的引入增加了模型结构的复杂性。</li>
+</ol>
 <h2>总结</h2>
-<p>当然，以下是论文《The Curse of Depth in Large Language Models》的主要内容总结：</p>
-<h3>论文标题</h3>
-<p>The Curse of Depth in Large Language Models</p>
-<h3>作者</h3>
-<p>Wenfang Sun<em>, Xinyuan Song</em>, Pengxiang Li, Lu Yin, Yefeng Zheng, Shiwei Liu</p>
-<h3>摘要</h3>
-<p>论文引入了“深度的诅咒”（Curse of Depth, CoD）这一概念，用以描述和解释现代大型语言模型（LLMs）中深层（Transformer块）效率低下的现象。研究发现，许多LLMs的深层在训练和表示学习中的贡献远低于预期。论文通过理论分析和实验证据，确定了这一问题的根源在于广泛使用的预层归一化（Pre-LN）。Pre-LN虽然稳定了Transformer LLMs的训练，但其输出方差会随着模型深度呈指数增长，导致深层Transformer块的导数接近单位矩阵，从而在训练中几乎没有贡献。为了解决这一问题，论文提出了 <strong>LayerNorm Scaling</strong> 方法，通过按深度的平方根倒数缩放层归一化的输出，来控制深层的输出方差爆炸，从而提高深层的贡献。实验结果表明，LayerNorm Scaling显著提高了LLMs的预训练性能，并且这种性能提升能够无缝地迁移到监督微调阶段。</p>
-<h3>1. 引言</h3>
-<p>论文指出，现代LLMs的深层在训练和表示学习中的效率低下是一个普遍存在的问题。这一现象不仅影响了模型的性能，还导致了资源的浪费。论文通过引入“深度的诅咒”这一概念，系统地描述了这一现象，并提出了相应的解决方案。</p>
-<h3>2. 实验证据</h3>
-<p>论文通过层剪枝实验，验证了不同层对模型性能的贡献。实验结果表明，Pre-LN模型的深层对性能的影响较小，而Post-LN模型的深层则对性能有显著贡献。这一现象在多种流行的LLMs（如Llama、Mistral、DeepSeek和Qwen）中都得到了验证。</p>
-<h3>3. “深度的诅咒”分析</h3>
-<p>论文通过理论分析，揭示了Pre-LN导致深层效率低下的根本原因。具体来说，Pre-LN的输出方差会随着模型深度呈指数增长，导致深层的导数接近单位矩阵，从而在训练中几乎没有贡献。论文通过数学推导，详细分析了Pre-LN模型的方差增长趋势，并证明了其导数的上界。</p>
-<h3>4. LayerNorm Scaling方法</h3>
-<p>为了解决“深度的诅咒”问题，论文提出了 <strong>LayerNorm Scaling</strong> 方法。该方法通过按深度的平方根倒数缩放层归一化的输出，来控制深层的输出方差爆炸。具体来说，对于一个具有 ( L ) 层的Transformer模型，LayerNorm Scaling将第 ( \ell ) 层的层归一化输出按 ( \frac{1}{\sqrt{\ell}} ) 的比例进行缩放。这一缩放机制有效地降低了深层的输出方差，使得深层能够对训练和表示学习做出更有意义的贡献。</p>
-<h3>5. 实验</h3>
-<p>论文通过一系列实验，验证了LayerNorm Scaling方法的有效性。实验涵盖了不同规模的模型（从130M到1B参数），并在多个基准数据集上进行了评估。实验结果表明，LayerNorm Scaling显著提高了LLMs的预训练性能，并且这种性能提升能够无缝地迁移到监督微调阶段。具体来说，LayerNorm Scaling在以下几个方面表现出色：</p>
-<ul>
-<li><strong>降低输出方差</strong>：通过实验，论文展示了LayerNorm Scaling能够有效控制深层的输出方差，避免其呈指数增长。</li>
-<li><strong>提高训练效率</strong>：LayerNorm Scaling使得模型在训练过程中能够更快地收敛，并且在相同的训练步数下达到更低的损失值。</li>
-<li><strong>增强深层贡献</strong>：通过层剪枝实验，论文证明了LayerNorm Scaling使得深层在模型中发挥了更有意义的作用，移除深层会导致更大的性能下降。</li>
-</ul>
-<h3>6. 相关工作</h3>
-<p>论文回顾了与层归一化（Layer Normalization）相关的研究，包括Pre-LN和Post-LN的比较、其他改进的层归一化方法（如DeepNorm、Mix-LN等），以及模型压缩和剪枝的研究。这些研究为理解“深度的诅咒”问题提供了背景和基础。</p>
-<h3>7. 结论</h3>
-<p>论文总结了LayerNorm Scaling方法的主要贡献，并强调了其在提高LLMs性能和资源利用效率方面的重要性。论文希望这一工作能够引起社区对“深度的诅咒”问题的关注，并推动LLMs的进一步发展。</p>
-<h3>8. 影响声明</h3>
-<p>论文指出，LayerNorm Scaling方法不仅提高了LLMs的性能，还减少了训练所需的计算资源和环境成本，使得LLMs的开发更加可持续和</p>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+<p>论文的主要贡献和价值总结如下：</p>
+<ol>
+<li><strong>首创性架构修改</strong>：提出了<strong>Tabby</strong>，这是第一个通过引入<strong>MoE层</strong>来修改Transformer LLM架构，使其专门适用于表格和结构化数据合成的方案。它通过为每列分配专用参数，显著提升了模型对表格复杂特性的表达能力。</li>
+<li><strong>简单高效的训练技术</strong>：提出了<strong>Plain</strong>，一种极其简单却强大的LLM表格微调方法，其性能超越了此前更复杂的训练范式。</li>
+<li><strong>卓越的实验性能</strong>：综合实验表明，<strong>Plain训练的Tabby MH模型</strong>在多个数据集上达到或接近真实数据质量，综合表现超越包括Tab-DDPM在内的现有SOTA方法，且所需假设更少。</li>
+<li><strong>突破规模限制</strong>：证明了通过针对性的架构优化，<strong>较小的LLM能够超越参数量大得多的通用LLM</strong>，为资源高效的表格合成提供了路径。</li>
+<li><strong>良好的可扩展性</strong>：成功将Tabby扩展到嵌套JSON数据的合成，展示了其处理更广泛<strong>结构化数据</strong>的潜力，为“大型表格模型（LTM）”的发展迈出了重要一步。</li>
+<li><strong>提供模型洞察</strong>：Tabby的逐列损失计算机制为训练过程提供了宝贵的可解释性工具。</li>
+</ol>
+<p>总之，Tabby在LLM用于表格数据合成的方向上，实现了从“训练技巧”到“核心架构”创新的关键跨越，为高质量、高效率的表格及结构化数据生成开辟了新的研究方向。</p>
 
                                         </div>
                                             
@@ -4641,8 +4390,8 @@ $$o_t=g_t\cdot\hat v_{t+1}+(1-g_t)\cdot v_t$$</p>
                                         
                                         <!-- 论文元信息 -->
                                         <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.9</span></span>
-                                            <span>置信度: 0.95</span>
+                                            <span>评分: <span class="paper-score">8.4</span></span>
+                                            <span>置信度: 0.90</span>
                                             <span>分类: Pretraining</span>
                                         </div>
                                         
@@ -4657,255 +4406,8 @@ $$o_t=g_t\cdot\hat v_{t+1}+(1-g_t)\cdot v_t$$</p>
                                         
                                         <!-- 链接 -->
                                         <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2502.05795" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2502.05795" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="paper-item-compact" id="paper-item-2601.00364">
-                                    <div class="paper-header" onclick="showPaperDetail('2601.00364', 'Pretraining')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                The Role of Mixed-Language Documents for Multilingual Large Language Model Pretraining
-                                                <button class="mark-button" 
-                                                        data-paper-id="2601.00364"
-                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2601.00364", "authors": ["Shao", "Tang", "Zhang", "Sevegnani", "Stenetorp", "Yang", "Lu"], "id": "2601.00364", "pdf_url": "https://arxiv.org/pdf/2601.00364", "rank": 8.642857142857144, "title": "The Role of Mixed-Language Documents for Multilingual Large Language Model Pretraining"}"
-                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
-                                                        title="标记这篇论文">☆</button>
-                                                <a href="https://arxiv.org/abs/2601.00364" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AThe%20Role%20of%20Mixed-Language%20Documents%20for%20Multilingual%20Large%20Language%20Model%20Pretraining%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2601.00364&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AThe%20Role%20of%20Mixed-Language%20Documents%20for%20Multilingual%20Large%20Language%20Model%20Pretraining%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2601.00364%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Shao, Tang, Zhang, Sevegnani, Stenetorp, Yang, Lu</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文由来自伦敦大学学院、南洋理工大学、滑铁卢大学、NVIDIA及日本国立情报学研究所的联合研究团队，对多语言大语言模型预训练中双语数据的作用进行了系统性研究。该工作通过构建纯净的单语语料库（MonoWeb）并从头训练模型，首次在受控条件下揭示了双语数据对不同跨语言任务的非对称性影响：机器翻译高度依赖仅占语料2%的双语数据（尤其是其中的平行数据），而跨语言问答、理解和推理任务则几乎不受影响。这一发现挑战了“混合语言数据普遍有益”的假设，为高效的多语言预训练数据构建提供了重要指导。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">8.6</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2601.00364" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">The Role of Mixed-Language Documents for Multilingual Large Language Model Pretraining</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 1 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>该研究旨在厘清“多语言大模型在预训练阶段究竟从双语数据中获得了什么”这一尚未被系统回答的问题。具体而言，论文聚焦以下核心疑问：</p>
-<ul>
-<li>双语文档（仅占语料 2 %）是否是跨语言能力的决定性因素？</li>
-<li>如果是，不同类型的双语内容（平行句对、语码切换、杂讯）贡献是否相同？</li>
-<li>去除双语数据后，哪些跨语言任务会崩溃，哪些依旧稳健，背后机理为何？</li>
-</ul>
-<p>通过从零开始预训练并严格控制语料，论文首次量化验证了“机器翻译对平行数据高度敏感，而跨语言理解与推理任务几乎不受双语数据影响”的不对称现象，并揭示其根源在于<strong>词级对齐信号</strong>的缺失而非句子级语义对齐的丧失。</p>
-<h2>相关工作</h2>
-<p>已有文献主要沿三条主线展开，与本研究形成互补或对比：</p>
-<ol>
-<li><p><strong>平行语料与机器翻译</strong></p>
-<ul>
-<li>Brown et al. (1993) 奠定统计机器翻译框架，强调句子级对齐的必要性。</li>
-<li>Johnson et al. (2016) 提出“单模型多语言”范式，依赖平行数据实现零资源翻译。</li>
-<li>NLLB team (2022) 通过大规模平行语料将高-低资源语言统一进同一 MT 系统。</li>
-</ul>
-</li>
-<li><p><strong>语码切换（code-switching）作为跨语言信号</strong></p>
-<ul>
-<li>Qin et al. (2020) 用合成语码切换做微调数据增强，提升零样本迁移。</li>
-<li>Yoo et al. (2024) 以课程学习方式引入语码切换，改善低资源语言表现。</li>
-<li>Wang et al. (2025) 在预训练阶段放大语码切换比例，验证其对跨语言迁移的增益。</li>
-</ul>
-</li>
-<li><p><strong>多语言预训练语料的表征分析</strong></p>
-<ul>
-<li>Briakou et al. (2023) 对 PaLM 翻译能力进行探针，发现“偶发双语”即可支持 MT，但未区分数据类型。</li>
-<li>Qorib et al. (2025) 在继续预训练中追加平行句对，证实其优于合成语码切换，然而基座模型已含双语信号。</li>
-</ul>
-</li>
-</ol>
-<p>相较之下，本文首次在<strong>完全可控的从零预训练</strong>环境下，系统剥离并重新加入平行/语码切换两类双语数据，量化其对翻译、问答、理解、推理任务的差异化影响，填补了“双语数据在预训练阶段究竟起何作用”的研究空白。</p>
-<h2>解决方案</h2>
-<p>论文通过“构造-消融-诊断”三步走策略，在完全可控的预训练环境中系统剥离双语信号，量化其对不同跨语言任务的影响。</p>
-<ol>
-<li><p>构造纯净对照语料</p>
-<ul>
-<li>从 240 B token 的 FineWeb/FineWeb2 中移除全部双语文档（≈2 %），得到 <strong>MONOWEB</strong>；保留原始语料为 <strong>FINEWEB</strong>。</li>
-<li>设计两阶段流水线（熵过滤 + LLM 分类）将双语内容细分为 <strong>平行</strong>、<strong>语码切换</strong>、<strong>杂讯</strong>三类，实现粒度可控。</li>
-</ul>
-</li>
-<li><p>消融实验：从零预训练 12 个 1.35 B 参数模型<br />
-配置矩阵：3 个语言对 × 4 种语料</p>
-<ul>
-<li>FINEWEB（含全部双语）</li>
-<li>MONOWEB（零双语）</li>
-<li>MONOWEB+PARALLEL（仅加回平行）</li>
-<li>MONOWEB+CODESWITCH（仅加回语码切换）</li>
-</ul>
-<p>统一训练超参，确保性能差异仅由双语数据类型引起。</p>
-</li>
-<li><p>诊断分析：多任务评测 + 表示探针</p>
-<ul>
-<li><strong>任务层</strong>：机器翻译（BLEU）、跨语言问答（XQuAD/MLQA）、理解推理（XNLI/PAWS-X/HellaSwag 等）。</li>
-<li><strong>表示层</strong>：<br />
-– 句子级对齐：用 3 k 平行句对计算 cosine-P@1；<br />
-– 词级对齐：用 2 k MUSE 词典对计算 cosine-P@1；<br />
-– 层级对比：逐层监控对齐度变化。</li>
-</ul>
-</li>
-</ol>
-<p>通过“性能衰减 ↔ 对齐下降”的映射，论文得出<strong>翻译崩溃源于词级对齐丢失，而句子级语义对齐在单语场景中已足够支撑理解与推理</strong>的结论。</p>
-<h2>实验验证</h2>
-<p>实验按“语料构造 → 预训练 → 下游评测 → 表示探针”四段展开，共训练 12 个 1.35 B 参数模型，覆盖 3 个语言对、4 种语料配置。</p>
-<ol>
-<li><p>语料构造与分类</p>
-<ul>
-<li>240 B token 多语言语料（60 B each for en, de, es, fr）。</li>
-<li>熵过滤 + Llama-3.3-70B 两步法识别双语文档（≈2 %），再细分为<br />
-– Parallel（14 %）<br />
-– Code-switching（72 %）<br />
-– Miscellaneous（14 %）。</li>
-</ul>
-</li>
-<li><p>可控预训练<br />
-3 × 4 设计矩阵（共 12 组）</p>
-<ul>
-<li>FINEWEB：完整语料</li>
-<li>MONOWEB：剔除全部双语</li>
-<li>MONOWEB+PARALLEL：单语 + 仅平行</li>
-<li>MONOWEB+CODESWITCH：单语 + 仅语码切换<br />
-统一 34 k steps（≈143 B token），AdamW 6e-4，128×GH200，8 h/模型。</li>
-</ul>
-</li>
-<li><p>下游任务评测</p>
-<ul>
-<li><strong>机器翻译</strong>（6 个方向）<br />
-WMT14 en↔fr、WMT16 en↔de、Flores-101 en↔es，报告 BLEU。</li>
-<li><strong>跨语言问答</strong><br />
-XQuAD（L1 上下文→L2 答案生成）<br />
-MLQA（L2 问题→L1 上下文检索答案）<br />
-报告 Exact Match。</li>
-<li><strong>理解与推理</strong><br />
-XNLI、PAWS-X、HellaSwag、ARC-C/E、TruthfulQA、XStoryCloze、XWinograd，报告 Accuracy。</li>
-</ul>
-</li>
-<li><p>表示层诊断</p>
-<ul>
-<li>语言生成率：Llama-3.3 自动判定翻译输出语种。</li>
-<li>对齐探针：<br />
-– 句子级：3 k WMT 平行句对，逐层 cosine-P@1。<br />
-– 词级：2 k MUSE 词典，逐层 cosine-P@1。</li>
-<li>人工细查：100 条德文输出，对比信息保留粒度。</li>
-</ul>
-</li>
-</ol>
-<p>实验结果量化呈现“翻译性能 56 % 下降 → 平行数据即可 91 % 恢复；问答仅降 10 %；推理任务无差异”的不对称现象，并通过词级对齐骤降给出解释。</p>
-<h2>未来工作</h2>
-<ul>
-<li><p><strong>模型规模敏感性</strong><br />
-目前仅 1.35 B，可继续训练 7 B、30 B 乃至更大规模，观察 BLEU 恢复所需平行数据量是否随参数规模呈次线性下降，即验证“大模型对弱对齐信号是否更具鲁棒性”。</p>
-</li>
-<li><p><strong>低资源与远距语言对</strong><br />
-实验局限拉丁脚本高资源语言。可在 en↔vi、en↔sw、zh↔ar 等低资源或形态差异大的对上重复消融，检验平行数据必要性是否随资源量或语言类型距离放大。</p>
-</li>
-<li><p><strong>细粒度对齐质量</strong><br />
-现有平行数据按“段落对齐”粗分类。可引入 LASER 或 VecAlign 评分，将平行句对按对齐置信度分桶，绘制“对齐质量–BLEU 弹性曲线”，量化最低可用对齐阈值。</p>
-</li>
-<li><p><strong>混合比例与课程策略</strong><br />
-固定 2 % 双语已足够，可系统扫描 0.1 %–10 % 区间；进一步尝试课程式引入（先单语后平行、或反之），验证动态采样能否用更少平行数据达到同等 BLEU。</p>
-</li>
-<li><p><strong>参数高效注入</strong><br />
-冻结单语预训练权重，仅用 Adapter/LoRA 继续训练少量平行数据，测试“即插即用”式对齐模块能否在推理阶段替代全程混合预训练。</p>
-</li>
-<li><p><strong>词级对齐监督消融</strong><br />
-在 MONOWEB 上额外加入弱监督（字节级 CTC、无监督 IBM-1）对比强监督（sentence-level bitext），定位词级信号是否可来自非并行统计对齐，从而减少对人工平行语料依赖。</p>
-</li>
-<li><p><strong>任务迁移路径探针</strong><br />
-利用 layer-wise probing 追踪从“共享语义空间”到“翻译专用表示”的演化，验证是否存在某一中间层充当“翻译瓶颈”，并尝试通过对抗扰动该层以阻断翻译而不影响 XNLI。</p>
-</li>
-<li><p><strong>多模态平行信号</strong><br />
-将图像–文本对（如 Multi30K）作为另一种“平行”模态，检验视觉锚定是否足以弥补纯文本平行数据缺失，从而拓展对齐概念到跨模态场景。</p>
-</li>
-</ul>
-<h2>总结</h2>
-<ul>
-<li><p><strong>问题</strong><br />
-多语言大模型仅靠 2 % 的双语文档就能获得强劲跨语言能力，但无人系统量化这些文档对不同任务的具体贡献。</p>
-</li>
-<li><p><strong>方法</strong></p>
-<ol>
-<li>构建 240 B token 的纯净对照语料：剔除全部双语内容得 MONOWEB，保留原始为 FINEWEB；</li>
-<li>将双语数据细分为平行、语码切换、杂讯三类；</li>
-<li>从零预训练 12 个 1.35 B 参数模型（3 语言对 × 4 语料配置），统一训练超参；</li>
-<li>在机器翻译、跨语言问答、理解/推理任务上系统评测，并用层-wise 对齐探针诊断。</li>
-</ol>
-</li>
-<li><p><strong>结果</strong></p>
-<ul>
-<li>机器翻译：剔除双语 → BLEU 降 56 %；仅加回 14 % 平行即可恢复 91 %，而 72 % 语码切换几乎无效。</li>
-<li>跨语言问答：下降 &lt;10 %，其中检索式 MLQA 无差异。</li>
-<li>理解/推理：准确率波动 ≤2 %，完全稳健。</li>
-<li>表示探针：句子级对齐基本保留，词级对齐下降 13–21 %，解释翻译崩溃而推理依旧。</li>
-</ul>
-</li>
-<li><p><strong>结论</strong><br />
-翻译能力高度依赖平行数据提供的<strong>词级显式对齐</strong>；其他跨语言任务仅凭单语语料即可建立足够的<strong>句子级语义共享</strong>。多语言预训练应优先保证高质量平行数据，而非盲目扩大语码切换规模。</p>
-</li>
-</ul>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.6</span></span>
-                                            <span>置信度: 0.95</span>
-                                            <span>分类: Pretraining</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">Pretraining</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2601.00364" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2601.00364" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                            <a href="https://arxiv.org/abs/2503.02152" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2503.02152" class="arxiv-link" target="_blank">📥 PDF下载</a>
                                         </div>
                                     </div>
                                 </div>
@@ -4949,7 +4451,7 @@ XNLI、PAWS-X、HellaSwag、ARC-C/E、TruthfulQA、XStoryCloze、XWinograd，报
                                             <div class="paper-summary-inline">本文由东京大学、日本产业技术综合研究所和理化学研究所先进智能项目中心的研究团队合作完成。该团队利用Tensor Programs框架，首次在标准的1/√n缩放和有限注意力头数条件下，严格推导出单注意力层在无限宽度极限下的精确分布。理论分析表明该极限分布是一个以随机相似性分数为条件的高斯分布，整体呈现非高斯性，突破了以往无限头数或特殊缩放假设下的高斯近似局限。数值实验验证了理论预测的准确性，为深入理解Transformer架构的理论基础提供了关键进展。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.6</span>
+                                        <span class="paper-score score-mid">8.6</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -5263,21 +4765,21 @@ XNLI、PAWS-X、HellaSwag、ARC-C/E、TruthfulQA、XStoryCloze、XWinograd，报
                                     </div>
                                 </div>
                                 
-                                <div class="paper-item-compact" id="paper-item-2503.02152">
-                                    <div class="paper-header" onclick="showPaperDetail('2503.02152', 'Pretraining')">
+                                <div class="paper-item-compact" id="paper-item-2601.00364">
+                                    <div class="paper-header" onclick="showPaperDetail('2601.00364', 'Pretraining')">
                                         <div style="flex: 1;">
                                             <div class="paper-title">
-                                                Tabby: A Language Model Architecture for Tabular and Structured Data Synthesis
+                                                The Role of Mixed-Language Documents for Multilingual Large Language Model Pretraining
                                                 <button class="mark-button" 
-                                                        data-paper-id="2503.02152"
-                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2503.02152", "authors": ["Cromp", "GNVV", "Alkhudhayri", "Cao", "Guo", "Roberts", "Sala"], "id": "2503.02152", "pdf_url": "https://arxiv.org/pdf/2503.02152", "rank": 8.357142857142858, "title": "Tabby: A Language Model Architecture for Tabular and Structured Data Synthesis"}"
+                                                        data-paper-id="2601.00364"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2601.00364", "authors": ["Shao", "Tang", "Zhang", "Sevegnani", "Stenetorp", "Yang", "Lu"], "id": "2601.00364", "pdf_url": "https://arxiv.org/pdf/2601.00364", "rank": 8.642857142857144, "title": "The Role of Mixed-Language Documents for Multilingual Large Language Model Pretraining"}"
                                                         onclick="handleMarkClickFromButton(this); event.stopPropagation();"
                                                         title="标记这篇论文">☆</button>
-                                                <a href="https://arxiv.org/abs/2503.02152" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <a href="https://arxiv.org/abs/2601.00364" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
                                                 <span class="ai-links">
                                                     
                                                     
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ATabby%3A%20A%20Language%20Model%20Architecture%20for%20Tabular%20and%20Structured%20Data%20Synthesis%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2503.02152&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AThe%20Role%20of%20Mixed-Language%20Documents%20for%20Multilingual%20Large%20Language%20Model%20Pretraining%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2601.00364&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
                                                        class="ai-link ai-link-kimi" 
                                                        target="_blank" 
                                                        onclick="event.stopPropagation();"
@@ -5286,7 +4788,7 @@ XNLI、PAWS-X、HellaSwag、ARC-C/E、TruthfulQA、XStoryCloze、XWinograd，报
                                                         <span>Kimi</span>
                                                     </a>
                                                     
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ATabby%3A%20A%20Language%20Model%20Architecture%20for%20Tabular%20and%20Structured%20Data%20Synthesis%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2503.02152%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AThe%20Role%20of%20Mixed-Language%20Documents%20for%20Multilingual%20Large%20Language%20Model%20Pretraining%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2601.00364%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
                                                        class="ai-link ai-link-chatgpt" 
                                                        target="_blank" 
                                                        onclick="event.stopPropagation();"
@@ -5296,18 +4798,18 @@ XNLI、PAWS-X、HellaSwag、ARC-C/E、TruthfulQA、XStoryCloze、XWinograd，报
                                                     </a>
                                                 </span>
                                             </div>
-                                            <div class="paper-authors">Cromp, GNVV, Alkhudhayri, Cao, Guo, Roberts, Sala</div>
+                                            <div class="paper-authors">Shao, Tang, Zhang, Sevegnani, Stenetorp, Yang, Lu</div>
                                             <!-- 中文摘要（默认显示） -->
                                             
-                                            <div class="paper-summary-inline">本文由威斯康星大学麦迪逊分校（University of Wisconsin-Madison）和GE HealthCare的研究团队提出了一种名为Tabby的新颖架构，用于提升语言模型在表格和结构化数据合成任务上的性能。该方法通过引入门控混合专家（MoE）层对标准Transformer架构进行后训练修改，使模型能为不同数据列分配专用参数，显著提升了合成数据的质量。实验表明，Tabby在多个表格数据集上达到或接近真实数据的性能，并能推广到嵌套JSON等更广泛的结构化数据。</div>
+                                            <div class="paper-summary-inline">本文由来自伦敦大学学院、南洋理工大学、滑铁卢大学、NVIDIA及日本国立情报学研究所的联合研究团队，对多语言大语言模型预训练中双语数据的作用进行了系统性研究。该工作通过构建纯净的单语语料库（MonoWeb）并从头训练模型，首次在受控条件下揭示了双语数据对不同跨语言任务的非对称性影响：机器翻译高度依赖仅占语料2%的双语数据（尤其是其中的平行数据），而跨语言问答、理解和推理任务则几乎不受影响。这一发现挑战了“混合语言数据普遍有益”的假设，为高效的多语言预训练数据构建提供了重要指导。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.4</span>
+                                        <span class="paper-score score-mid">8.6</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2503.02152" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Tabby: A Language Model Architecture for Tabular and Structured Data Synthesis</h3>
+                                    <div id="details-2601.00364" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">The Role of Mixed-Language Documents for Multilingual Large Language Model Pretraining</h3>
                                         
                                         <!-- 全文分析（如果可用且无错误） -->
                                         
@@ -5316,107 +4818,171 @@ XNLI、PAWS-X、HellaSwag、ARC-C/E、TruthfulQA、XStoryCloze、XWinograd，报
                                             
                                         <h4>📊 全文分析</h4>
                                         <div class="markdown-content">
-                                            <h2>问题定义</h2>
-<p>论文旨在解决一个核心问题：<strong>如何利用大型语言模型（LLMs）高效、高质量地合成表格和结构化数据</strong>。尽管LLMs在文本生成方面取得了巨大成功，但表格数据合成领域相对被忽视，面临独特挑战：</p>
-<ol>
-<li><strong>复杂的列间依赖关系</strong>：表格列之间通常存在复杂的非线性关系。</li>
-<li><strong>多模态数据混合</strong>：一个表格可能同时包含文本、数值、分类甚至嵌套（如JSON）数据类型。</li>
-<li><strong>列顺序无关性</strong>：列的顺序通常没有语义意义，但传统的序列建模（如Transformer）可能会引入虚假的列间相关性。</li>
-<li><strong>缺乏专用架构</strong>：现有方法（如GANs、扩散模型、LLMs）大多是为图像或文本设计的，需要大量预处理，性能受限。</li>
-</ol>
-<p>因此，论文的目标是设计一个专门针对表格数据特性的LLM架构修改方案，以生成更真实、更高质量的合成数据，并探索其向更广泛结构化数据（如JSON）的扩展能力。</p>
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 1 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>该研究旨在厘清“多语言大模型在预训练阶段究竟从双语数据中获得了什么”这一尚未被系统回答的问题。具体而言，论文聚焦以下核心疑问：</p>
+<ul>
+<li>双语文档（仅占语料 2 %）是否是跨语言能力的决定性因素？</li>
+<li>如果是，不同类型的双语内容（平行句对、语码切换、杂讯）贡献是否相同？</li>
+<li>去除双语数据后，哪些跨语言任务会崩溃，哪些依旧稳健，背后机理为何？</li>
+</ul>
+<p>通过从零开始预训练并严格控制语料，论文首次量化验证了“机器翻译对平行数据高度敏感，而跨语言理解与推理任务几乎不受双语数据影响”的不对称现象，并揭示其根源在于<strong>词级对齐信号</strong>的缺失而非句子级语义对齐的丧失。</p>
 <h2>相关工作</h2>
-<p>论文梳理了表格数据合成的主要技术路线，并指出了各自的局限性：</p>
+<p>已有文献主要沿三条主线展开，与本研究形成互补或对比：</p>
 <ol>
-<li><strong>经典方法（如贝叶斯网络）</strong>：表达能力有限，难以处理复杂的数据类型和分布。</li>
-<li><strong>生成对抗网络（GANs）</strong>：如CTGAN、TVAE。在处理不平衡的序数列、多峰连续列以及复杂的列间交互时，容易遭遇模式崩溃等问题。</li>
-<li><strong>扩散模型</strong>：如Tab-DDPM，是当前最先进的方法之一，在许多指标上表现优异。但其性能建立在<strong>强假设</strong>之上（例如，回归目标变量只能取整数值），且无法处理非分类的字符串列（如地址）。</li>
-<li><strong>大型语言模型（LLMs）</strong>：<ul>
-<li><strong>GReaT</strong>：开创性工作，将表格行转换为句子格式（如“<code>ColumnA</code> is <code>ValueA</code>”）供LLM处理，并提出通过打乱列顺序来训练以建模列间依赖。</li>
-<li><strong>TapTap</strong>：在多种表格数据上对LLM（如Distilled-GPT2）进行预训练，再进行下游微调。</li>
-<li><strong>Tabula</strong>：通过预处理（如将分类值映射为整数）使数据更易于被LLM建模。</li>
-<li><strong>局限性</strong>：这些工作主要集中在<strong>训练技术</strong>上，并未对LLM的<strong>核心架构</strong>进行针对表格特性的修改。它们可以被视为Tabby的补充技术。</li>
+<li><p><strong>平行语料与机器翻译</strong></p>
+<ul>
+<li>Brown et al. (1993) 奠定统计机器翻译框架，强调句子级对齐的必要性。</li>
+<li>Johnson et al. (2016) 提出“单模型多语言”范式，依赖平行数据实现零资源翻译。</li>
+<li>NLLB team (2022) 通过大规模平行语料将高-低资源语言统一进同一 MT 系统。</li>
+</ul>
+</li>
+<li><p><strong>语码切换（code-switching）作为跨语言信号</strong></p>
+<ul>
+<li>Qin et al. (2020) 用合成语码切换做微调数据增强，提升零样本迁移。</li>
+<li>Yoo et al. (2024) 以课程学习方式引入语码切换，改善低资源语言表现。</li>
+<li>Wang et al. (2025) 在预训练阶段放大语码切换比例，验证其对跨语言迁移的增益。</li>
+</ul>
+</li>
+<li><p><strong>多语言预训练语料的表征分析</strong></p>
+<ul>
+<li>Briakou et al. (2023) 对 PaLM 翻译能力进行探针，发现“偶发双语”即可支持 MT，但未区分数据类型。</li>
+<li>Qorib et al. (2025) 在继续预训练中追加平行句对，证实其优于合成语码切换，然而基座模型已含双语信号。</li>
 </ul>
 </li>
 </ol>
-<p><strong>与现有工作的关系</strong>：Tabby并非替代这些方法，而是提供了一个<strong>架构层面的增强</strong>。它可以直接与Plain、GReaT等训练技术结合使用。论文的核心创新在于首次提出了对Transformer LLM架构进行修改，使其更适配表格数据的生成任务。</p>
+<p>相较之下，本文首次在<strong>完全可控的从零预训练</strong>环境下，系统剥离并重新加入平行/语码切换两类双语数据，量化其对翻译、问答、理解、推理任务的差异化影响，填补了“双语数据在预训练阶段究竟起何作用”的研究空白。</p>
 <h2>解决方案</h2>
-<p>论文提出了两个核心贡献：<strong>Tabby架构</strong>和<strong>Plain训练技术</strong>。</p>
-<h3>1. Tabby架构</h3>
+<p>论文通过“构造-消融-诊断”三步走策略，在完全可控的预训练环境中系统剥离双语信号，量化其对不同跨语言任务的影响。</p>
+<ol>
+<li><p>构造纯净对照语料</p>
 <ul>
-<li><strong>核心思想</strong>：在标准的Transformer LLM基础上，应用<strong>门控混合专家（Gated Mixture-of-Experts, MoE）</strong> 进行后训练修改。</li>
-<li><strong>具体实现</strong>：对于一个有V列的表格，Tabby将LLM中的某个（或某几个）模块（例如语言建模头LM Head）替换为一个MoE层 <code>Λ_a = [L_{a,1}, L_{a,2}, ..., L_{a,V}]</code>。其中，每个专家 <code>L_{a,i}</code> 专门负责建模数据集的第 <code>i</code> 列。</li>
-<li><strong>关键优势</strong>：<ul>
-<li><strong>列专用参数</strong>：为每一列分配独立的参数集，增强了模型对不同列特定分布的表达能力。</li>
-<li><strong>灵活性</strong>：MoE可以应用于LM Head、MLP或注意力块。论文中表现最佳的是 <strong>Tabby Multi-Head (MH)</strong>，即仅修改LM Head。</li>
-<li><strong>可扩展性</strong>：<ul>
-<li><strong>结构化数据</strong>：通过递归应用Tabby MoE，可以自然地扩展到嵌套数据结构（如JSON），模型架构本身就能体现数据的层次关系。</li>
-<li><strong>高维数据</strong>：可通过参数共享等技术控制参数量；实现上可以每次只将一个专家加载到内存，保持与非Tabby模型相同的内存需求。</li>
+<li>从 240 B token 的 FineWeb/FineWeb2 中移除全部双语文档（≈2 %），得到 <strong>MONOWEB</strong>；保留原始语料为 <strong>FINEWEB</strong>。</li>
+<li>设计两阶段流水线（熵过滤 + LLM 分类）将双语内容细分为 <strong>平行</strong>、<strong>语码切换</strong>、<strong>杂讯</strong>三类，实现粒度可控。</li>
 </ul>
 </li>
+<li><p>消融实验：从零预训练 12 个 1.35 B 参数模型<br />
+配置矩阵：3 个语言对 × 4 种语料</p>
+<ul>
+<li>FINEWEB（含全部双语）</li>
+<li>MONOWEB（零双语）</li>
+<li>MONOWEB+PARALLEL（仅加回平行）</li>
+<li>MONOWEB+CODESWITCH（仅加回语码切换）</li>
+</ul>
+<p>统一训练超参，确保性能差异仅由双语数据类型引起。</p>
+</li>
+<li><p>诊断分析：多任务评测 + 表示探针</p>
+<ul>
+<li><strong>任务层</strong>：机器翻译（BLEU）、跨语言问答（XQuAD/MLQA）、理解推理（XNLI/PAWS-X/HellaSwag 等）。</li>
+<li><strong>表示层</strong>：<br />
+– 句子级对齐：用 3 k 平行句对计算 cosine-P@1；<br />
+– 词级对齐：用 2 k MUSE 词典对计算 cosine-P@1；<br />
+– 层级对比：逐层监控对齐度变化。</li>
 </ul>
 </li>
-</ul>
-<h3>2. Plain训练技术</h3>
-<ul>
-<li><strong>核心思想</strong>：一种极其简单但高效的LLM表格数据微调方法。</li>
-<li><strong>数据格式化</strong>：将表格的每一行转换为一个句子：<code>&lt;BOS&gt; Column1 is Value1 &lt;EOC&gt; Column2 is Value2 &lt;EOC&gt; ... ColumnV is ValueV &lt;EOS&gt;</code>。其中<code>&lt;EOC&gt;</code>是新引入的“列结束”令牌。</li>
-<li><strong>训练与推理</strong>：以标准序列到序列的方式进行微调。推理时，提示词仅为<code>&lt;BOS&gt;</code>，模型会生成类似格式的文本，再解析回表格。</li>
-<li><strong>优势</strong>：相比GReaT等方法，Plain<strong>无需打乱列序或施加采样约束</strong>，更加轻量且性能更好。其简单性与优异性能的对比是论文的一个重要发现。</li>
-</ul>
-<p><strong>Tabby训练流程</strong>：在微调时，Tabby模型将每一行处理为一个长度为V的字符串列表（每列一个字符串）。训练第i列时，其提示词包含前i-1列的所有信息，并且<strong>每列的损失是独立计算的</strong>。这带来了额外好处：可以方便地监控每列在训练过程中的性能变化。</p>
+</ol>
+<p>通过“性能衰减 ↔ 对齐下降”的映射，论文得出<strong>翻译崩溃源于词级对齐丢失，而句子级语义对齐在单语场景中已足够支撑理解与推理</strong>的结论。</p>
 <h2>实验验证</h2>
-<p>论文通过一系列实验验证了四个核心主张，主要评估指标是<strong>机器学习效能（Machine Learning Efficacy, MLE）</strong>，即比较使用真实数据和合成数据训练的下游分类器/回归器的性能差异。</p>
-<h3>1. Claim 1: Tabby vs. 基线方法</h3>
+<p>实验按“语料构造 → 预训练 → 下游评测 → 表示探针”四段展开，共训练 12 个 1.35 B 参数模型，覆盖 3 个语言对、4 种语料配置。</p>
+<ol>
+<li><p>语料构造与分类</p>
 <ul>
-<li><strong>设置</strong>：在6个常见表格数据集上，对比Tabby MH（Plain训练）与多种基线方法（CTGAN, TVAE, Tab-DDPM, 以及使用GReaT/GTT训练的Non-Tabby LLMs）。</li>
-<li><strong>结果</strong>：<ul>
-<li><strong>性能领先</strong>：Plain训练的Tabby MH在<strong>4/6</strong>的数据集上取得了最高的MLE，并在其中3个数据集上达到了与真实数据（“Original”）持平的性能上限。</li>
-<li><strong>训练技术优势</strong>：在所有6个数据集中，性能最好的LLM都采用了<strong>Plain训练</strong>。Plain训练的简单性显著优于更复杂的GReaT/GTT方法。</li>
-<li><strong>总体最佳</strong>：性能曲线（Performance Profile）和曲线下面积（AUP）分析表明，<strong>Plain训练的Tabby MH是所有方法中综合表现最好的</strong>，甚至超过了在强假设下工作的SOTA方法Tab-DDPM。</li>
+<li>240 B token 多语言语料（60 B each for en, de, es, fr）。</li>
+<li>熵过滤 + Llama-3.3-70B 两步法识别双语文档（≈2 %），再细分为<br />
+– Parallel（14 %）<br />
+– Code-switching（72 %）<br />
+– Miscellaneous（14 %）。</li>
 </ul>
 </li>
-</ul>
-<h3>2. Claim 2: 模型规模的影响</h3>
+<li><p>可控预训练<br />
+3 × 4 设计矩阵（共 12 组）</p>
 <ul>
-<li><strong>设置</strong>：使用7种不同规模的LLM（从1.24亿到80亿参数），分别测试其Non-Tabby和Tabby MH版本在表格合成上的性能。</li>
-<li><strong>结果</strong>：<ul>
-<li><strong>Tabby提升显著</strong>：对于<strong>6/7</strong>的模型，Tabby架构都提升或保持了其MLE性能。</li>
-<li><strong>小模型逆袭</strong>：Tabby使得小参数模型（如Distilled-GPT2）能够达到甚至超越参数量大几个数量级的大模型（如Llama）的合成质量。这表明<strong>针对性的架构修改比单纯扩大模型规模更有效</strong>。</li>
+<li>FINEWEB：完整语料</li>
+<li>MONOWEB：剔除全部双语</li>
+<li>MONOWEB+PARALLEL：单语 + 仅平行</li>
+<li>MONOWEB+CODESWITCH：单语 + 仅语码切换<br />
+统一 34 k steps（≈143 B token），AdamW 6e-4，128×GH200，8 h/模型。</li>
 </ul>
 </li>
-</ul>
-<h3>3. Claim 3: 扩展到结构化数据（JSON）</h3>
+<li><p>下游任务评测</p>
 <ul>
-<li><strong>设置</strong>：在一个嵌套的JSON格式的青光眼患者数据集上进行测试。</li>
-<li><strong>结果</strong>：Tabby MH将MLE提升了4%，<strong>达到了与真实数据持平的水平</strong>。同时，其合成数据与真实数据的可区分性（Discrimination）更低，表明合成数据更逼真。</li>
+<li><strong>机器翻译</strong>（6 个方向）<br />
+WMT14 en↔fr、WMT16 en↔de、Flores-101 en↔es，报告 BLEU。</li>
+<li><strong>跨语言问答</strong><br />
+XQuAD（L1 上下文→L2 答案生成）<br />
+MLQA（L2 问题→L1 上下文检索答案）<br />
+报告 Exact Match。</li>
+<li><strong>理解与推理</strong><br />
+XNLI、PAWS-X、HellaSwag、ARC-C/E、TruthfulQA、XStoryCloze、XWinograd，报告 Accuracy。</li>
 </ul>
-<h3>4. Claim 4: 逐列性能追踪</h3>
+</li>
+<li><p>表示层诊断</p>
 <ul>
-<li><strong>设置</strong>：在训练Tabby MH时，记录每个列的独立验证损失。</li>
-<li><strong>结果</strong>：如图6所示，可以清晰观察到不同列的学习进度和难度差异（例如，某些列损失下降快，某些列则成为训练后期的瓶颈）。这为模型行为分析和调试提供了宝贵洞见。</li>
+<li>语言生成率：Llama-3.3 自动判定翻译输出语种。</li>
+<li>对齐探针：<br />
+– 句子级：3 k WMT 平行句对，逐层 cosine-P@1。<br />
+– 词级：2 k MUSE 词典，逐层 cosine-P@1。</li>
+<li>人工细查：100 条德文输出，对比信息保留粒度。</li>
 </ul>
+</li>
+</ol>
+<p>实验结果量化呈现“翻译性能 56 % 下降 → 平行数据即可 91 % 恢复；问答仅降 10 %；推理任务无差异”的不对称现象，并通过词级对齐骤降给出解释。</p>
 <h2>未来工作</h2>
-<p>论文指出了以下可以进一步探索的方向和当前局限性：</p>
-<ol>
-<li><strong>更具挑战性的数据集</strong>：当前评估使用的部分数据集（如Adult, Diabetes）已较为普遍。未来需要关注更复杂、更具挑战性的表格数据合成任务。</li>
-<li><strong>对其他结构化模态的深入探索</strong>：论文初步验证了Tabby对JSON数据的有效性，未来可以系统性地扩展到更多类型的结构化数据（如XML、知识图谱、关系数据库）。</li>
-<li><strong>效率优化</strong>：虽然提出了参数共享和内存优化方案，但如何更高效地训练和部署具有大量列（即大量专家）的Tabby模型仍需深入研究。</li>
-<li><strong>与更多训练技术的结合</strong>：本文主要结合了Plain和GReaT，未来可以探索Tabby与其他先进表格预训练、微调技术的结合。</li>
-<li><strong>理论分析</strong>：对Tabby架构为何能有效建模列间依赖和列内分布进行更深入的理论解释。</li>
-<li><strong>局限性</strong>：Tabby的性能仍然依赖于基础LLM的文本预训练知识。对于与文本语义关联极弱的纯数值表格，其优势可能需要进一步验证。此外，MoE层的引入增加了模型结构的复杂性。</li>
-</ol>
+<ul>
+<li><p><strong>模型规模敏感性</strong><br />
+目前仅 1.35 B，可继续训练 7 B、30 B 乃至更大规模，观察 BLEU 恢复所需平行数据量是否随参数规模呈次线性下降，即验证“大模型对弱对齐信号是否更具鲁棒性”。</p>
+</li>
+<li><p><strong>低资源与远距语言对</strong><br />
+实验局限拉丁脚本高资源语言。可在 en↔vi、en↔sw、zh↔ar 等低资源或形态差异大的对上重复消融，检验平行数据必要性是否随资源量或语言类型距离放大。</p>
+</li>
+<li><p><strong>细粒度对齐质量</strong><br />
+现有平行数据按“段落对齐”粗分类。可引入 LASER 或 VecAlign 评分，将平行句对按对齐置信度分桶，绘制“对齐质量–BLEU 弹性曲线”，量化最低可用对齐阈值。</p>
+</li>
+<li><p><strong>混合比例与课程策略</strong><br />
+固定 2 % 双语已足够，可系统扫描 0.1 %–10 % 区间；进一步尝试课程式引入（先单语后平行、或反之），验证动态采样能否用更少平行数据达到同等 BLEU。</p>
+</li>
+<li><p><strong>参数高效注入</strong><br />
+冻结单语预训练权重，仅用 Adapter/LoRA 继续训练少量平行数据，测试“即插即用”式对齐模块能否在推理阶段替代全程混合预训练。</p>
+</li>
+<li><p><strong>词级对齐监督消融</strong><br />
+在 MONOWEB 上额外加入弱监督（字节级 CTC、无监督 IBM-1）对比强监督（sentence-level bitext），定位词级信号是否可来自非并行统计对齐，从而减少对人工平行语料依赖。</p>
+</li>
+<li><p><strong>任务迁移路径探针</strong><br />
+利用 layer-wise probing 追踪从“共享语义空间”到“翻译专用表示”的演化，验证是否存在某一中间层充当“翻译瓶颈”，并尝试通过对抗扰动该层以阻断翻译而不影响 XNLI。</p>
+</li>
+<li><p><strong>多模态平行信号</strong><br />
+将图像–文本对（如 Multi30K）作为另一种“平行”模态，检验视觉锚定是否足以弥补纯文本平行数据缺失，从而拓展对齐概念到跨模态场景。</p>
+</li>
+</ul>
 <h2>总结</h2>
-<p>论文的主要贡献和价值总结如下：</p>
+<ul>
+<li><p><strong>问题</strong><br />
+多语言大模型仅靠 2 % 的双语文档就能获得强劲跨语言能力，但无人系统量化这些文档对不同任务的具体贡献。</p>
+</li>
+<li><p><strong>方法</strong></p>
 <ol>
-<li><strong>首创性架构修改</strong>：提出了<strong>Tabby</strong>，这是第一个通过引入<strong>MoE层</strong>来修改Transformer LLM架构，使其专门适用于表格和结构化数据合成的方案。它通过为每列分配专用参数，显著提升了模型对表格复杂特性的表达能力。</li>
-<li><strong>简单高效的训练技术</strong>：提出了<strong>Plain</strong>，一种极其简单却强大的LLM表格微调方法，其性能超越了此前更复杂的训练范式。</li>
-<li><strong>卓越的实验性能</strong>：综合实验表明，<strong>Plain训练的Tabby MH模型</strong>在多个数据集上达到或接近真实数据质量，综合表现超越包括Tab-DDPM在内的现有SOTA方法，且所需假设更少。</li>
-<li><strong>突破规模限制</strong>：证明了通过针对性的架构优化，<strong>较小的LLM能够超越参数量大得多的通用LLM</strong>，为资源高效的表格合成提供了路径。</li>
-<li><strong>良好的可扩展性</strong>：成功将Tabby扩展到嵌套JSON数据的合成，展示了其处理更广泛<strong>结构化数据</strong>的潜力，为“大型表格模型（LTM）”的发展迈出了重要一步。</li>
-<li><strong>提供模型洞察</strong>：Tabby的逐列损失计算机制为训练过程提供了宝贵的可解释性工具。</li>
+<li>构建 240 B token 的纯净对照语料：剔除全部双语内容得 MONOWEB，保留原始为 FINEWEB；</li>
+<li>将双语数据细分为平行、语码切换、杂讯三类；</li>
+<li>从零预训练 12 个 1.35 B 参数模型（3 语言对 × 4 语料配置），统一训练超参；</li>
+<li>在机器翻译、跨语言问答、理解/推理任务上系统评测，并用层-wise 对齐探针诊断。</li>
 </ol>
-<p>总之，Tabby在LLM用于表格数据合成的方向上，实现了从“训练技巧”到“核心架构”创新的关键跨越，为高质量、高效率的表格及结构化数据生成开辟了新的研究方向。</p>
+</li>
+<li><p><strong>结果</strong></p>
+<ul>
+<li>机器翻译：剔除双语 → BLEU 降 56 %；仅加回 14 % 平行即可恢复 91 %，而 72 % 语码切换几乎无效。</li>
+<li>跨语言问答：下降 &lt;10 %，其中检索式 MLQA 无差异。</li>
+<li>理解/推理：准确率波动 ≤2 %，完全稳健。</li>
+<li>表示探针：句子级对齐基本保留，词级对齐下降 13–21 %，解释翻译崩溃而推理依旧。</li>
+</ul>
+</li>
+<li><p><strong>结论</strong><br />
+翻译能力高度依赖平行数据提供的<strong>词级显式对齐</strong>；其他跨语言任务仅凭单语语料即可建立足够的<strong>句子级语义共享</strong>。多语言预训练应优先保证高质量平行数据，而非盲目扩大语码切换规模。</p>
+</li>
+</ul>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
 
                                         </div>
                                             
@@ -5424,8 +4990,8 @@ XNLI、PAWS-X、HellaSwag、ARC-C/E、TruthfulQA、XStoryCloze、XWinograd，报
                                         
                                         <!-- 论文元信息 -->
                                         <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">8.4</span></span>
-                                            <span>置信度: 0.90</span>
+                                            <span>评分: <span class="paper-score">8.6</span></span>
+                                            <span>置信度: 0.95</span>
                                             <span>分类: Pretraining</span>
                                         </div>
                                         
@@ -5440,8 +5006,8 @@ XNLI、PAWS-X、HellaSwag、ARC-C/E、TruthfulQA、XStoryCloze、XWinograd，报
                                         
                                         <!-- 链接 -->
                                         <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2503.02152" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2503.02152" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                            <a href="https://arxiv.org/abs/2601.00364" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2601.00364" class="arxiv-link" target="_blank">📥 PDF下载</a>
                                         </div>
                                     </div>
                                 </div>
@@ -5492,6 +5058,11 @@ XNLI、PAWS-X、HellaSwag、ARC-C/E、TruthfulQA、XStoryCloze、XWinograd，报
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-Multimodal" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Multimodal"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Multimodal')">展开全部</a>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2507.01006">
                                     <div class="paper-header" onclick="showPaperDetail('2507.01006', 'Multimodal')">
@@ -5532,7 +5103,7 @@ XNLI、PAWS-X、HellaSwag、ARC-C/E、TruthfulQA、XStoryCloze、XWinograd，报
                                             <div class="paper-summary-inline">本文由智谱AI（Zhipu AI）与清华大学（Tsinghua University）联合团队（GLM-V Team）提出。该团队在大型语言模型和视觉语言模型领域具有深厚的研究背景和工程实力。论文提出了GLM-4.1V-Thinking，一个旨在推进通用多模态推理的视觉语言模型。其核心贡献在于提出了一个以强化学习为中心的、可扩展的训练框架，特别是引入了“基于课程采样的强化学习”（RLCS）方法，以解锁模型在多领域任务上的全部潜力。该模型在多个公开基准测试中取得了与更大规模模型（如Qwen2.5-VL-72B）相当甚至更优的性能，并在一些挑战性任务上媲美GPT-4o等闭源模型。论文实验充分，代码和模型均已开源。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.9</span>
+                                        <span class="paper-score score-mid">8.9</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -5837,7 +5408,7 @@ XNLI、PAWS-X、HellaSwag、ARC-C/E、TruthfulQA、XStoryCloze、XWinograd，报
                                             <div class="paper-summary-inline">本文由AgiBot Research团队（隶属于上海创新研究院）提出了一种名为GenieReasoner的统一机器人推理与控制系统，旨在解决通用机器人系统中推理能力与动作精度之间的权衡问题。该工作包含两大核心贡献：一是提出了大规模具身推理基准ERIQ，用于量化评估视觉语言模型的推理能力；二是设计了基于流匹配的动作分词器FACT，将连续控制离散化并与VLM在统一空间联合优化。实验表明，该方法在真实机器人任务中超越了连续动作和离散动作基线，显著提升了泛化性能和执行精度。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.6</span>
+                                        <span class="paper-score score-mid">8.6</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -6267,7 +5838,7 @@ $$\mathcal{L}=\mathcal{L}<em>{flow}+λ</em>{ent}·\mathcal{L}<em>{entropy}+λ</e
         <!-- Footer with filter info -->
         
         <div class="footer">
-            主题筛选: Hallucination, SFT, RLHF, Multimodal, Pretraining, Agent, Finance | 状态: 已启用
+            主题筛选: Agent, Pretraining, Hallucination, Finance, RLHF, SFT, Multimodal | 状态: 已启用
         </div>
         
         </div>
@@ -6379,19 +5950,31 @@ $$\mathcal{L}=\mathcal{L}<em>{flow}+λ</em>{ent}·\mathcal{L}<em>{entropy}+λ</e
         function toggleMark(paperId, paperData) {
             const markedPapers = getMarkedPapers();
             const isCurrentlyMarked = isMarked(paperId);
-            
+
             if (isCurrentlyMarked) {
                 // 取消标记
                 const filtered = markedPapers.filter(p => p.id !== paperId);
                 saveMarkedPapers(filtered);
                 updateMarkButtonState(paperId, false);
+                // 展开卡片
+                const item = document.getElementById('paper-item-' + paperId);
+                if (item) item.classList.remove('paper-collapsed');
             } else {
                 // 添加标记
                 const fullPaperData = getPaperData(paperId, paperData);
                 markedPapers.push(fullPaperData);
                 saveMarkedPapers(markedPapers);
                 updateMarkButtonState(paperId, true);
+                // 折叠卡片
+                const item = document.getElementById('paper-item-' + paperId);
+                if (item) item.classList.add('paper-collapsed');
             }
+
+            // 刷新所有 tab 的折叠提示条
+            document.querySelectorAll('[id^="collapsed-notice-"]').forEach(notice => {
+                const topicId = notice.id.replace('collapsed-notice-', '');
+                refreshCollapsedNotice(topicId);
+            });
         }
         
         // 更新标记按钮状态
@@ -6529,18 +6112,53 @@ $$\mathcal{L}=\mathcal{L}<em>{flow}+λ</em>{ent}·\mathcal{L}<em>{entropy}+λ</e
         function initMarkStates() {
             const markedPapers = getMarkedPapers();
             const markedIds = new Set(markedPapers.map(p => p.id));
-            
-            // 更新所有标记按钮的状态
+
+            // 更新所有标记按钮的状态，并折叠已标记论文
             document.querySelectorAll('.mark-button[data-paper-id]').forEach(button => {
                 const paperId = button.getAttribute('data-paper-id');
                 if (markedIds.has(paperId)) {
                     button.textContent = '⭐';
                     button.classList.add('marked');
+                    // 折叠该论文卡片
+                    const item = document.getElementById('paper-item-' + paperId);
+                    if (item) item.classList.add('paper-collapsed');
                 } else {
                     button.textContent = '☆';
                     button.classList.remove('marked');
                 }
             });
+
+            // 更新各 tab 的折叠提示条
+            document.querySelectorAll('[id^="collapsed-notice-"]').forEach(notice => {
+                const topicId = notice.id.replace('collapsed-notice-', '');
+                refreshCollapsedNotice(topicId);
+            });
+        }
+
+        // 刷新某个 tab 的折叠提示条
+        function refreshCollapsedNotice(topicId) {
+            const tabEl = document.getElementById('tab-' + topicId);
+            if (!tabEl) return;
+            const count = tabEl.querySelectorAll('.paper-item-compact.paper-collapsed').length;
+            const notice = document.getElementById('collapsed-notice-' + topicId);
+            const countEl = document.getElementById('collapsed-count-' + topicId);
+            if (!notice || !countEl) return;
+            if (count > 0) {
+                countEl.textContent = count;
+                notice.style.display = 'flex';
+            } else {
+                notice.style.display = 'none';
+            }
+        }
+
+        // 展开某 tab 所有已标记论文
+        function expandAllMarked(topicId) {
+            const tabEl = document.getElementById('tab-' + topicId);
+            if (!tabEl) return;
+            tabEl.querySelectorAll('.paper-item-compact.paper-collapsed').forEach(item => {
+                item.classList.remove('paper-collapsed');
+            });
+            refreshCollapsedNotice(topicId);
         }
 
         // 切换标签页
@@ -6767,7 +6385,19 @@ $$\mathcal{L}=\mathcal{L}<em>{flow}+λ</em>{ent}·\mathcal{L}<em>{entropy}+λ</e
             if (firstNavItem) {
                 firstNavItem.classList.add('active');
             }
-            
+
+            // 设置 Markdown 链接：将当前 .html URL 替换为 .md
+            (function() {
+                const btn = document.getElementById('md-download-btn');
+                if (!btn) return;
+                const mdUrl = window.location.href.replace(/\.html(\?.*)?$/, '.md');
+                btn.href = mdUrl;
+                // 如果无法推断（URL 没有 .html 后缀），则隐藏按钮
+                if (mdUrl === window.location.href) {
+                    btn.style.display = 'none';
+                }
+            })();
+
             // 初始化标记状态
             initMarkStates();
             

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大模型论文速读（10/382）</title>
+    <title>大模型论文速读（10/10）</title>
     <style>
         * {
             margin: 0;
@@ -165,6 +165,16 @@
             border-bottom: 1px solid #e8e8e8;
             color: #1a1a1a;
             padding: 32px 40px 24px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-text {
+            flex: 1;
+            min-width: 0;
         }
 
         .header h1 {
@@ -179,6 +189,43 @@
             color: #666;
             font-size: 14px;
             font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            padding-top: 4px;
+        }
+
+        .md-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+            background: #fafafa;
+            color: #555;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .md-link-btn:hover {
+            background: #f0f0f0;
+            border-color: #999;
+            color: #1a1a1a;
+        }
+
+        .md-link-btn svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
         }
 
         .filter-info {
@@ -1067,8 +1114,14 @@
             .header {
                 padding: 24px 20px 16px;
                 padding-top: 60px; /* 为菜单按钮留空间 */
+                flex-direction: column;
+                gap: 10px;
             }
-            
+
+            .header-actions {
+                align-self: flex-start;
+            }
+
             .header h1 {
                 font-size: 22px;
             }
@@ -1168,10 +1221,66 @@
         .paper-title .mark-button {
             margin-left: 8px;
         }
-        
+
         .detail-panel-header .mark-button,
         .mobile-modal-header .mark-button {
             margin-right: 8px;
+        }
+
+        /* ── 评分色阶 ── */
+        .paper-score.score-high {
+            background: #dcfce7;
+            color: #15803d;
+        }
+        .paper-score.score-mid {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        .paper-score.score-low {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        /* ── 已标记论文折叠态 ── */
+        .paper-item-compact.paper-collapsed .paper-authors,
+        .paper-item-compact.paper-collapsed .paper-summary-inline {
+            display: none;
+        }
+        .paper-item-compact.paper-collapsed {
+            border-left: 3px solid #ffa500;
+            padding-left: 14px;
+            padding-top: 11px;
+            padding-bottom: 11px;
+            opacity: 0.68;
+            transition: opacity 0.18s, border-left-color 0.18s;
+        }
+        .paper-item-compact.paper-collapsed:hover {
+            opacity: 1;
+            border-left-color: #ff8c00;
+        }
+
+        /* ── 折叠数量提示条 ── */
+        .collapsed-notice {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #999;
+            padding: 8px 0 16px;
+            user-select: none;
+        }
+        .collapsed-notice a {
+            color: #ffa500;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .collapsed-notice a:hover { text-decoration: underline; }
+        .collapsed-notice .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #ffa500;
+            flex-shrink: 0;
         }
     </style>
     <!-- KaTeX数学公式渲染库 -->
@@ -1231,8 +1340,19 @@
         <!-- 主内容区域 -->
         <div class="container">
             <div class="header">
-                <h1>大模型论文速读（10/382）</h1>
-                <p>日报: 2026-01-12 | 生成时间: 2026-01-19</p>
+                <div class="header-text">
+                    <h1>大模型论文速读（10/10）</h1>
+                    <p>日报: 2026-01-12 | 生成时间: 2026-03-24</p>
+                </div>
+                <div class="header-actions">
+                    <a id="md-download-btn" class="md-link-btn" href="#" target="_blank" title="以 Markdown 格式查看，适合 AI 阅读">
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <rect x="1" y="2" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/>
+                            <path d="M3.5 10.5V5.5L5.5 8l2-2.5 2 2.5 2-2.5v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Markdown
+                    </a>
+                </div>
             </div>
             
             <!-- Tab Contents -->
@@ -1258,6 +1378,84 @@
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-RLHF" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-RLHF"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('RLHF')">展开全部</a>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2601.05825">
+                                    <div class="paper-header" onclick="showPaperDetail('2601.05825', 'RLHF')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                Decoding Workload and Agreement From EEG During Spoken Dialogue With Conversational AI
+                                                <button class="mark-button" 
+                                                        data-paper-id="2601.05825"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2601.05825", "authors": ["Zidar", "Wicke", "Bhatia", "Lutz", "Klug", "Zander"], "id": "2601.05825", "pdf_url": "https://arxiv.org/pdf/2601.05825", "rank": 6.7857142857142865, "title": "Decoding Workload and Agreement From EEG During Spoken Dialogue With Conversational AI"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2601.05825" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ADecoding%20Workload%20and%20Agreement%20From%20EEG%20During%20Spoken%20Dialogue%20With%20Conversational%20AI%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2601.05825&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ADecoding%20Workload%20and%20Agreement%20From%20EEG%20During%20Spoken%20Dialogue%20With%20Conversational%20AI%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2601.05825%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Zidar, Wicke, Bhatia, Lutz, Klug, Zander</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文探讨了将基于脑电图（EEG）的被动脑机接口（pBCI）分类器从受控的实验室范式迁移到自然的人机语音对话场景，以获取用于大语言模型对齐的隐式反馈。研究团队来自柏林工业大学（Technische Universität Berlin）的神经技术实验室，该团队在脑机接口和神经工程领域具有深厚的研究背景。论文的主要贡献在于提出了两种对话范式和一个端到端的数据处理流程，初步验证了在自然对话中解码认知负荷和隐式同意的可行性，并识别了迁移的边界条件。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score score-low">6.8</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2601.05825" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">Decoding Workload and Agreement From EEG During Spoken Dialogue With Conversational AI</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">6.8</span></span>
+                                            <span>置信度: 0.90</span>
+                                            <span>分类: RLHF</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">RLHF</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2601.05825" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2601.05825" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2601.05633">
                                     <div class="paper-header" onclick="showPaperDetail('2601.05633', 'RLHF')">
@@ -1298,7 +1496,7 @@
                                             <div class="paper-summary-inline">本文由中国科学院计算技术研究所人工智能安全国家重点实验室、中国科学院大学及新加坡国立大学的联合团队提出。该团队提出了一种新颖的视角，将游戏视为大语言模型（LLM）进行非正式学习的基础环境，并针对多任务学习中常见的性能下降问题，提出了一个嵌套训练框架。该方法旨在通过结合正式学习（数学任务）和非正式学习（游戏任务）来提升LLM的通用能力。实验表明，该方法能有效提升模型在多种能力导向基准测试上的表现。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.4</span>
+                                        <span class="paper-score score-low">8.4</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -1589,79 +1787,6 @@ $$ \max_\theta \mathbb{E}<em>{\tau\sim \pi</em>\theta}R(\tau_1,\dots,\tau_K)$$</
                                     </div>
                                 </div>
                                 
-                                <div class="paper-item-compact" id="paper-item-2601.05825">
-                                    <div class="paper-header" onclick="showPaperDetail('2601.05825', 'RLHF')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                Decoding Workload and Agreement From EEG During Spoken Dialogue With Conversational AI
-                                                <button class="mark-button" 
-                                                        data-paper-id="2601.05825"
-                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2601.05825", "authors": ["Zidar", "Wicke", "Bhatia", "Lutz", "Klug", "Zander"], "id": "2601.05825", "pdf_url": "https://arxiv.org/pdf/2601.05825", "rank": 6.7857142857142865, "title": "Decoding Workload and Agreement From EEG During Spoken Dialogue With Conversational AI"}"
-                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
-                                                        title="标记这篇论文">☆</button>
-                                                <a href="https://arxiv.org/abs/2601.05825" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ADecoding%20Workload%20and%20Agreement%20From%20EEG%20During%20Spoken%20Dialogue%20With%20Conversational%20AI%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2601.05825&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ADecoding%20Workload%20and%20Agreement%20From%20EEG%20During%20Spoken%20Dialogue%20With%20Conversational%20AI%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2601.05825%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Zidar, Wicke, Bhatia, Lutz, Klug, Zander</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文探讨了将基于脑电图（EEG）的被动脑机接口（pBCI）分类器从受控的实验室范式迁移到自然的人机语音对话场景，以获取用于大语言模型对齐的隐式反馈。研究团队来自柏林工业大学（Technische Universität Berlin）的神经技术实验室，该团队在脑机接口和神经工程领域具有深厚的研究背景。论文的主要贡献在于提出了两种对话范式和一个端到端的数据处理流程，初步验证了在自然对话中解码认知负荷和隐式同意的可行性，并识别了迁移的边界条件。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">6.8</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2601.05825" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">Decoding Workload and Agreement From EEG During Spoken Dialogue With Conversational AI</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">6.8</span></span>
-                                            <span>置信度: 0.90</span>
-                                            <span>分类: RLHF</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">RLHF</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2601.05825" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2601.05825" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
                             
                         </div>
                     </div>
@@ -1689,6 +1814,11 @@ $$ \max_\theta \mathbb{E}<em>{\tau\sim \pi</em>\theta}R(\tau_1,\dots,\tau_K)$$</
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-Agent" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Agent"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Agent')">展开全部</a>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2601.05465">
                                     <div class="paper-header" onclick="showPaperDetail('2601.05465', 'Agent')">
@@ -1729,7 +1859,7 @@ $$ \max_\theta \mathbb{E}<em>{\tau\sim \pi</em>\theta}R(\tau_1,\dots,\tau_K)$$</
                                             <div class="paper-summary-inline">本文提出了一种名为PRISMA的强化学习引导的两阶段策略优化多智能体架构，用于解决开放域多跳问答中的检索崩溃和学习不稳定问题。该方法在十个基准测试中取得了最先进的性能，并展示了在实际场景中的高效部署潜力。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.1</span>
+                                        <span class="paper-score score-low">8.1</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -2377,7 +2507,7 @@ Planner 的格式奖励快速饱和，语义子奖励（分解/消歧/限定词�
                                             <div class="paper-summary-inline">请求失败: 'NoneType' object is not subscriptable</div>
                                             
                                         </div>
-                                        <span class="paper-score">N/A</span>
+                                        <span class="paper-score ">N/A</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -2716,7 +2846,7 @@ Qwen3-8B + DynaDebate vs. Qwen3-32B + CoT</p>
                                             <div class="paper-summary-inline">请求失败: 'NoneType' object is not subscriptable</div>
                                             
                                         </div>
-                                        <span class="paper-score">N/A</span>
+                                        <span class="paper-score ">N/A</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -3400,6 +3530,11 @@ $$J_{\text{BEPA}}(\theta)=\frac{1}{Z}\sum_{\tau\in\hat{T}<em>x}\sum</em>{t=1}^{|
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-Hallucination" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Hallucination"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Hallucination')">展开全部</a>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2506.06240">
                                     <div class="paper-header" onclick="showPaperDetail('2506.06240', 'Hallucination')">
@@ -3440,7 +3575,7 @@ $$J_{\text{BEPA}}(\theta)=\frac{1}{Z}\sum_{\tau\in\hat{T}<em>x}\sum</em>{t=1}^{|
                                             <div class="paper-summary-inline">本文提出了一种名为共享-私有语义协同的双流知识框架，旨在通过桥接外部知识和参数化知识来缓解大语言模型的幻觉问题。该方法在知识密集型任务上表现出色，通过创新的双流架构实现了知识的高效融合与利用。作者团队未明确标注所属机构，无法判断是否来自知名研究机构。</div>
                                             
                                         </div>
-                                        <span class="paper-score">6.8</span>
+                                        <span class="paper-score score-low">6.8</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -3961,6 +4096,11 @@ L = L_{CE} + \mu H(P(\hat{U}|I)) + \nu D_{KL}
                         
                         <div class="topic-content">
                             
+                                <div class="collapsed-notice" id="collapsed-notice-Pretraining" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Pretraining"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Pretraining')">展开全部</a>
+                                </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2511.01033">
                                     <div class="paper-header" onclick="showPaperDetail('2511.01033', 'Pretraining')">
@@ -4001,7 +4141,7 @@ L = L_{CE} + \mu H(P(\hat{U}|I)) + \nu D_{KL}
                                             <div class="paper-summary-inline">本文由苏黎世联邦理工学院（ETH Zurich）的研究团队提出，该团队在机器学习理论领域具有深厚的研究背景。论文针对Transformer模型中的上下文学习（ICL）机制，深入研究了诱导头（Induction Heads）的涌现现象。通过理论分析和实验验证，揭示了诱导头权重矩阵的简单可解释结构，并证明了训练动态被约束在低维子空间中。这项工作为理解Transformer的ICL能力提供了重要的理论洞见。</div>
                                             
                                         </div>
-                                        <span class="paper-score">8.5</span>
+                                        <span class="paper-score score-mid">8.5</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -4517,311 +4657,10 @@ induction head 的 γ→β→α 时序，与 RL 中的“选项框架（option h
                         
                         <div class="topic-content">
                             
-                                
-                                <div class="paper-item-compact" id="paper-item-2601.05547">
-                                    <div class="paper-header" onclick="showPaperDetail('2601.05547', 'Multimodal')">
-                                        <div style="flex: 1;">
-                                            <div class="paper-title">
-                                                VIB-Probe: Detecting and Mitigating Hallucinations in Vision-Language Models via Variational Information Bottleneck
-                                                <button class="mark-button" 
-                                                        data-paper-id="2601.05547"
-                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2601.05547", "authors": ["Zhang", "Wu", "Wang", "Wang", "Lv", "Huang", "Zheng"], "id": "2601.05547", "pdf_url": "https://arxiv.org/pdf/2601.05547", "rank": 7.857142857142858, "title": "VIB-Probe: Detecting and Mitigating Hallucinations in Vision-Language Models via Variational Information Bottleneck"}"
-                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
-                                                        title="标记这篇论文">☆</button>
-                                                <a href="https://arxiv.org/abs/2601.05547" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
-                                                <span class="ai-links">
-                                                    
-                                                    
-                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AVIB-Probe%3A%20Detecting%20and%20Mitigating%20Hallucinations%20in%20Vision-Language%20Models%20via%20Variational%20Information%20Bottleneck%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2601.05547&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
-                                                       class="ai-link ai-link-kimi" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问Kimi">
-                                                        <span class="ai-link-icon">🤖</span>
-                                                        <span>Kimi</span>
-                                                    </a>
-                                                    
-                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AVIB-Probe%3A%20Detecting%20and%20Mitigating%20Hallucinations%20in%20Vision-Language%20Models%20via%20Variational%20Information%20Bottleneck%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2601.05547%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
-                                                       class="ai-link ai-link-chatgpt" 
-                                                       target="_blank" 
-                                                       onclick="event.stopPropagation();"
-                                                       title="问问ChatGPT">
-                                                        <span class="ai-link-icon">💬</span>
-                                                        <span>GPT</span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                            <div class="paper-authors">Zhang, Wu, Wang, Wang, Lv, Huang, Zheng</div>
-                                            <!-- 中文摘要（默认显示） -->
-                                            
-                                            <div class="paper-summary-inline">本文由复旦大学计算机科学技术学院和上海市智能信息处理重点实验室的研究团队提出。该团队提出了一种名为VIB-Probe的新型幻觉检测与缓解框架，该方法基于变分信息瓶颈理论，通过分析视觉语言模型内部注意力头的输出来识别和抑制幻觉。论文在多个基准测试上展示了显著的性能提升，方法创新性强，实验设计全面，但部分表达和图表说明的清晰度有待提升。</div>
-                                            
-                                        </div>
-                                        <span class="paper-score">7.9</span>
-                                    </div>
-                                    
-                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
-                                    <div id="details-2601.05547" class="paper-details-content" style="display:none;">
-                                        <h3 style="margin-bottom: 16px;">VIB-Probe: Detecting and Mitigating Hallucinations in Vision-Language Models via Variational Information Bottleneck</h3>
-                                        
-                                        <!-- 全文分析（如果可用且无错误） -->
-                                        
-                                            
-                                            
-                                            
-                                        <h4>📊 全文分析</h4>
-                                        <div class="markdown-content">
-                                            <blockquote>
-<p><strong>社区热度</strong>: ⭐ 3 (来自 papers.cool)</p>
-</blockquote>
-<h2>问题定义</h2>
-<p>论文旨在解决视觉-语言模型（Vision-Language Models, VLMs）在生成文本时出现的<strong>幻觉（hallucination）</strong>问题，即生成的描述与输入图像内容不符。具体而言，论文关注以下核心挑战：</p>
-<ul>
-<li><strong>幻觉检测</strong>：现有方法多依赖输出层置信度或外部验证工具，忽视模型内部机制，难以泛化到不同架构和任务。</li>
-<li><strong>幻觉缓解</strong>：训练后修正或推理时干预方法往往成本高或效果有限，缺乏对内部注意力机制的精细控制。</li>
-</ul>
-<p>为此，论文提出<strong>VIB-Probe</strong>框架，通过<strong>变分信息瓶颈（Variational Information Bottleneck, VIB）</strong>理论：</p>
-<ol>
-<li>从<strong>所有层、所有注意力头</strong>的输出中提取紧凑表示，过滤噪声，保留与幻觉相关的判别信号，实现<strong>鲁棒检测</strong>。</li>
-<li>利用检测器梯度定位对幻觉有因果影响的注意力头，在推理时<strong>动态抑制</strong>这些头，实现<strong>无需再训练的缓解</strong>。</li>
-</ol>
-<p>实验表明，VIB-Probe在多个判别式和生成式基准上均取得<strong>SOTA检测与缓解性能</strong>，并具备跨分布、跨任务的强泛化能力。</p>
-<h2>相关工作</h2>
-<p>相关研究可归纳为两条主线：幻觉治理与信息瓶颈理论应用。按主题分列如下：</p>
-<h3>hallucination in VLMs</h3>
-<ul>
-<li><p><strong>检测方向</strong></p>
-<ul>
-<li>浅层置信度：AvgEnt、AvgProb（Hendrycks &amp; Gimpel 2017）</li>
-<li>隐状态探针：RepProbing、MetaToken（Fieback et al. 2025）</li>
-<li>注意力模式：Lookback Lens（Chuang et al. 2024）、DHCP（Zhang et al. 2025b）、OPERA（Huang et al. 2024）</li>
-</ul>
-</li>
-<li><p><strong>缓解方向</strong></p>
-<ul>
-<li>训练式：指令微调（Liu et al. 2023; Zhou et al. 2024）、反思微调（Zhang et al. 2024）</li>
-<li>后处理：Woodpecker（Yin et al. 2024）等外部验证器迭代修正</li>
-<li>推理式：VCD（Leng et al. 2024a）、PAI（Liu et al. 2024b）、IBD（Zhu et al. 2025）——无需再训练，通过调整注意力或对比解码抑制幻觉</li>
-</ul>
-</li>
-</ul>
-<h3>information bottleneck theory</h3>
-<ul>
-<li>原始 IB：Tishby et al. 2000</li>
-<li>变分 IB（VIB）：Alemi et al. 2017；后续用于解析（Li &amp; Eisner 2019）、低资源微调（Mahabadi et al. 2021）、图结构学习（Sun et al. 2022）、检索增强去噪（Zhu et al. 2024b）</li>
-</ul>
-<p>VIB-Probe 在以上基础上首次将 VIB 引入 VLM 注意力头输出，实现联合幻觉检测与推理时干预。</p>
-<h2>解决方案</h2>
-<p>论文将幻觉问题拆解为“检测”与“缓解”两个阶段，均以<strong>变分信息瓶颈（VIB）</strong>为核心工具，流程如下：</p>
-<ol>
-<li><p>提取内部信号<br />
-对每一解码步，收集所有层、所有注意力头的<strong>预投影输出</strong><br />
-$$O_{l,h}=A_{l,h}V_{l,h}\in\mathbb{R}^{d_h}$$<br />
-堆叠成张量 $T\in\mathbb{R}^{L\times H\times d_h}$，作为原始观测 $v_u$。</p>
-</li>
-<li><p>VIB 检测器（Stage 2）</p>
-<ul>
-<li>编码器 $f_\psi$ 将 $v_u$ 映射到特征 $h_u$，再参数化高斯后验<br />
-$$q_\psi(z_u|v_u)=\mathcal{N}(\mu_u,\mathrm{diag}(\sigma_u^2))$$</li>
-<li>解码器仅一层线性层，输出幻觉风险 logit $s_u=w^\top z_u+b$。</li>
-<li>目标函数<br />
-$$\mathcal{L}<em>\mathrm{det}=\underbrace{\mathrm{BCE}(y_u,\hat{p}_u)}</em>\text{预测}+\beta\underbrace{\mathrm{KL}(q_\psi(z_u|v_u)|\mathcal{N}(0,I))}_\text{压缩}$$<br />
-通过瓶颈 $z_u$ 滤掉与标签无关的噪声，保留最小充分统计量。</li>
-</ul>
-</li>
-<li><p>梯度归因与头选择（Stage 3）<br />
-若 $s_u&gt;\tau$，触发干预：</p>
-<ul>
-<li>计算风险对各头输出的梯度 $g_{l,h}=\nabla_{O_{l,h}}s_u$；</li>
-<li>定义头重要性 $I_{l,h}=|\langle g_{l,h},O_{l,h}\rangle|$，取 Top-K 组成集合 $\mathcal{K}$。</li>
-</ul>
-</li>
-<li><p>推理时抑制<br />
-对 $(l,h)\in\mathcal{K}$ 执行单步缩放<br />
-$$\alpha_{l,h}\leftarrow 1-\lambda\cdot\mathrm{ReLU}\big(\langle g_{l,h},O_{l,h}\rangle\big)$$<br />
-重新前向，得到修正后的 logits 并采样下一 token。</p>
-</li>
-</ol>
-<p>整个过程<strong>无需重新训练</strong>主干 VLM，仅在冻结模型上训练轻量级 VIB 探针，即可实现跨层、跨头的幻觉信号提取与精准抑制。</p>
-<h2>实验验证</h2>
-<p>实验围绕“检测”与“缓解”两条主线展开，涵盖 4 个基座模型、6 个基准数据集，并补充消融与鲁棒性测试。具体配置如下：</p>
-<h3>1 检测实验</h3>
-<p><strong>基座模型</strong></p>
-<ul>
-<li>MiniGPT-4、LLaVA-v1.5-7B、LLaVA-v1.6-Mistral-7B、Qwen2.5-VL-7B-Instruct</li>
-</ul>
-<p><strong>判别式基准</strong></p>
-<ul>
-<li>POPE（9000 问答）</li>
-<li>AMBER-subset（5000 问答）</li>
-</ul>
-<p><strong>生成式基准</strong></p>
-<ul>
-<li>M-HalDetect（12800 训练 / 3200 验证，片段级标注）</li>
-<li>COCO-Caption（2000 图，句子级幻觉标注）</li>
-</ul>
-<p><strong>指标</strong></p>
-<ul>
-<li>AUROC、AUPRC</li>
-</ul>
-<p><strong>对照方法</strong></p>
-<ul>
-<li>置信度类：AvgEnt、AvgProb</li>
-<li>隐状态探针：RepProbing、MetaToken、DHCP</li>
-</ul>
-<p><strong>结果</strong></p>
-<ul>
-<li>VIB-Probe 在 24 组“模型-基准”设定中 20 组取得最高 AUPRC，平均优于最强基线 DHCP +1.2%（判别）/+2.8%（生成）。</li>
-</ul>
-<h3>2 跨分布 / 跨任务泛化</h3>
-<ul>
-<li>仅用 POPE-Popular 训练，直接迁移到 AMBER、M-Hal、COCO。</li>
-<li>与 RepProbing 相比，通用化性能下降幅度减少 30% 以上（图 3）。</li>
-</ul>
-<h3>3 鲁棒性测试</h3>
-<ul>
-<li>对输入图像施加旋转、高斯模糊、亮度扰动。</li>
-<li>VIB-Probe 在 POPE 与 COCO 上的 AUPRC 仍领先第二名 4–7 个百分点（表 2）。</li>
-</ul>
-<h3>4 缓解实验</h3>
-<p><strong>数据集</strong></p>
-<ul>
-<li>POPE（9000 问答）</li>
-<li>COCO 500 图子集</li>
-</ul>
-<p><strong>指标</strong></p>
-<ul>
-<li>POPE：Accuracy、F1</li>
-<li>COCO：CHAIRi、CHAIRs（对象级幻觉率）</li>
-</ul>
-<p><strong>对照方法</strong></p>
-<ul>
-<li>Vanilla、BeamSearch、VCD、PAI</li>
-</ul>
-<p><strong>结果</strong></p>
-<ul>
-<li>LLaVA-v1.5 上 VIB-Probe 将 CHAIRs 从 59.3% 降至 44.9%，F1 提升至 85.2。</li>
-<li>LLaVA-v1.6 上 CHAIRs 最低 32.1%，优于 PAI 的 35.3（表 3）。</li>
-</ul>
-<h3>5 消融研究</h3>
-<ul>
-<li><strong>去掉 KL 损失</strong>：AUPRC 在 POPE 下降 6–9 点，验证信息瓶颈必要性（表 4）。</li>
-<li><strong>层选择</strong>：仅用浅层 1–8 层导致 M-HalDetect AUPRC 跌至 49.7；使用 17–32 层最接近“全层”性能（表 5）。</li>
-</ul>
-<p>综上，实验从精度、泛化、鲁棒、消融四个维度验证了 VIB-Probe 在幻觉检测与缓解上的有效性与实用性。</p>
-<h2>未来工作</h2>
-<p>以下方向可进一步拓展，按研究价值与可行性分组：</p>
-<ul>
-<li><p><strong>架构扩展</strong></p>
-<ul>
-<li>非 Transformer 多模态模型（CNN、Mamba、RWKV）无显式注意力头，需重新设计“内部信号”提取方式。</li>
-<li>扩散-语言混合架构（如 DiffusionVLMs）的幻觉信号是否仍可用信息瓶颈压缩？</li>
-</ul>
-</li>
-<li><p><strong>黑盒场景</strong></p>
-<ul>
-<li>仅暴露 logits 时，用零阶优化或代理模型逼近注意力输出，实现灰盒 VIB 探针。</li>
-<li>研究 API 模型上“查询-回答”对的边际分布，构建无需内部状态的幻觉检测器。</li>
-</ul>
-</li>
-<li><p><strong>跨模态信号融合</strong></p>
-<ul>
-<li>联合利用视觉编码器中间特征与语言解码器注意力，探索双瓶颈对齐目标：<br />
-$$\min\ \beta I(z_v;v)+\gamma I(z_l;l)-I(z_v,z_l;y)$$</li>
-<li>引入视觉问答链（Chain-of-VQA）作为外部知识，检验瓶颈能否过滤“自洽但错误”的多模态推理。</li>
-</ul>
-</li>
-<li><p><strong>动态压缩率</strong></p>
-<ul>
-<li>让 Lagrange 乘子 $\beta$ 随输入难度自适应：对复杂场景降低压缩，对简单场景提高压缩，减少过滤波。</li>
-<li>用元学习在验证集上自动搜索 $\beta$ 调度，避免人工调参。</li>
-</ul>
-</li>
-<li><p><strong>干预策略升级</strong></p>
-<ul>
-<li>从单步抑制扩展到多步滚动优化，把抑制强度 $\lambda$ 视为控制变量，用强化学习最大化后续 token 的视觉忠实度。</li>
-<li>结合对比解码，对抑制后的分布与原始分布做加权插值，进一步降低语言先验偏差。</li>
-</ul>
-</li>
-<li><p><strong>因果验证</strong></p>
-<ul>
-<li>运用介入式可解释性（如因果中介分析）量化注意力头抑制对“对象-属性-关系”三类幻觉的单独影响，验证梯度归因的可靠性。</li>
-<li>构建反事实图像（物体擦除、属性替换）检验 VIB 探针是否真正关注视觉 grounding 而非表面统计关联。</li>
-</ul>
-</li>
-<li><p><strong>高效训练</strong></p>
-<ul>
-<li>采用重参数化 MLP、LoRA 或知识蒸馏，把 VIB 探针压缩至 &lt;1% 原参数，实现边缘设备实时检测。</li>
-<li>探索无监督预训练：利用大规模图文对自动生成“伪幻觉”标签，降低人工标注成本。</li>
-</ul>
-</li>
-<li><p><strong>评测体系完善</strong></p>
-<ul>
-<li>引入长视频、多轮对话幻觉基准，检验 VIB-Probe 在时序一致性上的泛化。</li>
-<li>建立幻觉“严重程度”细粒度指标（如缺失对象 vs 属性错误 vs 不可能关系），分析瓶颈表示对不同错误类型的敏感度差异。</li>
-</ul>
-</li>
-</ul>
-<h2>总结</h2>
-<p><strong>VIB-Probe：基于变分信息瓶颈的视觉-语言模型幻觉检测与缓解框架</strong></p>
-<ol>
-<li><p>问题<br />
-VLMs 生成文本时常出现“幻觉”——描述与图像不符。现有方法多依赖输出置信度或外部验证，未深挖内部注意力机制，跨模型泛化差。</p>
-</li>
-<li><p>思路<br />
-假设幻觉信号已嵌入特定注意力头输出，但被高维视觉-语言噪声混淆。借助<strong>变分信息瓶颈（VIB）</strong>理论，在保持对“幻觉/忠实”标签最大互信息的同时，最小化与输入的互信息，提炼域不变判别特征。</p>
-</li>
-<li><p>方法</p>
-<ul>
-<li><strong>检测</strong>：提取所有层、所有头预投影输出 $O_{l,h}$，经轻量 MLP 编码器得到高斯隐变量 $z$，线性解码输出风险 logit $s$；联合优化 BCE 损失与 KL 压缩项。</li>
-<li><strong>缓解</strong>：若 $s&gt;\tau$，利用 $\nabla_{O_{l,h}}s$ 计算头重要性，对 Top-K 头执行单步输出缩放 $\alpha_{l,h}=1-\lambda\cdot\mathrm{ReLU}(\langle g_{l,h},O_{l,h}\rangle)$，重采样下一 token。全程无需再训练主干。</li>
-</ul>
-</li>
-<li><p>实验</p>
-<ul>
-<li>4 个基座模型 × 6 大幻觉基准（POPE、AMBER、M-HalDetect、COCO-Caption 等）</li>
-<li>检测：AUPRC 平均优于最强基线 DHCP +1.2%（判别）/+2.8%（生成）；跨分布迁移下降幅度 &lt;1/3 竞品。</li>
-<li>缓解：CHAIRs 绝对下降 10–15 个百分点，F1/Accuracy 均达新 SOTA。</li>
-<li>消融：去掉 KL 损失性能骤降；深层注意力对生成幻觉更关键。</li>
-</ul>
-</li>
-<li><p>贡献</p>
-<ul>
-<li>首次将 VIB 用于 VLM 多注意力头输出，实现紧凑、可泛化的幻觉表示。</li>
-<li>提出训练无关的梯度归因-抑制策略，打通检测→干预闭环。</li>
-<li>在多项基准上同时刷新检测与缓解记录，验证鲁棒性与实用性。</li>
-</ul>
-</li>
-</ol>
-<p>Q7: 想要进一步了解论文</p>
-<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
-
-                                        </div>
-                                            
-                                        
-                                        
-                                        <!-- 论文元信息 -->
-                                        <div class="paper-meta">
-                                            <span>评分: <span class="paper-score">7.9</span></span>
-                                            <span>置信度: 0.95</span>
-                                            <span>分类: Multimodal</span>
-                                        </div>
-                                        
-                                        <!-- 标签 -->
-                                        
-                                        <div class="paper-tags">
-                                            
-                                            <span class="tag">Multimodal</span>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <!-- 链接 -->
-                                        <div class="paper-meta">
-                                            <a href="https://arxiv.org/abs/2601.05547" class="arxiv-link" target="_blank">📄 arXiv页面</a>
-                                            <a href="https://arxiv.org/pdf/2601.05547" class="arxiv-link" target="_blank">📥 PDF下载</a>
-                                        </div>
-                                    </div>
+                                <div class="collapsed-notice" id="collapsed-notice-Multimodal" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Multimodal"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Multimodal')">展开全部</a>
                                 </div>
                                 
                                 <div class="paper-item-compact" id="paper-item-2510.16769">
@@ -4863,7 +4702,7 @@ VLMs 生成文本时常出现“幻觉”——描述与图像不符。现有方
                                             <div class="paper-summary-inline">请求失败: 'NoneType' object is not subscriptable</div>
                                             
                                         </div>
-                                        <span class="paper-score">N/A</span>
+                                        <span class="paper-score ">N/A</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -5174,7 +5013,7 @@ $(o_t, a_t) = \mathrm{MVRA}!\left(G^{(t-1)}<em>{\mathrm{image}}, H</em>{t-1}, \p
                                             <div class="paper-summary-inline">请求失败: 'NoneType' object is not subscriptable</div>
                                             
                                         </div>
-                                        <span class="paper-score">N/A</span>
+                                        <span class="paper-score ">N/A</span>
                                     </div>
                                     
                                     <!-- 详情内容（用于显示在右侧面板或弹窗） -->
@@ -5662,6 +5501,312 @@ $c$ 必须含文本描述 + 所有相关目标框 ${\hat b_i}$，用 IoU 奖励�
                                     </div>
                                 </div>
                                 
+                                <div class="paper-item-compact" id="paper-item-2601.05547">
+                                    <div class="paper-header" onclick="showPaperDetail('2601.05547', 'Multimodal')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                VIB-Probe: Detecting and Mitigating Hallucinations in Vision-Language Models via Variational Information Bottleneck
+                                                <button class="mark-button" 
+                                                        data-paper-id="2601.05547"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2601.05547", "authors": ["Zhang", "Wu", "Wang", "Wang", "Lv", "Huang", "Zheng"], "id": "2601.05547", "pdf_url": "https://arxiv.org/pdf/2601.05547", "rank": 7.857142857142858, "title": "VIB-Probe: Detecting and Mitigating Hallucinations in Vision-Language Models via Variational Information Bottleneck"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2601.05547" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AVIB-Probe%3A%20Detecting%20and%20Mitigating%20Hallucinations%20in%20Vision-Language%20Models%20via%20Variational%20Information%20Bottleneck%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2601.05547&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8AVIB-Probe%3A%20Detecting%20and%20Mitigating%20Hallucinations%20in%20Vision-Language%20Models%20via%20Variational%20Information%20Bottleneck%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2601.05547%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Zhang, Wu, Wang, Wang, Lv, Huang, Zheng</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文由复旦大学计算机科学技术学院和上海市智能信息处理重点实验室的研究团队提出。该团队提出了一种名为VIB-Probe的新型幻觉检测与缓解框架，该方法基于变分信息瓶颈理论，通过分析视觉语言模型内部注意力头的输出来识别和抑制幻觉。论文在多个基准测试上展示了显著的性能提升，方法创新性强，实验设计全面，但部分表达和图表说明的清晰度有待提升。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score score-low">7.9</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2601.05547" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">VIB-Probe: Detecting and Mitigating Hallucinations in Vision-Language Models via Variational Information Bottleneck</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <blockquote>
+<p><strong>社区热度</strong>: ⭐ 3 (来自 papers.cool)</p>
+</blockquote>
+<h2>问题定义</h2>
+<p>论文旨在解决视觉-语言模型（Vision-Language Models, VLMs）在生成文本时出现的<strong>幻觉（hallucination）</strong>问题，即生成的描述与输入图像内容不符。具体而言，论文关注以下核心挑战：</p>
+<ul>
+<li><strong>幻觉检测</strong>：现有方法多依赖输出层置信度或外部验证工具，忽视模型内部机制，难以泛化到不同架构和任务。</li>
+<li><strong>幻觉缓解</strong>：训练后修正或推理时干预方法往往成本高或效果有限，缺乏对内部注意力机制的精细控制。</li>
+</ul>
+<p>为此，论文提出<strong>VIB-Probe</strong>框架，通过<strong>变分信息瓶颈（Variational Information Bottleneck, VIB）</strong>理论：</p>
+<ol>
+<li>从<strong>所有层、所有注意力头</strong>的输出中提取紧凑表示，过滤噪声，保留与幻觉相关的判别信号，实现<strong>鲁棒检测</strong>。</li>
+<li>利用检测器梯度定位对幻觉有因果影响的注意力头，在推理时<strong>动态抑制</strong>这些头，实现<strong>无需再训练的缓解</strong>。</li>
+</ol>
+<p>实验表明，VIB-Probe在多个判别式和生成式基准上均取得<strong>SOTA检测与缓解性能</strong>，并具备跨分布、跨任务的强泛化能力。</p>
+<h2>相关工作</h2>
+<p>相关研究可归纳为两条主线：幻觉治理与信息瓶颈理论应用。按主题分列如下：</p>
+<h3>hallucination in VLMs</h3>
+<ul>
+<li><p><strong>检测方向</strong></p>
+<ul>
+<li>浅层置信度：AvgEnt、AvgProb（Hendrycks &amp; Gimpel 2017）</li>
+<li>隐状态探针：RepProbing、MetaToken（Fieback et al. 2025）</li>
+<li>注意力模式：Lookback Lens（Chuang et al. 2024）、DHCP（Zhang et al. 2025b）、OPERA（Huang et al. 2024）</li>
+</ul>
+</li>
+<li><p><strong>缓解方向</strong></p>
+<ul>
+<li>训练式：指令微调（Liu et al. 2023; Zhou et al. 2024）、反思微调（Zhang et al. 2024）</li>
+<li>后处理：Woodpecker（Yin et al. 2024）等外部验证器迭代修正</li>
+<li>推理式：VCD（Leng et al. 2024a）、PAI（Liu et al. 2024b）、IBD（Zhu et al. 2025）——无需再训练，通过调整注意力或对比解码抑制幻觉</li>
+</ul>
+</li>
+</ul>
+<h3>information bottleneck theory</h3>
+<ul>
+<li>原始 IB：Tishby et al. 2000</li>
+<li>变分 IB（VIB）：Alemi et al. 2017；后续用于解析（Li &amp; Eisner 2019）、低资源微调（Mahabadi et al. 2021）、图结构学习（Sun et al. 2022）、检索增强去噪（Zhu et al. 2024b）</li>
+</ul>
+<p>VIB-Probe 在以上基础上首次将 VIB 引入 VLM 注意力头输出，实现联合幻觉检测与推理时干预。</p>
+<h2>解决方案</h2>
+<p>论文将幻觉问题拆解为“检测”与“缓解”两个阶段，均以<strong>变分信息瓶颈（VIB）</strong>为核心工具，流程如下：</p>
+<ol>
+<li><p>提取内部信号<br />
+对每一解码步，收集所有层、所有注意力头的<strong>预投影输出</strong><br />
+$$O_{l,h}=A_{l,h}V_{l,h}\in\mathbb{R}^{d_h}$$<br />
+堆叠成张量 $T\in\mathbb{R}^{L\times H\times d_h}$，作为原始观测 $v_u$。</p>
+</li>
+<li><p>VIB 检测器（Stage 2）</p>
+<ul>
+<li>编码器 $f_\psi$ 将 $v_u$ 映射到特征 $h_u$，再参数化高斯后验<br />
+$$q_\psi(z_u|v_u)=\mathcal{N}(\mu_u,\mathrm{diag}(\sigma_u^2))$$</li>
+<li>解码器仅一层线性层，输出幻觉风险 logit $s_u=w^\top z_u+b$。</li>
+<li>目标函数<br />
+$$\mathcal{L}<em>\mathrm{det}=\underbrace{\mathrm{BCE}(y_u,\hat{p}_u)}</em>\text{预测}+\beta\underbrace{\mathrm{KL}(q_\psi(z_u|v_u)|\mathcal{N}(0,I))}_\text{压缩}$$<br />
+通过瓶颈 $z_u$ 滤掉与标签无关的噪声，保留最小充分统计量。</li>
+</ul>
+</li>
+<li><p>梯度归因与头选择（Stage 3）<br />
+若 $s_u&gt;\tau$，触发干预：</p>
+<ul>
+<li>计算风险对各头输出的梯度 $g_{l,h}=\nabla_{O_{l,h}}s_u$；</li>
+<li>定义头重要性 $I_{l,h}=|\langle g_{l,h},O_{l,h}\rangle|$，取 Top-K 组成集合 $\mathcal{K}$。</li>
+</ul>
+</li>
+<li><p>推理时抑制<br />
+对 $(l,h)\in\mathcal{K}$ 执行单步缩放<br />
+$$\alpha_{l,h}\leftarrow 1-\lambda\cdot\mathrm{ReLU}\big(\langle g_{l,h},O_{l,h}\rangle\big)$$<br />
+重新前向，得到修正后的 logits 并采样下一 token。</p>
+</li>
+</ol>
+<p>整个过程<strong>无需重新训练</strong>主干 VLM，仅在冻结模型上训练轻量级 VIB 探针，即可实现跨层、跨头的幻觉信号提取与精准抑制。</p>
+<h2>实验验证</h2>
+<p>实验围绕“检测”与“缓解”两条主线展开，涵盖 4 个基座模型、6 个基准数据集，并补充消融与鲁棒性测试。具体配置如下：</p>
+<h3>1 检测实验</h3>
+<p><strong>基座模型</strong></p>
+<ul>
+<li>MiniGPT-4、LLaVA-v1.5-7B、LLaVA-v1.6-Mistral-7B、Qwen2.5-VL-7B-Instruct</li>
+</ul>
+<p><strong>判别式基准</strong></p>
+<ul>
+<li>POPE（9000 问答）</li>
+<li>AMBER-subset（5000 问答）</li>
+</ul>
+<p><strong>生成式基准</strong></p>
+<ul>
+<li>M-HalDetect（12800 训练 / 3200 验证，片段级标注）</li>
+<li>COCO-Caption（2000 图，句子级幻觉标注）</li>
+</ul>
+<p><strong>指标</strong></p>
+<ul>
+<li>AUROC、AUPRC</li>
+</ul>
+<p><strong>对照方法</strong></p>
+<ul>
+<li>置信度类：AvgEnt、AvgProb</li>
+<li>隐状态探针：RepProbing、MetaToken、DHCP</li>
+</ul>
+<p><strong>结果</strong></p>
+<ul>
+<li>VIB-Probe 在 24 组“模型-基准”设定中 20 组取得最高 AUPRC，平均优于最强基线 DHCP +1.2%（判别）/+2.8%（生成）。</li>
+</ul>
+<h3>2 跨分布 / 跨任务泛化</h3>
+<ul>
+<li>仅用 POPE-Popular 训练，直接迁移到 AMBER、M-Hal、COCO。</li>
+<li>与 RepProbing 相比，通用化性能下降幅度减少 30% 以上（图 3）。</li>
+</ul>
+<h3>3 鲁棒性测试</h3>
+<ul>
+<li>对输入图像施加旋转、高斯模糊、亮度扰动。</li>
+<li>VIB-Probe 在 POPE 与 COCO 上的 AUPRC 仍领先第二名 4–7 个百分点（表 2）。</li>
+</ul>
+<h3>4 缓解实验</h3>
+<p><strong>数据集</strong></p>
+<ul>
+<li>POPE（9000 问答）</li>
+<li>COCO 500 图子集</li>
+</ul>
+<p><strong>指标</strong></p>
+<ul>
+<li>POPE：Accuracy、F1</li>
+<li>COCO：CHAIRi、CHAIRs（对象级幻觉率）</li>
+</ul>
+<p><strong>对照方法</strong></p>
+<ul>
+<li>Vanilla、BeamSearch、VCD、PAI</li>
+</ul>
+<p><strong>结果</strong></p>
+<ul>
+<li>LLaVA-v1.5 上 VIB-Probe 将 CHAIRs 从 59.3% 降至 44.9%，F1 提升至 85.2。</li>
+<li>LLaVA-v1.6 上 CHAIRs 最低 32.1%，优于 PAI 的 35.3（表 3）。</li>
+</ul>
+<h3>5 消融研究</h3>
+<ul>
+<li><strong>去掉 KL 损失</strong>：AUPRC 在 POPE 下降 6–9 点，验证信息瓶颈必要性（表 4）。</li>
+<li><strong>层选择</strong>：仅用浅层 1–8 层导致 M-HalDetect AUPRC 跌至 49.7；使用 17–32 层最接近“全层”性能（表 5）。</li>
+</ul>
+<p>综上，实验从精度、泛化、鲁棒、消融四个维度验证了 VIB-Probe 在幻觉检测与缓解上的有效性与实用性。</p>
+<h2>未来工作</h2>
+<p>以下方向可进一步拓展，按研究价值与可行性分组：</p>
+<ul>
+<li><p><strong>架构扩展</strong></p>
+<ul>
+<li>非 Transformer 多模态模型（CNN、Mamba、RWKV）无显式注意力头，需重新设计“内部信号”提取方式。</li>
+<li>扩散-语言混合架构（如 DiffusionVLMs）的幻觉信号是否仍可用信息瓶颈压缩？</li>
+</ul>
+</li>
+<li><p><strong>黑盒场景</strong></p>
+<ul>
+<li>仅暴露 logits 时，用零阶优化或代理模型逼近注意力输出，实现灰盒 VIB 探针。</li>
+<li>研究 API 模型上“查询-回答”对的边际分布，构建无需内部状态的幻觉检测器。</li>
+</ul>
+</li>
+<li><p><strong>跨模态信号融合</strong></p>
+<ul>
+<li>联合利用视觉编码器中间特征与语言解码器注意力，探索双瓶颈对齐目标：<br />
+$$\min\ \beta I(z_v;v)+\gamma I(z_l;l)-I(z_v,z_l;y)$$</li>
+<li>引入视觉问答链（Chain-of-VQA）作为外部知识，检验瓶颈能否过滤“自洽但错误”的多模态推理。</li>
+</ul>
+</li>
+<li><p><strong>动态压缩率</strong></p>
+<ul>
+<li>让 Lagrange 乘子 $\beta$ 随输入难度自适应：对复杂场景降低压缩，对简单场景提高压缩，减少过滤波。</li>
+<li>用元学习在验证集上自动搜索 $\beta$ 调度，避免人工调参。</li>
+</ul>
+</li>
+<li><p><strong>干预策略升级</strong></p>
+<ul>
+<li>从单步抑制扩展到多步滚动优化，把抑制强度 $\lambda$ 视为控制变量，用强化学习最大化后续 token 的视觉忠实度。</li>
+<li>结合对比解码，对抑制后的分布与原始分布做加权插值，进一步降低语言先验偏差。</li>
+</ul>
+</li>
+<li><p><strong>因果验证</strong></p>
+<ul>
+<li>运用介入式可解释性（如因果中介分析）量化注意力头抑制对“对象-属性-关系”三类幻觉的单独影响，验证梯度归因的可靠性。</li>
+<li>构建反事实图像（物体擦除、属性替换）检验 VIB 探针是否真正关注视觉 grounding 而非表面统计关联。</li>
+</ul>
+</li>
+<li><p><strong>高效训练</strong></p>
+<ul>
+<li>采用重参数化 MLP、LoRA 或知识蒸馏，把 VIB 探针压缩至 &lt;1% 原参数，实现边缘设备实时检测。</li>
+<li>探索无监督预训练：利用大规模图文对自动生成“伪幻觉”标签，降低人工标注成本。</li>
+</ul>
+</li>
+<li><p><strong>评测体系完善</strong></p>
+<ul>
+<li>引入长视频、多轮对话幻觉基准，检验 VIB-Probe 在时序一致性上的泛化。</li>
+<li>建立幻觉“严重程度”细粒度指标（如缺失对象 vs 属性错误 vs 不可能关系），分析瓶颈表示对不同错误类型的敏感度差异。</li>
+</ul>
+</li>
+</ul>
+<h2>总结</h2>
+<p><strong>VIB-Probe：基于变分信息瓶颈的视觉-语言模型幻觉检测与缓解框架</strong></p>
+<ol>
+<li><p>问题<br />
+VLMs 生成文本时常出现“幻觉”——描述与图像不符。现有方法多依赖输出置信度或外部验证，未深挖内部注意力机制，跨模型泛化差。</p>
+</li>
+<li><p>思路<br />
+假设幻觉信号已嵌入特定注意力头输出，但被高维视觉-语言噪声混淆。借助<strong>变分信息瓶颈（VIB）</strong>理论，在保持对“幻觉/忠实”标签最大互信息的同时，最小化与输入的互信息，提炼域不变判别特征。</p>
+</li>
+<li><p>方法</p>
+<ul>
+<li><strong>检测</strong>：提取所有层、所有头预投影输出 $O_{l,h}$，经轻量 MLP 编码器得到高斯隐变量 $z$，线性解码输出风险 logit $s$；联合优化 BCE 损失与 KL 压缩项。</li>
+<li><strong>缓解</strong>：若 $s&gt;\tau$，利用 $\nabla_{O_{l,h}}s$ 计算头重要性，对 Top-K 头执行单步输出缩放 $\alpha_{l,h}=1-\lambda\cdot\mathrm{ReLU}(\langle g_{l,h},O_{l,h}\rangle)$，重采样下一 token。全程无需再训练主干。</li>
+</ul>
+</li>
+<li><p>实验</p>
+<ul>
+<li>4 个基座模型 × 6 大幻觉基准（POPE、AMBER、M-HalDetect、COCO-Caption 等）</li>
+<li>检测：AUPRC 平均优于最强基线 DHCP +1.2%（判别）/+2.8%（生成）；跨分布迁移下降幅度 &lt;1/3 竞品。</li>
+<li>缓解：CHAIRs 绝对下降 10–15 个百分点，F1/Accuracy 均达新 SOTA。</li>
+<li>消融：去掉 KL 损失性能骤降；深层注意力对生成幻觉更关键。</li>
+</ul>
+</li>
+<li><p>贡献</p>
+<ul>
+<li>首次将 VIB 用于 VLM 多注意力头输出，实现紧凑、可泛化的幻觉表示。</li>
+<li>提出训练无关的梯度归因-抑制策略，打通检测→干预闭环。</li>
+<li>在多项基准上同时刷新检测与缓解记录，验证鲁棒性与实用性。</li>
+</ul>
+</li>
+</ol>
+<p>Q7: 想要进一步了解论文</p>
+<p>以上只是了解一篇论文的几个基本FAQ。如果你还想与Kimi进一步讨论该论文，请点击 这里  为你跳转Kimi AI网页版，并启动一个与该论文相关的新会话。</p>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">7.9</span></span>
+                                            <span>置信度: 0.95</span>
+                                            <span>分类: Multimodal</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Multimodal</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2601.05547" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2601.05547" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                             
                         </div>
                     </div>
@@ -5672,7 +5817,7 @@ $c$ 必须含文本描述 + 所有相关目标框 ${\hat b_i}$，用 IoU 奖励�
         <!-- Footer with filter info -->
         
         <div class="footer">
-            主题筛选: Hallucination, Agent, Multimodal, Pretraining, Finance, RLHF, SFT | 状态: 已启用
+            主题筛选: Agent, Pretraining, Hallucination, Finance, RLHF, SFT, Multimodal | 状态: 已启用
         </div>
         
         </div>
@@ -5784,19 +5929,31 @@ $c$ 必须含文本描述 + 所有相关目标框 ${\hat b_i}$，用 IoU 奖励�
         function toggleMark(paperId, paperData) {
             const markedPapers = getMarkedPapers();
             const isCurrentlyMarked = isMarked(paperId);
-            
+
             if (isCurrentlyMarked) {
                 // 取消标记
                 const filtered = markedPapers.filter(p => p.id !== paperId);
                 saveMarkedPapers(filtered);
                 updateMarkButtonState(paperId, false);
+                // 展开卡片
+                const item = document.getElementById('paper-item-' + paperId);
+                if (item) item.classList.remove('paper-collapsed');
             } else {
                 // 添加标记
                 const fullPaperData = getPaperData(paperId, paperData);
                 markedPapers.push(fullPaperData);
                 saveMarkedPapers(markedPapers);
                 updateMarkButtonState(paperId, true);
+                // 折叠卡片
+                const item = document.getElementById('paper-item-' + paperId);
+                if (item) item.classList.add('paper-collapsed');
             }
+
+            // 刷新所有 tab 的折叠提示条
+            document.querySelectorAll('[id^="collapsed-notice-"]').forEach(notice => {
+                const topicId = notice.id.replace('collapsed-notice-', '');
+                refreshCollapsedNotice(topicId);
+            });
         }
         
         // 更新标记按钮状态
@@ -5934,18 +6091,53 @@ $c$ 必须含文本描述 + 所有相关目标框 ${\hat b_i}$，用 IoU 奖励�
         function initMarkStates() {
             const markedPapers = getMarkedPapers();
             const markedIds = new Set(markedPapers.map(p => p.id));
-            
-            // 更新所有标记按钮的状态
+
+            // 更新所有标记按钮的状态，并折叠已标记论文
             document.querySelectorAll('.mark-button[data-paper-id]').forEach(button => {
                 const paperId = button.getAttribute('data-paper-id');
                 if (markedIds.has(paperId)) {
                     button.textContent = '⭐';
                     button.classList.add('marked');
+                    // 折叠该论文卡片
+                    const item = document.getElementById('paper-item-' + paperId);
+                    if (item) item.classList.add('paper-collapsed');
                 } else {
                     button.textContent = '☆';
                     button.classList.remove('marked');
                 }
             });
+
+            // 更新各 tab 的折叠提示条
+            document.querySelectorAll('[id^="collapsed-notice-"]').forEach(notice => {
+                const topicId = notice.id.replace('collapsed-notice-', '');
+                refreshCollapsedNotice(topicId);
+            });
+        }
+
+        // 刷新某个 tab 的折叠提示条
+        function refreshCollapsedNotice(topicId) {
+            const tabEl = document.getElementById('tab-' + topicId);
+            if (!tabEl) return;
+            const count = tabEl.querySelectorAll('.paper-item-compact.paper-collapsed').length;
+            const notice = document.getElementById('collapsed-notice-' + topicId);
+            const countEl = document.getElementById('collapsed-count-' + topicId);
+            if (!notice || !countEl) return;
+            if (count > 0) {
+                countEl.textContent = count;
+                notice.style.display = 'flex';
+            } else {
+                notice.style.display = 'none';
+            }
+        }
+
+        // 展开某 tab 所有已标记论文
+        function expandAllMarked(topicId) {
+            const tabEl = document.getElementById('tab-' + topicId);
+            if (!tabEl) return;
+            tabEl.querySelectorAll('.paper-item-compact.paper-collapsed').forEach(item => {
+                item.classList.remove('paper-collapsed');
+            });
+            refreshCollapsedNotice(topicId);
         }
 
         // 切换标签页
@@ -6172,7 +6364,19 @@ $c$ 必须含文本描述 + 所有相关目标框 ${\hat b_i}$，用 IoU 奖励�
             if (firstNavItem) {
                 firstNavItem.classList.add('active');
             }
-            
+
+            // 设置 Markdown 链接：将当前 .html URL 替换为 .md
+            (function() {
+                const btn = document.getElementById('md-download-btn');
+                if (!btn) return;
+                const mdUrl = window.location.href.replace(/\.html(\?.*)?$/, '.md');
+                btn.href = mdUrl;
+                // 如果无法推断（URL 没有 .html 后缀），则隐藏按钮
+                if (mdUrl === window.location.href) {
+                    btn.style.display = 'none';
+                }
+            })();
+
             // 初始化标记状态
             initMarkStates();
             
