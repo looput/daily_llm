@@ -3,13 +3,13 @@
 **arXiv**: [2603.16177](https://arxiv.org/abs/2603.16177) · [PDF](https://arxiv.org/pdf/2603.16177)  
 **领域**: Pretraining  
 **作者**: Baek, Monti, Schwab, Abbas, Adiga, Blakeney, BÃ¶ther, Burstein 等 34 人  
-**综合评分**: 8.86  （novelty: 9.0 · method: 9.0 · evidence: 9.5 · clarity: 8.0）
+**综合评分**: 8.35  （novelty: 8.5 · method: 8.5 · evidence: 9.0 · clarity: 8.0）
 
 ---
 
 ## 摘要
 
-> 本文由来自Meta GenAI、Stanford、MIT、CMU等知名机构的研究团队提出了一种名为'专业化预训练'（SPT）的新方法，用于解决模型在数据稀缺的垂直领域进行微调时面临的过拟合和遗忘通用知识的问题。该方法通过在预训练阶段重复使用领域数据，显著提升了模型在特定领域的性能，同时保持了通用能力，并推导了过拟合缩放定律来指导实践。论文在三个专业领域（化学、音乐、数学证明）上进行了充分验证，实验设计严谨，具有重要的实践指导意义。
+> 本文由来自Meta GenAI、Stanford、MIT等知名机构的联合研究团队提出了一种名为'专业化预训练'（SPT）的新方法，用于解决模型在数据稀缺的垂直领域部署时的过拟合和遗忘问题。该方法通过在预训练阶段重复使用领域数据，显著提升了模型在特定领域的性能，同时保持了通用能力。论文在三个专业领域（ChemPile、MusicPile、ProofPile）上进行了充分验证，并推导了过拟合缩放定律来指导实践。
 
 ---
 

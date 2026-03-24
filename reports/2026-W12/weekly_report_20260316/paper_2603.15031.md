@@ -3,19 +3,19 @@
 **arXiv**: [2603.15031](https://arxiv.org/abs/2603.15031) · [PDF](https://arxiv.org/pdf/2603.15031)  
 **领域**: Pretraining  
 **作者**: Kimi Team, Chen, Zhang, Su, Xu, Pan, Wang, Wang 等 37 人  
-**综合评分**: 8.36  （novelty: 9.0 · method: 8.5 · evidence: 8.5 · clarity: 8.0）
+**综合评分**: 8.80  （novelty: 9.0 · method: 8.5 · evidence: 9.0 · clarity: 8.0）
 
 ---
 
 ## 摘要
 
-> 本文由Kimi Team（月之暗面公司）提出了一种名为Attention Residuals（AttnRes）的新方法，用于改进大型语言模型中的残差连接机制。该方法用基于注意力机制的动态加权聚合替代传统的固定权重累加，有效缓解了深度模型中隐藏状态增长和层贡献稀释的问题。论文通过详实的实验验证了方法的有效性，包括在48B参数的Kimi Linear架构上的大规模预训练，并在多个下游任务上取得了性能提升。
+> 本文由Kimi Team（月之暗面公司）提出了一种名为Attention Residuals（AttnRes）的新方法，用于改进大型语言模型中的残差连接机制。该方法通过引入基于注意力机制的动态权重聚合，替代传统的固定权重累加，有效缓解了深层网络中的隐藏状态稀释问题。论文通过详实的实验验证了方法的有效性，包括在48B参数模型上的预训练和下游任务评估，展示了显著的性能提升。
 
 ---
 
 ## 详细分析
 
-> **社区热度**: ⭐ 94 (来自 papers.cool)
+> **社区热度**: ⭐ 157 (来自 papers.cool)
 
 ## 问题定义
 

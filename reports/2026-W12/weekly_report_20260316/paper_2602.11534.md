@@ -3,13 +3,13 @@
 **arXiv**: [2602.11534](https://arxiv.org/abs/2602.11534) · [PDF](https://arxiv.org/pdf/2602.11534)  
 **领域**: Pretraining  
 **作者**: Liu, Yue, Welling, Song  
-**综合评分**: 8.43  （novelty: 9.0 · method: 9.0 · evidence: 8.5 · clarity: 7.5）
+**综合评分**: 7.74  （novelty: 9.0 · method: 9.5 · evidence: 8.0 · clarity: 7.0）
 
 ---
 
 ## 摘要
 
-> 本文提出了一种名为Krause Attention的新型注意力机制，该机制受有界置信度共识动力学启发，旨在解决传统Transformer中全局归一化softmax权重导致的表示坍缩和注意力汇问题。通过将基于相似性的全局聚合替换为基于距离的、局部化的、选择性稀疏的交互，该方法促进了结构化的局部同步而非全局混合，并将计算复杂度从序列长度的二次方降低到线性。实验在视觉（ViT on CIFAR/ImageNet）、自回归生成（MNIST/CIFAR-10）和大语言模型（Llama/Qwen）等多个领域和任务上验证了其有效性和计算效率。作者团队背景未在提供信息中明确提及知名机构。
+> 本文提出了一种名为Krause Attention的新型注意力机制，灵感来源于有界置信共识动力学。该方法旨在解决传统Transformer中全局归一化softmax权重导致的表示崩溃和注意力汇问题。通过在视觉（ViT在CIFAR/ImageNet）、自回归生成（MNIST/CIFAR-10）和大语言模型（Llama/Qwen）上的实验，证明了该方法在显著减少计算量的同时，能带来一致的性能提升。
 
 ---
 

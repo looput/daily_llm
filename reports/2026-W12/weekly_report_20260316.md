@@ -2,10 +2,10 @@
 
 | 指标 | 数值 |
 | --- | --- |
-| 精选论文数 | **115** 篇 |
+| 精选论文数 | **105** 篇 |
 | 原始论文总数 | 3496 篇 |
 | 覆盖领域数 | 6 个 |
-| 平均质量评分 | 8.48 |
+| 平均质量评分 | 8.25 |
 
 ---
 
@@ -17,12 +17,12 @@
 
 | 领域 | 论文数 | 内容（趋势 + 论文列表） |
 | --- | --- | --- |
+| Pretraining | 19 篇 | [Pretraining.md](./weekly_report_20260316/Pretraining.md) |
 | Hallucination | 5 篇 | [Hallucination.md](./weekly_report_20260316/Hallucination.md) |
-| Pretraining | 16 篇 | [Pretraining.md](./weekly_report_20260316/Pretraining.md) |
-| SFT | 8 篇 | [SFT.md](./weekly_report_20260316/SFT.md) |
-| RLHF | 15 篇 | [RLHF.md](./weekly_report_20260316/RLHF.md) |
-| Agent | 37 篇 | [Agent.md](./weekly_report_20260316/Agent.md) |
-| Multimodal | 34 篇 | [Multimodal.md](./weekly_report_20260316/Multimodal.md) |
+| SFT | 6 篇 | [SFT.md](./weekly_report_20260316/SFT.md) |
+| RLHF | 8 篇 | [RLHF.md](./weekly_report_20260316/RLHF.md) |
+| Agent | 32 篇 | [Agent.md](./weekly_report_20260316/Agent.md) |
+| Multimodal | 35 篇 | [Multimodal.md](./weekly_report_20260316/Multimodal.md) |
 
 ---
 
@@ -30,118 +30,108 @@
 
 | 论文标题 | 领域 | 评分 | 详情文件 |
 | --- | --- | --- | --- |
-| [Toward Personalized LLM-Powered Agents: Foundations, Evaluat…](https://arxiv.org/abs/2602.22680) | Agent | 8.93 | [详情](./weekly_report_20260316/paper_2602.22680.md) |
-| [Scaling Generalist Data-Analytic Agents](https://arxiv.org/abs/2509.25084) | Agent | 8.86 | [详情](./weekly_report_20260316/paper_2509.25084.md) |
-| [The Finetuner's Fallacy: When to Pretrain with Your Finetuni…](https://arxiv.org/abs/2603.16177) | Pretraining | 8.86 | [详情](./weekly_report_20260316/paper_2603.16177.md) |
-| [Bridging Protocol and Production: Design Patterns for Deploy…](https://arxiv.org/abs/2603.13417) | Agent | 8.79 | [详情](./weekly_report_20260316/paper_2603.13417.md) |
-| [VTC-Bench: Evaluating Agentic Multimodal Models via Composit…](https://arxiv.org/abs/2603.15030) | Agent | 8.79 | [详情](./weekly_report_20260316/paper_2603.15030.md) |
-| [SO-Bench: A Structural Output Evaluation of Multimodal LLMs](https://arxiv.org/abs/2511.21750) | Multimodal | 8.79 | [详情](./weekly_report_20260316/paper_2511.21750.md) |
-| [Supervised Fine-Tuning versus Reinforcement Learning: A Stud…](https://arxiv.org/abs/2603.13985) | SFT | 8.79 | [详情](./weekly_report_20260316/paper_2603.13985.md) |
-| [Is Conformal Factuality for RAG-based LLMs Robust? Novel Met…](https://arxiv.org/abs/2603.16817) | Hallucination | 8.79 | [详情](./weekly_report_20260316/paper_2603.16817.md) |
-| [Large Language Models Hallucination: A Comprehensive Survey](https://arxiv.org/abs/2510.06265) | Hallucination | 8.71 | [详情](./weekly_report_20260316/paper_2510.06265.md) |
-| [Auto Researching, not hyperparameter tuning: Convergence Ana…](https://arxiv.org/abs/2603.15916) | Agent | 8.71 | [详情](./weekly_report_20260316/paper_2603.15916.md) |
-| [PRISM: Demystifying Retention and Interaction in Mid-Trainin…](https://arxiv.org/abs/2603.17074) | Pretraining | 8.71 | [详情](./weekly_report_20260316/paper_2603.17074.md) |
-| [Omnilingual SONAR: Cross-Lingual and Cross-Modal Sentence Em…](https://arxiv.org/abs/2603.16606) | Multimodal | 8.71 | [详情](./weekly_report_20260316/paper_2603.16606.md) |
-| [Hilbert: Recursively Building Formal Proofs with Informal Re…](https://arxiv.org/abs/2509.22819) | Agent | 8.64 | [详情](./weekly_report_20260316/paper_2509.22819.md) |
-| [daVinci-Env: Open SWE Environment Synthesis at Scale](https://arxiv.org/abs/2603.13023) | Agent | 8.64 | [详情](./weekly_report_20260316/paper_2603.13023.md) |
-| [Infinite Problem Generator: Verifiably Scaling Physics Reaso…](https://arxiv.org/abs/2603.14486) | Agent | 8.64 | [详情](./weekly_report_20260316/paper_2603.14486.md) |
-| [BitDance: Scaling Autoregressive Generative Models with Bina…](https://arxiv.org/abs/2602.14041) | Multimodal | 8.64 | [详情](./weekly_report_20260316/paper_2602.14041.md) |
-| [SPARROW: Learning Spatial Precision and Temporal Referential…](https://arxiv.org/abs/2603.12382) | Multimodal | 8.64 | [详情](./weekly_report_20260316/paper_2603.12382.md) |
-| [Urban Socio-Semantic Segmentation with Vision-Language Reaso…](https://arxiv.org/abs/2601.10477) | Multimodal | 8.64 | [详情](./weekly_report_20260316/paper_2601.10477.md) |
+| [Fanar 2.0: Arabic Generative AI Stack](https://arxiv.org/abs/2603.16397) | Pretraining | 8.86 | [详情](./weekly_report_20260316/paper_2603.16397.md) |
+| [Mixture-of-Depths Attention](https://arxiv.org/abs/2603.15619) | Pretraining | 8.86 | [详情](./weekly_report_20260316/paper_2603.15619.md) |
+| [Darwin Godel Machine: Open-Ended Evolution of Self-Improving…](https://arxiv.org/abs/2505.22954) | Agent | 8.86 | [详情](./weekly_report_20260316/paper_2505.22954.md) |
+| [Evaluating Memory in LLM Agents via Incremental Multi-Turn I…](https://arxiv.org/abs/2507.05257) | Agent | 8.86 | [详情](./weekly_report_20260316/paper_2507.05257.md) |
+| [Attention Residuals](https://arxiv.org/abs/2603.15031) | Pretraining | 8.80 | [详情](./weekly_report_20260316/paper_2603.15031.md) |
+| [Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and M…](https://arxiv.org/abs/2603.19220) | RLHF | 8.80 | [详情](./weekly_report_20260316/paper_2603.19220.md) |
+| [Token Coherence: Adapting MESI Cache Protocols to Minimize S…](https://arxiv.org/abs/2603.15183) | Agent | 8.71 | [详情](./weekly_report_20260316/paper_2603.15183.md) |
+| [Toward Personalized LLM-Powered Agents: Foundations, Evaluat…](https://arxiv.org/abs/2602.22680) | Agent | 8.69 | [详情](./weekly_report_20260316/paper_2602.22680.md) |
+| [ReasoningBank: Scaling Agent Self-Evolving with Reasoning Me…](https://arxiv.org/abs/2509.25140) | Agent | 8.69 | [详情](./weekly_report_20260316/paper_2509.25140.md) |
+| [Lumos-1: On Autoregressive Video Generation with Discrete Di…](https://arxiv.org/abs/2507.08801) | Multimodal | 8.69 | [详情](./weekly_report_20260316/paper_2507.08801.md) |
+| [Omni-Captioner: Data Pipeline, Models, and Benchmark for Omn…](https://arxiv.org/abs/2510.12720) | Multimodal | 8.69 | [详情](./weekly_report_20260316/paper_2510.12720.md) |
+| [Visual-ERM: Reward Modeling for Visual Equivalence](https://arxiv.org/abs/2603.13224) | RLHF | 8.69 | [详情](./weekly_report_20260316/paper_2603.13224.md) |
 | [Do Understanding and Generation Fight? A Diagnostic Study of…](https://arxiv.org/abs/2603.17044) | Multimodal | 8.64 | [详情](./weekly_report_20260316/paper_2603.17044.md) |
-| [Instructing Large Language Models for Low-Resource Languages…](https://arxiv.org/abs/2506.07597) | SFT | 8.64 | [详情](./weekly_report_20260316/paper_2506.07597.md) |
-| [AgentDrift: Unsafe Recommendation Drift Under Tool Corruptio…](https://arxiv.org/abs/2603.12564) | Agent | 8.64 | [详情](./weekly_report_20260316/paper_2603.12564.md) |
-| [A Trace-Based Assurance Framework for Agentic AI Orchestrati…](https://arxiv.org/abs/2603.18096) | Agent | 8.64 | [详情](./weekly_report_20260316/paper_2603.18096.md) |
+| [Inducing Epistemological Humility in Large Language Models: …](https://arxiv.org/abs/2603.17504) | Hallucination | 8.64 | [详情](./weekly_report_20260316/paper_2603.17504.md) |
+| [To See or To Please: Uncovering Visual Sycophancy and Split …](https://arxiv.org/abs/2603.18373) | Multimodal | 8.64 | [详情](./weekly_report_20260316/paper_2603.18373.md) |
 | [Causal Tracing of Audio-Text Fusion in Large Audio Language …](https://arxiv.org/abs/2603.13768) | Multimodal | 8.64 | [详情](./weekly_report_20260316/paper_2603.13768.md) |
-| [POLCA: Stochastic Generative Optimization with LLM](https://arxiv.org/abs/2603.14769) | Agent | 8.57 | [详情](./weekly_report_20260316/paper_2603.14769.md) |
-| [Evaluating Memory in LLM Agents via Incremental Multi-Turn I…](https://arxiv.org/abs/2507.05257) | Agent | 8.57 | [详情](./weekly_report_20260316/paper_2507.05257.md) |
-| [From Weak Cues to Real Identities: Evaluating Inference-Driv…](https://arxiv.org/abs/2603.18382) | Agent | 8.57 | [详情](./weekly_report_20260316/paper_2603.18382.md) |
-| [Directional Routing in Transformers](https://arxiv.org/abs/2603.14923) | Pretraining | 8.57 | [详情](./weekly_report_20260316/paper_2603.14923.md) |
-| [OpenVision 3: A Family of Unified Visual Encoder for Both Un…](https://arxiv.org/abs/2601.15369) | Multimodal | 8.57 | [详情](./weekly_report_20260316/paper_2601.15369.md) |
-| [GraphVLM: Benchmarking Vision Language Models for Multimodal…](https://arxiv.org/abs/2603.13370) | Multimodal | 8.57 | [详情](./weekly_report_20260316/paper_2603.13370.md) |
-| [DeSTA2.5-Audio: Toward General-Purpose Large Audio Language …](https://arxiv.org/abs/2507.02768) | Multimodal | 8.57 | [详情](./weekly_report_20260316/paper_2507.02768.md) |
-| [Narrow Fine-Tuning Erodes Safety Alignment in Vision-Languag…](https://arxiv.org/abs/2602.16931) | SFT | 8.57 | [详情](./weekly_report_20260316/paper_2602.16931.md) |
-| [Machines acquire scientific taste from institutional traces](https://arxiv.org/abs/2603.16659) | SFT | 8.57 | [详情](./weekly_report_20260316/paper_2603.16659.md) |
-| [Aligning Language Models from User Interactions](https://arxiv.org/abs/2603.12273) | RLHF | 8.57 | [详情](./weekly_report_20260316/paper_2603.12273.md) |
-| [MapReduce LoRA: Advancing the Pareto Front in Multi-Preferen…](https://arxiv.org/abs/2511.20629) | RLHF | 8.57 | [详情](./weekly_report_20260316/paper_2511.20629.md) |
-| [A Comedy of Estimators: On KL Regularization in RL Training …](https://arxiv.org/abs/2512.21852) | RLHF | 8.57 | [详情](./weekly_report_20260316/paper_2512.21852.md) |
-| [Alignment Makes Language Models Normative, Not Descriptive](https://arxiv.org/abs/2603.17218) | RLHF | 8.57 | [详情](./weekly_report_20260316/paper_2603.17218.md) |
-| [Position: Agentic Evolution is the Path to Evolving LLMs](https://arxiv.org/abs/2602.00359) | Agent | 8.50 | [详情](./weekly_report_20260316/paper_2602.00359.md) |
+| [PolyGLU: State-Conditional Activation Routing in Transformer…](https://arxiv.org/abs/2603.13347) | Pretraining | 8.57 | [详情](./weekly_report_20260316/paper_2603.13347.md) |
+| [The Provenance Paradox in Multi-Agent LLM Routing: Delegatio…](https://arxiv.org/abs/2603.18043) | Agent | 8.57 | [详情](./weekly_report_20260316/paper_2603.18043.md) |
+| [OpenSeeker: Democratizing Frontier Search Agents by Fully Op…](https://arxiv.org/abs/2603.15594) | Agent | 8.56 | [详情](./weekly_report_20260316/paper_2603.15594.md) |
+| [Scaling Generalist Data-Analytic Agents](https://arxiv.org/abs/2509.25084) | Agent | 8.52 | [详情](./weekly_report_20260316/paper_2509.25084.md) |
 | [StatePlane: A Cognitive State Plane for Long-Horizon AI Syst…](https://arxiv.org/abs/2603.13644) | Agent | 8.50 | [详情](./weekly_report_20260316/paper_2603.13644.md) |
-| [AgentProcessBench: Diagnosing Step-Level Process Quality in …](https://arxiv.org/abs/2603.14465) | Agent | 8.50 | [详情](./weekly_report_20260316/paper_2603.14465.md) |
-| [UIS-Digger: Towards Comprehensive Research Agent Systems for…](https://arxiv.org/abs/2603.08117) | Agent | 8.50 | [详情](./weekly_report_20260316/paper_2603.08117.md) |
-| [AVIATOR: Towards AI-Agentic Vulnerability Injection Workflow…](https://arxiv.org/abs/2508.20866) | Agent | 8.50 | [详情](./weekly_report_20260316/paper_2508.20866.md) |
-| [CodeScout: An Effective Recipe for Reinforcement Learning of…](https://arxiv.org/abs/2603.17829) | Agent | 8.50 | [详情](./weekly_report_20260316/paper_2603.17829.md) |
-| [Why Grokking Takes So Long: A First-Principles Theory of Rep…](https://arxiv.org/abs/2603.13331) | Pretraining | 8.50 | [详情](./weekly_report_20260316/paper_2603.13331.md) |
-| [Genomic Next-Token Predictors are In-Context Learners](https://arxiv.org/abs/2511.12797) | Pretraining | 8.50 | [详情](./weekly_report_20260316/paper_2511.12797.md) |
-| [Narrative Weaver: Towards Controllable Long-Range Visual Con…](https://arxiv.org/abs/2603.06688) | Multimodal | 8.50 | [详情](./weekly_report_20260316/paper_2603.06688.md) |
-| [VisionZip: Longer is Better but Not Necessary in Vision Lang…](https://arxiv.org/abs/2412.04467) | Multimodal | 8.50 | [详情](./weekly_report_20260316/paper_2412.04467.md) |
-| [Rationale-Enhanced Decoding for Multi-modal Chain-of-Thought](https://arxiv.org/abs/2507.07685) | Multimodal | 8.50 | [详情](./weekly_report_20260316/paper_2507.07685.md) |
-| [Mind the Discriminability Trap in Source-Free Cross-domain F…](https://arxiv.org/abs/2603.13341) | Multimodal | 8.50 | [详情](./weekly_report_20260316/paper_2603.13341.md) |
-| [Towards the Vision-Sound-Language-Action Paradigm: The HEAR …](https://arxiv.org/abs/2603.16086) | Multimodal | 8.50 | [详情](./weekly_report_20260316/paper_2603.16086.md) |
-| [FINER: MLLMs Hallucinate under Fine-grained Negative Queries](https://arxiv.org/abs/2603.17662) | Multimodal | 8.50 | [详情](./weekly_report_20260316/paper_2603.17662.md) |
-| [Inducing Epistemological Humility in Large Language Models: …](https://arxiv.org/abs/2603.17504) | Hallucination | 8.50 | [详情](./weekly_report_20260316/paper_2603.17504.md) |
+| [GNNVerifier: Graph-based Verifier for LLM Task Planning](https://arxiv.org/abs/2603.14730) | Agent | 8.50 | [详情](./weekly_report_20260316/paper_2603.14730.md) |
 | [Sharpness-Aware Minimization in Logit Space Efficiently Enha…](https://arxiv.org/abs/2603.18258) | RLHF | 8.50 | [详情](./weekly_report_20260316/paper_2603.18258.md) |
-| [Co-rewarding: Stable Self-supervised RL for Eliciting Reason…](https://arxiv.org/abs/2508.00410) | RLHF | 8.50 | [详情](./weekly_report_20260316/paper_2508.00410.md) |
-| [Spend Less, Reason Better: Budget-Aware Value Tree Search fo…](https://arxiv.org/abs/2603.12634) | Agent | 8.43 | [详情](./weekly_report_20260316/paper_2603.12634.md) |
-| [Quine: Realizing LLM Agents as Native POSIX Processes](https://arxiv.org/abs/2603.18030) | Agent | 8.43 | [详情](./weekly_report_20260316/paper_2603.18030.md) |
-| [The Provenance Paradox in Multi-Agent LLM Routing: Delegatio…](https://arxiv.org/abs/2603.18043) | Agent | 8.43 | [详情](./weekly_report_20260316/paper_2603.18043.md) |
-| [PolyGLU: State-Conditional Activation Routing in Transformer…](https://arxiv.org/abs/2603.13347) | Pretraining | 8.43 | [详情](./weekly_report_20260316/paper_2603.13347.md) |
-| [Krause Synchronization Transformers](https://arxiv.org/abs/2602.11534) | Pretraining | 8.43 | [详情](./weekly_report_20260316/paper_2602.11534.md) |
-| [NerVE: Nonlinear Eigenspectrum Dynamics in LLM Feed-Forward …](https://arxiv.org/abs/2603.06922) | Pretraining | 8.43 | [详情](./weekly_report_20260316/paper_2603.06922.md) |
-| [Frayed RoPE and Long Inputs: A Geometric Perspective](https://arxiv.org/abs/2603.18017) | Pretraining | 8.43 | [详情](./weekly_report_20260316/paper_2603.18017.md) |
-| [On Robustness and Chain-of-Thought Consistency of RL-Finetun…](https://arxiv.org/abs/2602.12506) | Multimodal | 8.43 | [详情](./weekly_report_20260316/paper_2602.12506.md) |
-| [OpenSeeker: Democratizing Frontier Search Agents by Fully Op…](https://arxiv.org/abs/2603.15594) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.15594.md) |
-| [XSkill: Continual Learning from Experience and Skills in Mul…](https://arxiv.org/abs/2603.12056) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.12056.md) |
-| [Feynman: Knowledge-Infused Diagramming Agent for Scalable Vi…](https://arxiv.org/abs/2603.12597) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.12597.md) |
-| [AI Planning Framework for LLM-Based Web Agents](https://arxiv.org/abs/2603.12710) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.12710.md) |
-| [Why Agents Compromise Safety Under Pressure](https://arxiv.org/abs/2603.14975) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.14975.md) |
-| [Zephyrus: An Agentic Framework for Weather Science](https://arxiv.org/abs/2510.04017) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2510.04017.md) |
-| [DynaTrust: Defending Multi-Agent Systems Against Sleeper Age…](https://arxiv.org/abs/2603.15661) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.15661.md) |
-| [MiroThinker-1.7 & H1: Towards Heavy-Duty Research Agents via…](https://arxiv.org/abs/2603.15726) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.15726.md) |
-| [Anticipatory Planning for Multimodal AI Agents](https://arxiv.org/abs/2603.16777) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.16777.md) |
-| [TRUST-SQL: Tool-Integrated Multi-Turn Reinforcement Learning…](https://arxiv.org/abs/2603.16448) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.16448.md) |
-| [Symphony: A Cognitively-Inspired Multi-Agent System for Long…](https://arxiv.org/abs/2603.17307) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.17307.md) |
-| [AgentFactory: A Self-Evolving Framework Through Executable S…](https://arxiv.org/abs/2603.18000) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.18000.md) |
-| [ZEBRAARENA: A Diagnostic Simulation Environment for Studying…](https://arxiv.org/abs/2603.18614) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.18614.md) |
-| [Parametric Social Identity Injection and Diversification in …](https://arxiv.org/abs/2603.16142) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.16142.md) |
-| [Chronos: Temporal-Aware Conversational Agents with Structure…](https://arxiv.org/abs/2603.16862) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.16862.md) |
-| [Enhancing LLM Training via Spectral Clipping](https://arxiv.org/abs/2603.14315) | Pretraining | 8.36 | [详情](./weekly_report_20260316/paper_2603.14315.md) |
-| [Low-Dimensional and Transversely Curved Optimization Dynamic…](https://arxiv.org/abs/2602.16746) | Pretraining | 8.36 | [详情](./weekly_report_20260316/paper_2602.16746.md) |
-| [Ablate and Rescue: A Causal Analysis of Residual Stream Hype…](https://arxiv.org/abs/2603.14833) | Pretraining | 8.36 | [详情](./weekly_report_20260316/paper_2603.14833.md) |
-| [Learning to Recall with Transformers Beyond Orthogonal Embed…](https://arxiv.org/abs/2603.15923) | Pretraining | 8.36 | [详情](./weekly_report_20260316/paper_2603.15923.md) |
-| [Byte-token Enhanced Language Models for Temporal Point Proce…](https://arxiv.org/abs/2502.07139) | Pretraining | 8.36 | [详情](./weekly_report_20260316/paper_2502.07139.md) |
+| [Machines acquire scientific taste from institutional traces](https://arxiv.org/abs/2603.16659) | SFT | 8.50 | [详情](./weekly_report_20260316/paper_2603.16659.md) |
+| [DeSTA2.5-Audio: Toward General-Purpose Large Audio Language …](https://arxiv.org/abs/2507.02768) | Multimodal | 8.49 | [详情](./weekly_report_20260316/paper_2507.02768.md) |
+| [Is CLIP ideal? No. Can we fix it? Yes!](https://arxiv.org/abs/2503.08723) | Multimodal | 8.48 | [详情](./weekly_report_20260316/paper_2503.08723.md) |
+| [A Framework for Assessing AI Agent Decisions and Outcomes in…](https://arxiv.org/abs/2602.22442) | Agent | 8.43 | [详情](./weekly_report_20260316/paper_2602.22442.md) |
+| [A Trace-Based Assurance Framework for Agentic AI Orchestrati…](https://arxiv.org/abs/2603.18096) | Agent | 8.43 | [详情](./weekly_report_20260316/paper_2603.18096.md) |
+| [ZEBRAARENA: A Diagnostic Simulation Environment for Studying…](https://arxiv.org/abs/2603.18614) | Agent | 8.43 | [详情](./weekly_report_20260316/paper_2603.18614.md) |
+| [Noticing the Watcher: LLM Agents Can Infer CoT Monitoring fr…](https://arxiv.org/abs/2603.16928) | Agent | 8.43 | [详情](./weekly_report_20260316/paper_2603.16928.md) |
+| [AD-Copilot: A Vision-Language Assistant for Industrial Anoma…](https://arxiv.org/abs/2603.13779) | Multimodal | 8.43 | [详情](./weekly_report_20260316/paper_2603.13779.md) |
+| [Is Conformal Factuality for RAG-based LLMs Robust? Novel Met…](https://arxiv.org/abs/2603.16817) | Hallucination | 8.43 | [详情](./weekly_report_20260316/paper_2603.16817.md) |
+| [Rationale-Enhanced Decoding for Multi-modal Chain-of-Thought](https://arxiv.org/abs/2507.07685) | Multimodal | 8.41 | [详情](./weekly_report_20260316/paper_2507.07685.md) |
+| [EndoCoT: Scaling Endogenous Chain-of-Thought Reasoning in Di…](https://arxiv.org/abs/2603.12252) | Multimodal | 8.38 | [详情](./weekly_report_20260316/paper_2603.12252.md) |
+| [Hilbert: Recursively Building Formal Proofs with Informal Re…](https://arxiv.org/abs/2509.22819) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2509.22819.md) |
 | [Path-Constrained Mixture-of-Experts](https://arxiv.org/abs/2603.18297) | Pretraining | 8.36 | [详情](./weekly_report_20260316/paper_2603.18297.md) |
-| [When Does Sparsity Mitigate the Curse of Depth in LLMs](https://arxiv.org/abs/2603.15389) | Pretraining | 8.36 | [详情](./weekly_report_20260316/paper_2603.15389.md) |
-| [Lumos-1: On Autoregressive Video Generation with Discrete Di…](https://arxiv.org/abs/2507.08801) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2507.08801.md) |
-| [Cheers: Decoupling Patch Details from Semantic Representatio…](https://arxiv.org/abs/2603.12793) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2603.12793.md) |
-| [Breaking the SFT Plateau: Multimodal Structured Reinforcemen…](https://arxiv.org/abs/2508.13587) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2508.13587.md) |
-| [VLAD-Grasp: Zero-shot Grasp Detection via Vision-Language Mo…](https://arxiv.org/abs/2511.05791) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2511.05791.md) |
-| [Revisiting Model Stitching In the Foundation Model Era](https://arxiv.org/abs/2603.12433) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2603.12433.md) |
-| [How Do Medical MLLMs Fail? A Study on Visual Grounding in Me…](https://arxiv.org/abs/2603.14323) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2603.14323.md) |
-| [VLA-Thinker: Boosting Vision-Language-Action Models through …](https://arxiv.org/abs/2603.14523) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2603.14523.md) |
-| [VideoITG: Multimodal Video Understanding with Instructed Tem…](https://arxiv.org/abs/2507.13353) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2507.13353.md) |
-| [VisTIRA: Closing the Image-Text Modality Gap in Visual Math …](https://arxiv.org/abs/2601.14440) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2601.14440.md) |
-| [Grounding the Score: Explicit Visual Premise Verification fo…](https://arxiv.org/abs/2603.16253) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2603.16253.md) |
-| [Recurrent Reasoning with Vision-Language Models for Estimati…](https://arxiv.org/abs/2603.17312) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2603.17312.md) |
-| [HopChain: Multi-Hop Data Synthesis for Generalizable Vision-…](https://arxiv.org/abs/2603.17024) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2603.17024.md) |
-| [Training-Only Heterogeneous Image-Patch-Text Graph Supervisi…](https://arxiv.org/abs/2603.18101) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2603.18101.md) |
+| [Zephyrus: An Agentic Framework for Weather Science](https://arxiv.org/abs/2510.04017) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2510.04017.md) |
+| [Compiled Memory: Not More Information, but More Precise Inst…](https://arxiv.org/abs/2603.15666) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.15666.md) |
+| [Protein Design with Agent Rosetta: A Case Study for Speciali…](https://arxiv.org/abs/2603.15952) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.15952.md) |
+| [PlanTwin: Privacy-Preserving Planning Abstractions for Cloud…](https://arxiv.org/abs/2603.18377) | Agent | 8.36 | [详情](./weekly_report_20260316/paper_2603.18377.md) |
+| [Narrative Weaver: Towards Controllable Long-Range Visual Con…](https://arxiv.org/abs/2603.06688) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2603.06688.md) |
+| [Decoupled Action Expert: Confining Task Knowledge to the Con…](https://arxiv.org/abs/2511.12101) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2511.12101.md) |
+| [Mind the Discriminability Trap in Source-Free Cross-domain F…](https://arxiv.org/abs/2603.13341) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2603.13341.md) |
+| [Towards the Vision-Sound-Language-Action Paradigm: The HEAR …](https://arxiv.org/abs/2603.16086) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2603.16086.md) |
+| [Visual Distraction Undermines Moral Reasoning in Vision-Lang…](https://arxiv.org/abs/2603.16445) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2603.16445.md) |
+| [V-DyKnow: A Dynamic Benchmark for Time-Sensitive Knowledge i…](https://arxiv.org/abs/2603.16581) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2603.16581.md) |
 | [Counting Circuits: Mechanistic Interpretability of Visual Re…](https://arxiv.org/abs/2603.18523) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2603.18523.md) |
 | [Scaling Sim-to-Real Reinforcement Learning for Robot VLAs wi…](https://arxiv.org/abs/2603.18532) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2603.18532.md) |
-| [Is CLIP ideal? No. Can we fix it? Yes!](https://arxiv.org/abs/2503.08723) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2503.08723.md) |
-| [Omni-Captioner: Data Pipeline, Models, and Benchmark for Omn…](https://arxiv.org/abs/2510.12720) | Multimodal | 8.36 | [详情](./weekly_report_20260316/paper_2510.12720.md) |
+| [How Transformers Reject Wrong Answers: Rotational Dynamics o…](https://arxiv.org/abs/2603.13259) | Hallucination | 8.36 | [详情](./weekly_report_20260316/paper_2603.13259.md) |
 | [NeuroLoRA: Context-Aware Neuromodulation for Parameter-Effic…](https://arxiv.org/abs/2603.12378) | SFT | 8.36 | [详情](./weekly_report_20260316/paper_2603.12378.md) |
-| [Null-Space Filtering for Data-Free Continual Model Merging: …](https://arxiv.org/abs/2509.21413) | SFT | 8.36 | [详情](./weekly_report_20260316/paper_2509.21413.md) |
-| [A Unified Language Model for Large Scale Search, Recommendat…](https://arxiv.org/abs/2603.17533) | SFT | 8.36 | [详情](./weekly_report_20260316/paper_2603.17533.md) |
-| [Online Experiential Learning for Language Models](https://arxiv.org/abs/2603.16856) | SFT | 8.36 | [详情](./weekly_report_20260316/paper_2603.16856.md) |
-| [Truth as a Compression Artifact in Language Model Training](https://arxiv.org/abs/2603.11749) | Hallucination | 8.36 | [详情](./weekly_report_20260316/paper_2603.11749.md) |
-| [Mitigating LLM Hallucinations through Domain-Grounded Tiered…](https://arxiv.org/abs/2603.17872) | Hallucination | 8.36 | [详情](./weekly_report_20260316/paper_2603.17872.md) |
-| [Swap-guided Preference Learning for Personalized Reinforceme…](https://arxiv.org/abs/2603.12595) | RLHF | 8.36 | [详情](./weekly_report_20260316/paper_2603.12595.md) |
-| [Visual-ERM: Reward Modeling for Visual Equivalence](https://arxiv.org/abs/2603.13224) | RLHF | 8.36 | [详情](./weekly_report_20260316/paper_2603.13224.md) |
-| [Inference-time Alignment in Continuous Space](https://arxiv.org/abs/2505.20081) | RLHF | 8.36 | [详情](./weekly_report_20260316/paper_2505.20081.md) |
-| [Overthinking Reduction with Decoupled Rewards and Curriculum…](https://arxiv.org/abs/2509.25827) | RLHF | 8.36 | [详情](./weekly_report_20260316/paper_2509.25827.md) |
-| [On-Policy RL Meets Off-Policy Experts: Harmonizing Supervise…](https://arxiv.org/abs/2508.11408) | RLHF | 8.36 | [详情](./weekly_report_20260316/paper_2508.11408.md) |
-| [Towards Understanding Valuable Preference Data for Large Lan…](https://arxiv.org/abs/2510.13212) | RLHF | 8.36 | [详情](./weekly_report_20260316/paper_2510.13212.md) |
-| [EvolveCoder: Evolving Test Cases via Adversarial Verificatio…](https://arxiv.org/abs/2603.12698) | RLHF | 8.36 | [详情](./weekly_report_20260316/paper_2603.12698.md) |
-| [SteerRM: Debiasing Reward Models via Sparse Autoencoders](https://arxiv.org/abs/2603.12795) | RLHF | 8.36 | [详情](./weekly_report_20260316/paper_2603.12795.md) |
-| [Long-form RewardBench: Evaluating Reward Models for Long-for…](https://arxiv.org/abs/2603.12963) | RLHF | 8.36 | [详情](./weekly_report_20260316/paper_2603.12963.md) |
+| [Cheers: Decoupling Patch Details from Semantic Representatio…](https://arxiv.org/abs/2603.12793) | Multimodal | 8.35 | [详情](./weekly_report_20260316/paper_2603.12793.md) |
+| [The Finetuner's Fallacy: When to Pretrain with Your Finetuni…](https://arxiv.org/abs/2603.16177) | Pretraining | 8.35 | [详情](./weekly_report_20260316/paper_2603.16177.md) |
+| [SWE-CI: Evaluating Agent Capabilities in Maintaining Codebas…](https://arxiv.org/abs/2603.03823) | Agent | 8.31 | [详情](./weekly_report_20260316/paper_2603.03823.md) |
+| [Cognitive Mismatch in Multimodal Large Language Models for D…](https://arxiv.org/abs/2603.18472) | Multimodal | 8.30 | [详情](./weekly_report_20260316/paper_2603.18472.md) |
+| [Pre-training LLM without Learning Rate Decay Enhances Superv…](https://arxiv.org/abs/2603.16127) | Pretraining | 8.29 | [详情](./weekly_report_20260316/paper_2603.16127.md) |
+| [Attention Sinks Are Provably Necessary in Softmax Transforme…](https://arxiv.org/abs/2603.11487) | Pretraining | 8.28 | [详情](./weekly_report_20260316/paper_2603.11487.md) |
+| [Watch and Learn: Learning to Use Computers from Online Video…](https://arxiv.org/abs/2510.04673) | Agent | 8.28 | [详情](./weekly_report_20260316/paper_2510.04673.md) |
+| [HopChain: Multi-Hop Data Synthesis for Generalizable Vision-…](https://arxiv.org/abs/2603.17024) | Multimodal | 8.28 | [详情](./weekly_report_20260316/paper_2603.17024.md) |
+| [NerVE: Nonlinear Eigenspectrum Dynamics in LLM Feed-Forward …](https://arxiv.org/abs/2603.06922) | Pretraining | 8.24 | [详情](./weekly_report_20260316/paper_2603.06922.md) |
+| [PACED: Distillation and Self-Distillation at the Frontier of…](https://arxiv.org/abs/2603.11178) | SFT | 8.24 | [详情](./weekly_report_20260316/paper_2603.11178.md) |
+| [RoboClaw: An Agentic Framework for Scalable Long-Horizon Rob…](https://arxiv.org/abs/2603.11558) | Agent | 8.23 | [详情](./weekly_report_20260316/paper_2603.11558.md) |
+| [Frayed RoPE and Long Inputs: A Geometric Perspective](https://arxiv.org/abs/2603.18017) | Pretraining | 8.19 | [详情](./weekly_report_20260316/paper_2603.18017.md) |
+| [Generate Any Scene: Scene Graph Driven Data Synthesis for Vi…](https://arxiv.org/abs/2412.08221) | Multimodal | 8.19 | [详情](./weekly_report_20260316/paper_2412.08221.md) |
+| [PRISM: Demystifying Retention and Interaction in Mid-Trainin…](https://arxiv.org/abs/2603.17074) | Pretraining | 8.17 | [详情](./weekly_report_20260316/paper_2603.17074.md) |
+| [Alignment Makes Language Models Normative, Not Descriptive](https://arxiv.org/abs/2603.17218) | RLHF | 8.16 | [详情](./weekly_report_20260316/paper_2603.17218.md) |
+| [Omnilingual SONAR: Cross-Lingual and Cross-Modal Sentence Em…](https://arxiv.org/abs/2603.16606) | Pretraining | 8.14 | [详情](./weekly_report_20260316/paper_2603.16606.md) |
+| [How Vulnerable Are AI Agents to Indirect Prompt Injections? …](https://arxiv.org/abs/2603.15714) | Agent | 8.14 | [详情](./weekly_report_20260316/paper_2603.15714.md) |
+| [M$^2$RNN: Non-Linear RNNs with Matrix-Valued States for Scal…](https://arxiv.org/abs/2603.14360) | Pretraining | 8.13 | [详情](./weekly_report_20260316/paper_2603.14360.md) |
+| [Emergent Coordination in Multi-Agent Language Models](https://arxiv.org/abs/2510.05174) | Agent | 8.12 | [详情](./weekly_report_20260316/paper_2510.05174.md) |
+| [GIFT: Reconciling Post-Training Objectives via Finite-Temper…](https://arxiv.org/abs/2601.09233) | SFT | 8.12 | [详情](./weekly_report_20260316/paper_2601.09233.md) |
+| [When Does Sparsity Mitigate the Curse of Depth in LLMs](https://arxiv.org/abs/2603.15389) | Pretraining | 8.10 | [详情](./weekly_report_20260316/paper_2603.15389.md) |
+| [VISTA: Verification In Sequential Turn-based Assessment](https://arxiv.org/abs/2510.27052) | Hallucination | 8.10 | [详情](./weekly_report_20260316/paper_2510.27052.md) |
+| [Null-Space Filtering for Data-Free Continual Model Merging: …](https://arxiv.org/abs/2509.21413) | SFT | 8.10 | [详情](./weekly_report_20260316/paper_2509.21413.md) |
+| [Narrow Fine-Tuning Erodes Safety Alignment in Vision-Languag…](https://arxiv.org/abs/2602.16931) | Multimodal | 8.08 | [详情](./weekly_report_20260316/paper_2602.16931.md) |
+| [ERGO: Efficient High-Resolution Visual Understanding for Vis…](https://arxiv.org/abs/2509.21991) | Multimodal | 8.07 | [详情](./weekly_report_20260316/paper_2509.21991.md) |
+| [Facts as First Class Objects: Knowledge Objects for Persiste…](https://arxiv.org/abs/2603.17781) | Agent | 8.05 | [详情](./weekly_report_20260316/paper_2603.17781.md) |
+| [MapReduce LoRA: Advancing the Pareto Front in Multi-Preferen…](https://arxiv.org/abs/2511.20629) | RLHF | 8.05 | [详情](./weekly_report_20260316/paper_2511.20629.md) |
+| [On Robustness and Chain-of-Thought Consistency of RL-Finetun…](https://arxiv.org/abs/2602.12506) | Multimodal | 8.04 | [详情](./weekly_report_20260316/paper_2602.12506.md) |
+| [Genomic Next-Token Predictors are In-Context Learners](https://arxiv.org/abs/2511.12797) | Pretraining | 8.00 | [详情](./weekly_report_20260316/paper_2511.12797.md) |
+| [Communication to Completion: Modeling Collaborative Workflow…](https://arxiv.org/abs/2510.19995) | Agent | 7.98 | [详情](./weekly_report_20260316/paper_2510.19995.md) |
+| [Matching Features, Not Tokens: Energy-Based Fine-Tuning of L…](https://arxiv.org/abs/2603.12248) | SFT | 7.98 | [详情](./weekly_report_20260316/paper_2603.12248.md) |
+| [FINER: MLLMs Hallucinate under Fine-grained Negative Queries](https://arxiv.org/abs/2603.17662) | Multimodal | 7.96 | [详情](./weekly_report_20260316/paper_2603.17662.md) |
+| [MMKU-Bench: A Multimodal Update Benchmark for Diverse Visual…](https://arxiv.org/abs/2603.15117) | Multimodal | 7.96 | [详情](./weekly_report_20260316/paper_2603.15117.md) |
+| [Multimodal Task Interference: A Benchmark and Analysis of Hi…](https://arxiv.org/abs/2603.18425) | Multimodal | 7.91 | [详情](./weekly_report_20260316/paper_2603.18425.md) |
+| [POLCA: Stochastic Generative Optimization with LLM](https://arxiv.org/abs/2603.14769) | Agent | 7.88 | [详情](./weekly_report_20260316/paper_2603.14769.md) |
+| [AVIATOR: Towards AI-Agentic Vulnerability Injection Workflow…](https://arxiv.org/abs/2508.20866) | Agent | 7.88 | [详情](./weekly_report_20260316/paper_2508.20866.md) |
+| [Theory of Code Space: Do Code Agents Understand Software Arc…](https://arxiv.org/abs/2603.00601) | Agent | 7.88 | [详情](./weekly_report_20260316/paper_2603.00601.md) |
+| [SteerRM: Debiasing Reward Models via Sparse Autoencoders](https://arxiv.org/abs/2603.12795) | RLHF | 7.88 | [详情](./weekly_report_20260316/paper_2603.12795.md) |
+| [From Detection to Diagnosis: Advancing Hallucination Analysi…](https://arxiv.org/abs/2601.09734) | Hallucination | 7.88 | [详情](./weekly_report_20260316/paper_2601.09734.md) |
+| [Infinite Problem Generator: Verifiably Scaling Physics Reaso…](https://arxiv.org/abs/2603.14486) | Agent | 7.85 | [详情](./weekly_report_20260316/paper_2603.14486.md) |
+| [CausalRM: Causal-Theoretic Reward Modeling for RLHF from Obs…](https://arxiv.org/abs/2603.18736) | RLHF | 7.85 | [详情](./weekly_report_20260316/paper_2603.18736.md) |
+| [Thinking with Constructions: A Benchmark and Policy Optimiza…](https://arxiv.org/abs/2603.18662) | Multimodal | 7.79 | [详情](./weekly_report_20260316/paper_2603.18662.md) |
+| [Ablate and Rescue: A Causal Analysis of Residual Stream Hype…](https://arxiv.org/abs/2603.14833) | Pretraining | 7.74 | [详情](./weekly_report_20260316/paper_2603.14833.md) |
+| [Directional Routing in Transformers](https://arxiv.org/abs/2603.14923) | Pretraining | 7.74 | [详情](./weekly_report_20260316/paper_2603.14923.md) |
+| [A Family of LLMs Liberated from Static Vocabularies](https://arxiv.org/abs/2603.15953) | Pretraining | 7.74 | [详情](./weekly_report_20260316/paper_2603.15953.md) |
+| [Krause Synchronization Transformers](https://arxiv.org/abs/2602.11534) | Pretraining | 7.74 | [详情](./weekly_report_20260316/paper_2602.11534.md) |
+| [When the Specification Emerges: Benchmarking Faithfulness Lo…](https://arxiv.org/abs/2603.17104) | Agent | 7.74 | [详情](./weekly_report_20260316/paper_2603.17104.md) |
+| [MemMA: Coordinating the Memory Cycle through Multi-Agent Rea…](https://arxiv.org/abs/2603.18718) | Agent | 7.74 | [详情](./weekly_report_20260316/paper_2603.18718.md) |
+| [Towards Understanding Valuable Preference Data for Large Lan…](https://arxiv.org/abs/2510.13212) | RLHF | 7.74 | [详情](./weekly_report_20260316/paper_2510.13212.md) |
+| [How Do Medical MLLMs Fail? A Study on Visual Grounding in Me…](https://arxiv.org/abs/2603.14323) | Multimodal | 7.74 | [详情](./weekly_report_20260316/paper_2603.14323.md) |
+| [VLA-Thinker: Boosting Vision-Language-Action Models through …](https://arxiv.org/abs/2603.14523) | Multimodal | 7.74 | [详情](./weekly_report_20260316/paper_2603.14523.md) |
+| [Understanding and Defending VLM Jailbreaks via Jailbreak-Rel…](https://arxiv.org/abs/2603.17372) | Multimodal | 7.74 | [详情](./weekly_report_20260316/paper_2603.17372.md) |
+| [Deep Expert Injection for Anchoring Retinal VLMs with Domain…](https://arxiv.org/abs/2603.07131) | Multimodal | 7.74 | [详情](./weekly_report_20260316/paper_2603.07131.md) |
+| [Exposing Hidden Biases in Text-to-Image Models via Automated…](https://arxiv.org/abs/2512.08724) | Multimodal | 7.74 | [详情](./weekly_report_20260316/paper_2512.08724.md) |
+| [PromptHub: Enhancing Multi-Prompt Visual In-Context Learning…](https://arxiv.org/abs/2603.18891) | Multimodal | 7.74 | [详情](./weekly_report_20260316/paper_2603.18891.md) |

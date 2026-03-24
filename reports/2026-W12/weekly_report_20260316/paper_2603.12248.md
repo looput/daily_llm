@@ -3,13 +3,13 @@
 **arXiv**: [2603.12248](https://arxiv.org/abs/2603.12248) · [PDF](https://arxiv.org/pdf/2603.12248)  
 **领域**: SFT  
 **作者**: Jelassi, Kwun, Zhao, Li, Fusi, Du, Kakade, Domingo-Enrich  
-**综合评分**: 8.36  （novelty: 9.0 · method: 8.5 · evidence: 8.5 · clarity: 8.0）
+**综合评分**: 7.98  （novelty: 9.0 · method: 8.5 · evidence: 8.5 · clarity: 8.0）
 
 ---
 
 ## 摘要
 
-> 本文由来自斯坦福大学、普林斯顿大学、微软研究院等知名机构的学者团队（作者包括来自Stanford的Jelassi、Kakade，来自Microsoft Research的Fusi、Du等）提出了一种基于能量模型的微调方法（EBFT），通过特征匹配而非传统的交叉熵训练来优化语言模型的序列级行为。该方法在问答编程、非结构化编程和翻译任务上均表现出色，超越了监督微调（SFT）并取得了更低的验证交叉熵。
+> 本文由来自斯坦福大学（Stanford）和微软研究院（Microsoft Research）等知名机构的联合团队提出了一种新的语言模型微调方法——基于能量的微调（EBFT）。该方法通过特征匹配目标优化序列级统计特性，而非传统的逐词预测，在问答编程、非结构化编程和翻译任务上均表现出色，超越了监督微调（SFT）并取得了更低的验证交叉熵。方法创新性强，实验设计严谨，为语言模型训练提供了新的理论视角和实践方案。
 
 ---
 

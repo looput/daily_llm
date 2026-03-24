@@ -3,13 +3,13 @@
 **arXiv**: [2603.14769](https://arxiv.org/abs/2603.14769) · [PDF](https://arxiv.org/pdf/2603.14769)  
 **领域**: Agent  
 **作者**: Ren, Nie, Xie, Cheng  
-**综合评分**: 8.57  （novelty: 9.0 · method: 9.0 · evidence: 9.0 · clarity: 7.5）
+**综合评分**: 7.88  （novelty: 9.0 · method: 8.5 · evidence: 9.0 · clarity: 7.5）
 
 ---
 
 ## 摘要
 
-> 本文提出了一种名为POLCA（Prioritized Optimization with Local Contextual Aggregation）的随机生成优化框架，用于解决从LLM提示优化到多轮智能体优化等复杂系统的自动化优化问题。该工作将传统需要大量人工迭代的优化过程形式化为一个随机生成优化问题，其中生成式语言模型作为优化器，通过数值奖励和文本反馈来发现最佳系统。POLCA通过优先级队列管理探索与利用的权衡，并整合了ε-Net机制和LLM摘要器来提升效率。理论证明和实验验证表明，POLCA在多个基准测试中均优于现有方法，并公开了代码。
+> 本文提出了一种名为POLCA（Prioritized Optimization with Local Contextual Aggregation）的可扩展框架，用于解决以生成式语言模型作为优化器的随机生成优化问题。该框架通过优先级队列管理探索-利用权衡，结合ε-Net机制维持参数多样性，并利用LLM摘要器进行历史试验的元学习，理论上证明了其在随机性下的收敛性。实验在多个基准测试中验证了其鲁棒性和高效性，代码已开源。作者团队未明确标注来自知名机构，故省略背景介绍。
 
 ---
 

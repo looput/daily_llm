@@ -3,13 +3,13 @@
 **arXiv**: [2603.14833](https://arxiv.org/abs/2603.14833) · [PDF](https://arxiv.org/pdf/2603.14833)  
 **领域**: Pretraining  
 **作者**: Peng, Rai, Tseng, Wang, Wu  
-**综合评分**: 8.36  （novelty: 9.0 · method: 8.5 · evidence: 9.0 · clarity: 7.5）
+**综合评分**: 7.74  （novelty: 9.0 · method: 8.5 · evidence: 9.0 · clarity: 7.5）
 
 ---
 
 ## 摘要
 
-> 本文对多流Transformer架构中的残差流超连接机制进行了首次深入的因果分析，提出了系统性的流消融与恢复框架，能够直接比较推理过程中不同残差流的功能。作者团队未明确标注所属机构，但提供了开源模型（https://huggingface.co/wgpeng/mhc-780m），表明研究具有较好的可复现性。论文在方法创新和实验设计方面表现突出，为理解复杂神经网络架构提供了新的分析工具。
+> 本文提出了一种针对多流Transformer架构的因果分析方法，首次开源了Manifold-Constrained Hyper-Connections (mHC)语言模型，并开发了系统性的流消融与恢复框架，用于探究并行残差流如何编码和利用信息。论文在机制分析方面具有创新性，实验设计严谨且代码开源，为理解复杂神经网络架构提供了新工具。
 
 ---
 

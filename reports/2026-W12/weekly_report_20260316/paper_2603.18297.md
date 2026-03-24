@@ -3,19 +3,19 @@
 **arXiv**: [2603.18297](https://arxiv.org/abs/2603.18297) · [PDF](https://arxiv.org/pdf/2603.18297)  
 **领域**: Pretraining  
 **作者**: Gu, Likhomanenko, Thilak, Ramapuram, Jaitly  
-**综合评分**: 8.36  （novelty: 9.0 · method: 8.5 · evidence: 8.5 · clarity: 8.0）
+**综合评分**: 8.36  （novelty: 8.5 · method: 9.0 · evidence: 8.0 · clarity: 8.5）
 
 ---
 
 ## 摘要
 
-> 本文由Google Research团队（作者包括Tara Sainath、Likhomanenko等）提出了一种新的稀疏混合专家（MoE）架构优化方法Path-Constrained Mixture-of-Experts（PathMoE）。该方法通过跨层共享路由器参数来约束专家路径空间，解决了传统独立路由导致的统计效率低下问题。在0.9B和16B参数模型上的实验表明，该方法在困惑度和下游任务上均优于传统方法，同时无需辅助负载平衡损失。分析显示，该方法能产生更集中的令牌分组和更好的跨层一致性。
+> 本文提出了一种改进稀疏混合专家（MoE）架构路由机制的新方法Path-Constrained Mixture-of-Experts（PathMoE）。该方法通过跨连续层共享路由器参数，有效约束了专家路径空间，解决了传统独立路由导致的统计效率低下问题。在0.9B和16B参数模型上的实验表明，该方法在困惑度和下游任务上均优于传统独立路由，且无需辅助负载均衡损失。分析表明，遵循相同路径的token会按语言功能自然聚类，PathMoE能产生更集中的分组、更好的跨层一致性和更强的路由扰动鲁棒性。这些结果为通过专家路径视角理解MoE架构提供了新思路。
 
 ---
 
 ## 详细分析
 
-> **社区热度**: ⭐ 5 (来自 papers.cool)
+> **社区热度**: ⭐ 6 (来自 papers.cool)
 
 ## 问题定义
 

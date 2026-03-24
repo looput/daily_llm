@@ -3,19 +3,19 @@
 **arXiv**: [2603.18017](https://arxiv.org/abs/2603.18017) · [PDF](https://arxiv.org/pdf/2603.18017)  
 **领域**: Pretraining  
 **作者**: Wertheimer, Zhang, Liu, Yin, Wang  
-**综合评分**: 8.43  （novelty: 9.0 · method: 9.0 · evidence: 8.5 · clarity: 7.5）
+**综合评分**: 8.19  （novelty: 9.0 · method: 9.0 · evidence: 8.5 · clarity: 7.5）
 
 ---
 
 ## 摘要
 
-> 本文提出了一种新的几何视角来理解RoPE（旋转位置编码）在长输入序列下的失效机制，并基于此提出了RoPE-ID改进方法。论文通过理论和实证分析揭示了注意力机制中关键/查询潜在点云的聚类行为以及“汇令牌”的形成机制，为理解Transformer位置编码提供了新的理论框架。作者团队来自学术界，但未明确标注具体机构。
+> 本文针对RoPE位置编码在长文本输入时性能下降的问题，从几何视角提出了统一的理论解释，并提出了RoPE-ID改进方法。论文通过理论分析和实验验证，在LongBench和RULER基准上展示了方法的有效性。作者团队来自学术界，但未明确标注具体机构。
 
 ---
 
 ## 详细分析
 
-> **社区热度**: ⭐ 4 (来自 papers.cool)
+> **社区热度**: ⭐ 5 (来自 papers.cool)
 
 ## 问题定义
 

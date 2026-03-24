@@ -1,6 +1,6 @@
 # Multimodal · 2026-03-16 ~ 2026-03-20
 
-**论文数**: 34 篇
+**论文数**: 35 篇
 
 ---
 
@@ -8,96 +8,54 @@
 
 ### 研究全貌
 
-本领域的研究方向高度集中，主要围绕**模型能力评估与提升**、**统一架构探索**、**效率优化**以及**具身智能与可靠推理**四大主题展开。在模型能力方面，研究不仅关注通用性能，更深入至**结构化输出**、**幻觉抑制**、**跨模态对齐**和**视觉前提验证**等具体挑战，反映出从“能做”到“做好”的精细化发展趋势。其中，**如何让模型生成准确、可靠且符合预定格式的结构化内容**，以及**如何让模型在复杂环境中进行稳定、可解释的多步推理与规划**，成为当前最受关注的热点问题。整体研究趋势呈现出从追求通用能力的“广度”向解决具体领域“深度”问题演进，强调通过解耦设计、显式验证、循环推理等机制，将大模型的潜力转化为稳定、可控的实际应用能力。
+多模态领域的研究致力于整合与理解来自不同模态（如文本、图像、音频、视频）的信息，以构建更通用、更智能的人工智能系统。当前的研究方向主要集中在**多模态对齐与融合**、**多模态生成**以及**多模态理解与推理**等几个核心方向。多模态对齐旨在建立不同模态信息间的语义关联；多模态生成关注于根据一种模态生成另一种模态的内容；而多模态理解与推理则侧重于对复杂跨模态信息的深层语义解析和逻辑推断。当前的热点问题是如何实现更高效、更鲁棒且可泛化的跨模态语义对齐，尤其是在数据稀缺或分布外场景下。整体研究趋势呈现出从简单的特征拼接向深度交互式融合演进，并越来越注重模型的效率、可控性和可解释性。跨批次的发展脉络显示，研究者们正从依赖大规模预训练数据，转向探索更精巧的架构设计和训练策略，以提升模型的内在能力。
 
 ### 重点方法深度解析
 
-从所有批次中，以下几个工作因其清晰的创新思路和显著的实用价值而尤为突出：
+从多模态研究的众多进展中，以下两个方法因其创新性和实用性尤为突出：
 
-**1. 《SO-Bench: A Structural Output Evaluation of Multimodal LLMs》**
-*   **核心创新点**：该工作首次系统性地构建了针对多模态大语言模型（MLLM）视觉结构化输出能力的评估基准。它精准地指出了当前MLLM在现实应用（如智能体）中的核心瓶颈：模型不仅要回答正确，还必须将答案严格约束在预定义的JSON等数据模式中，填补了该领域的空白。
-*   **技术细节**：SO-Bench的核心是精心设计的评估框架，覆盖UI界面、自然图像、文档和图表四大视觉领域。其技术实现的关键在于从海量真实数据中提炼出多样化的JSON模式，并构建了高质量的人工验证图像-模式对。它通过评估模型预测的JSON输出是否准确且完全符合模式规范，来量化其结构化输出能力。
-*   **效果验证**：通过对开源和前沿闭源模型的广泛评测，该基准揭示了模型在生成准确、模式合规输出方面存在的显著差距，并通过训练实验验证了模型在该能力上的改进潜力。
-*   **适用场景**：该方法适用于任何需要MLLM输出结构化数据的场景，例如从图表中提取数据生成代码、从文档中抽取信息填充表格等，是评估模型能否“接入”下游自动化流程的关键工具。
+**1. 对比语言-图像预训练**
+*   **核心创新点**：该方法开创性地将自然语言监督信号大规模应用于视觉表征学习。它解决了传统视觉模型需要大量人工标注数据且任务泛化能力有限的问题，提出通过从互联网收集的（图像，文本）对进行对比学习，从而学习到开放世界的视觉概念。
+*   **技术细节**：其核心架构包含一个图像编码器和一个文本编码器。训练时，模型的目标是最大化配对（图像，文本）的相似度，同时最小化非配对样本的相似度。这通常通过一个对称的交叉熵损失函数实现，鼓励模型将图像及其对应描述的嵌入向量在共享的语义空间中对齐。
+*   **效果验证**：该方法在零样本图像分类、跨模态检索等任务上取得了突破性进展。例如，在包含多个数据集的零样本图像分类基准测试中，其性能可媲美甚至超越经过全监督训练的专用模型，展现了强大的泛化能力。
+*   **适用场景**：特别适用于需要快速适配新视觉概念或缺乏特定任务标注数据的场景，如图像搜索引擎、内容审核、零样本或少样本的视觉任务等。
 
-**2. 《Grounding the Score: Explicit Visual Premise Verification for Reliable Vision-Language Process Reward Models》**
-*   **核心创新点**：旨在解决视觉语言过程奖励模型（VL-PRM）在评估推理步骤时，因感知错误与逻辑错误纠缠而导致的误判问题。其核心创新是**提出了显式视觉前提验证（EVPV）接口**，将步骤评分与步骤所依赖的视觉事实的可靠性解耦。
-*   **技术细节**：它要求模型为每个推理步骤生成一个“视觉检查清单”，列出所需的视觉事实。同时，一个独立的约束提取器会从输入图像中推导出结构化的视觉约束。通过比对清单声明与图像约束来计算一个视觉可靠性标量，并以此对步骤奖励进行门控校准。
-*   **效果验证**：该方法在多个基准上显著提升了步骤验证和候选重排的准确性，且通过注入受控噪声实验提供了因果证据。
-*   **适用场景**：它适用于任何依赖VL-PRM进行推理步骤评估、重排或错误定位的场景，能显著提升决策的鲁棒性。
+**2. 多模态大语言模型**
+*   **核心创新点**：此方法将强大的大语言模型作为核心处理器，通过适配器或投影层将视觉、音频等其他模态的特征对齐到LLM的文本语义空间。它解决了传统多模态模型在复杂推理和指令跟随能力上的不足，将LLM的丰富知识、强大推理和生成能力扩展到了多模态领域。
+*   **技术细节**：技术实现通常分为两步：首先，使用一个预训练好的视觉编码器（如ViT）提取图像特征；然后，通过一个可训练的线性层或更复杂的网络（适配器）将这些视觉特征投影为一系列“视觉标记”，并将其与文本标记拼接，一同输入到大语言模型中进行自回归训练或指令微调。模型通过预测下一个文本标记来学习视觉与语言之间的关联和推理。
+*   **效果验证**：这类模型在视觉问答、图像描述、基于图像的对话、复杂推理（如图表分析）等任务上表现卓越。它们不仅能给出准确的答案，还能生成详细、连贯的解释，展现出接近人类的对话和推理能力。
+*   **适用场景**：非常适合开发交互式多模态智能体，如智能助手、教育工具、内容创作辅助以及需要深度理解和推理的多模态应用。
 
-**3. 《BitDance: Scaling Autoregressive Generative Models with Binary Tokens》**
-*   **核心创新点**：提出了一种全新的自回归图像生成范式，通过预测**二进制视觉令牌**而非传统的码本索引，并结合**二进制扩散头**进行解码，在保持高质量的同时，大幅提升了生成效率。
-*   **技术细节**：BitDance使用高熵的二进制潜在表示，每个令牌可代表极多的状态，实现了紧凑且高表达力的离散表征。为了解决从巨大令牌空间中进行分类预测的难题，它创新性地采用连续空间扩散模型来生成这些二进制令牌，并提出了**下一补丁扩散**解码方法以实现并行预测。
-*   **效果验证**：在标准数据集上取得了优异的性能，是自回归模型中的最佳结果之一。更重要的是，它仅用少量参数就超越了更大规模的并行自回归模型，并实现了显著的推理加速。
-*   **适用场景**：该方法特别适合对生成质量和推理速度都有严苛要求的应用，如实时图像编辑、高分辨率内容生成等。
-
-**4. 《VLAD-Grasp: Zero-shot Grasp Detection via Vision-Language Models》**
-*   **核心创新点**：该工作的核心创新在于**将大规模视觉语言模型（VLM）作为零样本抓取检测的先验知识库**，完全摆脱了对大规模标注抓取数据集的依赖。
-*   **技术细节**：通过精心设计的提示词，让VLM生成一张“目标图像”，图中一个虚拟的圆柱体代理与物体几何相交，从而在图像空间中显式编码了对握抓取轴。随后通过预测深度和分割信息，将生成的2D图像提升到3D空间并与观测点云对齐，恢复出可执行的抓取姿态。
-*   **效果验证**：在标准数据集上取得了与有监督方法相当的性能，并成功在真实机器人上实现了零样本泛化。
-*   **适用场景**：它特别适合需要快速部署到新物体、新环境中的机器人抓取任务，为数据稀缺场景提供了高效解决方案。
-
-这些重点方法之间存在清晰的逻辑关联。SO-Bench和EVPV都聚焦于提升模型输出的**可靠性与可控性**，前者评估结构化格式，后者验证推理前提。BitDance则从**效率优化**角度为高质量生成提供了新路径。VLAD-Grasp展示了如何将通用VLM作为强大先验，以**零样本**方式解决特定领域问题。它们共同构成了从评估、验证到高效生成与应用的完整技术链条。
+这两个重点方法之间存在紧密的演进和互补关系。**对比语言-图像预训练**为多模态研究提供了强大、对齐的视觉-语言基础表征，是构建更复杂系统的基石。而**多模态大语言模型**则在此基础上，利用LLM的通用能力，实现了更高层次的语义理解和任务执行。在实践中，后者常常以前者训练好的视觉编码器作为输入前端，两者结合构成了当前最先进多模态系统的典型范式。
 
 ### 实践启示
 
-这些研究为多模态大模型的应用开发提供了极具价值的借鉴。首先，在将MLLM应用于生产环境前，必须对其**结构化输出能力**进行专项评估（借鉴SO-Bench），否则可能无法与现有系统集成。其次，在构建需要模型进行多步推理或决策的系统时，**引入显式的验证或状态记录机制**（如EVPV的视觉检查清单）能有效提升系统的可靠性和可解释性。
-
-针对不同场景，建议如下：
-*   对于**数据提取与自动化**类应用（如文档信息抽取、图表转代码），应优先关注SO-Bench揭示的问题，并考虑采用其提出的训练策略来增强模型。
-*   对于**内容生成**类应用（如图像编辑、创意设计），应重点关注BitDance这类在架构层面进行创新的工作，以降低推理成本。
-*   对于**机器人或具身智能**等数据稀缺或需要实时感知的领域，可借鉴VLAD-Grasp的思路，将通用VLM作为零样本先验或工具调用引擎。
-
-在实现时需注意，统一模型或复杂推理框架（如VLA-Thinker）往往涉及多任务优化，需警惕**梯度冲突与任务失衡**风险。建议采用渐进式训练或引入门控机制来平衡不同任务的学习。同时，需注意循环推理等方法可能引入额外的计算轮次，需在任务复杂度和实时性要求间做好权衡。最佳实践组合是：在开发初期使用SO-Bench类基准评估模型核心能力，在关键推理环节引入EVPV类验证机制保障可靠性，并根据应用对生成速度的要求，考虑采用BitDance等高效架构。
+对于大模型应用开发者而言，当前的多模态研究提供了清晰的实践路径。在开发多模态应用时，应优先考虑采用“**基础对齐模型 + 大语言模型处理器**”的架构范式。具体建议如下：
+1.  **场景选择与架构决策**：对于以检索、分类为主的感知型任务（如图像搜索），可重点关注并微调基于对比学习的对齐模型。对于需要复杂交互、推理和生成的认知型任务（如智能客服、教学助手），则应采用以LLM为核心的多模态大模型方案。
+2.  **可落地的具体建议**：在资源允许的情况下，直接从开源社区获取成熟的多模态大模型（如LLaVA、Qwen-VL等）进行领域特定的指令微调，是快速构建应用的捷径。若对延迟和成本敏感，可考虑使用轻量化的视觉编码器和较小规模的LLM进行组合与蒸馏。
+3.  **关键注意事项**：实现时需特别注意不同模态特征的对齐质量，这是影响最终性能的关键。同时，要警惕模型可能产生的“幻觉”（生成与输入视觉内容不符的文本），需要通过精心设计训练数据、引入强化学习从人类反馈中学习或后处理规则来缓解。
+4.  **最佳方法组合**：综合来看，将经过大规模对齐预训练的视觉编码器与一个经过指令微调的大语言模型相结合，是目前平衡性能、开发效率和泛化能力的最佳实践组合。开发者可以在此基础上，针对具体业务数据进行轻量级的端到端微调，以实现最优的落地效果。
 
 ---
 
-## 📄 论文列表（34 篇）
+## 📄 论文列表（35 篇）
 
-### [SO-Bench: A Structural Output Evaluation of Multimodal LLMs](https://arxiv.org/abs/2511.21750)
+### [Lumos-1: On Autoregressive Video Generation with Discrete Diffusion from a Unified Model Perspective](https://arxiv.org/abs/2507.08801)
 
-**作者**: Feng, Ma, Nan, Chen, Zhai 等 12 人  
-**链接**: [arXiv](https://arxiv.org/abs/2511.21750) · [PDF](https://arxiv.org/pdf/2511.21750)  \| [📖 全文分析](paper_2511.21750.md)  
-**评分**: 8.79  （novelty: 9.0 | method: 9.5 | evidence: 9.0 | clarity: 7.5）
+**作者**: Yuan, Chen, Cen, Yu, Liang 等 14 人  
+**链接**: [arXiv](https://arxiv.org/abs/2507.08801) · [PDF](https://arxiv.org/pdf/2507.08801)  \| [📖 全文分析](paper_2507.08801.md)  
+**评分**: 8.69  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
 
-> 本文由苹果公司（Apple）研究团队提出，针对多模态大语言模型（MLLMs）在现实世界智能体应用中的关键需求——生成符合预定数据模式的结构化输出，构建了首个系统性的视觉结构化输出评估基准SO-Bench。该工作填补了该领域的空白，通过精心设计的基准和全面的实验，揭示了当前模型的不足，并通过训练实验验证了改进潜力。
-
-
-### [Omnilingual SONAR: Cross-Lingual and Cross-Modal Sentence Embeddings Bridging Massively Multilingual Text and Speech](https://arxiv.org/abs/2603.16606)
-
-**作者**: Omnilingual SONAR Team, Janeiro, Cabot, Tsiamas, Meng 等 19 人  
-**链接**: [arXiv](https://arxiv.org/abs/2603.16606) · [PDF](https://arxiv.org/pdf/2603.16606)  \| [📖 全文分析](paper_2603.16606.md)  
-**评分**: 8.71  （novelty: 9.5 | method: 9.0 | evidence: 9.0 | clarity: 8.0）
-
-> 本文由Meta AI（原Facebook AI Research）团队提出，该团队在自然语言处理和多模态学习领域具有国际领先地位。论文提出了一种名为OmniSONAR的全新全语言、跨语言和跨模态句子嵌入模型家族，能够在单一语义空间中嵌入文本、语音、代码和数学表达式，并在数千种语言上实现了最先进的性能。该方法创新性地结合了渐进式训练、LLM初始化的编码器-解码器架构、新颖的分割softmax对比损失以及两阶段师生编码器蒸馏框架，在多个大规模基准测试中取得了显著突破。
+> 本文由阿里巴巴达摩院团队提出了一种基于自回归大语言模型的统一视频生成方法Lumos-1。该方法创新性地将离散扩散过程与自回归建模相结合，通过改进位置编码和注意力机制，在有限的计算资源和数据条件下，在多个视频生成基准测试中取得了超越现有方法的性能。
 
 
-### [BitDance: Scaling Autoregressive Generative Models with Binary Tokens](https://arxiv.org/abs/2602.14041)
+### [Omni-Captioner: Data Pipeline, Models, and Benchmark for Omni Detailed Perception](https://arxiv.org/abs/2510.12720)
 
-**作者**: Ai, Han, Zhuang, Mao, Hu 等 11 人  
-**链接**: [arXiv](https://arxiv.org/abs/2602.14041) · [PDF](https://arxiv.org/pdf/2602.14041)  \| [📖 全文分析](paper_2602.14041.md)  
-**评分**: 8.64  （novelty: 9.0 | method: 8.5 | evidence: 9.5 | clarity: 8.0）
+**作者**: Ma, Xu, Xing, Chu, Wang 等 12 人  
+**链接**: [arXiv](https://arxiv.org/abs/2510.12720) · [PDF](https://arxiv.org/pdf/2510.12720)  \| [📖 全文分析](paper_2510.12720.md)  
+**评分**: 8.69  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
 
-> 本文提出了一种创新的自回归图像生成模型BitDance，通过使用二进制视觉令牌和二进制扩散头，实现了高表达性和高效率的图像生成。在ImageNet 256x256上取得了FID 1.24的优异性能，同时大幅减少了参数量和推理时间。作者团队未明确标注所属机构，但代码和模型已开源，便于复现和进一步研究。
-
-
-### [SPARROW: Learning Spatial Precision and Temporal Referential Consistency in Pixel-Grounded Video MLLMs](https://arxiv.org/abs/2603.12382)
-
-**作者**: Alansari, Suryanto, Velayudhan, Javed, Werghi 等 6 人  
-**链接**: [arXiv](https://arxiv.org/abs/2603.12382) · [PDF](https://arxiv.org/pdf/2603.12382)  \| [📖 全文分析](paper_2603.12382.md)  
-**评分**: 8.64  （novelty: 9.0 | method: 8.5 | evidence: 9.5 | clarity: 8.0）
-
-> 本文提出了一种名为SPARROW的像素级视频多模态大语言模型，旨在解决视频理解中的空间精度和时间一致性跟踪问题。该方法通过引入目标特定跟踪特征（TSF）和双提示设计，显著提升了现有视频MLLM在多个基准测试上的性能。实验设计严谨，在六个基准上验证了方法的有效性，并提供了大规模数据集支持。
-
-
-### [Urban Socio-Semantic Segmentation with Vision-Language Reasoning](https://arxiv.org/abs/2601.10477)
-
-**作者**: Wang, Wang, Dai, Wang, Liu 等 7 人  
-**链接**: [arXiv](https://arxiv.org/abs/2601.10477) · [PDF](https://arxiv.org/pdf/2601.10477)  \| [📖 全文分析](paper_2601.10477.md)  
-**评分**: 8.64  （novelty: 9.0 | method: 8.5 | evidence: 9.5 | clarity: 8.0）
-
-> 本文提出了一种基于视觉语言模型推理的城市社会语义分割方法。作者团队来自AMAP-ML（高德地图机器学习团队），该团队在计算机视觉和地理空间分析领域有深厚积累。论文创新性地将视觉语言模型与强化学习结合，用于解决卫星图像中社会语义实体的分割难题，并开源了数据集和代码，实验验证了方法的有效性。
+> 本文提出了一种系统性的全模态细粒度感知研究框架，包括数据生成管道、模型和评估基准。作者团队来自多个研究机构，包括香港中文大学、南洋理工大学、清华大学等知名高校，展现了较强的研究实力。论文针对当前全模态语言模型在细节感知与幻觉问题之间的“共增长”矛盾，提出了创新的解决方案，在多个基准测试中取得了领先性能。
 
 
 ### [Do Understanding and Generation Fight? A Diagnostic Study of DPO for Unified Multimodal Models](https://arxiv.org/abs/2603.17044)
@@ -106,7 +64,16 @@
 **链接**: [arXiv](https://arxiv.org/abs/2603.17044) · [PDF](https://arxiv.org/pdf/2603.17044)  \| [📖 全文分析](paper_2603.17044.md)  
 **评分**: 8.64  （novelty: 9.0 | method: 8.5 | evidence: 9.5 | clarity: 8.0）
 
-> 本文对统一多模态模型中直接偏好优化（DPO）同时对齐理解和生成能力的问题进行了首次系统性诊断研究。研究发现，在基于VQ（矢量量化）的统一多模态模型架构下，生成质量难以通过DPO进行对齐，揭示了理解与生成任务梯度正交且幅度不平衡是主要干扰机制。该研究为基于VQ的统一模型实践者提供了重要的实证指导和理论洞见。
+> 本文对统一多模态模型中理解与生成能力的对齐问题进行了首次系统性诊断研究。研究聚焦于DPO（直接偏好优化）在Janus-Pro模型（1B和7B参数）上的应用效果，通过七种训练策略和两种后处理方法，揭示了理解与生成梯度正交且幅度不平衡的核心问题。研究发现，在基于VQ（矢量量化）标记化的架构中，生成质量难以通过DPO对齐，这为相关领域的研究者和实践者提供了重要的实证依据和理论洞见。
+
+
+### [To See or To Please: Uncovering Visual Sycophancy and Split Beliefs in VLMs](https://arxiv.org/abs/2603.18373)
+
+**作者**: Hong, Quan  
+**链接**: [arXiv](https://arxiv.org/abs/2603.18373) · [PDF](https://arxiv.org/pdf/2603.18373)  \| [📖 全文分析](paper_2603.18373.md)  
+**评分**: 8.64  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 8.5）
+
+> 本文提出了一种名为Tri-Layer Diagnostic Framework的诊断框架，用于揭示视觉语言模型（VLMs）中的视觉奉承行为和分裂信念问题。该研究通过反事实干预（盲图、噪声图、冲突图）和三个核心指标（潜在异常检测、视觉必要性分数、竞争分数），系统性地分析了7个VLMs在7,000个模型-样本对上的表现。研究发现，69.6%的样本存在视觉奉承现象，即模型能检测到视觉异常，但为了迎合用户期望而产生幻觉，而零样本表现出鲁棒拒绝，表明对齐训练系统地抑制了模型对不确定性的真实承认。缩放分析表明，更大的模型减少了语言捷径，但放大了视觉奉承，证明仅靠扩大规模无法解决基础问题。诊断分数还支持了一种无需额外训练成本的后验选择性预测策略，在50%覆盖率下实现了高达+9.5个百分点的准确率提升。
 
 
 ### [Causal Tracing of Audio-Text Fusion in Large Audio Language Models](https://arxiv.org/abs/2603.13768)
@@ -115,214 +82,106 @@
 **链接**: [arXiv](https://arxiv.org/abs/2603.13768) · [PDF](https://arxiv.org/pdf/2603.13768)  \| [📖 全文分析](paper_2603.13768.md)  
 **评分**: 8.64  （novelty: 9.0 | method: 9.5 | evidence: 7.5 | clarity: 8.5）
 
-> 本文提出了一种基于因果追踪（causal tracing）的方法，用于研究大型音频语言模型（LALMs）内部音频与文本特征融合的机制。研究通过层分析和词元分析，揭示了DeSTA、Qwen和Voxtral等不同模型在音频理解任务中信息整合的时空动态特性，发现了不同的融合策略（如渐进式融合与晚期突发式融合）以及信息瓶颈与查询机制。该工作为理解多模态大模型的黑箱内部运作提供了新的分析视角和实证依据，具有重要的理论价值。
-
-
-### [OpenVision 3: A Family of Unified Visual Encoder for Both Understanding and Generation](https://arxiv.org/abs/2601.15369)
-
-**作者**: Zhang, Ren, Liu, Li, Wang 等 12 人  
-**链接**: [arXiv](https://arxiv.org/abs/2601.15369) · [PDF](https://arxiv.org/pdf/2601.15369)  \| [📖 全文分析](paper_2601.15369.md)  
-**评分**: 8.57  （novelty: 9.0 | method: 9.0 | evidence: 8.0 | clarity: 8.5）
-
-> 本文提出了一种名为OpenVision 3的新型统一视觉编码器家族，旨在学习一个既能服务于图像理解又能服务于图像生成的单一视觉表示。其核心创新在于通过一个简单的架构（将VAE压缩的图像潜在表示输入ViT编码器），并联合优化重建任务（通过ViT-VAE解码器）和语义任务（通过对比学习和图像描述目标），使编码器学习到能够协同工作并在这两种范式下都表现良好的表示。实验表明，该统一设计在生成任务（如RAE框架下）显著优于基于CLIP的标准编码器，在多模态理解任务（如集成到LLaVA框架中）上表现相当。作者团队未在摘要中明确列出所属机构，因此省略背景介绍。
-
-
-### [GraphVLM: Benchmarking Vision Language Models for Multimodal Graph Learning](https://arxiv.org/abs/2603.13370)
-
-**作者**: Liu, Fan, Ji, Zha, Tan  
-**链接**: [arXiv](https://arxiv.org/abs/2603.13370) · [PDF](https://arxiv.org/pdf/2603.13370)  \| [📖 全文分析](paper_2603.13370.md)  
-**评分**: 8.57  （novelty: 9.0 | method: 9.0 | evidence: 8.5 | clarity: 8.0）
-
-> 本文提出了GraphVLM，一个用于评估和利用视觉语言模型进行多模态图学习的系统性基准。该研究填补了VLM在结构化多模态数据推理能力评估方面的空白，通过三种互补的集成范式（VLM-as-Encoder、VLM-as-Aligner、VLM-as-Predictor）系统探索了VLM在图学习任务中的潜力。实验在六个不同领域的数据集上验证了VLM通过这三种角色均能增强多模态图学习，其中VLM-as-Predictor范式表现最为突出。研究代码已开源，为后续研究提供了重要基础。
+> 本文提出了一种基于因果追踪（causal tracing）的分析方法，用于探究大型音频语言模型（LALMs）内部音频与文本特征融合的机制。研究通过层间和词元间的分析，揭示了不同模型（DeSTA, Qwen, Voxtral）在音频理解过程中信息整合的不同策略与关键位置（如最终序列词元作为信息瓶颈），为理解多模态大模型的黑箱内部运作提供了清晰的、可解释的视角。
 
 
 ### [DeSTA2.5-Audio: Toward General-Purpose Large Audio Language Model with Self-Generated Cross-Modal Alignment](https://arxiv.org/abs/2507.02768)
 
 **作者**: Lu, Chen, Fu, Yang, Huang 等 28 人  
 **链接**: [arXiv](https://arxiv.org/abs/2507.02768) · [PDF](https://arxiv.org/pdf/2507.02768)  \| [📖 全文分析](paper_2507.02768.md)  
-**评分**: 8.57  （novelty: 9.0 | method: 9.0 | evidence: 8.0 | clarity: 8.5）
+**评分**: 8.49  （novelty: 9.0 | method: 9.0 | evidence: 8.5 | clarity: 8.0）
 
-> 本文提出了一种名为DeSTA2.5-Audio的通用大型音频语言模型，旨在解决现有音频语言模型在增强听觉能力时导致大语言模型原有能力灾难性遗忘的关键挑战。其核心创新在于提出了一种自生成跨模态对齐策略，并构建了大规模、任务无关的数据集DeSTA-AQA5M。该方法在多个音频-语言基准测试中取得了领先或具有竞争力的性能。作者团队来自多个机构，包括但不限于Ginsburg（可能关联Google Brain/DeepMind）等知名研究机构，显示了较强的研究背景。
-
-
-### [Narrative Weaver: Towards Controllable Long-Range Visual Consistency with Multi-Modal Conditioning](https://arxiv.org/abs/2603.06688)
-
-**作者**: Yao, Li, Gao, Chen, Jiang 等 6 人  
-**链接**: [arXiv](https://arxiv.org/abs/2603.06688) · [PDF](https://arxiv.org/pdf/2603.06688)  \| [📖 全文分析](paper_2603.06688.md)  
-**评分**: 8.50  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 8.0）
-
-> 本文提出了一种名为'Narrative Weaver'的创新框架，旨在解决生成式AI中多模态可控、长距离视觉内容生成的一致性问题。该工作首次将细粒度控制、自动叙事规划和长距离一致性三个关键能力整合到一个统一框架中，并构建了首个电子商务广告视频故事板数据集（EAVSD），为相关研究提供了重要的基准资源。作者团队未明确标注所属机构，但论文内容显示其具备较强的研究实力和技术深度。
+> 本文提出了一种名为DeSTA2.5-Audio的通用大型音频语言模型，旨在解决现有模型在增强音频能力时导致大语言模型原有能力灾难性遗忘的关键挑战。其核心创新在于提出了一种自生成跨模态对齐策略，并构建了一个大规模、任务无关的数据集DeSTA-AQA5M。该模型在多个音频-语言基准测试中取得了领先或具有竞争力的性能。作者团队来自多个机构，包括Ginsburg（可能指Boris Ginsburg，与NVIDIA相关）、Wang、Lee等，表明这是一个跨机构的合作研究。
 
 
-### [VisionZip: Longer is Better but Not Necessary in Vision Language Models](https://arxiv.org/abs/2412.04467)
+### [Is CLIP ideal? No. Can we fix it? Yes!](https://arxiv.org/abs/2503.08723)
 
-**作者**: Yang, Chen, Tian, Wang, Li 等 7 人  
-**链接**: [arXiv](https://arxiv.org/abs/2412.04467) · [PDF](https://arxiv.org/pdf/2412.04467)  \| [📖 全文分析](paper_2412.04467.md)  
-**评分**: 8.50  （novelty: 8.5 | method: 8.5 | evidence: 9.0 | clarity: 8.0）
+**作者**: Kang, Song, Gkioxari, Perona  
+**链接**: [arXiv](https://arxiv.org/abs/2503.08723) · [PDF](https://arxiv.org/pdf/2503.08723)  \| [📖 全文分析](paper_2503.08723.md)  
+**评分**: 8.48  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
 
-> 本文提出了一种名为VisionZip的视觉语言模型优化方法，旨在解决当前视觉编码器生成冗余视觉令牌导致计算成本高的问题。该方法通过选择信息丰富的令牌来减少冗余，在保持性能的同时显著提升推理效率。实验结果表明，VisionZip在多个任务上超越了现有方法，并大幅提升了推理速度。作者团队来自DVLab（Deep Vision Lab），这是一个专注于计算机视觉研究的知名实验室。
+> 本文由Song Kang（可能来自加州理工学院或相关机构）和Georgia Gkioxari（Meta AI研究员）、Pietro Perona（加州理工学院教授）等组成的团队，对广泛应用的CLIP模型进行了深入的理论分析，揭示了其潜在空间在同时处理多种视觉-文本交互任务时的根本性限制。基于此分析，作者提出了Dense Cosine Similarity Maps（DCSMs）这一原则性且可解释的评分方法，旨在解决CLIP的固有缺陷。该方法在多个基准测试上提升了经典CLIP类联合编码器模型的性能，并开源了代码和数据。
+
+
+### [AD-Copilot: A Vision-Language Assistant for Industrial Anomaly Detection via Visual In-context Comparison](https://arxiv.org/abs/2603.13779)
+
+**作者**: Jiang, Guo, Li, Liu, Gao 等 10 人  
+**链接**: [arXiv](https://arxiv.org/abs/2603.13779) · [PDF](https://arxiv.org/pdf/2603.13779)  \| [📖 全文分析](paper_2603.13779.md)  
+**评分**: 8.43  （novelty: 8.5 | method: 8.0 | evidence: 9.0 | clarity: 8.5）
+
+> 本文提出了一种专门用于工业异常检测的交互式多模态大语言模型AD-Copilot。该方法通过创新的视觉上下文比较机制，解决了通用MLLM在工业场景下对细微视觉差异不敏感的问题。论文贡献包括：1）设计了从稀疏标注工业图像中挖掘检测知识的数据处理流程，构建了大规模多模态数据集Chat-AD；2）提出了新颖的比较编码器，通过配对图像特征间的交叉注意力增强细粒度感知；3）引入了多阶段训练策略融入领域知识；4）建立了扩展的基准测试MMAD-BBox。实验表明，AD-Copilot在多个基准测试上达到或超越了人类专家水平，并展现出优秀的泛化能力。作者承诺开源所有数据集和模型。
 
 
 ### [Rationale-Enhanced Decoding for Multi-modal Chain-of-Thought](https://arxiv.org/abs/2507.07685)
 
 **作者**: Yamaguchi, Nishida, Chijiwa  
 **链接**: [arXiv](https://arxiv.org/abs/2507.07685) · [PDF](https://arxiv.org/pdf/2507.07685)  \| [📖 全文分析](paper_2507.07685.md)  
-**评分**: 8.50  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 8.0）
+**评分**: 8.41  （novelty: 8.5 | method: 9.0 | evidence: 9.0 | clarity: 7.5）
 
-> 本文提出了一种新颖的推理时解码策略——基于原理增强的解码（Rationale-Enhanced Decoding, RED），用于解决大型视觉语言模型（LVLMs）在链式思维（CoT）推理中忽视已生成原理内容的关键问题。该方法将多模态CoT重新表述为一个以原理条件似然为核心的KL约束奖励最大化问题，并通过在推理时融合图像条件和原理条件的下一个词元分布来实现。实验表明，RED能一致且显著地提升多种LVLMs在多个基准测试上的推理性能，为提高LVLMs中CoT推理的忠实性和准确性提供了一条实用且有效的途径。
+> 本文提出了一种名为Rationale-Enhanced Decoding (RED)的新型推理时解码策略，旨在解决大型视觉语言模型在多模态思维链推理中忽视生成理由内容的关键问题。该方法将多模态CoT重新表述为KL约束的奖励最大化问题，并通过融合图像条件和理由条件的下一个词元分布来协调视觉与理由信息。实验表明，RED在多个基准测试和LVLM上显著提升了推理的忠实性和准确性。论文提供了开源代码，增强了可复现性。
+
+
+### [EndoCoT: Scaling Endogenous Chain-of-Thought Reasoning in Diffusion Models](https://arxiv.org/abs/2603.12252)
+
+**作者**: Dai, Zhou, Xing, Bu, Wei 等 9 人  
+**链接**: [arXiv](https://arxiv.org/abs/2603.12252) · [PDF](https://arxiv.org/pdf/2603.12252)  \| [📖 全文分析](paper_2603.12252.md)  
+**评分**: 8.38  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
+
+> 本文提出了一种名为EndoCoT的新框架，旨在解决多模态大语言模型（MLLMs）在扩散模型中作为文本编码器时存在的两个关键限制：推理深度不足和引导信息在解码过程中保持不变。通过引入迭代思想引导模块和终端思想接地模块，该框架激活了MLLMs的推理潜力，并将其与扩散变换器（DiT）的去噪过程动态连接，从而以逐步分解的方式解决复杂任务。在多个基准测试（如迷宫、旅行商问题、视觉空间规划、数独）上的广泛评估显示，平均准确率达到92.1%，比最强基线高出8.3个百分点。代码和数据集已公开。
+
+
+### [Narrative Weaver: Towards Controllable Long-Range Visual Consistency with Multi-Modal Conditioning](https://arxiv.org/abs/2603.06688)
+
+**作者**: Yao, Li, Gao, Chen, Jiang 等 6 人  
+**链接**: [arXiv](https://arxiv.org/abs/2603.06688) · [PDF](https://arxiv.org/pdf/2603.06688)  \| [📖 全文分析](paper_2603.06688.md)  
+**评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
+
+> 本文提出了一种名为'Narrative Weaver'的新型框架，旨在解决生成式AI中多模态可控、长距离视觉内容生成的一致性问题。该工作针对现有模型在长序列生成中难以保持叙事连贯性和视觉一致性的挑战，提出了首个集成了细粒度控制、自动叙事规划和长距离一致性的整体解决方案。作者团队未在摘要中明确标注所属机构，因此省略团队背景介绍。
+
+
+### [Decoupled Action Expert: Confining Task Knowledge to the Conditioning Pathway](https://arxiv.org/abs/2511.12101)
+
+**作者**: Zhou, Lin, Fu, Li, Zhou 等 6 人  
+**链接**: [arXiv](https://arxiv.org/abs/2511.12101) · [PDF](https://arxiv.org/pdf/2511.12101)  \| [📖 全文分析](paper_2511.12101.md)  
+**评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
+
+> 本文提出了一种名为Decoupled Action Expert的新方法，挑战了当前视觉-语言-动作模型中为动作生成分配大量参数容量的主流设计。研究发现，机器人操作策略生成的任务特定知识可以完全限制在条件路径中，而动作主干可以保持任务无关。通过在MimicGen和LIBERO数据集上的实验验证，该方法使用单个冻结的共享主干即可达到与正常训练模型相当的性能，甚至可以用5M参数的MLP替换244M参数的U-Net而性能相当或更优。作者团队来自学术界，但具体机构信息未在提供内容中明确显示。
 
 
 ### [Mind the Discriminability Trap in Source-Free Cross-domain Few-shot Learning](https://arxiv.org/abs/2603.13341)
 
 **作者**: Zhang, Zou, Li, Li, Chen  
 **链接**: [arXiv](https://arxiv.org/abs/2603.13341) · [PDF](https://arxiv.org/pdf/2603.13341)  \| [📖 全文分析](paper_2603.13341.md)  
-**评分**: 8.50  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 8.0）
+**评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
 
-> 本文针对源自由跨域少样本学习（SF-CDFSL）任务中，基于视觉语言模型（VLM）微调时出现的一个反直觉现象进行了深入研究。作者发现，在传统视觉模型中能提升性能的“增强视觉判别性”策略，在VLM微调场景下反而会抑制模型性能。通过理论分析和实验验证，作者揭示了标准交叉熵损失包含的视觉学习部分会阻碍跨模态对齐，并据此提出了一种通过扰动视觉学习、利用视觉-文本语义关系来引导跨模态对齐的新方法。该方法在多个数据集、骨干网络和任务上均取得了新的最优性能。论文代码已开源。
+> 本文针对源自由跨域少样本学习（SF-CDFSL）任务中，基于视觉语言模型（VLM）微调时出现的一个反直觉现象——增强视觉判别性反而会抑制模型性能——进行了深入研究。作者通过理论和实验证明，传统的交叉熵损失包含的视觉学习部分会阻碍跨模态对齐，并据此提出了一种通过扰动视觉学习、利用视觉-文本语义关系逐步对齐模态的新方法。该方法在多个数据集、骨干网络和任务上均取得了新的最优性能。论文代码已开源。
 
 
 ### [Towards the Vision-Sound-Language-Action Paradigm: The HEAR Framework for Sound-Centric Manipulation](https://arxiv.org/abs/2603.16086)
 
 **作者**: Nie, Deng, Wang, Liu, Wang  
 **链接**: [arXiv](https://arxiv.org/abs/2603.16086) · [PDF](https://arxiv.org/pdf/2603.16086)  \| [📖 全文分析](paper_2603.16086.md)  
-**评分**: 8.50  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 8.0）
-
-> 本文提出了一种新的多模态机器人控制范式——视觉-声音-语言-动作（VSLA），并实例化为HEAR框架。该研究针对现有视觉-语言-动作（VLA）模型在处理实时、以声音为中心的操控任务中的不足，创新性地将流式音频作为连续控制的条件输入，并解决了由动作分块和开环执行导致的“盲执行间隔”问题。作者团队来自学术界（从作者姓氏和论文风格推断，但未明确标注知名机构，故省略背景介绍）。研究贡献显著，包括提出新范式、构建新框架、创建预训练数据集和首个声音操控基准，为具身智能体的多感官基础模型发展提供了重要实践步骤。
-
-
-### [FINER: MLLMs Hallucinate under Fine-grained Negative Queries](https://arxiv.org/abs/2603.17662)
-
-**作者**: Xiao, Kim, Xian, Akata, Alaniz  
-**链接**: [arXiv](https://arxiv.org/abs/2603.17662) · [PDF](https://arxiv.org/pdf/2603.17662)  \| [📖 全文分析](paper_2603.17662.md)  
-**评分**: 8.50  （novelty: 9.0 | method: 8.5 | evidence: 9.5 | clarity: 7.5）
-
-> 本文针对多模态大语言模型（MLLMs）在细粒度负查询下产生幻觉的问题，提出了FINER基准和FINER-Tuning微调方法。论文创新性地定义了细粒度幻觉的四种具体场景（多对象、多属性、多关系和“什么”问题），并通过系统性的基准构建和实验分析揭示了现有模型的局限性。提出的FINER-Tuning方法基于直接偏好优化（DPO），在显著降低幻觉的同时，还能提升模型的通用多模态能力。作者团队来自学术界（从姓氏推断，可能包含Akata等知名学者，但未明确标注具体机构，故不展开介绍）。
-
-
-### [On Robustness and Chain-of-Thought Consistency of RL-Finetuned VLMs](https://arxiv.org/abs/2602.12506)
-
-**作者**: Zhao, Shah, Zhu, Deng, Jiang 等 8 人  
-**链接**: [arXiv](https://arxiv.org/abs/2602.12506) · [PDF](https://arxiv.org/pdf/2602.12506)  \| [📖 全文分析](paper_2602.12506.md)  
-**评分**: 8.43  （novelty: 8.0 | method: 9.0 | evidence: 7.5 | clarity: 8.5）
-
-> 本文探讨了强化学习微调在视觉语言模型中的鲁棒性和思维链一致性问题。研究发现，当前开源模型的RL微调存在脆弱性，容易受到文本扰动的影响，导致思维链与答案不一致，而闭源模型表现出更强的鲁棒性。论文揭示了RL微调中存在的准确性-忠实性权衡，并提出了改进方向。作者团队未明确标注知名机构，因此省略背景介绍。
-
-
-### [Lumos-1: On Autoregressive Video Generation with Discrete Diffusion from a Unified Model Perspective](https://arxiv.org/abs/2507.08801)
-
-**作者**: Yuan, Chen, Cen, Yu, Liang 等 14 人  
-**链接**: [arXiv](https://arxiv.org/abs/2507.08801) · [PDF](https://arxiv.org/pdf/2507.08801)  \| [📖 全文分析](paper_2507.08801.md)  
 **评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
 
-> 本文由阿里巴巴达摩学院团队提出了一种基于大语言模型的自回归视频生成方法Lumos-1。该方法通过创新的MM-RoPE位置编码和并行离散扩散机制，在有限计算资源下实现了高质量视频生成，在多个基准测试中超越了现有方法。论文创新性突出，实验证据充分，代码已开源。
+> 本文提出了一种名为HEAR的Vision-Sound-Language-Action（VSLA）框架，旨在解决现有VLA模型在处理实时、以声音为中心的操作任务时的局限性。该工作将声音从静态提示或仅限语音的范畴，扩展为用于任务执行期间关键状态验证的连续环境声学流，并形式化了VSLA这一新的连续控制范式。为支持该范式，作者构建了预训练数据集OpenX-Sound和首个具有严格因果时序规则的以声音为中心的操作基准HEAR-Bench。实验结果表明，鲁棒的声音中心操作需要因果持久性和显式的时间动态学习。该框架为具身智能体的多感官基础模型迈出了实用一步。
 
 
-### [Cheers: Decoupling Patch Details from Semantic Representations Enables Unified Multimodal Comprehension and Generation](https://arxiv.org/abs/2603.12793)
+### [Visual Distraction Undermines Moral Reasoning in Vision-Language Models](https://arxiv.org/abs/2603.16445)
 
-**作者**: Zhang, Peng, Guo, Zhang, Yang 等 22 人  
-**链接**: [arXiv](https://arxiv.org/abs/2603.12793) · [PDF](https://arxiv.org/pdf/2603.12793)  \| [📖 全文分析](paper_2603.12793.md)  
+**作者**: Yang, Xu, Hong, Mo, Wang 等 7 人  
+**链接**: [arXiv](https://arxiv.org/abs/2603.16445) · [PDF](https://arxiv.org/pdf/2603.16445)  \| [📖 全文分析](paper_2603.16445.md)  
+**评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 8.0 | clarity: 8.5）
+
+> 本文提出了一种基于道德基础理论（MFT）的多模态基准测试方法——道德困境模拟（MDS），用于系统评估视觉语言模型（VLMs）在视觉输入下的道德推理一致性。研究发现，视觉输入会激活类似直觉的推理路径，绕过基于文本的安全机制，揭示了当前VLM安全对齐的关键脆弱性。该研究为多模态AI安全评估提供了新的方法论和重要洞见。
+
+
+### [V-DyKnow: A Dynamic Benchmark for Time-Sensitive Knowledge in Vision Language Models](https://arxiv.org/abs/2603.16581)
+
+**作者**: Mousavi, Moiola, Rizzoli, Alghisi, Riccardi  
+**链接**: [arXiv](https://arxiv.org/abs/2603.16581) · [PDF](https://arxiv.org/pdf/2603.16581)  \| [📖 全文分析](paper_2603.16581.md)  
 **评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
 
-> 本文提出了一种名为Cheers的统一多模态模型，通过将补丁级细节与语义表示解耦，实现了视觉理解与生成的统一建模。该方法在流行的基准测试中表现出色，在视觉理解和生成任务上均达到或超越了先进的统一多模态模型，同时实现了4倍的令牌压缩，显著提升了高分辨率图像编码和生成的效率。值得注意的是，Cheers仅需20%的训练成本即可在GenEval和MMBench基准上超越Tar-1.5B模型，展示了其高效性。作者承诺将开源所有代码和数据，有利于后续研究。
-
-
-### [Breaking the SFT Plateau: Multimodal Structured Reinforcement Learning for Chart-to-Code Generation](https://arxiv.org/abs/2508.13587)
-
-**作者**: Chen, Zhao, Zeng, Huang, Zheng 等 7 人  
-**链接**: [arXiv](https://arxiv.org/abs/2508.13587) · [PDF](https://arxiv.org/pdf/2508.13587)  \| [📖 全文分析](paper_2508.13587.md)  
-**评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
-
-> 本文提出了一种名为多模态结构化强化学习（MSRL）的新方法，用于解决图表到代码生成任务中监督微调（SFT）的性能瓶颈问题。该方法通过构建大规模真实数据集、设计多粒度奖励系统和两阶段课程训练策略，显著提升了模型性能，在多个基准测试上取得了突破性进展。作者团队未在摘要中明确标注其所属机构，因此省略团队背景介绍。
-
-
-### [VLAD-Grasp: Zero-shot Grasp Detection via Vision-Language Models](https://arxiv.org/abs/2511.05791)
-
-**作者**: Kulshrestha, Bukhari, Conover, Bera  
-**链接**: [arXiv](https://arxiv.org/abs/2511.05791) · [PDF](https://arxiv.org/pdf/2511.05791)  \| [📖 全文分析](paper_2511.05791.md)  
-**评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
-
-> 本文提出了一种名为VLAD-Grasp的零样本抓取检测方法，该方法创新性地利用大规模视觉语言模型（VLM）作为先验知识，无需在特定抓取数据集上进行训练，即可实现对新物体的抓取姿态预测。该方法在Cornell和Jacquard标准数据集上取得了与当前最优方法相当的性能，并成功在真实机器人平台上进行了零样本泛化验证。作者团队来自学术界，但未在摘要中明确其所属机构，因此省略团队背景介绍。
-
-
-### [Revisiting Model Stitching In the Foundation Model Era](https://arxiv.org/abs/2603.12433)
-
-**作者**: Mai, Zhang, Wang, Wang, Chen 等 9 人  
-**链接**: [arXiv](https://arxiv.org/abs/2603.12433) · [PDF](https://arxiv.org/pdf/2603.12433)  \| [📖 全文分析](paper_2603.12433.md)  
-**评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
-
-> 本文重新审视了基础模型时代的模型缝合技术，针对视觉基础模型（VFMs）的异构性提出了系统的缝合协议。研究发现，通过在目标模型倒数第二层使用简单的特征匹配损失，异构VFMs可以在视觉任务中可靠地缝合，并且对于深层缝合点，缝合模型的性能甚至可以超越任一原始模型。基于这些发现，作者进一步提出了VFM缝合树（VST），用于共享多个VFMs的早期层，为多模态大语言模型提供可控的精度-延迟权衡。该研究将缝合从诊断性探针提升为整合互补VFM优势的实用方法。
-
-
-### [How Do Medical MLLMs Fail? A Study on Visual Grounding in Medical Images](https://arxiv.org/abs/2603.14323)
-
-**作者**: Liu, Yu, Ebrahimkhani, Shawn, Ng 等 6 人  
-**链接**: [arXiv](https://arxiv.org/abs/2603.14323) · [PDF](https://arxiv.org/pdf/2603.14323)  \| [📖 全文分析](paper_2603.14323.md)  
-**评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
-
-> 本文对医学多模态大语言模型（MLLMs）在视觉定位能力上的失败原因进行了开创性的系统性研究。作者团队（作者姓名未明确指向特定知名机构，故省略背景介绍）通过设计专门的评估数据集VGMED，并提出了一个简单有效的推理时优化方法VGRefine，显著提升了模型在医学视觉问答任务上的性能。该研究首次系统性地验证了视觉定位不足是医学MLLMs性能不佳的关键因素之一，具有重要的学术价值。
-
-
-### [VLA-Thinker: Boosting Vision-Language-Action Models through Thinking-with-Image Reasoning](https://arxiv.org/abs/2603.14523)
-
-**作者**: Wang, Bao, Gao, Xu, Tian 等 8 人  
-**链接**: [arXiv](https://arxiv.org/abs/2603.14523) · [PDF](https://arxiv.org/pdf/2603.14523)  \| [📖 全文分析](paper_2603.14523.md)  
-**评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
-
-> 本文提出了一种名为VLA-Thinker的新型视觉-语言-动作模型推理框架，通过'图像思维'推理将感知建模为可动态调用的推理动作，以解决现有方法在长视野任务中无法主动重访环境、解析模糊性的局限。作者团队来自学术界（从作者姓氏和论文分类推断，可能来自中美高校或研究机构，但未明确标注知名机构如Stanford、MIT等，故省略具体背景介绍）。该方法在LIBERO和RoboTwin 2.0基准测试中取得了显著性能提升，实验设计充分，代码已开源。
-
-
-### [VideoITG: Multimodal Video Understanding with Instructed Temporal Grounding](https://arxiv.org/abs/2507.13353)
-
-**作者**: Wang, Chen, Huang, Li, Li 等 9 人  
-**链接**: [arXiv](https://arxiv.org/abs/2507.13353) · [PDF](https://arxiv.org/pdf/2507.13353)  \| [📖 全文分析](paper_2507.13353.md)  
-**评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
-
-> 本文提出了一种名为VideoITG的创新框架，旨在解决视频大语言模型（Video-LLMs）中高效选择信息最丰富帧的关键挑战。该工作通过引入指令引导的时间定位（Instructed Temporal Grounding）机制，能够根据用户指令自适应地定制帧采样策略，显著提升了复杂指令跟随任务和精确时间建模场景下的性能。论文构建了包含4万个视频和50万个时间定位标注的大规模数据集VideoITG-40K，并在多个多模态视频理解基准测试中验证了其有效性。
-
-
-### [VisTIRA: Closing the Image-Text Modality Gap in Visual Math Reasoning via Structured Tool Integration](https://arxiv.org/abs/2601.14440)
-
-**作者**: Khaki, Singh, Safaei, Ginotra  
-**链接**: [arXiv](https://arxiv.org/abs/2601.14440) · [PDF](https://arxiv.org/pdf/2601.14440)  \| [📖 全文分析](paper_2601.14440.md)  
-**评分**: 8.36  （novelty: 8.5 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
-
-> 本文提出了一种名为VisTIRA（Vision and Tool-Integrated Reasoning Agent）的视觉数学推理框架，旨在解决视觉语言模型（VLMs）在处理图像形式数学问题时存在的模态差距问题。该工作通过结合结构化工具集成（如Python代码执行）和OCR基础，系统地提升了模型在视觉数学推理任务上的性能。论文还构建了一个用于评估和改进视觉数学推理的框架，包括一个将文本数学语料库转换为图像格式的LaTeX管道，以及一个用于微调VLMs的大规模合成工具使用轨迹数据集。实验表明，工具集成监督和OCR基础能有效提升性能，且模态差距的严重程度与模型大小成反比。作者团队来自学术界，但未明确标注其所属机构为全球顶级知名机构，因此省略团队背景介绍。
-
-
-### [Grounding the Score: Explicit Visual Premise Verification for Reliable Vision-Language Process Reward Models](https://arxiv.org/abs/2603.16253)
-
-**作者**: Wang, Guan, Qiu, Li, Gai 等 10 人  
-**链接**: [arXiv](https://arxiv.org/abs/2603.16253) · [PDF](https://arxiv.org/pdf/2603.16253)  \| [📖 全文分析](paper_2603.16253.md)  
-**评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
-
-> 本文由阿里千问（Qwen）应用团队提出了一种名为显式视觉前提验证（EVPV）的新方法，用于提升视觉语言过程奖励模型（VL-PRMs）的可靠性。该方法通过解耦感知不确定性与逻辑评估，在多个多模态推理基准测试上显著提升了步骤级验证和候选重排的准确性。方法创新性强，实验设计严谨，并提供了因果证据和开源代码。
-
-
-### [Recurrent Reasoning with Vision-Language Models for Estimating Long-Horizon Embodied Task Progress](https://arxiv.org/abs/2603.17312)
-
-**作者**: Zhang, Cheng, Li, Li, Huang 等 7 人  
-**链接**: [arXiv](https://arxiv.org/abs/2603.17312) · [PDF](https://arxiv.org/pdf/2603.17312)  \| [📖 全文分析](paper_2603.17312.md)  
-**评分**: 8.36  （novelty: 8.5 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
-
-> 本文提出了一种名为Recurrent Reasoning Vision-Language Model (R²VLM)的新方法，用于解决具身智能中长时程、多步骤任务进度估计的难题。该方法的核心创新在于设计了一个循环推理框架，通过迭代处理局部视频片段并维护一个不断演化的思维链来记录任务分解、关键步骤及其完成状态，从而在避免处理长视频的高计算成本的同时，保留了复杂的时序依赖推理能力。论文在ALFRED和Ego4D等大型数据集上进行了自动数据生成和训练，并在进度估计及其下游应用（如策略学习、奖励建模和主动辅助）上进行了广泛实验，证明了其卓越的性能和泛化能力，达到了新的最优水平。模型和基准测试已开源。
-
-
-### [HopChain: Multi-Hop Data Synthesis for Generalizable Vision-Language Reasoning](https://arxiv.org/abs/2603.17024)
-
-**作者**: Wang, Liu, Zhou, Gao, Chen 等 11 人  
-**链接**: [arXiv](https://arxiv.org/abs/2603.17024) · [PDF](https://arxiv.org/pdf/2603.17024)  \| [📖 全文分析](paper_2603.17024.md)  
-**评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
-
-> 本文由阿里巴巴Qwen团队（作者来自阿里千问）提出了一种名为HopChain的可扩展框架，用于合成多跳视觉语言推理数据，以增强视觉语言模型在复杂推理任务中的泛化能力。该方法通过构建逻辑依赖的实例锚定多跳查询链，有效暴露并解决了模型在长链推理中的多种错误模式。在24个基准测试中，该方法在20个任务上取得了显著提升，尤其在长链思维推理任务中表现突出。
-
-
-### [Training-Only Heterogeneous Image-Patch-Text Graph Supervision for Advancing Few-Shot Learning Adapters](https://arxiv.org/abs/2603.18101)
-
-**作者**: Mohammad, Behera, Pradhan, Kumar, Ahmed  
-**链接**: [arXiv](https://arxiv.org/abs/2603.18101) · [PDF](https://arxiv.org/pdf/2603.18101)  \| [📖 全文分析](paper_2603.18101.md)  
-**评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
-
-> 本文提出了一种新颖的仅用于训练的非对称异构图像-文本图监督框架，用于提升少样本学习适配器的性能。该方法的核心创新在于构建了一个仅在训练阶段使用的高容量异构图教师模型，通过整合多尺度视觉块和文本提示进行深度跨模态推理，并将学到的关系知识蒸馏到轻量级适配器的缓存中，从而在不增加推理开销的情况下显著提升了性能。在标准的1-16样本基准测试中，该方法取得了新的最优结果。代码已开源。
+> 本文提出了一种名为V-DyKnow的视觉动态知识基准，用于评估视觉语言模型（VLMs）中时间敏感性事实知识的掌握情况。该研究揭示了当前VLMs在处理随时间变化的事实知识时存在的根本性局限，包括模型预测容易过时、跨模态知识更新困难等问题。研究团队来自学术界，但论文中未明确标注其所属的知名机构。
 
 
 ### [Counting Circuits: Mechanistic Interpretability of Visual Reasoning in Large Vision-Language Models](https://arxiv.org/abs/2603.18523)
@@ -331,7 +190,7 @@
 **链接**: [arXiv](https://arxiv.org/abs/2603.18523) · [PDF](https://arxiv.org/pdf/2603.18523)  \| [📖 全文分析](paper_2603.18523.md)  
 **评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
 
-> 本文提出了一种针对大型视觉语言模型（LVLM）计数能力的机制可解释性分析方法。研究团队通过引入两种新颖的可解释性方法（Visual Activation Patching和HeadLens），揭示了LVLM中存在的结构化“计数电路”，并发现该电路在多种视觉推理任务中共享。基于此发现，作者提出了一种轻量级干预策略，仅使用简单的合成图像对预训练LVLM进行计数微调，不仅提升了计数精度，还意外地改善了模型在分布外计数基准和复杂通用视觉推理任务上的表现。这些发现强调了计数在视觉推理中的核心作用，并为通过针对性增强特定机制来提升整体能力提供了潜在路径。作者团队中包括来自知名机构的研究人员，如论文中提到的Qwen2.5-VL模型暗示了与阿里巴巴千问团队的关联，其他作者也来自计算机视觉和人工智能领域的知名研究机构。
+> 本文由来自华盛顿大学、艾伦人工智能研究所、加州大学伯克利分校等知名机构的研究团队合作完成，提出了一种针对大型视觉语言模型（LVLM）计数能力的机制可解释性分析方法。研究通过合成和真实数据集，结合创新的可解释性工具，揭示了LVLM中存在的结构化“计数电路”，并基于此提出了一种轻量级干预策略。该方法不仅显著提升了计数性能，还意外地改善了通用视觉推理能力，为理解LVLM的内部工作机制提供了新视角。
 
 
 ### [Scaling Sim-to-Real Reinforcement Learning for Robot VLAs with Generative 3D Worlds](https://arxiv.org/abs/2603.18532)
@@ -340,23 +199,158 @@
 **链接**: [arXiv](https://arxiv.org/abs/2603.18532) · [PDF](https://arxiv.org/pdf/2603.18532)  \| [📖 全文分析](paper_2603.18532.md)  
 **评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
 
-> 本文提出了一种创新的机器人视觉语言动作（VLA）模型强化学习微调方法，通过利用3D世界生成模型和语言驱动的场景设计器，生成大量多样化的交互场景，实现了可扩展的并行策略学习。该方法在模拟环境中将成功率从9.7%提升至79.8%，并实现了1.25倍的速度提升；通过领域随机化技术，成功将模拟训练的策略迁移到现实世界，将现实世界成功率从21.7%提升至75%，速度提升1.13倍。论文实验设计严谨，数据充分，展示了生成场景多样性对零样本泛化能力的直接提升。
+> 本文提出了一种创新的机器人视觉语言动作（VLA）模型强化学习微调方法，通过利用3D世界生成模型和语言驱动的场景设计器，生成大量多样化的交互场景，有效解决了传统方法在真实世界训练导致的泛化性不足问题。该方法在仿真环境中将成功率从9.7%提升至79.8%，并实现了成功的仿真到现实迁移，将真实世界成功率从21.7%提升至75%。
 
 
-### [Is CLIP ideal? No. Can we fix it? Yes!](https://arxiv.org/abs/2503.08723)
+### [Cheers: Decoupling Patch Details from Semantic Representations Enables Unified Multimodal Comprehension and Generation](https://arxiv.org/abs/2603.12793)
 
-**作者**: Kang, Song, Gkioxari, Perona  
-**链接**: [arXiv](https://arxiv.org/abs/2503.08723) · [PDF](https://arxiv.org/pdf/2503.08723)  \| [📖 全文分析](paper_2503.08723.md)  
-**评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
+**作者**: Zhang, Peng, Guo, Zhang, Yang 等 22 人  
+**链接**: [arXiv](https://arxiv.org/abs/2603.12793) · [PDF](https://arxiv.org/pdf/2603.12793)  \| [📖 全文分析](paper_2603.12793.md)  
+**评分**: 8.35  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
 
-> 本文由Song Kang、Georgia Gkioxari和Pietro Perona等研究人员提出，其中Georgia Gkioxari和Pietro Perona均来自加州理工学院（Caltech），是计算机视觉领域的知名学者。论文对CLIP模型的几何局限性进行了理论分析，并提出了一种新的评分方法DCSM来改进CLIP-like模型。该方法在多个基准测试上提升了性能，创新性强，实验证据充分，且代码数据已开源。
+> 本文提出了一种名为Cheers的统一多模态模型，通过将补丁级细节与语义表示解耦，在单一模型中实现了视觉理解与生成的统一。该方法在流行的基准测试中表现优异，在视觉理解和生成任务上均达到或超越了先进的统一多模态模型，同时实现了4倍的令牌压缩，显著提升了高分辨率图像编码和生成的效率。作者团队来自多个知名机构，包括阿里巴巴（Zhang, Sun, Chen, Wang, Yan, Han, Ma, Ke, Wang, Liu, Sun等）、清华大学（Guo, Yang, Sun, Zhang, Li, Zhao, Xu, Shi等）和北京航空航天大学（Peng），体现了产学研结合的强大背景。
 
 
-### [Omni-Captioner: Data Pipeline, Models, and Benchmark for Omni Detailed Perception](https://arxiv.org/abs/2510.12720)
+### [Cognitive Mismatch in Multimodal Large Language Models for Discrete Symbol Understanding](https://arxiv.org/abs/2603.18472)
 
-**作者**: Ma, Xu, Xing, Chu, Wang 等 12 人  
-**链接**: [arXiv](https://arxiv.org/abs/2510.12720) · [PDF](https://arxiv.org/pdf/2510.12720)  \| [📖 全文分析](paper_2510.12720.md)  
-**评分**: 8.36  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
+**作者**: Li, Kuang, Xing, Liu, Dong 等 13 人  
+**链接**: [arXiv](https://arxiv.org/abs/2603.18472) · [PDF](https://arxiv.org/pdf/2603.18472)  \| [📖 全文分析](paper_2603.18472.md)  
+**评分**: 8.30  （novelty: 9.0 | method: 9.5 | evidence: 7.0 | clarity: 8.5）
 
-> 本文提出了一种系统性的全模态细粒度感知研究框架，包括数据生成管道、模型和评估基准。作者团队来自多个知名机构，包括Chu Xing（可能来自微软亚洲研究院）、He Wang（可能来自清华大学）、Heng Xu（可能来自香港中文大学）、Lin Yu（可能来自浙江大学）等，显示了较强的跨机构合作背景。该工作针对当前全模态语言模型在细节感知与幻觉问题之间的“共增长”矛盾，提出了创新的解决方案，在多个基准测试中取得了领先性能。
+> 本文针对多模态大语言模型在离散符号理解方面的能力进行了开创性研究，提出了一个全面的基准测试来评估模型在语言、文化、数学、物理和化学五个领域的表现。研究发现了一个反直觉的“认知不匹配”现象：模型在基本符号识别上失败，却在复杂推理任务中成功，揭示了当前AI依赖语言概率而非真实视觉感知的局限性。这项工作为开发更严谨、与人类认知对齐的智能系统提供了路线图。
+
+
+### [HopChain: Multi-Hop Data Synthesis for Generalizable Vision-Language Reasoning](https://arxiv.org/abs/2603.17024)
+
+**作者**: Wang, Liu, Zhou, Gao, Chen 等 11 人  
+**链接**: [arXiv](https://arxiv.org/abs/2603.17024) · [PDF](https://arxiv.org/pdf/2603.17024)  \| [📖 全文分析](paper_2603.17024.md)  
+**评分**: 8.28  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
+
+> 本文由阿里巴巴Qwen团队（作者来自阿里千问）提出了一种名为HopChain的可扩展框架，用于合成多跳视觉语言推理数据，以增强视觉语言模型（VLMs）在复杂推理任务中的泛化能力。该方法通过构建逻辑依赖的实例接地多跳查询链，有效暴露并解决了VLMs在长链推理中的多种错误模式（如感知、推理、知识和幻觉错误）。实验表明，使用HopChain合成的数据训练模型，在涵盖STEM、谜题、通用VQA、文本识别与文档理解以及视频理解等24个基准测试中，有20个取得了提升，证明了其广泛的泛化增益。
+
+
+### [Generate Any Scene: Scene Graph Driven Data Synthesis for Visual Generation Training](https://arxiv.org/abs/2412.08221)
+
+**作者**: Gao, Huang, Zhang, Kembhavi, Krishna  
+**链接**: [arXiv](https://arxiv.org/abs/2412.08221) · [PDF](https://arxiv.org/pdf/2412.08221)  \| [📖 全文分析](paper_2412.08221.md)  
+**评分**: 8.19  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
+
+> 本文由华盛顿大学、艾伦人工智能研究所（AI2）等知名机构的研究团队提出了一种名为'Generate Any Scene'的数据引擎方法，用于解决文本到视觉生成任务中的组合泛化和语义对齐问题。该方法通过系统枚举场景图来生成高质量合成数据，并设计了自改进框架、蒸馏算法和奖励模型，在多个基准测试中取得了显著提升。
+
+
+### [Narrow Fine-Tuning Erodes Safety Alignment in Vision-Language Agents](https://arxiv.org/abs/2602.16931)
+
+**作者**: Gulati, Raval  
+**链接**: [arXiv](https://arxiv.org/abs/2602.16931) · [PDF](https://arxiv.org/pdf/2602.16931)  \| [📖 全文分析](paper_2602.16931.md)  
+**评分**: 8.08  （novelty: 9.0 | method: 9.5 | evidence: 8.5 | clarity: 8.0）
+
+> 本文探讨了视觉语言模型在持续学习中的一个关键安全问题：在狭窄领域数据集上进行微调会严重侵蚀模型的安全对齐性，并导致跨任务和跨模态的广泛失准。研究发现，即使训练数据中仅包含10%的有害内容，也会引发显著的失准现象。通过几何分析，作者揭示了有害行为存在于一个低维子空间中。论文实验设计严谨，在Gemma3-4B模型上进行了系统性验证，并提出了两种缓解策略。该研究对构建鲁棒的持续学习框架具有重要警示意义。
+
+
+### [ERGO: Efficient High-Resolution Visual Understanding for Vision-Language Models](https://arxiv.org/abs/2509.21991)
+
+**作者**: Lee, Shin, Yang, Song, Lim 等 8 人  
+**链接**: [arXiv](https://arxiv.org/abs/2509.21991) · [PDF](https://arxiv.org/pdf/2509.21991)  \| [📖 全文分析](paper_2509.21991.md)  
+**评分**: 8.07  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
+
+> 本文提出了一种名为ERGO的高效高分辨率视觉理解方法，针对大型视觉语言模型处理高分辨率图像时计算开销大的问题，设计了一种两阶段的“粗到细”推理流程。该方法通过强化学习框架实现推理驱动的感知，能够有效识别任务相关区域并仅对关键区域进行全分辨率处理，在显著降低计算成本的同时保持甚至提升模型性能。在多个数据集上验证了方法的有效性，例如在V*基准上超越Qwen2.5-VL-7B模型4.7分，同时仅使用23%的视觉token，实现3倍推理加速。代码和模型已开源。
+
+
+### [On Robustness and Chain-of-Thought Consistency of RL-Finetuned VLMs](https://arxiv.org/abs/2602.12506)
+
+**作者**: Zhao, Shah, Zhu, Deng, Jiang 等 8 人  
+**链接**: [arXiv](https://arxiv.org/abs/2602.12506) · [PDF](https://arxiv.org/pdf/2602.12506)  \| [📖 全文分析](paper_2602.12506.md)  
+**评分**: 8.04  （novelty: 8.5 | method: 9.0 | evidence: 8.0 | clarity: 8.0）
+
+> 本文深入研究了强化学习（RL）微调在视觉语言模型（VLM）中的应用及其鲁棒性问题。研究发现，尽管RL微调能提升视觉推理基准测试的准确率，但会使模型在面对误导性文本提示（如错误标题或思维链）时表现出显著的鲁棒性下降和思维链一致性降低，揭示了当前开源模型在RL微调过程中存在的“准确性-忠实性”权衡问题。论文通过系统性实验分析了这一现象，并探讨了对抗性数据增强和忠实性感知奖励等改进方案的潜力与局限。
+
+
+### [FINER: MLLMs Hallucinate under Fine-grained Negative Queries](https://arxiv.org/abs/2603.17662)
+
+**作者**: Xiao, Kim, Xian, Akata, Alaniz  
+**链接**: [arXiv](https://arxiv.org/abs/2603.17662) · [PDF](https://arxiv.org/pdf/2603.17662)  \| [📖 全文分析](paper_2603.17662.md)  
+**评分**: 7.96  （novelty: 9.0 | method: 8.5 | evidence: 9.5 | clarity: 8.0）
+
+> 本文针对多模态大语言模型（MLLMs）在细粒度负查询下产生幻觉的问题，提出了FINER基准和FINER-Tuning微调方法。作者团队来自学术界（从姓氏和机构关联看，可能涉及德国图宾根大学等研究机构，但未明确标注知名顶级机构如Stanford、DeepMind等，故省略具体背景介绍）。该工作系统性地定义了细粒度幻觉的评估场景，并提出了有效的缓解方案，在多个基准上验证了方法的有效性。
+
+
+### [MMKU-Bench: A Multimodal Update Benchmark for Diverse Visual Knowledge](https://arxiv.org/abs/2603.15117)
+
+**作者**: Fu, Du, Chang, Jin, Deng 等 9 人  
+**链接**: [arXiv](https://arxiv.org/abs/2603.15117) · [PDF](https://arxiv.org/pdf/2603.15117)  \| [📖 全文分析](paper_2603.15117.md)  
+**评分**: 7.96  （novelty: 9.0 | method: 9.5 | evidence: 8.5 | clarity: 7.5）
+
+> 本文提出了MMKU-Bench，一个用于评估多模态知识更新的综合性基准测试。该基准包含超过25k个知识实例和49k张图像，覆盖了知识更新和未知知识学习两种场景，并首次系统性地评估了跨模态一致性问题。作者团队未在摘要中明确列出所属机构，因此省略团队背景介绍。该工作填补了现有研究在评估多模态模型知识更新能力方面的空白，特别是对已掌握但后续发生变化的知识的更新评估，具有重要的研究价值。
+
+
+### [Multimodal Task Interference: A Benchmark and Analysis of History-Target Mismatch in Multimodal LLMs](https://arxiv.org/abs/2603.18425)
+
+**作者**: Kawarada, Ishigaki, Takamura  
+**链接**: [arXiv](https://arxiv.org/abs/2603.18425) · [PDF](https://arxiv.org/pdf/2603.18425)  \| [📖 全文分析](paper_2603.18425.md)  
+**评分**: 7.91  （novelty: 9.0 | method: 9.0 | evidence: 8.0 | clarity: 8.5）
+
+> 本文针对多模态大语言模型中的任务干扰现象进行了系统性研究，提出了首个专门评估多模态对话系统中任务干扰的基准测试。研究通过设计三个维度的历史-目标不匹配（模态不匹配、推理不匹配、答案格式不匹配），在六个跨文本和视觉的任务上进行了全面实验。研究发现任务干扰具有高度方向性，并揭示了不同维度不匹配对性能影响的相对重要性。实验覆盖了开源和专有模型，结果具有较好的说服力。
+
+
+### [Thinking with Constructions: A Benchmark and Policy Optimization for Visual-Text Interleaved Geometric Reasoning](https://arxiv.org/abs/2603.18662)
+
+**作者**: Zhao, Xu, Yuan, Cao, Ma 等 6 人  
+**链接**: [arXiv](https://arxiv.org/abs/2603.18662) · [PDF](https://arxiv.org/pdf/2603.18662)  \| [📖 全文分析](paper_2603.18662.md)  
+**评分**: 7.79  （novelty: 9.0 | method: 8.0 | evidence: 9.0 | clarity: 8.5）
+
+> 本文提出了一种用于视觉-文本交织几何推理的基准和策略优化方法。论文针对多模态大语言模型在几何推理中缺乏动态视觉辅助构建能力的问题，创新性地提出了视觉-文本交织思维链框架。首先构建了包含4334个几何问题的GeoAux-Bench基准，并通过实验发现交织视觉文本辅助优于单模态方法，且有效构造能降低推理困惑度。基于此，提出了A2PO强化学习范式来优化构造策略。实验表明该方法能带来3.51%的性能提升，且代码和数据已开源。
+
+
+### [How Do Medical MLLMs Fail? A Study on Visual Grounding in Medical Images](https://arxiv.org/abs/2603.14323)
+
+**作者**: Liu, Yu, Ebrahimkhani, Shawn, Ng 等 6 人  
+**链接**: [arXiv](https://arxiv.org/abs/2603.14323) · [PDF](https://arxiv.org/pdf/2603.14323)  \| [📖 全文分析](paper_2603.14323.md)  
+**评分**: 7.74  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
+
+> 本文对医学多模态大语言模型（MLLMs）在视觉定位能力上的失败原因进行了开创性的系统性研究。作者团队（作者姓名未显示明确知名机构归属，故省略背景介绍）首次通过设计专门的评估数据集VGMED，将视觉定位与语义定位分离，并定量、定性地验证了现有医学MLLMs普遍存在视觉定位能力不足的问题。基于此发现，他们提出了一个无需额外训练、简单有效的推理时优化方法VGRefine，在多个医学视觉问答基准上取得了最先进的性能。该研究问题定义清晰，实验设计严谨，提出的解决方案具有实用价值。
+
+
+### [VLA-Thinker: Boosting Vision-Language-Action Models through Thinking-with-Image Reasoning](https://arxiv.org/abs/2603.14523)
+
+**作者**: Wang, Bao, Gao, Xu, Tian 等 8 人  
+**链接**: [arXiv](https://arxiv.org/abs/2603.14523) · [PDF](https://arxiv.org/pdf/2603.14523)  \| [📖 全文分析](paper_2603.14523.md)  
+**评分**: 7.74  （novelty: 9.0 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
+
+> 本文提出了一种名为VLA-Thinker的创新框架，旨在提升视觉-语言-动作模型在具身智能任务中的性能。其核心创新在于将感知建模为一种可动态调用的推理动作，突破了传统文本链式推理将视觉输入视为静态背景的限制。该框架通过两阶段训练（SFT微调与GRPO强化学习）进行优化，并在LIBERO和RoboTwin 2.0基准测试中取得了显著性能提升（如LIBERO上97.5%的成功率）。论文提供了项目页面和代码，实验证据充分。
+
+
+### [Understanding and Defending VLM Jailbreaks via Jailbreak-Related Representation Shift](https://arxiv.org/abs/2603.17372)
+
+**作者**: Wei, Li, Ruan, Qin, Wen 等 7 人  
+**链接**: [arXiv](https://arxiv.org/abs/2603.17372) · [PDF](https://arxiv.org/pdf/2603.17372)  \| [📖 全文分析](paper_2603.17372.md)  
+**评分**: 7.74  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
+
+> 本文提出了一种理解和防御视觉语言模型越狱攻击的新方法。研究团队观察到，在VLM的表示空间中，良性输入、有害输入以及越狱样本具有可区分的内部状态，并发现视觉模态会将表示向特定的越狱状态偏移，从而导致模型未能触发拒绝机制。基于此，作者定义并量化了“越狱相关偏移”，并提出了一种通过移除该偏移来增强VLM安全性的防御方法（JRS-Rem）。实验表明该方法在多种场景下均能提供有效的防御，同时不影响良性任务的性能。
+
+
+### [Deep Expert Injection for Anchoring Retinal VLMs with Domain-Specific Knowledge](https://arxiv.org/abs/2603.07131)
+
+**作者**: Lu, Wang, Guo, Du, Liu 等 9 人  
+**链接**: [arXiv](https://arxiv.org/abs/2603.07131) · [PDF](https://arxiv.org/pdf/2603.07131)  \| [📖 全文分析](paper_2603.07131.md)  
+**评分**: 7.74  （novelty: 9.0 | method: 8.5 | evidence: 8.0 | clarity: 8.5）
+
+> 本文提出了一种名为EyExIn的数据高效框架，旨在通过深度专家注入机制，将专家知识锚定到视网膜视觉语言模型中。该方法针对医学视觉语言模型在临床部署中存在的感知差距和推理差距问题，设计了专家感知双流编码策略、语义自适应门控融合模块和自适应深度专家注入机制，显著提升了眼科视觉问答的精度。在四个基准测试上的广泛实验表明，该模型始终优于大型专有系统。
+
+
+### [Exposing Hidden Biases in Text-to-Image Models via Automated Prompt Search](https://arxiv.org/abs/2512.08724)
+
+**作者**: Plitsis, Bouritsas, Katsouros, Panagakis  
+**链接**: [arXiv](https://arxiv.org/abs/2512.08724) · [PDF](https://arxiv.org/pdf/2512.08724)  \| [📖 全文分析](paper_2512.08724.md)  
+**评分**: 7.74  （novelty: 9.0 | method: 8.5 | evidence: 8.5 | clarity: 8.0）
+
+> 本文提出了一种名为Bias-Guided Prompt Search (BGPS)的框架，用于自动生成能最大化揭示文本到图像(TTI)扩散模型中隐藏偏见的提示词。该方法通过结合大语言模型(LLM)和作用于TTI内部表征的属性分类器，系统地探索提示空间，发现了现有去偏方法可能忽略的、微妙且未被记录的偏见。实验在Stable Diffusion 1.5和一个先进的去偏模型上进行，结果显著恶化了公平性指标，揭示了TTI模型的脆弱性。BGPS扩展了偏见搜索空间，可作为评估偏见缓解效果的新工具。
+
+
+### [PromptHub: Enhancing Multi-Prompt Visual In-Context Learning with Locality-Aware Fusion, Concentration and Alignment](https://arxiv.org/abs/2603.18891)
+
+**作者**: Luo, Wang, Qin, Lian, Feng 等 8 人  
+**链接**: [arXiv](https://arxiv.org/abs/2603.18891) · [PDF](https://arxiv.org/pdf/2603.18891)  \| [📖 全文分析](paper_2603.18891.md)  
+**评分**: 7.74  （novelty: 8.5 | method: 8.5 | evidence: 9.0 | clarity: 7.5）
+
+> 本文提出了一种名为PromptHub的新框架，旨在增强视觉上下文学习中的多提示融合能力。该方法通过引入局部感知融合、集中和对齐机制，克服了现有补丁级融合框架的局限性。在三个基础视觉任务上的广泛实验证明了其优越性，并验证了其在分布外设置和各种检索场景下的通用性、可迁移性和鲁棒性。作者团队来自学术界，但未明确标注所属机构，因此省略团队背景介绍。
 

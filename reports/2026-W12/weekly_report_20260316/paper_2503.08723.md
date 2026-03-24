@@ -3,13 +3,13 @@
 **arXiv**: [2503.08723](https://arxiv.org/abs/2503.08723) · [PDF](https://arxiv.org/pdf/2503.08723)  
 **领域**: Multimodal  
 **作者**: Kang, Song, Gkioxari, Perona  
-**综合评分**: 8.36  （novelty: 9.0 · method: 8.5 · evidence: 9.0 · clarity: 7.5）
+**综合评分**: 8.48  （novelty: 9.0 · method: 8.5 · evidence: 9.0 · clarity: 7.5）
 
 ---
 
 ## 摘要
 
-> 本文由Song Kang、Georgia Gkioxari和Pietro Perona等研究人员提出，其中Georgia Gkioxari和Pietro Perona均来自加州理工学院（Caltech），是计算机视觉领域的知名学者。论文对CLIP模型的几何局限性进行了理论分析，并提出了一种新的评分方法DCSM来改进CLIP-like模型。该方法在多个基准测试上提升了性能，创新性强，实验证据充分，且代码数据已开源。
+> 本文由Song Kang（可能来自加州理工学院或相关机构）和Georgia Gkioxari（Meta AI研究员）、Pietro Perona（加州理工学院教授）等组成的团队，对广泛应用的CLIP模型进行了深入的理论分析，揭示了其潜在空间在同时处理多种视觉-文本交互任务时的根本性限制。基于此分析，作者提出了Dense Cosine Similarity Maps（DCSMs）这一原则性且可解释的评分方法，旨在解决CLIP的固有缺陷。该方法在多个基准测试上提升了经典CLIP类联合编码器模型的性能，并开源了代码和数据。
 
 ---
 

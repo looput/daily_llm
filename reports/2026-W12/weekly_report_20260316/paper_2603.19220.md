@@ -3,19 +3,19 @@
 **arXiv**: [2603.19220](https://arxiv.org/abs/2603.19220) · [PDF](https://arxiv.org/pdf/2603.19220)  
 **领域**: RLHF  
 **作者**: Yang, Liu, Chen, Dai, Wang, Lin, Lee, Chen 等 17 人  
-**综合评分**: 8.64  （novelty: 9.0 · method: 8.5 · evidence: 9.5 · clarity: 8.0）
+**综合评分**: 8.80  （novelty: 9.0 · method: 8.5 · evidence: 9.5 · clarity: 7.5）
 
 ---
 
 ## 摘要
 
-> 本文由NVIDIA研究团队（作者来自NVIDIA，包括Yang Liu、Wei-Cheng Chen、Jianfeng Gao等知名研究人员）提出了一种名为Nemotron-Cascade 2的30B MoE模型，通过创新的Cascade RL和多领域策略蒸馏技术，在数学、编程推理和智能体能力方面取得了突破性进展。该模型在参数效率方面表现卓越，以远少于前沿模型的参数量达到了国际顶级竞赛的金牌水平。论文技术路线清晰，实验证据充分，并开源了模型检查点和训练数据。
+> 本文由NVIDIA研究团队（作者来自NVIDIA，包括Yang Liu、Wei-Cheng Chang、Jianfeng Gao、Bryan Catanzaro等知名研究人员）提出Nemotron-Cascade 2模型，这是一种采用级联强化学习和多领域策略蒸馏的30B MoE模型，在数学推理、编程和智能体能力方面达到前沿水平，并以极少的激活参数实现了高智能密度。方法创新性强，实验证据充分，代码和数据开源，为高效大模型训练提供了新思路。
 
 ---
 
 ## 详细分析
 
-> **社区热度**: ⭐ 2 (来自 papers.cool)
+> **社区热度**: ⭐ 29 (来自 papers.cool)
 
 ## 问题定义
 
