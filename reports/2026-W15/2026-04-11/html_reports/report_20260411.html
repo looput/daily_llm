@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大模型论文速读（1/1）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background: #fafafa;
+            font-size: 15px;
+        }
+
+        /* 主布局容器 - 左侧导航 + 右侧内容 */
+        .main-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 左侧书签式导航 */
+        .sidebar {
+            width: 240px;
+            background: #ffffff;
+            border-right: 1px solid #e8e8e8;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.02);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #fafafa;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #ccc;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid #e8e8e8;
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .sidebar-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .sidebar-nav {
+            padding: 12px 0;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 12px 20px;
+            color: #666;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            font-size: 14px;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: #fafafa;
+            color: #1a1a1a;
+        }
+
+        .nav-item.active {
+            background: #f5f5f5;
+            color: #1a1a1a;
+            border-left-color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-right: 8px solid white;
+        }
+
+        .nav-item-count {
+            float: right;
+            color: #999;
+            font-size: 12px;
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+
+        .nav-item.active .nav-item-count {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        /* 移动端菜单按钮 */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 200;
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #1a1a1a;
+            margin: 4px 0;
+        }
+
+        /* 主内容区域 */
+        .container {
+            flex: 1;
+            margin-left: 240px;
+            background: white;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid #e8e8e8;
+            color: #1a1a1a;
+            padding: 32px 40px 24px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+            color: #666;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            padding-top: 4px;
+        }
+
+        .md-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+            background: #fafafa;
+            color: #555;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .md-link-btn:hover {
+            background: #f0f0f0;
+            border-color: #999;
+            color: #1a1a1a;
+        }
+
+        .md-link-btn svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+
+        .filter-info {
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 16px 40px;
+            margin: 0 40px 24px;
+        }
+
+        .filter-info h3 {
+            margin: 0 0 8px;
+            color: #1a1a1a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .filter-info p {
+            margin: 4px 0;
+            color: #666;
+            font-size: 13px;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 宽屏模式：论文列表 + 右侧详情面板 */
+        .content-wrapper {
+            display: flex;
+            position: relative;
+        }
+
+        .papers-list {
+            flex: 1;
+            padding: 32px 40px;
+            transition: margin-right 0.3s ease;
+        }
+
+        .papers-list.has-detail {
+            margin-right: 560px;
+        }
+
+        /* 右侧详情面板（宽屏） */
+        .detail-panel {
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 560px;
+            background: white;
+            border-left: 1px solid #e8e8e8;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 50;
+            box-shadow: -2px 0 16px rgba(0,0,0,0.08);
+        }
+
+        .detail-panel.active {
+            transform: translateX(0);
+        }
+
+        .detail-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .detail-panel::-webkit-scrollbar-track {
+            background: #fafafa;
+        }
+
+        .detail-panel::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 4px;
+        }
+
+        .detail-panel::-webkit-scrollbar-thumb:hover {
+            background: #ccc;
+        }
+
+        .detail-panel-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            border-bottom: 1px solid #e8e8e8;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .detail-panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .detail-panel-close {
+            background: #f5f5f5;
+            border: none;
+            font-size: 18px;
+            color: #666;
+            cursor: pointer;
+            padding: 6px 10px;
+            line-height: 1;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .detail-panel-close:hover {
+            background: #e8e8e8;
+            color: #1a1a1a;
+        }
+
+        .detail-panel-content {
+            padding: 24px;
+        }
+
+        /* 移动端弹窗 */
+        .mobile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 0;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .mobile-modal.active {
+            display: flex;
+        }
+
+        .mobile-modal-content {
+            background: white;
+            border-radius: 16px 16px 0 0;
+            width: 100%;
+            height: 95%;
+            overflow-y: auto;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+            position: relative;
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0.8;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .mobile-modal-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .mobile-modal-content::-webkit-scrollbar-track {
+            background: #fafafa;
+        }
+
+        .mobile-modal-content::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .mobile-modal-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            border-bottom: 1px solid #e8e8e8;
+            padding: 24px 20px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            border-radius: 16px 16px 0 0;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        /* 移动端弹窗拖动指示器 */
+        .mobile-modal-header::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background: #d0d0d0;
+            border-radius: 2px;
+        }
+
+        .mobile-modal-close {
+            background: #f5f5f5;
+            border: none;
+            font-size: 20px;
+            color: #666;
+            cursor: pointer;
+            padding: 6px 10px;
+            line-height: 1;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .mobile-modal-close:hover {
+            background: #e8e8e8;
+            color: #1a1a1a;
+        }
+
+        .mobile-modal-body {
+            padding: 16px 20px 24px;
+        }
+
+        .topic-header {
+            display: none;
+        }
+
+        .topic-content {
+            border: none;
+            padding: 0;
+        }
+
+        /* Compact Paper Items */
+        .paper-item-compact {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 20px 0;
+            transition: background 0.2s;
+        }
+
+        .paper-item-compact:last-child {
+            border-bottom: none;
+        }
+
+        .paper-item-compact.active {
+            background: #fafafa;
+        }
+
+        .paper-header {
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+            padding: 0;
+            transition: all 0.2s;
+        }
+
+        .paper-header:hover {
+            opacity: 0.8;
+        }
+
+        .expand-icon {
+            margin-right: 12px;
+            margin-top: 2px;
+            font-size: 12px;
+            color: #999;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+
+        .paper-title {
+            flex: 1;
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 16px;
+            line-height: 1.6;
+            letter-spacing: -0.2px;
+        }
+
+        .paper-authors {
+            color: #666;
+            font-size: 13px;
+            margin: 6px 0;
+            line-height: 1.5;
+        }
+
+        .paper-score {
+            background: #f5f5f5;
+            color: #1a1a1a;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            margin-left: 16px;
+            flex-shrink: 0;
+        }
+
+        /* 详情内容样式 */
+        .paper-details-content h4 {
+            color: #1a1a1a;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 20px 0 12px 0;
+            border-bottom: 1px solid #e8e8e8;
+            padding-bottom: 8px;
+        }
+
+        .paper-details-content .markdown-content {
+            background: #fafafa;
+            border-left: 3px solid #e0e0e0;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+
+        .paper-abstract {
+            color: #4a4a4a;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        /* ========== 领域汇总Markdown样式（紧凑型） ========== */
+        .domain-summary-display .analysis-content {
+            line-height: 1.7;
+            color: #333;
+            font-size: 14px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        /* 领域汇总：标题样式 */
+        .domain-summary-display .analysis-content h1, 
+        .domain-summary-display .analysis-content h2, 
+        .domain-summary-display .analysis-content h3, 
+        .domain-summary-display .analysis-content h4, 
+        .domain-summary-display .analysis-content h5, 
+        .domain-summary-display .analysis-content h6 {
+            margin: 16px 0 8px 0;
+            color: #1a1a1a;
+            font-weight: 600;
+            line-height: 1.4;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 6px;
+        }
+        
+        .domain-summary-display .analysis-content h1 { font-size: 18px; }
+        .domain-summary-display .analysis-content h2 { font-size: 16px; }
+        .domain-summary-display .analysis-content h3 { font-size: 15px; }
+        .domain-summary-display .analysis-content h4 { font-size: 14px; }
+        
+        /* 领域汇总：段落样式 */
+        .domain-summary-display .analysis-content p {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #333;
+        }
+        
+        /* 领域汇总：列表样式（紧凑） */
+        .domain-summary-display .analysis-content ul, 
+        .domain-summary-display .analysis-content ol {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        
+        .domain-summary-display .analysis-content li {
+            margin: 3px 0;
+            line-height: 1.6;
+            color: #333;
+            padding-left: 4px;
+        }
+        
+        /* 领域汇总：嵌套列表（紧凑） */
+        .domain-summary-display .analysis-content ul ul, 
+        .domain-summary-display .analysis-content ol ul,
+        .domain-summary-display .analysis-content ul ol, 
+        .domain-summary-display .analysis-content ol ol {
+            margin: 2px 0;
+            padding-left: 20px;
+        }
+        
+        /* 领域汇总：列表符号 */
+        .domain-summary-display .analysis-content ul li { list-style-type: disc; }
+        .domain-summary-display .analysis-content ul ul li { list-style-type: circle; }
+        .domain-summary-display .analysis-content ul ul ul li { list-style-type: square; }
+        .domain-summary-display .analysis-content ol li { list-style-type: decimal; }
+        .domain-summary-display .analysis-content ol ol li { list-style-type: lower-alpha; }
+        
+        /* 领域汇总：强调样式 */
+        .domain-summary-display .analysis-content strong, 
+        .domain-summary-display .analysis-content b {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .domain-summary-display .analysis-content em, 
+        .domain-summary-display .analysis-content i {
+            font-style: italic;
+            color: #4a4a4a;
+        }
+        
+        /* 领域汇总：代码样式 */
+        .domain-summary-display .analysis-content code {
+            background: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+            color: #d73a49;
+        }
+        
+        /* 领域汇总：链接样式 */
+        .domain-summary-display .analysis-content a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        
+        .domain-summary-display .analysis-content a:hover {
+            text-decoration: underline;
+        }
+        
+        
+        /* ========== 论文详情Markdown样式（宽松型） ========== */
+        .markdown-content {
+            line-height: 1.8;
+            color: #333;
+            font-size: 14px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        /* 论文详情：标题样式 */
+        .markdown-content h1, .markdown-content h2, .markdown-content h3, 
+        .markdown-content h4, .markdown-content h5, .markdown-content h6 {
+            margin: 24px 0 12px 0;
+            color: #1a1a1a;
+            font-weight: 600;
+            line-height: 1.4;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 8px;
+        }
+        
+        .markdown-content h1 { 
+            font-size: 20px; 
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .markdown-content h2 { font-size: 18px; }
+        .markdown-content h3 { font-size: 16px; }
+        .markdown-content h4 { font-size: 15px; }
+        .markdown-content h5 { font-size: 14px; }
+        .markdown-content h6 { 
+            font-size: 14px; 
+            color: #666;
+        }
+        
+        /* 论文详情：段落样式 */
+        .markdown-content p {
+            margin: 12px 0;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        /* 论文详情：强调样式 */
+        .markdown-content strong, .markdown-content b {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .markdown-content em, .markdown-content i {
+            font-style: italic;
+            color: #4a4a4a;
+        }
+        
+        /* 论文详情：列表样式（优化缩进） */
+        .markdown-content ul, .markdown-content ol {
+            margin: 12px 0;
+            padding-left: 22px;
+        }
+        
+        .markdown-content li {
+            margin: 5px 0;
+            line-height: 1.8;
+            color: #333;
+            padding-left: 6px;
+        }
+        
+        /* 论文详情：第一级列表符号 */
+        .markdown-content ul li {
+            list-style-type: disc;
+        }
+        
+        .markdown-content ol li {
+            list-style-type: decimal;
+        }
+        
+        /* 论文详情：嵌套列表样式 */
+        .markdown-content ul ul, .markdown-content ol ul,
+        .markdown-content ul ol, .markdown-content ol ol {
+            margin: 3px 0;
+            padding-left: 24px;
+        }
+        
+        /* 论文详情：第二级无序列表：空心圆 */
+        .markdown-content ul ul li {
+            list-style-type: circle;
+        }
+        
+        /* 论文详情：第三级无序列表：方块 */
+        .markdown-content ul ul ul li {
+            list-style-type: square;
+        }
+        
+        /* 论文详情：第二级有序列表：小写字母 */
+        .markdown-content ol ol li {
+            list-style-type: lower-alpha;
+        }
+        
+        /* 论文详情：第三级有序列表：小写罗马数字 */
+        .markdown-content ol ol ol li {
+            list-style-type: lower-roman;
+        }
+        
+        /* 论文详情：混合嵌套：有序列表中的无序列表 */
+        .markdown-content ol ul li {
+            list-style-type: circle;
+        }
+        
+        /* 论文详情：混合嵌套：无序列表中的有序列表 */
+        .markdown-content ul ol li {
+            list-style-type: lower-alpha;
+        }
+        
+        /* 论文详情：代码样式 */
+        .markdown-content code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 13px;
+            color: #d73a49;
+            border: 1px solid #e8e8e8;
+        }
+        
+        .markdown-content pre {
+            background: #f5f5f5;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .markdown-content pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+            border: none;
+        }
+        
+        /* 论文详情：引用样式 */
+        .markdown-content blockquote {
+            border-left: 3px solid #e0e0e0;
+            margin: 16px 0;
+            padding: 12px 16px;
+            background: #fafafa;
+            color: #4a4a4a;
+            font-style: italic;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .markdown-content blockquote p {
+            margin: 0;
+            color: #4a4a4a;
+        }
+        
+        /* 论文详情：分割线样式 */
+        .markdown-content hr {
+            border: none;
+            border-top: 1px solid #e8e8e8;
+            margin: 24px 0;
+        }
+        
+        /* 论文详情：表格样式 */
+        .markdown-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .markdown-content th, .markdown-content td {
+            border: 1px solid #e8e8e8;
+            padding: 10px 14px;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        .markdown-content th {
+            background: #fafafa;
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 13px;
+        }
+        
+        .markdown-content td {
+            background: white;
+            color: #333;
+        }
+        
+        .markdown-content tr:nth-child(even) td {
+            background: #fafafa;
+        }
+        
+        /* 论文详情：链接样式 */
+        .markdown-content a {
+            color: #0066cc;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .markdown-content a:hover {
+            color: #0052a3;
+            text-decoration: underline;
+        }
+        
+        /* 论文详情：任务列表样式 */
+        .markdown-content input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        /* 论文详情：图片样式 */
+        .markdown-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin: 8px 0;
+        }
+
+
+
+        .paper-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: #999;
+            margin: 12px 0;
+            flex-wrap: wrap;
+        }
+
+        .paper-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 12px 0;
+        }
+
+        .tag {
+            background: #f5f5f5;
+            color: #666;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .arxiv-link {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .arxiv-link:hover {
+            text-decoration: underline;
+        }
+
+        /* AI助手链接样式 */
+        .ai-links {
+            display: inline-flex;
+            gap: 8px;
+            margin-left: 12px;
+            align-items: center;
+            vertical-align: middle;
+        }
+
+        .ai-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid;
+            line-height: 1.2;
+            vertical-align: middle;
+        }
+
+        .ai-link-kimi {
+            color: #6366f1;
+            border-color: #6366f1;
+            background: #f5f5ff;
+        }
+
+        .ai-link-kimi:hover {
+            background: #6366f1;
+            color: white;
+        }
+
+        .ai-link-chatgpt {
+            color: #10a37f;
+            border-color: #10a37f;
+            background: #f0fdf4;
+        }
+
+        .ai-link-chatgpt:hover {
+            background: #10a37f;
+            color: white;
+        }
+
+        .ai-link-icon {
+            font-size: 12px;
+            line-height: 1;
+            display: inline-block;
+        }
+
+        .no-papers {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+            font-size: 14px;
+        }
+
+
+
+
+        /* Footer styles */
+        .footer {
+            background: #fafafa;
+            padding: 16px 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        /* Domain summary display styles */
+        .domain-summary-display {
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .domain-summary-display h3 {
+            margin: 0 0 16px;
+            color: #1a1a1a;
+            font-size: 16px;
+            font-weight: 600;
+            border-bottom: 1px solid #e8e8e8;
+            padding-bottom: 8px;
+        }
+
+        .domain-summary-display .summary-section,
+        .domain-summary-display .insights-section,
+        .domain-summary-display .trends-section {
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 12px 0;
+        }
+
+        .domain-summary-display .summary-section {
+            border-left: 3px solid #e0e0e0;
+        }
+
+        .domain-summary-display .insights-section {
+            border-left: 3px solid #e0e0e0;
+        }
+
+        .domain-summary-display .trends-section {
+            border-left: 3px solid #e0e0e0;
+        }
+
+
+        .domain-summary-display h4 {
+            margin: 0 0 10px;
+            color: #1a1a1a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .domain-summary-display p {
+            margin: 0;
+            color: #4a4a4a;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+
+
+
+        /* Paper summary inline style */
+        .paper-summary-inline {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 8px 0;
+            padding: 0;
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            /* 宽屏模式下隐藏右侧面板，使用移动端弹窗 */
+            .detail-panel {
+                display: none;
+            }
+            
+            .papers-list.has-detail {
+                margin-right: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* 移动端AI链接优化 */
+            .ai-links {
+                display: flex;
+                margin-left: 0;
+                margin-top: 8px;
+                gap: 6px;
+            }
+            
+            .ai-link {
+                font-size: 11px;
+                padding: 3px 8px;
+            }
+            
+            .ai-link-icon {
+                font-size: 12px;
+            }
+            body {
+                font-size: 14px;
+            }
+
+            /* 移动端显示菜单按钮 */
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            /* 移动端隐藏侧边栏 */
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            /* 移动端主容器不留左边距 */
+            .container {
+                margin-left: 0;
+            }
+            
+            .header {
+                padding: 24px 20px 16px;
+                padding-top: 60px; /* 为菜单按钮留空间 */
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .header-actions {
+                align-self: flex-start;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .papers-list {
+                padding: 24px 20px;
+            }
+            
+            .filter-info, .footer {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            
+            .paper-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .paper-score {
+                margin-left: 0;
+                margin-top: 8px;
+            }
+
+            /* 移动端详情面板完全隐藏 */
+            .detail-panel {
+                display: none !important;
+            }
+            
+            /* 移动端优化领域汇总显示，去掉双层嵌套效果 */
+            .domain-summary-display {
+                background: white;
+                border: 1px solid #e8e8e8;
+                padding: 12px 16px;
+                margin-bottom: 20px;
+            }
+            
+            .domain-summary-display .summary-section,
+            .domain-summary-display .insights-section,
+            .domain-summary-display .trends-section {
+                background: transparent;
+                border: none;
+                border-radius: 0;
+                padding: 0;
+                margin: 0;
+            }
+        }
+        
+        /* KaTeX数学公式样式 */
+        .katex {
+            font-size: 1.1em;
+        }
+        
+        .katex-display {
+            margin: 1em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        
+        .katex-display > .katex {
+            white-space: nowrap;
+        }
+        
+        /* 标记按钮样式 */
+        .mark-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            color: #999;
+            transition: all 0.2s;
+            border-radius: 4px;
+            padding: 0;
+            margin-left: 8px;
+            flex-shrink: 0;
+            vertical-align: middle;
+        }
+        
+        .mark-button:hover {
+            background: #f5f5f5;
+            color: #ffa500;
+            transform: scale(1.1);
+        }
+        
+        .mark-button.marked {
+            color: #ffa500;
+        }
+        
+        .mark-button.marked:hover {
+            color: #ff8c00;
+        }
+        
+        .paper-title .mark-button {
+            margin-left: 8px;
+        }
+
+        .detail-panel-header .mark-button,
+        .mobile-modal-header .mark-button {
+            margin-right: 8px;
+        }
+
+        /* ── 评分色阶 ── */
+        .paper-score.score-high {
+            background: #dcfce7;
+            color: #15803d;
+        }
+        .paper-score.score-mid {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        .paper-score.score-low {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        /* ── 已标记论文折叠态 ── */
+        .paper-item-compact.paper-collapsed .paper-authors,
+        .paper-item-compact.paper-collapsed .paper-summary-inline {
+            display: none;
+        }
+        .paper-item-compact.paper-collapsed {
+            border-left: 3px solid #ffa500;
+            padding-left: 14px;
+            padding-top: 11px;
+            padding-bottom: 11px;
+            opacity: 0.68;
+            transition: opacity 0.18s, border-left-color 0.18s;
+        }
+        .paper-item-compact.paper-collapsed:hover {
+            opacity: 1;
+            border-left-color: #ff8c00;
+        }
+
+        /* ── 折叠数量提示条 ── */
+        .collapsed-notice {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #999;
+            padding: 8px 0 16px;
+            user-select: none;
+        }
+        .collapsed-notice a {
+            color: #ffa500;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .collapsed-notice a:hover { text-decoration: underline; }
+        .collapsed-notice .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #ffa500;
+            flex-shrink: 0;
+        }
+    </style>
+    <!-- KaTeX数学公式渲染库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- 移动端菜单按钮 -->
+    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="main-layout">
+        <!-- 左侧书签式导航 -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>📚 领域导航</h2>
+            </div>
+            <nav class="sidebar-nav">
+                
+                <a class="nav-item active" 
+                   onclick="showTab('Pretraining', event)">
+                    预训练（Pretraining）
+                    <span class="nav-item-count">1</span>
+                </a>
+                
+            </nav>
+        </aside>
+
+        <!-- 主内容区域 -->
+        <div class="container">
+            <div class="header">
+                <div class="header-text">
+                    <h1>大模型论文速读（1/1）</h1>
+                    <p>日报: 2026-04-11 | 生成时间: 2026-04-17</p>
+                </div>
+                <div class="header-actions">
+                    <a id="md-download-btn" class="md-link-btn" href="#" target="_blank" title="以 Markdown 格式查看，适合 AI 阅读">
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <rect x="1" y="2" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/>
+                            <path d="M3.5 10.5V5.5L5.5 8l2-2.5 2 2.5 2-2.5v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Markdown
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tab Contents -->
+            
+            <div id="tab-Pretraining" class="tab-content active">
+                <div class="content-wrapper">
+                    <div class="papers-list" id="papers-list-Pretraining">
+                        <!-- 领域汇总分析 -->
+                        
+                        <div class="domain-summary-display">
+                <!-- <h3>📊 领域汇总分析</h3> -->
+                
+                        <!-- 完整汇总内容（单一文本） -->
+                        
+                <div class="summary-section">
+                    <div class="analysis-content"><h3>研究全貌</h3>
+<p>本批次论文聚焦于<strong>长上下文语言建模</strong>这一核心方向。当前，主流模型主要依赖注意力机制来同时处理局部交互和长程依赖，这在一定程度上限制了架构设计的多样性探索。因此，该领域的一个热点问题在于：<strong>如何超越单一的注意力范式，通过更精细的模块化分工来构建更高效、更稳定的长序列建模架构</strong>。整体研究趋势呈现出从“大一统”的注意力模型向<strong>混合、解耦的架构设计</strong>转变，旨在通过引入专门化的组件（如持久记忆、预测机制）来优化长上下文处理能力，提升模型的稳定性和效率。</p>
+<h3>重点方法深度解析</h3>
+<p>在本次分析的论文中，一篇工作因其新颖的架构设计思路而极具启发性。</p>
+<p><strong>《LPC-SM: Local Predictive Coding and Sparse Memory for Long-Context Language Modeling》</strong> <a href="https://arxiv.org/abs/2604.03263" target="_blank" rel="noopener noreferrer">URL</a></p>
+<ul>
+<li><p><strong>核心创新点</strong>：本文提出了一种名为LPC-SM的混合自回归架构，旨在解决传统注意力机制在长上下文建模中“身兼多职”的局限性。其核心创新在于<strong>将序列建模的功能进行解耦</strong>，将局部注意力、持久记忆、预测校正和运行时控制分离并整合在同一模块中，从而实现了比单纯依赖注意力更广泛、更专业的分工。</p>
+</li>
+<li><p><strong>技术细节</strong>：LPC-SM架构的关键技术实现包括：</p>
+<ol>
+<li><strong>功能模块分离</strong>：模型明确区分了<strong>局部注意力</strong>（处理邻近token的快速交互）、<strong>持久记忆</strong>（作为慢速记忆存储长期状态）和<strong>预测校正</strong>（对当前预测进行修正）三个核心功能。</li>
+<li><strong>正交新颖性传输（ONT）</strong>：这是管理慢速记忆（持久记忆）写入的核心机制。ONT旨在筛选和写入真正新颖、有价值的信息到持久记忆中，避免冗余信息的累积，从而提升记忆的利用效率和模型的长程依赖建模能力。</li>
+<li><strong>自适应稀疏控制</strong>：模型在运行时能够自适应地控制信息处理的稀疏性，例如在延续生成任务中，动态调整处理策略，这比固定比例的策略更为灵活有效。</li>
+</ol>
+</li>
+<li><p><strong>效果验证</strong>：作者在一个158M参数的模型上进行了三阶段评估。实验表明，移除记忆历史组件（mHC）会导致基础语言建模损失显著上升（从12.630升至15.127），证明了持久记忆的必要性。同时，自适应稀疏控制相较于固定比例策略，在延续任务中显著改善了最终损失（从12.137降至10.787）。最重要的是，完整模型在处理长达4096个token的序列时表现稳定，最终损失为11.582，并在延迟标识符诊断任务的关键交叉熵指标上从14.396提升至12.031，验证了其在长上下文下的有效性和鲁棒性。</p>
+</li>
+<li><p><strong>适用场景</strong>：该方法特别适用于需要<strong>高效、稳定地处理超长文本序列</strong>的场景，例如长文档摘要、代码生成、多轮长对话建模以及需要复杂数学推理的延续任务。它为资源受限环境下部署长上下文模型提供了一种有潜力的架构范式。</p>
+</li>
+</ul>
+<h3>实践启示</h3>
+<p>LPC-SM的研究为<strong>大模型的长上下文应用开发</strong>提供了重要的架构设计启示。它表明，通过将序列建模任务解耦为更专业化的子模块（如独立的记忆系统、预测校正器），可以构建出比纯注意力模型更可控、可能更高效的架构。这对于追求推理效率或需要在特定长程任务上优化模型性能的应用场景具有借鉴意义。</p>
+<p>针对不同应用，开发者应关注其核心思想：<strong>“专事专办”</strong>。例如，在构建需要强大事实记忆能力的问答系统时，可以借鉴其独立的持久记忆模块设计；在处理具有强局部结构依赖的代码或数学文本时，其局部注意力与预测校正相结合的思路值得参考。</p>
+<p><strong>可落地的具体建议</strong>是，在设计和优化自回归模型时，可以尝试将“状态记忆”与“即时计算”进行分离，并设计一个轻量级的门控或筛选机制（类似ONT）来管理长期状态的更新，这有助于缓解注意力机制在超长序列下的计算和记忆负担。<strong>关键注意事项</strong>在于，这类混合架构引入了更多的超参数和模块间交互逻辑，在实现时需要仔细设计训练策略，确保各组件能协同工作，避免训练不稳定或模块失效的问题。</p>
+</div>
+                </div>
+                
+                
+            </div>
+            
+                        
+                        <div class="topic-content">
+                            
+                                <div class="collapsed-notice" id="collapsed-notice-Pretraining" style="display:none">
+                                    <span class="dot"></span>
+                                    <span id="collapsed-count-Pretraining"></span> 篇已标记论文已折叠
+                                    &nbsp;·&nbsp;<a onclick="expandAllMarked('Pretraining')">展开全部</a>
+                                </div>
+                                
+                                <div class="paper-item-compact" id="paper-item-2604.03263">
+                                    <div class="paper-header" onclick="showPaperDetail('2604.03263', 'Pretraining')">
+                                        <div style="flex: 1;">
+                                            <div class="paper-title">
+                                                LPC-SM: Local Predictive Coding and Sparse Memory for Long-Context Language Modeling
+                                                <button class="mark-button" 
+                                                        data-paper-id="2604.03263"
+                                                        data-paper-data="{"arxiv_url": "https://arxiv.org/abs/2604.03263", "authors": ["Xie"], "id": "2604.03263", "pdf_url": "https://arxiv.org/pdf/2604.03263", "rank": 7.642857142857143, "title": "LPC-SM: Local Predictive Coding and Sparse Memory for Long-Context Language Modeling"}"
+                                                        onclick="handleMarkClickFromButton(this); event.stopPropagation();"
+                                                        title="标记这篇论文">☆</button>
+                                                <a href="https://arxiv.org/abs/2604.03263" class="arxiv-link" target="_blank" onclick="event.stopPropagation();">📄 Link</a>
+                                                <span class="ai-links">
+                                                    
+                                                    
+                                                    <a href="http://kimi.com/_prefill_chat?prefill_prompt=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ALPC-SM%3A%20Local%20Predictive%20Coding%20and%20Sparse%20Memory%20for%20Long-Context%20Language%20Modeling%E3%80%8B%EF%BC%8C%E9%93%BE%E6%8E%A5%E6%98%AF%20https%3A//arxiv.org/pdf/2604.03263&system_prompt=%E4%BD%A0%E6%98%AF%E4%B8%80%E4%B8%AA%E5%AD%A6%E6%9C%AF%E5%8A%A9%E6%89%8B%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E5%B0%86%E5%9B%B4%E7%BB%95%E7%9D%80%E4%BB%A5%E4%B8%8B%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%80%9A%E8%BF%87%E9%93%BE%E6%8E%A5%E7%BB%99%E5%87%BA%E4%BA%86%E8%AE%BA%E6%96%87%E7%9A%84PDF%EF%BC%8C%E8%AF%B7%E4%BD%A0%E4%BD%9C%E5%87%BA%E4%B8%93%E4%B8%9A%E7%9A%84%E5%9B%9E%E7%AD%94%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0%E7%AC%AC%E4%B8%80%E4%BA%BA%E7%A7%B0%EF%BC%8C%E5%BD%93%E6%B6%89%E5%8F%8A%E5%88%B0%E5%88%86%E7%82%B9%E5%9B%9E%E7%AD%94%E6%97%B6%EF%BC%8C%E9%BC%93%E5%8A%B1%E4%BD%A0%E4%BB%A5markdown%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E3%80%82&send_immediately=true&force_search=true&enable_reasoning=false" 
+                                                       class="ai-link ai-link-kimi" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问Kimi">
+                                                        <span class="ai-link-icon">🤖</span>
+                                                        <span>Kimi</span>
+                                                    </a>
+                                                    
+                                                    <a href="https://chatgpt.com/?q=%E6%88%91%E4%BB%AC%E8%A6%81%E8%AE%A8%E8%AE%BA%E7%9A%84%E8%AE%BA%E6%96%87%E6%98%AF%E3%80%8ALPC-SM%3A%20Local%20Predictive%20Coding%20and%20Sparse%20Memory%20for%20Long-Context%20Language%20Modeling%E3%80%8B%EF%BC%8CPDF%E9%93%BE%E6%8E%A5%EF%BC%9Ahttps%3A//arxiv.org/pdf/2604.03263%EF%BC%8C%E8%AF%B7%E7%BB%99%E5%87%BA%E7%AE%80%E7%9F%AD%E6%80%BB%E7%BB%93%E5%B9%B6%E5%9F%BA%E4%BA%8E%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9%E8%BF%9B%E8%A1%8C%E9%97%AE%E7%AD%94%E3%80%82" 
+                                                       class="ai-link ai-link-chatgpt" 
+                                                       target="_blank" 
+                                                       onclick="event.stopPropagation();"
+                                                       title="问问ChatGPT">
+                                                        <span class="ai-link-icon">💬</span>
+                                                        <span>GPT</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="paper-authors">Xie</div>
+                                            <!-- 中文摘要（默认显示） -->
+                                            
+                                            <div class="paper-summary-inline">本文提出了一种名为LPC-SM的新型混合自回归架构，用于长上下文语言建模。该方法创新性地将局部注意力、持久记忆、预测校正和运行时控制分离在同一模块中，并使用正交新颖性传输（ONT）来管理慢速记忆写入。实验表明，该方法在基础语言建模、数学延续和4096个token的延续任务中均表现稳定且有效，证明了长上下文建模可以围绕比单纯注意力更广泛的分工来组织。</div>
+                                            
+                                        </div>
+                                        <span class="paper-score score-low">7.6</span>
+                                    </div>
+                                    
+                                    <!-- 详情内容（用于显示在右侧面板或弹窗） -->
+                                    <div id="details-2604.03263" class="paper-details-content" style="display:none;">
+                                        <h3 style="margin-bottom: 16px;">LPC-SM: Local Predictive Coding and Sparse Memory for Long-Context Language Modeling</h3>
+                                        
+                                        <!-- 全文分析（如果可用且无错误） -->
+                                        
+                                            
+                                            
+                                            
+                                        <h4>📊 全文分析</h4>
+                                        <div class="markdown-content">
+                                            <h2>问题定义</h2>
+<p>论文试图解决的核心问题是：<strong>在长上下文语言建模中，如何超越Transformer依赖注意力机制作为唯一或主要的长程状态承载和协调手段的范式</strong>。作者认为，当前大多数长上下文模型（即使是那些引入循环、压缩或检索的模型）仍然将注意力机制视为整合局部上下文与远距离状态的核心，这限制了探索序列建模的替代性分解方式。因此，本文的核心目标不是简单地提出一个更高效的注意力变体，而是<strong>探索一种新的架构分解原则</strong>，将序列建模的不同功能（如局部交互、持久记忆、预测校正、运行时控制）分配给不同的、明确的机制，并验证这种分解本身是否具有内在的<strong>一致性、可训练性和可解释性</strong>。</p>
+<h2>相关工作</h2>
+<p>论文将相关工作分为三个主要脉络，并清晰地定位了LPC-SM的出发点：</p>
+<ol>
+<li><strong>Transformer及其变体</strong>：包括稀疏、局部注意力模型。这些工作的共同点是仍将注意力作为处理上下文的主要媒介。LPC-SM旨在从根本上改变这一假设。</li>
+<li><strong>引入持久状态的模型</strong>：如Transformer-XL、Compressive Transformer、RetNet、RWKV、Mamba以及最近的混合架构（如Griffin、Mamba-2）。LPC-SM在精神上与此类工作相近，但关键区别在于它<strong>明确区分了快/慢两种时间尺度的记忆，以及局部校正与长程存储</strong>。现有工作往往将这些功能隐含地融合在同一个机制中。</li>
+<li><strong>长上下文扩展方法</strong>：如LongRoPE、InfLLM。这些方法通过外推或辅助记忆来“拉伸”现有注意力模型，但未改变其内部分工。LPC-SM则是在<strong>块级别重新分配工作</strong>，然后再考虑上下文扩展。</li>
+<li><strong>预测编码与自适应计算</strong>：论文借鉴了神经科学和机器学习中的预测编码思想，并认为将预测误差（不匹配信号）暴露为一等公民，可以与内部控制机制自然交互。</li>
+</ol>
+<h2>解决方案</h2>
+<p>论文提出了LPC-SM（局部预测编码与稀疏记忆）这一混合自回归架构。其核心方法是通过一个精心设计的块结构，将不同功能解耦：</p>
+<ol>
+<li><p><strong>块结构分解</strong>：每个块并行处理三个信息源：</p>
+<ul>
+<li><strong>局部注意力路径</strong>：采用因果窗口注意力，专注于短程精度。</li>
+<li><strong>双时间尺度记忆路径</strong>：<ul>
+<li><strong>快记忆</strong>：每个时间步更新，保持接近词元级别的证据。</li>
+<li><strong>慢记忆</strong>：仅在块边界更新，作为持久的选择性状态。</li>
+</ul>
+</li>
+<li><strong>预测校正路径</strong>：模型首先基于局部上下文和记忆预测当前隐藏状态，然后迭代地使用预测误差（不匹配信号）进行校正。此路径的激活由<strong>自适应稀疏控制器</strong>调节，该控制器学习在何时、以何种稀疏度进行校正。</li>
+<li><strong>多头耦合残差路由器（mHC）</strong>：在块内部作为残差传输层，将状态提升到多个流并进行混合，被证明是架构几何的核心部分。</li>
+</ul>
+</li>
+<li><p><strong>正交新颖性传输（ONT）</strong>：这是慢记忆写入机制的关键创新。当写入一个块摘要时，ONT将其分解为与当前慢记忆状态对齐的分量和正交的新颖分量。写入时，<strong>仅放大新颖分量</strong>。这确保了记忆容量用于积累新信息，而非重复强化已有内容。论文在附录中从数学上证明了ONT是在保持对齐分量不变（可行性约束）的前提下，最接近目标放大向量（<code>(1+α)c</code>）的唯一解，具有清晰的变分表征。</p>
+</li>
+<li><p><strong>训练目标</strong>：除了标准的下一词元预测损失外，还包含针对预测校正、稀疏性、记忆大小和停止行为的辅助损失项。这些项旨在确保显式机制在训练中保持活跃，而非变得惰性。</p>
+</li>
+</ol>
+<h2>实验验证</h2>
+<p>论文在一个158M参数的模型上进行了严格的三阶段实验设计，旨在分离不同问题：</p>
+<ol>
+<li><p><strong>实验设计</strong>：</p>
+<ul>
+<li><strong>阶段A（基础语言建模）</strong>：对完整模型进行五项消融（移除慢记忆、预测编码、ONT、停止头、mHC），以评估各机制在固定参数预算下对优化行为的影响。</li>
+<li><strong>阶段B（数学领域延续训练）</strong>：比较<strong>自适应稀疏控制</strong>与<strong>固定稀疏比控制</strong>，在相同初始化、数据和预算下，隔离学习控制的价值。</li>
+<li><strong>阶段C（4096词元长上下文延续训练）</strong>：验证完整架构在序列长度加倍后是否仍能稳定训练。</li>
+</ul>
+</li>
+<li><p><strong>主要结果</strong>：</p>
+<ul>
+<li><strong>阶段A</strong>：移除<strong>mHC</strong>导致最终LM损失从12.630大幅上升至15.127，表明残差路由是核心几何的一部分。移除慢记忆导致轻微损失上升。而移除预测编码、ONT或停止头反而略微降低了基础阶段的损失，作者谨慎地解释为这些机制的主要收益可能在延续训练或长程条件任务中更明显。</li>
+<li><strong>阶段B</strong>：自适应稀疏控制明显优于匹配的固定比率控制，将最终LM损失从12.137改善至10.787，证明了自适应控制的有效性。</li>
+<li><strong>阶段C</strong>：完整路线在序列长度4096下保持稳定训练，最终LM损失为11.582。</li>
+<li><strong>诊断性评估</strong>：在延迟标识符探测任务上，完整模型经过阶段C训练后，关键交叉熵从14.396显著改善至12.031。禁用ONT会恶化该诊断结果，支持了ONT有助于保持延迟信息的观点。</li>
+</ul>
+</li>
+</ol>
+<h2>未来工作</h2>
+<p>论文明确指出了当前研究的局限性和未来探索方向：</p>
+<ol>
+<li><strong>规模限制</strong>：实验仅在158M参数、严重欠拟合的规模下进行。多个机制（如预测编码、ONT）的预期优势可能尚未完全显现。作者提到更大的1B规模实验正在进行中。</li>
+<li><strong>证据的不均衡性</strong>：mHC和自适应控制显示出明确收益，但慢记忆路径的证据则更为“有限”或“混合”。在延迟标识符任务上，无记忆变体甚至略优于完整的阶段A模型。这表明在现有规模下，各记忆组件的贡献尚未被清晰分离。</li>
+<li><strong>架构验证而非性能宣称</strong>：本文主要目的是验证LPC-SM分解原则的可行性，而非宣称其在计算效率或性能上已超越成熟的Transformer基线。</li>
+<li><strong>进一步探索</strong>：架构本身为研究内部控制信号（如预测误差如何驱动稀疏性）提供了平台。可以探索与其他自适应计算、路由思想的更深入结合。</li>
+</ol>
+<h2>总结</h2>
+<p>论文的主要贡献和价值总结如下：</p>
+<ol>
+<li><strong>提出新的架构分解原则</strong>：LPC-SM的核心贡献是概念性的，它挑战了“注意力作为核心协调者”的默认设置，并成功演示了一种将局部注意力、持久记忆、预测校正和运行时控制<strong>显式分离并协同工作</strong>的混合自回归架构。这为长上下文建模提供了超越注意力中心化视角的新思路。</li>
+<li><strong>引入关键创新组件</strong>：<ul>
+<li><strong>正交新颖性传输（ONT）</strong>：为选择性记忆写入提供了一个具有清晰数学基础的优雅解决方案。</li>
+<li><strong>自适应稀疏控制器</strong>：允许模型在有限范围内学习自身的计算稀疏策略，而不仅仅是应用固定的稀疏模式。</li>
+<li><strong>明确的双时间尺度记忆</strong>和<strong>作为一等公民的预测校正路径</strong>，增强了模型的可解释性和可控性。</li>
+</ul>
+</li>
+<li><strong>提供严谨的实证验证</strong>：通过三阶段训练和系统的消融实验，论文不仅展示了架构的可训练性，还<strong>量化了不同机制的影响</strong>。特别是，mHC和自适应控制被证明对模型行为有实质性贡献。</li>
+<li><strong>为未来研究奠定基础</strong>：论文的工作更像一个“架构验证研究”，证明了所提出的分解是连贯、可训练且其内部机制的影响是可分离、可测量的。这为在更大规模上探索此类混合架构的潜力打开了大门。</li>
+</ol>
+
+                                        </div>
+                                            
+                                        
+                                        
+                                        <!-- 论文元信息 -->
+                                        <div class="paper-meta">
+                                            <span>评分: <span class="paper-score">7.6</span></span>
+                                            <span>置信度: 0.90</span>
+                                            <span>分类: Pretraining</span>
+                                        </div>
+                                        
+                                        <!-- 标签 -->
+                                        
+                                        <div class="paper-tags">
+                                            
+                                            <span class="tag">Pretraining</span>
+                                            
+                                        </div>
+                                        
+                                        
+                                        <!-- 链接 -->
+                                        <div class="paper-meta">
+                                            <a href="https://arxiv.org/abs/2604.03263" class="arxiv-link" target="_blank">📄 arXiv页面</a>
+                                            <a href="https://arxiv.org/pdf/2604.03263" class="arxiv-link" target="_blank">📥 PDF下载</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        
+        <!-- Footer with filter info -->
+        
+        <div class="footer">
+            主题筛选: Finance, Agent, RLHF, Pretraining, SFT, Hallucination, Multimodal | 状态: 已启用
+        </div>
+        
+        </div>
+    </div>
+
+    <!-- 右侧详情面板（宽屏） -->
+    <div class="detail-panel" id="detailPanel">
+        <div class="detail-panel-header">
+            <span class="detail-panel-title">论文详情</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="mark-button" id="detailPanelMarkButton" onclick="handleDetailPanelMark(event);" title="标记这篇论文">☆</button>
+                <button class="detail-panel-close" onclick="closeDetailPanel()">✕</button>
+            </div>
+        </div>
+        <div class="detail-panel-content" id="detailPanelContent">
+            <!-- 动态加载论文详情 -->
+        </div>
+    </div>
+
+    <!-- 移动端弹窗 -->
+    <div class="mobile-modal" id="mobileModal" onclick="closeMobileModal(event)">
+        <div class="mobile-modal-content" onclick="event.stopPropagation()">
+            <div class="mobile-modal-header">
+                <span class="detail-panel-title">论文详情</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="mark-button" id="mobileModalMarkButton" onclick="handleMobileModalMark(event);" title="标记这篇论文">☆</button>
+                    <button class="mobile-modal-close" onclick="closeMobileModal()">✕</button>
+                </div>
+            </div>
+            <div class="mobile-modal-body" id="mobileModalContent">
+                <!-- 动态加载论文详情 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPaperId = null;
+        let currentPaperData = null;
+
+        // ========== 标记功能 ==========
+        
+        // 获取所有标记的论文
+        function getMarkedPapers() {
+            try {
+                const stored = localStorage.getItem('markedPapers');
+                return stored ? JSON.parse(stored) : [];
+            } catch (e) {
+                console.error('读取标记论文失败:', e);
+                return [];
+            }
+        }
+        
+        // 保存标记的论文
+        function saveMarkedPapers(papers) {
+            try {
+                localStorage.setItem('markedPapers', JSON.stringify(papers));
+            } catch (e) {
+                console.error('保存标记论文失败:', e);
+            }
+        }
+        
+        // 检查论文是否已标记
+        function isMarked(paperId) {
+            const markedPapers = getMarkedPapers();
+            return markedPapers.some(p => p.id === paperId);
+        }
+        
+        // 获取论文的完整信息（从页面中提取）
+        function getPaperData(paperId, basicData) {
+            // 从subtitle中提取日期
+            const subtitle = document.querySelector('.header p');
+            let date = '未知';
+            if (subtitle) {
+                const dateMatch = subtitle.textContent.match(/(\d{4}-\d{2}-\d{2})/);
+                if (dateMatch) {
+                    date = dateMatch[1];
+                }
+            }
+            
+            // 获取报告路径（相对路径）
+            // 如果路径包含web/reports，提取web/reports之后的部分
+            // 否则使用完整路径
+            let reportPath = window.location.pathname.replace(/^\/+/, '');
+            const webReportsMatch = reportPath.match(/web\/reports\/(.+)$/);
+            if (webReportsMatch) {
+                reportPath = webReportsMatch[1];
+            } else {
+                // 尝试提取reports之后的部分
+                const reportsMatch = reportPath.match(/reports\/(.+)$/);
+                if (reportsMatch) {
+                    reportPath = reportsMatch[1];
+                }
+            }
+            
+            return {
+                id: paperId,
+                title: basicData.title || '',
+                authors: basicData.authors || [],
+                arxiv_url: basicData.arxiv_url || '',
+                pdf_url: basicData.pdf_url || '',
+                rank: basicData.rank || null,
+                date: date,
+                reportPath: reportPath,
+                markedAt: new Date().toISOString()
+            };
+        }
+        
+        // 切换标记状态
+        function toggleMark(paperId, paperData) {
+            const markedPapers = getMarkedPapers();
+            const isCurrentlyMarked = isMarked(paperId);
+
+            if (isCurrentlyMarked) {
+                // 取消标记
+                const filtered = markedPapers.filter(p => p.id !== paperId);
+                saveMarkedPapers(filtered);
+                updateMarkButtonState(paperId, false);
+                // 展开卡片
+                const item = document.getElementById('paper-item-' + paperId);
+                if (item) item.classList.remove('paper-collapsed');
+            } else {
+                // 添加标记
+                const fullPaperData = getPaperData(paperId, paperData);
+                markedPapers.push(fullPaperData);
+                saveMarkedPapers(markedPapers);
+                updateMarkButtonState(paperId, true);
+                // 折叠卡片
+                const item = document.getElementById('paper-item-' + paperId);
+                if (item) item.classList.add('paper-collapsed');
+            }
+
+            // 刷新所有 tab 的折叠提示条
+            document.querySelectorAll('[id^="collapsed-notice-"]').forEach(notice => {
+                const topicId = notice.id.replace('collapsed-notice-', '');
+                refreshCollapsedNotice(topicId);
+            });
+        }
+        
+        // 更新标记按钮状态
+        function updateMarkButtonState(paperId, isMarked) {
+            // 更新列表中的按钮
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            if (listButton) {
+                listButton.textContent = isMarked ? '⭐' : '☆';
+                listButton.classList.toggle('marked', isMarked);
+            }
+            
+            // 更新详情面板中的按钮
+            if (currentPaperId === paperId) {
+                const detailButton = document.getElementById('detailPanelMarkButton');
+                const mobileButton = document.getElementById('mobileModalMarkButton');
+                
+                if (detailButton) {
+                    detailButton.textContent = isMarked ? '⭐' : '☆';
+                    detailButton.classList.toggle('marked', isMarked);
+                }
+                if (mobileButton) {
+                    mobileButton.textContent = isMarked ? '⭐' : '☆';
+                    mobileButton.classList.toggle('marked', isMarked);
+                }
+            }
+        }
+        
+        // 处理列表中的标记点击（从按钮元素获取数据）
+        function handleMarkClickFromButton(button) {
+            const paperId = button.getAttribute('data-paper-id');
+            const paperDataStr = button.getAttribute('data-paper-data');
+            try {
+                const paperData = JSON.parse(paperDataStr);
+                toggleMark(paperId, paperData);
+            } catch (e) {
+                console.error('解析论文数据失败:', e);
+            }
+        }
+        
+        // 处理详情面板中的标记点击
+        function handleDetailPanelMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 处理移动端弹窗中的标记点击
+        function handleMobileModalMark(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (!currentPaperId) {
+                console.warn('currentPaperId为空，无法标记');
+                return;
+            }
+            
+            // 优先使用currentPaperData
+            if (currentPaperData) {
+                toggleMark(currentPaperId, currentPaperData);
+                return;
+            }
+            
+            // 如果currentPaperData为空，尝试从列表按钮获取数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${currentPaperId}"]`);
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        const paperData = JSON.parse(paperDataStr);
+                        toggleMark(currentPaperId, paperData);
+                        return;
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                    }
+                }
+            }
+            
+            // 如果都找不到，尝试从DOM重新提取
+            const paperItem = document.getElementById('paper-item-' + currentPaperId);
+            if (paperItem) {
+                const extractedData = extractPaperDataFromDOM(paperItem, currentPaperId);
+                if (extractedData) {
+                    currentPaperData = extractedData;
+                    toggleMark(currentPaperId, extractedData);
+                } else {
+                    console.error('无法提取论文数据');
+                }
+            } else {
+                console.error('找不到论文元素');
+            }
+        }
+        
+        // 初始化标记状态（页面加载时）
+        function initMarkStates() {
+            const markedPapers = getMarkedPapers();
+            const markedIds = new Set(markedPapers.map(p => p.id));
+
+            // 更新所有标记按钮的状态，并折叠已标记论文
+            document.querySelectorAll('.mark-button[data-paper-id]').forEach(button => {
+                const paperId = button.getAttribute('data-paper-id');
+                if (markedIds.has(paperId)) {
+                    button.textContent = '⭐';
+                    button.classList.add('marked');
+                    // 折叠该论文卡片
+                    const item = document.getElementById('paper-item-' + paperId);
+                    if (item) item.classList.add('paper-collapsed');
+                } else {
+                    button.textContent = '☆';
+                    button.classList.remove('marked');
+                }
+            });
+
+            // 更新各 tab 的折叠提示条
+            document.querySelectorAll('[id^="collapsed-notice-"]').forEach(notice => {
+                const topicId = notice.id.replace('collapsed-notice-', '');
+                refreshCollapsedNotice(topicId);
+            });
+        }
+
+        // 刷新某个 tab 的折叠提示条
+        function refreshCollapsedNotice(topicId) {
+            const tabEl = document.getElementById('tab-' + topicId);
+            if (!tabEl) return;
+            const count = tabEl.querySelectorAll('.paper-item-compact.paper-collapsed').length;
+            const notice = document.getElementById('collapsed-notice-' + topicId);
+            const countEl = document.getElementById('collapsed-count-' + topicId);
+            if (!notice || !countEl) return;
+            if (count > 0) {
+                countEl.textContent = count;
+                notice.style.display = 'flex';
+            } else {
+                notice.style.display = 'none';
+            }
+        }
+
+        // 展开某 tab 所有已标记论文
+        function expandAllMarked(topicId) {
+            const tabEl = document.getElementById('tab-' + topicId);
+            if (!tabEl) return;
+            tabEl.querySelectorAll('.paper-item-compact.paper-collapsed').forEach(item => {
+                item.classList.remove('paper-collapsed');
+            });
+            refreshCollapsedNotice(topicId);
+        }
+
+        // 切换标签页
+        function showTab(tabId, event) {
+            if (event) {
+                event.preventDefault();
+            }
+            
+            // 隐藏所有标签内容
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            // 显示选中的标签
+            document.getElementById('tab-' + tabId).classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            // 关闭详情面板
+            closeDetailPanel();
+            
+            // 移动端自动关闭侧边栏
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('active');
+            }
+        }
+
+        // 从DOM元素中提取论文数据
+        function extractPaperDataFromDOM(paperItem, paperId) {
+            if (!paperItem) return null;
+            
+            const paperTitleEl = paperItem.querySelector('.paper-title');
+            const paperAuthorsEl = paperItem.querySelector('.paper-authors');
+            const paperScoreEl = paperItem.querySelector('.paper-score');
+            const arxivLinkEl = paperItem.querySelector('.arxiv-link');
+            
+            // 提取标题，去除标记按钮和链接
+            let title = '';
+            if (paperTitleEl) {
+                title = paperTitleEl.cloneNode(true);
+                // 移除按钮和链接
+                title.querySelectorAll('.mark-button, .arxiv-link, .ai-links').forEach(el => el.remove());
+                title = title.textContent.trim();
+            }
+            
+            return {
+                id: paperId,
+                title: title || '',
+                authors: paperAuthorsEl ? paperAuthorsEl.textContent.split(',').map(a => a.trim()) : [],
+                arxiv_url: arxivLinkEl ? arxivLinkEl.href : '',
+                pdf_url: arxivLinkEl ? arxivLinkEl.href.replace('/abs/', '/pdf/') : '',
+                rank: paperScoreEl && paperScoreEl.textContent !== 'N/A' ? parseFloat(paperScoreEl.textContent) : null
+            };
+        }
+
+        // 渲染元素中的数学公式
+        function renderMathInElementLocal(element) {
+            if (typeof renderMathInElement !== 'undefined' && element) {
+                renderMathInElement(element, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        // 显示论文详情
+        function showPaperDetail(paperId, topicId) {
+            const detailsContent = document.getElementById('details-' + paperId);
+            if (!detailsContent) return;
+            
+            // 移除之前选中的论文高亮
+            document.querySelectorAll('.paper-item-compact').forEach(el => el.classList.remove('active'));
+            
+            // 高亮当前论文
+            const paperItem = document.getElementById('paper-item-' + paperId);
+            if (paperItem) {
+                paperItem.classList.add('active');
+            }
+            
+            currentPaperId = paperId;
+            
+            // 从列表项中提取论文数据
+            const listButton = document.querySelector(`.mark-button[data-paper-id="${paperId}"]`);
+            
+            // 优先从列表按钮的data属性获取数据
+            if (listButton) {
+                const paperDataStr = listButton.getAttribute('data-paper-data');
+                if (paperDataStr) {
+                    try {
+                        currentPaperData = JSON.parse(paperDataStr);
+                    } catch (e) {
+                        console.error('解析论文数据失败:', e);
+                        // 如果解析失败，从页面元素提取
+                        currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                    }
+                } else {
+                    // 如果没有data属性，从页面元素提取
+                    currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+                }
+            } else {
+                // 如果找不到列表按钮，从页面元素提取
+                currentPaperData = extractPaperDataFromDOM(paperItem, paperId);
+            }
+            
+            // 更新详情面板中的标记按钮状态
+            const isCurrentlyMarked = isMarked(paperId);
+            const detailButton = document.getElementById('detailPanelMarkButton');
+            const mobileButton = document.getElementById('mobileModalMarkButton');
+            
+            if (detailButton) {
+                detailButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                detailButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            if (mobileButton) {
+                mobileButton.textContent = isCurrentlyMarked ? '⭐' : '☆';
+                mobileButton.classList.toggle('marked', isCurrentlyMarked);
+            }
+            
+            // 检测设备类型
+            const isMobile = window.innerWidth <= 1024;
+            
+            if (isMobile) {
+                // 移动端：显示弹窗
+                const modalContent = document.getElementById('mobileModalContent');
+                modalContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(modalContent);
+                document.getElementById('mobileModal').classList.add('active');
+                document.body.style.overflow = 'hidden'; // 禁止背景滚动
+            } else {
+                // 宽屏：显示右侧面板
+                const panelContent = document.getElementById('detailPanelContent');
+                panelContent.innerHTML = detailsContent.innerHTML;
+                // 渲染新加载内容中的数学公式
+                renderMathInElementLocal(panelContent);
+                document.getElementById('detailPanel').classList.add('active');
+                
+                // 调整论文列表宽度
+                const papersList = document.getElementById('papers-list-' + topicId);
+                if (papersList) {
+                    papersList.classList.add('has-detail');
+                }
+            }
+        }
+
+        // 关闭详情面板
+        function closeDetailPanel() {
+            document.getElementById('detailPanel').classList.remove('active');
+            document.querySelectorAll('.papers-list').forEach(el => el.classList.remove('has-detail'));
+            document.querySelectorAll('.paper-item-compact').forEach(el => el.classList.remove('active'));
+            currentPaperId = null;
+        }
+
+        // 关闭移动端弹窗
+        function closeMobileModal(event) {
+            if (event && event.target.id !== 'mobileModal') return;
+            document.getElementById('mobileModal').classList.remove('active');
+            document.querySelectorAll('.paper-item-compact').forEach(el => el.classList.remove('active'));
+            document.body.style.overflow = ''; // 恢复背景滚动
+            currentPaperId = null;
+        }
+
+        // 切换侧边栏（移动端）
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        // 切换领域分析
+        function toggleAnalysis(topicId) {
+            const analysis = document.getElementById('analysis-' + topicId);
+            const icon = document.getElementById('analysis-icon-' + topicId);
+            
+            if (analysis.style.display === 'none') {
+                analysis.style.display = 'block';
+                icon.textContent = '▼';
+            } else {
+                analysis.style.display = 'none';
+                icon.textContent = '▶';
+            }
+        }
+
+        // 响应式处理
+        window.addEventListener('resize', function() {
+            if (currentPaperId) {
+                // 如果有打开的详情，根据新的屏幕尺寸调整显示方式
+                const isMobile = window.innerWidth <= 1024;
+                const detailPanel = document.getElementById('detailPanel');
+                const mobileModal = document.getElementById('mobileModal');
+                
+                if (isMobile && detailPanel.classList.contains('active')) {
+                    // 从宽屏切换到移动端
+                    closeDetailPanel();
+                    const detailsContent = document.getElementById('details-' + currentPaperId);
+                    if (detailsContent) {
+                        const modalContent = document.getElementById('mobileModalContent');
+                        modalContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(modalContent);
+                        mobileModal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                } else if (!isMobile && mobileModal.classList.contains('active')) {
+                    // 从移动端切换到宽屏
+                    mobileModal.classList.remove('active');
+                    document.body.style.overflow = '';
+                    const detailsContent = document.getElementById('details-' + currentPaperId);
+                    if (detailsContent) {
+                        const panelContent = document.getElementById('detailPanelContent');
+                        panelContent.innerHTML = detailsContent.innerHTML;
+                        renderMathInElementLocal(panelContent);
+                        detailPanel.classList.add('active');
+                    }
+                }
+            }
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstNavItem = document.querySelector('.nav-item');
+            if (firstNavItem) {
+                firstNavItem.classList.add('active');
+            }
+
+            // 设置 Markdown 链接：将当前 .html URL 替换为 .md
+            (function() {
+                const btn = document.getElementById('md-download-btn');
+                if (!btn) return;
+                const mdUrl = window.location.href.replace(/\.html(\?.*)?$/, '.md');
+                btn.href = mdUrl;
+                // 如果无法推断（URL 没有 .html 后缀），则隐藏按钮
+                if (mdUrl === window.location.href) {
+                    btn.style.display = 'none';
+                }
+            })();
+
+            // 初始化标记状态
+            initMarkStates();
+            
+            // 检查URL hash，如果包含paper-item-xxx，自动打开该论文详情
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#paper-item-')) {
+                const paperId = hash.replace('#paper-item-', '');
+                // 查找该论文所在的topic
+                const paperItem = document.getElementById('paper-item-' + paperId);
+                if (paperItem) {
+                    // 找到论文所在的tab
+                    const tabContent = paperItem.closest('.tab-content');
+                    if (tabContent) {
+                        const tabId = tabContent.id.replace('tab-', '');
+                        // 切换到对应的tab
+                        showTab(tabId, null);
+                        // 延迟一下，确保tab切换完成后再显示详情
+                        setTimeout(() => {
+                            showPaperDetail(paperId, tabId);
+                            // 滚动到论文位置
+                            paperItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
+                    }
+                }
+            }
+            
+            // 初始化KaTeX自动渲染数学公式
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        });
+
+        // ESC键关闭详情
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDetailPanel();
+                closeMobileModal();
+            }
+        });
+    </script>
+</body>
+</html>
